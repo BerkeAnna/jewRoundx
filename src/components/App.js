@@ -4,9 +4,10 @@ import logo from '../logo.png';
 import './App.css';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import Navbar from './Navbar';
+import Main from './Main';
 
 class App extends Component {
-//1:42:30
+//2:11:30
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
@@ -34,6 +35,10 @@ class App extends Component {
     const networkData = GemstoneExtraction.networks[networkId]
     if(networkData){
       const gemstroneExtraction = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
+      this.setState({ gemstroneExtraction })
+      const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call()
+      console.log(minedGemCount.toString())
+      this.setState({loading: false})
     }else{
       //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
       window.alert('Gemstone contract not deployed to detected network. - own error')
@@ -70,6 +75,17 @@ class App extends Component {
       minedGems: [],
       loading: true
     }
+
+    this.gemMining = this.gemMining.bind(this)
+  }
+
+  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased) {
+       this.setState({loading: true})
+       this.state.gemstroneExtraction.methods.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased).send({from: this.state.account})
+        .once('receipt', (receipt) => {
+          this.setState({  loading: false})
+        })
+     
   }
 
 
@@ -77,33 +93,13 @@ class App extends Component {
     return (
       <div>
        <Navbar account={this.state.account}/>
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
-              </div>
-            </main>
-          </div>
+      <div className='container-fluid mt-5'>
+        <div className='row'>
+          <main role="main" className='col-lg-12 d-flex'>
+            <Main gemMining= {this.gemMining}/>
+          </main>
         </div>
+      </div>
       </div>
     );
   }
