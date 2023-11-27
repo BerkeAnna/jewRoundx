@@ -1,21 +1,82 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
 import logo from '../logo.png';
 import './App.css';
+import GemstoneExtraction from '../abis/GemstoneExtraction.json';
+import Navbar from './Navbar';
 
 class App extends Component {
+//1:42:30
+  async componentWillMount() {
+    await this.loadWeb3()
+    await this.loadBlockchainData()
+  }
+
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
+    } else if (window.web3) {
+      window.web3 = new Web3(window.ethereum);
+    } else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+  }
+
+  async loadBlockchainData() {
+    const web3 = window.web3
+    // Load account
+    const accounts = await web3.eth.getAccounts()
+    console.log(accounts);
+    this.setState({ account: accounts[0] })
+
+    const networkId= await web3.eth.net.getId();
+    const networkData = GemstoneExtraction.networks[networkId]
+    if(networkData){
+      const gemstroneExtraction = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
+    }else{
+      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
+      window.alert('Gemstone contract not deployed to detected network. - own error')
+    }
+  /*
+    const networkId = await web3.eth.net.getId()
+    const networkData = GemstoneExtraction.networks[networkId]
+    console.log(networkData)
+   
+    if(networkData){
+      const gemsE = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
+      this.setState({ gemsE })
+      const minedGemCount = await gemsE.methods.minedGemCount().call()
+      console.log(minedGemCount)
+      console.log(gemsE.methods.minedGemCount())
+      for(var i = 1 ; i<= minedGemCount; i++){
+        const gem = await gemsE.methods.minedGems(i).call()
+        this.setState({
+          minedGems: [...this.state.minedGems, gem]
+        })
+      }
+      this.setState({ loading: false })
+    }else{
+      window.alert('Gemstone extraction contract not deployed to detected network.')
+    }
+   */
+  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      account: '',
+      minedGemCount: 0,
+      minedGems: [],
+      loading: true
+    }
+  }
+
+
   render() {
     return (
       <div>
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-          <a
-            className="navbar-brand col-sm-3 col-md-2 mr-0"
-            href="http://www.dappuniversity.com/bootcamp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Dapp University
-          </a>
-        </nav>
+       <Navbar account={this.state.account}/>
         <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
