@@ -37,8 +37,17 @@ class App extends Component {
       const gemstroneExtraction = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
       this.setState({ gemstroneExtraction })
       const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call()
+      this.setState({ minedGemCount })
+
+      for(var i=1; i<= minedGemCount; i++){
+        const minedGems = await gemstroneExtraction.methods.minedGems(i).call()
+        this.setState({
+          minedGems: [...this.state.minedGems, minedGems]
+        })
+      }
       console.log(minedGemCount.toString())
       this.setState({loading: false})
+     // console.log(this.state.minedGems)
     }else{
       //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
       window.alert('Gemstone contract not deployed to detected network. - own error')
@@ -96,7 +105,9 @@ class App extends Component {
       <div className='container-fluid mt-5'>
         <div className='row'>
           <main role="main" className='col-lg-12 d-flex'>
-            <Main gemMining= {this.gemMining}/>
+            <Main 
+              minedGems= {this.state.minedGems} 
+              gemMining= {this.gemMining}/>
           </main>
         </div>
       </div>
