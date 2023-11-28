@@ -5,6 +5,11 @@ import './App.css';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import Navbar from './Navbar';
 import Main from './Main';
+import Dashboard from './Dashboard';
+import MinedGemsList from './MinedGemList';
+import MinedGemForm from './MinedGemForm';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import OwnedByUser from './OwnedByUser'
 
 class App extends Component {
 //2:11:30
@@ -100,20 +105,41 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-       <Navbar account={this.state.account}/>
-      <div className='container-fluid mt-5'>
-        <div className='row'>
-          <main role="main" className='col-lg-12 d-flex'>
-            <Main 
-              minedGems= {this.state.minedGems} 
-              gemMining= {this.gemMining}/>
-          </main>
+      
+      <div className='col-6'> 
+        <Router>
+          {/* Navbar mindig látható */}
+          <Navbar account={this.state.account} />
+          <Routes>
+          <Route path="/" element={<Dashboard  />} />
+            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
+            <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
+                                                              gemMining={this.gemMining}
+                                                              purchaseGem={this.purchaseGem}
+                                                              account={this.state.account}
+                                                              />} />
+           
+            <Route path="/ownMinedGems" element={<OwnedByUser  minedGems={this.state.minedGems}
+                                                               gemMining={this.gemMining}
+                                                               purchaseGem={this.purchaseGem}
+                                                               account={this.state.account}
+                                                               sellGem={this.sellGem}
+                                                                    />} />
+          </Routes>
+        </Router> 
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <main role="main" className="col-lg-12 d-flex"> 
+            
+            <div id="content">
+             {}
+            </div>
+
+            </main>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
 }
-
 export default App;
