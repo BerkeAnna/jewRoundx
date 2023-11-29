@@ -8,6 +8,7 @@ contract GemstoneSelecting {
     struct SelectedGem{
         uint id;
         uint minedGemId;
+        uint weight;
         uint height;
         uint width;
         uint diameter; //vastagsag
@@ -22,6 +23,7 @@ contract GemstoneSelecting {
      event GemSelecting(
         uint id,
         uint minedGemId,
+        uint weight,
         uint height,
         uint width,
         uint diameter,
@@ -34,12 +36,12 @@ contract GemstoneSelecting {
      );
 
         // a minedGemId majd a js-sel kerül át. Kattintás után
-      function gemSelecting(uint _minedGemId, uint _height, uint _width, uint _diameter, uint _carat, string memory _color, string memory _gemtype, string memory _grinding, uint _price) public {
+      function gemSelecting(uint _minedGemId, uint _weight, uint _height, uint _width, uint _diameter, uint _carat, string memory _color, string memory _gemtype, string memory _grinding, uint _price) public {
        selectedGemCount++;
 
-       selectedGems[selectedGemCount] = SelectedGem(selectedGemCount, _minedGemId, _height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
+       selectedGems[selectedGemCount] = SelectedGem(selectedGemCount, _minedGemId, _weight,_height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
 
-       emit GemSelecting(selectedGemCount, _minedGemId, _height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
+       emit GemSelecting(selectedGemCount, _minedGemId, _weight, _height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
     }
 
 //innen úgy kellene tovább menni, hogy kiválogatva ki lesz.

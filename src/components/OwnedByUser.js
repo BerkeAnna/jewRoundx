@@ -27,7 +27,7 @@ class Main extends Component {
               return (
                
                                         /* TODO: sign mined or processing */
-                minedGem.purchased==0 ? (
+                minedGem.purchased===false ? (
                   
                   <tr key={key}>
                     <th scope="row">{minedGem.id.toString()}</th>
@@ -39,7 +39,7 @@ class Main extends Component {
                         name={minedGem.id}
                         value={minedGem.price}
                         onClick={(event) => {
-                          //this.props.purchaseGem(event.target.name, event.target.value);
+                          this.props.purchaseGem(event.target.name, event.target.value);
                         }}
                       >
                         Process
@@ -69,7 +69,7 @@ class Main extends Component {
               return (
               
                                         /* TODO: sign mined or processing */
-                minedGem.purchased==1 ? (
+                minedGem.purchased===true ? (
                   
                   <tr key={key}>
                     <th scope="row">{minedGem.id.toString()}</th>

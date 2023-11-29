@@ -56,6 +56,21 @@ contract GemstoneExtraction {
         address payable owner,
         bool purchased
      );
+
+       event GemPurchased(
+       uint id,
+        string gemType,
+        uint weight,
+        uint height, 
+        uint width,
+        uint price, 
+        string miningLocation,
+        uint miningYear,
+        PointOfProcessing pointOfProcessing,
+        string extractionMethod,
+        address payable owner,
+        bool purchased
+    );
     
     constructor() public  {
         name = "x";
@@ -79,14 +94,16 @@ contract GemstoneExtraction {
     }
 
     function purchaseGem(uint _id) public payable{
-        MinedGem memory _gem = minedGems[_id];
-        address payable _seller = _gem.owner;
-        _gem.owner = msg.sender;
-        _gem.purchased = true;
-        _gem.pointOfProcessing = PointOfProcessing.SALEOFMINEDPRODUCT;
-        minedGems[_id] = _gem;
-        address(_seller).transfer(msg.value);
-       emit GemPurchasing(_id, _gem.gemType, _gem.weight, _gem.height, _gem.width, _gem.price, _gem.miningLocation, _gem.miningYear, _gem.pointOfProcessing, _gem.extractionMethod, msg.sender, true);
-
+        MinedGem memory _minedGem = minedGems[_id];
+        address payable _miner = _minedGem.owner;
+        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
+        require(msg.value >= _minedGem.price);
+        require(_minedGem.purchased == false);
+        require(_miner != msg.sender);
+        _minedGem.owner = msg.sender;
+        _minedGem.purchased = true;
+        minedGems[_id] = _minedGem;
+        address(_miner).transfer(msg.value);
+        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  _minedGem.pointOfProcessing, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
 }

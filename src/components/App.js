@@ -10,6 +10,7 @@ import MinedGemsList from './MinedGemList';
 import MinedGemForm from './MinedGemForm';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import OwnedByUser from './OwnedByUser'
+import GemSelectingForm from './GemSelectingForm';
 
 class App extends Component {
 //2:11:30
@@ -91,6 +92,7 @@ class App extends Component {
     }
 
     this.gemMining = this.gemMining.bind(this)
+    this.purchaseGem = this.purchaseGem.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased) {
@@ -102,6 +104,17 @@ class App extends Component {
      
   }
 
+  
+  purchaseGem(id, price ){
+    //const priceUint = parseInt(price);
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true })
+    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+  }
 
   render() {
     return (
@@ -125,6 +138,8 @@ class App extends Component {
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
                                                                     />} />
+            <Route path="/gem-select/:id" element={<GemSelectingForm />} />
+
           </Routes>
         </Router> 
         <div className="container-fluid mt-5">
