@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class Main extends Component {
-  render() {
-    const { minedGems, account } = this.props;
+function OwnedByUser({ minedGems, account,  purchaseGem, sellGem }) {
+ // render() {
+   // const { minedGems, account } = this.props;
+    const navigate = useNavigate();
 
     // Szűrjük a gemeket, hogy csak azokat jelenítsük meg, amelyeknek az owner-je megegyezik a felhasználói fiókkal
     const ownedGems = minedGems.filter((minedGem) => minedGem.owner === account);
@@ -77,15 +79,11 @@ class Main extends Component {
                     <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
                     <td>{minedGem.owner}</td>
                     <td>
-                      <button
-                        name={minedGem.id}
-                        value={minedGem.price}
-                        onClick={(event) => {
-                          this.props.purchaseGem(event.target.name, event.target.value);
-                        }}
-                      >
-                        Selecting
-                      </button>
+                      
+                   
+                    <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
+                      Select Gem
+                    </button>
                     </td>
                     <td>
                       <button
@@ -112,6 +110,6 @@ class Main extends Component {
     );
     
   }
-}
+//}
 
-export default Main;
+export default OwnedByUser;
