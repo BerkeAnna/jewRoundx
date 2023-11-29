@@ -116,6 +116,8 @@ class App extends Component {
     })
   }
 
+  //todo: gemselecting and add route and bind
+
   render() {
     return (
       

@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 
+import { useParams } from 'react-router-dom';
+
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
+
 class GemSelectingForm extends Component {
 
   render() {
+
+    const { id } = this.props.params; // Az URL-ből származó ID
+    const minedGemId = id; 
+
     return (
       <div id="content">
         <h1>Add Product</h1>
@@ -17,7 +27,8 @@ class GemSelectingForm extends Component {
           const carat = this.carat.value
           const color = this.color.value
           const grinding = this.grinding.value
-          const minedGemId = 1
+          console.log(minedGemId)
+         // const minedGemId = 1
           this.props.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price)
         }}>
           <div className="form-group mr-sm-2">
@@ -26,7 +37,7 @@ class GemSelectingForm extends Component {
               type="text"
               ref={(input) => { this.weight = input }}
               className="form-control"
-              placeholder="Type"
+              placeholder="weight"
               required />
           </div>
           <div className="form-group mr-sm-2">
@@ -112,4 +123,4 @@ class GemSelectingForm extends Component {
   }
 }
 
-export default GemSelectingForm;
+export default withParams(GemSelectingForm);
