@@ -16,8 +16,7 @@ class Main extends Component {
           const miningLocation = this.miningLocation.value
           const miningYear = this.miningYear.value
           const extractionMethod = this.extractionMethod.value
-          const purchased = this.purchased.value
-          this.props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, 0, extractionMethod, purchased)
+          this.props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, 0, extractionMethod, false)
         }}>
           <div className="form-group mr-sm-2">
             <input
@@ -101,15 +100,7 @@ class Main extends Component {
               placeholder="extractionMethod"
               required />
           </div>
-          <div className="form-group mr-sm-2">
-            <input
-              id="purchased"
-              type="text"
-              ref={(input) => { this.purchased = input }}
-              className="form-control"
-              placeholder="purchased"
-              required />
-          </div>
+       
 
           <button type="submit" className="btn btn-primary">Add Product</button>
         </form>

@@ -10,10 +10,11 @@ contract GemstoneSelecting {
         uint minedGemId;
         uint height;
         uint width;
-        uint thickness; //vastagsag
+        uint diameter; //vastagsag
         uint carat; //==weight A karát a drágakövek tömegének mérésére szolgáló mértékegység. Jele: Kt, angolszász területen ct.
         string color;
         string gemType; //etc gyémánt, rubint, gránit
+        string grinding;
         uint price;
         address owner;
     }
@@ -23,21 +24,22 @@ contract GemstoneSelecting {
         uint minedGemId,
         uint height,
         uint width,
-        uint thickness,
+        uint diameter,
         uint carat,
         string color,
         string gemType,
+        string grinding,
         uint price,
         address owner
      );
 
         // a minedGemId majd a js-sel kerül át. Kattintás után
-      function gemSelecting(uint _minedGemId, uint _height, uint _width, uint _thickness, uint _carat, string memory _color, string memory _gemtype, uint _price) public {
+      function gemSelecting(uint _minedGemId, uint _height, uint _width, uint _diameter, uint _carat, string memory _color, string memory _gemtype, string memory _grinding, uint _price) public {
        selectedGemCount++;
 
-       selectedGems[selectedGemCount] = SelectedGem(selectedGemCount, _minedGemId, _height, _width, _thickness, _carat, _color, _gemtype, _price, msg.sender);
+       selectedGems[selectedGemCount] = SelectedGem(selectedGemCount, _minedGemId, _height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
 
-       emit GemSelecting(selectedGemCount, _minedGemId, _height, _width, _thickness, _carat, _color, _gemtype, _price, msg.sender);
+       emit GemSelecting(selectedGemCount, _minedGemId, _height, _width, _diameter, _carat, _color, _gemtype, _grinding, _price, msg.sender);
     }
 
 //innen úgy kellene tovább menni, hogy kiválogatva ki lesz.
