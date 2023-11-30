@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import logo from '../logo.png';
 import './App.css';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
+import GemSelecting from '../abis/GemstoneSelecting.json';
 import Navbar from './Navbar';
 import Main from './Main';
 import Dashboard from './Dashboard';
@@ -17,6 +18,7 @@ class App extends Component {
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
+    await this.loadBlockchainData2()
   }
 
   async loadWeb3() {
@@ -82,17 +84,51 @@ class App extends Component {
    */
   }
 
+  async loadBlockchainData2() {
+    const web3 = window.web3
+    // Load account
+    const accounts = await web3.eth.getAccounts()
+    console.log(accounts);
+    this.setState({ account: accounts[0] })
+
+    const networkId= await web3.eth.net.getId();
+    const networkData = GemSelecting.networks[networkId]
+    if(networkData){
+      const gemstroneSelecting = web3.eth.Contract(GemSelecting.abi, networkData.address)
+      this.setState({ gemstroneSelecting })
+      const selectedGemCount = await gemstroneSelecting.methods.selectedGemCount().call()
+      this.setState({ selectedGemCount })
+
+      for(var i=1; i<= selectedGemCount; i++){
+        const selectedGems = await gemstroneSelecting.methods.selectedGems(i).call()
+        this.setState({
+          selectedGems: [...this.state.minedGems, selectedGems]
+        })
+      }
+      console.log(selectedGemCount.toString())
+      this.setState({loading: false})
+     // console.log(this.state.minedGems)
+    }else{
+      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
+      window.alert('Gemstone contract not deployed to detected network. - own error')
+    }
+ 
+  }
+
   constructor(props){
     super(props)
     this.state = {
       account: '',
       minedGemCount: 0,
       minedGems: [],
+      selectedGems:0,
+      selectedGems: [],
       loading: true
     }
 
     this.gemMining = this.gemMining.bind(this)
     this.purchaseGem = this.purchaseGem.bind(this)
+   // this.GemSelecting = this.gemSelecting.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased) {
