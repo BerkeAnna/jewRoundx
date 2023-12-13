@@ -128,7 +128,7 @@ class App extends Component {
 
     this.gemMining = this.gemMining.bind(this)
     this.purchaseGem = this.purchaseGem.bind(this)
-   // this.GemSelecting = this.gemSelecting.bind(this)
+    this.gemSelecting = this.gemSelecting.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased) {
@@ -152,7 +152,14 @@ class App extends Component {
     })
   }
 
-  //todo: gemselecting and add route and bind
+  gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
+    this.setState({loading: true})
+    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
+     .once('receipt', (receipt) => {
+       this.setState({  loading: false})
+     })
+  
+}
 
   render() {
     return (
@@ -176,7 +183,7 @@ class App extends Component {
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
                                                                     />} />
-            <Route path="/gem-select/:id" element={<GemSelectingForm />} />
+            <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting}/>} />
 
           </Routes>
         </Router> 
