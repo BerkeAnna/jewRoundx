@@ -210,14 +210,14 @@
     "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneSelecting.sol",
     "exportedSymbols": {
       "GemstoneSelecting": [
-        413
+        460
       ]
     },
-    "id": 414,
+    "id": 461,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 291,
+        "id": 338,
         "literals": [
           "solidity",
           ">=",
@@ -236,19 +236,19 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 413,
+        "id": 460,
         "linearizedBaseContracts": [
-          413
+          460
         ],
         "name": "GemstoneSelecting",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 294,
+            "id": 341,
             "name": "selectedGemCount",
             "nodeType": "VariableDeclaration",
-            "scope": 413,
+            "scope": 460,
             "src": "72:32:1",
             "stateVariable": true,
             "storageLocation": "default",
@@ -257,7 +257,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 292,
+              "id": 339,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "72:4:1",
@@ -269,7 +269,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "30",
-              "id": 293,
+              "id": 340,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -288,21 +288,21 @@
           },
           {
             "constant": false,
-            "id": 298,
+            "id": 345,
             "name": "selectedGems",
             "nodeType": "VariableDeclaration",
-            "scope": 413,
+            "scope": 460,
             "src": "110:49:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
               "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem)"
             },
             "typeName": {
-              "id": 297,
+              "id": 344,
               "keyType": {
-                "id": 295,
+                "id": 342,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
                 "src": "119:4:1",
@@ -314,18 +314,18 @@
               "nodeType": "Mapping",
               "src": "110:29:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
                 "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 296,
+                "id": 343,
                 "name": "SelectedGem",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 323,
+                "referencedDeclaration": 370,
                 "src": "127:11:1",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_SelectedGem_$323_storage_ptr",
+                  "typeIdentifier": "t_struct$_SelectedGem_$370_storage_ptr",
                   "typeString": "struct GemstoneSelecting.SelectedGem"
                 }
               }
@@ -335,14 +335,14 @@
           },
           {
             "canonicalName": "GemstoneSelecting.SelectedGem",
-            "id": 323,
+            "id": 370,
             "members": [
               {
                 "constant": false,
-                "id": 300,
+                "id": 347,
                 "name": "id",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "194:7:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -351,7 +351,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 299,
+                  "id": 346,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "194:4:1",
@@ -365,10 +365,10 @@
               },
               {
                 "constant": false,
-                "id": 302,
+                "id": 349,
                 "name": "minedGemId",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "211:15:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -377,7 +377,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 301,
+                  "id": 348,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "211:4:1",
@@ -391,10 +391,10 @@
               },
               {
                 "constant": false,
-                "id": 304,
+                "id": 351,
                 "name": "weight",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "236:11:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -403,7 +403,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 303,
+                  "id": 350,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "236:4:1",
@@ -417,10 +417,10 @@
               },
               {
                 "constant": false,
-                "id": 306,
+                "id": 353,
                 "name": "height",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "257:11:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -429,7 +429,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 305,
+                  "id": 352,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "257:4:1",
@@ -443,10 +443,10 @@
               },
               {
                 "constant": false,
-                "id": 308,
+                "id": 355,
                 "name": "width",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "278:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -455,7 +455,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 307,
+                  "id": 354,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "278:4:1",
@@ -469,10 +469,10 @@
               },
               {
                 "constant": false,
-                "id": 310,
+                "id": 357,
                 "name": "diameter",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "298:13:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -481,7 +481,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 309,
+                  "id": 356,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "298:4:1",
@@ -495,10 +495,10 @@
               },
               {
                 "constant": false,
-                "id": 312,
+                "id": 359,
                 "name": "carat",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "333:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -507,7 +507,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 311,
+                  "id": 358,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "333:4:1",
@@ -521,10 +521,10 @@
               },
               {
                 "constant": false,
-                "id": 314,
+                "id": 361,
                 "name": "color",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "477:12:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -533,7 +533,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 313,
+                  "id": 360,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "477:6:1",
@@ -547,10 +547,10 @@
               },
               {
                 "constant": false,
-                "id": 316,
+                "id": 363,
                 "name": "gemType",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "499:14:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -559,7 +559,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 315,
+                  "id": 362,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "499:6:1",
@@ -573,10 +573,10 @@
               },
               {
                 "constant": false,
-                "id": 318,
+                "id": 365,
                 "name": "grinding",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "556:15:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -585,7 +585,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 317,
+                  "id": 364,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "556:6:1",
@@ -599,10 +599,10 @@
               },
               {
                 "constant": false,
-                "id": 320,
+                "id": 367,
                 "name": "price",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "581:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -611,7 +611,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 319,
+                  "id": 366,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "581:4:1",
@@ -625,10 +625,10 @@
               },
               {
                 "constant": false,
-                "id": 322,
+                "id": 369,
                 "name": "owner",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "601:13:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -637,7 +637,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 321,
+                  "id": 368,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "601:7:1",
@@ -653,27 +653,27 @@
             ],
             "name": "SelectedGem",
             "nodeType": "StructDefinition",
-            "scope": 413,
+            "scope": 460,
             "src": "166:455:1",
             "visibility": "public"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 349,
+            "id": 396,
             "name": "GemSelecting",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 348,
+              "id": 395,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 325,
+                  "id": 372,
                   "indexed": false,
                   "name": "id",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "656:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -682,7 +682,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 324,
+                    "id": 371,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "656:4:1",
@@ -696,11 +696,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 327,
+                  "id": 374,
                   "indexed": false,
                   "name": "minedGemId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "673:15:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -709,7 +709,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 326,
+                    "id": 373,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "673:4:1",
@@ -723,11 +723,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 329,
+                  "id": 376,
                   "indexed": false,
                   "name": "weight",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "698:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -736,7 +736,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 328,
+                    "id": 375,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "698:4:1",
@@ -750,11 +750,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 331,
+                  "id": 378,
                   "indexed": false,
                   "name": "height",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "719:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -763,7 +763,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 330,
+                    "id": 377,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "719:4:1",
@@ -777,11 +777,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 333,
+                  "id": 380,
                   "indexed": false,
                   "name": "width",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "740:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -790,7 +790,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 332,
+                    "id": 379,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "740:4:1",
@@ -804,11 +804,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 335,
+                  "id": 382,
                   "indexed": false,
                   "name": "diameter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "760:13:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -817,7 +817,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 334,
+                    "id": 381,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "760:4:1",
@@ -831,11 +831,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 337,
+                  "id": 384,
                   "indexed": false,
                   "name": "carat",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "783:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -844,7 +844,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 336,
+                    "id": 383,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "783:4:1",
@@ -858,11 +858,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 339,
+                  "id": 386,
                   "indexed": false,
                   "name": "color",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "803:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -871,7 +871,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 338,
+                    "id": 385,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "803:6:1",
@@ -885,11 +885,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 341,
+                  "id": 388,
                   "indexed": false,
                   "name": "gemType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "825:14:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -898,7 +898,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 340,
+                    "id": 387,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "825:6:1",
@@ -912,11 +912,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 343,
+                  "id": 390,
                   "indexed": false,
                   "name": "grinding",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "849:15:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -925,7 +925,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 342,
+                    "id": 389,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "849:6:1",
@@ -939,11 +939,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 345,
+                  "id": 392,
                   "indexed": false,
                   "name": "price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "874:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -952,7 +952,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 344,
+                    "id": 391,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "874:4:1",
@@ -966,11 +966,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 347,
+                  "id": 394,
                   "indexed": false,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "894:13:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -979,7 +979,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 346,
+                    "id": 393,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "894:7:1",
@@ -999,14 +999,14 @@
           },
           {
             "body": {
-              "id": 411,
+              "id": 458,
               "nodeType": "Block",
               "src": "1191:364:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 373,
+                    "id": 420,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1017,11 +1017,11 @@
                     "src": "1200:18:1",
                     "subExpression": {
                       "argumentTypes": null,
-                      "id": 372,
+                      "id": 419,
                       "name": "selectedGemCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 294,
+                      "referencedDeclaration": 341,
                       "src": "1200:16:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1033,14 +1033,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 374,
+                  "id": 421,
                   "nodeType": "ExpressionStatement",
                   "src": "1200:18:1"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 393,
+                    "id": 440,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1049,25 +1049,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 375,
+                        "id": 422,
                         "name": "selectedGems",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 298,
+                        "referencedDeclaration": 345,
                         "src": "1228:12:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
                           "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem storage ref)"
                         }
                       },
-                      "id": 377,
+                      "id": 424,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 376,
+                        "id": 423,
                         "name": "selectedGemCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 294,
+                        "referencedDeclaration": 341,
                         "src": "1241:16:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1081,7 +1081,7 @@
                       "nodeType": "IndexAccess",
                       "src": "1228:30:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_SelectedGem_$323_storage",
+                        "typeIdentifier": "t_struct$_SelectedGem_$370_storage",
                         "typeString": "struct GemstoneSelecting.SelectedGem storage ref"
                       }
                     },
@@ -1092,11 +1092,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 379,
+                          "id": 426,
                           "name": "selectedGemCount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 294,
+                          "referencedDeclaration": 341,
                           "src": "1273:16:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1105,11 +1105,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 380,
+                          "id": 427,
                           "name": "_minedGemId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 351,
+                          "referencedDeclaration": 398,
                           "src": "1291:11:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1118,11 +1118,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 381,
+                          "id": 428,
                           "name": "_weight",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 353,
+                          "referencedDeclaration": 400,
                           "src": "1304:7:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1131,11 +1131,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 382,
+                          "id": 429,
                           "name": "_height",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 355,
+                          "referencedDeclaration": 402,
                           "src": "1312:7:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1144,11 +1144,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 383,
+                          "id": 430,
                           "name": "_width",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 357,
+                          "referencedDeclaration": 404,
                           "src": "1321:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1157,11 +1157,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 384,
+                          "id": 431,
                           "name": "_diameter",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 359,
+                          "referencedDeclaration": 406,
                           "src": "1329:9:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1170,11 +1170,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 385,
+                          "id": 432,
                           "name": "_carat",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 361,
+                          "referencedDeclaration": 408,
                           "src": "1340:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1183,11 +1183,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 386,
+                          "id": 433,
                           "name": "_color",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 363,
+                          "referencedDeclaration": 410,
                           "src": "1348:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -1196,11 +1196,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 387,
+                          "id": 434,
                           "name": "_gemtype",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 365,
+                          "referencedDeclaration": 412,
                           "src": "1356:8:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -1209,11 +1209,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 388,
+                          "id": 435,
                           "name": "_grinding",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 367,
+                          "referencedDeclaration": 414,
                           "src": "1366:9:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -1222,11 +1222,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 389,
+                          "id": 436,
                           "name": "_price",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 369,
+                          "referencedDeclaration": 416,
                           "src": "1377:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1237,18 +1237,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 390,
+                            "id": 437,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 485,
+                            "referencedDeclaration": 532,
                             "src": "1385:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 391,
+                          "id": 438,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1314,18 +1314,18 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 378,
+                        "id": 425,
                         "name": "SelectedGem",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 323,
+                        "referencedDeclaration": 370,
                         "src": "1261:11:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_SelectedGem_$323_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_SelectedGem_$370_storage_ptr_$",
                           "typeString": "type(struct GemstoneSelecting.SelectedGem storage pointer)"
                         }
                       },
-                      "id": 392,
+                      "id": 439,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1335,17 +1335,17 @@
                       "nodeType": "FunctionCall",
                       "src": "1261:135:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_SelectedGem_$323_memory",
+                        "typeIdentifier": "t_struct$_SelectedGem_$370_memory",
                         "typeString": "struct GemstoneSelecting.SelectedGem memory"
                       }
                     },
                     "src": "1228:168:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_SelectedGem_$323_storage",
+                      "typeIdentifier": "t_struct$_SelectedGem_$370_storage",
                       "typeString": "struct GemstoneSelecting.SelectedGem storage ref"
                     }
                   },
-                  "id": 394,
+                  "id": 441,
                   "nodeType": "ExpressionStatement",
                   "src": "1228:168:1"
                 },
@@ -1355,11 +1355,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 396,
+                        "id": 443,
                         "name": "selectedGemCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 294,
+                        "referencedDeclaration": 341,
                         "src": "1424:16:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1368,11 +1368,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 397,
+                        "id": 444,
                         "name": "_minedGemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 351,
+                        "referencedDeclaration": 398,
                         "src": "1442:11:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1381,11 +1381,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 398,
+                        "id": 445,
                         "name": "_weight",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 353,
+                        "referencedDeclaration": 400,
                         "src": "1455:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1394,11 +1394,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 399,
+                        "id": 446,
                         "name": "_height",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 355,
+                        "referencedDeclaration": 402,
                         "src": "1464:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1407,11 +1407,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 400,
+                        "id": 447,
                         "name": "_width",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 357,
+                        "referencedDeclaration": 404,
                         "src": "1473:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1420,11 +1420,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 401,
+                        "id": 448,
                         "name": "_diameter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 359,
+                        "referencedDeclaration": 406,
                         "src": "1481:9:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1433,11 +1433,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 402,
+                        "id": 449,
                         "name": "_carat",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 361,
+                        "referencedDeclaration": 408,
                         "src": "1492:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1446,11 +1446,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 403,
+                        "id": 450,
                         "name": "_color",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 363,
+                        "referencedDeclaration": 410,
                         "src": "1500:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -1459,11 +1459,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 404,
+                        "id": 451,
                         "name": "_gemtype",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 365,
+                        "referencedDeclaration": 412,
                         "src": "1508:8:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -1472,11 +1472,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 405,
+                        "id": 452,
                         "name": "_grinding",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 367,
+                        "referencedDeclaration": 414,
                         "src": "1518:9:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -1485,11 +1485,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 406,
+                        "id": 453,
                         "name": "_price",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 369,
+                        "referencedDeclaration": 416,
                         "src": "1529:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1500,18 +1500,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 407,
+                          "id": 454,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 485,
+                          "referencedDeclaration": 532,
                           "src": "1537:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 408,
+                        "id": 455,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1577,18 +1577,18 @@
                           "typeString": "address payable"
                         }
                       ],
-                      "id": 395,
+                      "id": 442,
                       "name": "GemSelecting",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 349,
+                      "referencedDeclaration": 396,
                       "src": "1411:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_uint256_$_t_address_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256,uint256,uint256,uint256,uint256,string memory,string memory,string memory,uint256,address)"
                       }
                     },
-                    "id": 409,
+                    "id": 456,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1602,29 +1602,29 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 410,
+                  "id": 457,
                   "nodeType": "EmitStatement",
                   "src": "1406:142:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 412,
+            "id": 459,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "gemSelecting",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 370,
+              "id": 417,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 351,
+                  "id": 398,
                   "name": "_minedGemId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1012:16:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1633,7 +1633,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 350,
+                    "id": 397,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1012:4:1",
@@ -1647,10 +1647,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 353,
+                  "id": 400,
                   "name": "_weight",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1030:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1659,7 +1659,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 352,
+                    "id": 399,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1030:4:1",
@@ -1673,10 +1673,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 355,
+                  "id": 402,
                   "name": "_height",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1044:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1685,7 +1685,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 354,
+                    "id": 401,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1044:4:1",
@@ -1699,10 +1699,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 357,
+                  "id": 404,
                   "name": "_width",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1058:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1711,7 +1711,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 356,
+                    "id": 403,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1058:4:1",
@@ -1725,10 +1725,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 359,
+                  "id": 406,
                   "name": "_diameter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1071:14:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1737,7 +1737,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 358,
+                    "id": 405,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1071:4:1",
@@ -1751,10 +1751,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 361,
+                  "id": 408,
                   "name": "_carat",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1087:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1763,7 +1763,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 360,
+                    "id": 407,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1087:4:1",
@@ -1777,10 +1777,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 363,
+                  "id": 410,
                   "name": "_color",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1100:20:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1789,7 +1789,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 362,
+                    "id": 409,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1100:6:1",
@@ -1803,10 +1803,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 365,
+                  "id": 412,
                   "name": "_gemtype",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1122:22:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1815,7 +1815,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 364,
+                    "id": 411,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1122:6:1",
@@ -1829,10 +1829,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 367,
+                  "id": 414,
                   "name": "_grinding",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1146:23:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1841,7 +1841,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 366,
+                    "id": 413,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1146:6:1",
@@ -1855,10 +1855,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 369,
+                  "id": 416,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1171:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1867,7 +1867,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 368,
+                    "id": 415,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1171:4:1",
@@ -1883,19 +1883,19 @@
               "src": "1011:172:1"
             },
             "returnParameters": {
-              "id": 371,
+              "id": 418,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1191:0:1"
             },
-            "scope": 413,
+            "scope": 460,
             "src": "990:565:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 414,
+        "scope": 461,
         "src": "34:2018:1"
       }
     ],
@@ -1905,14 +1905,14 @@
     "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneSelecting.sol",
     "exportedSymbols": {
       "GemstoneSelecting": [
-        413
+        460
       ]
     },
-    "id": 414,
+    "id": 461,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 291,
+        "id": 338,
         "literals": [
           "solidity",
           ">=",
@@ -1931,19 +1931,19 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 413,
+        "id": 460,
         "linearizedBaseContracts": [
-          413
+          460
         ],
         "name": "GemstoneSelecting",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 294,
+            "id": 341,
             "name": "selectedGemCount",
             "nodeType": "VariableDeclaration",
-            "scope": 413,
+            "scope": 460,
             "src": "72:32:1",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1952,7 +1952,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 292,
+              "id": 339,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "72:4:1",
@@ -1964,7 +1964,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "30",
-              "id": 293,
+              "id": 340,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1983,21 +1983,21 @@
           },
           {
             "constant": false,
-            "id": 298,
+            "id": 345,
             "name": "selectedGems",
             "nodeType": "VariableDeclaration",
-            "scope": 413,
+            "scope": 460,
             "src": "110:49:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
               "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem)"
             },
             "typeName": {
-              "id": 297,
+              "id": 344,
               "keyType": {
-                "id": 295,
+                "id": 342,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
                 "src": "119:4:1",
@@ -2009,18 +2009,18 @@
               "nodeType": "Mapping",
               "src": "110:29:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
                 "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 296,
+                "id": 343,
                 "name": "SelectedGem",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 323,
+                "referencedDeclaration": 370,
                 "src": "127:11:1",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_SelectedGem_$323_storage_ptr",
+                  "typeIdentifier": "t_struct$_SelectedGem_$370_storage_ptr",
                   "typeString": "struct GemstoneSelecting.SelectedGem"
                 }
               }
@@ -2030,14 +2030,14 @@
           },
           {
             "canonicalName": "GemstoneSelecting.SelectedGem",
-            "id": 323,
+            "id": 370,
             "members": [
               {
                 "constant": false,
-                "id": 300,
+                "id": 347,
                 "name": "id",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "194:7:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2046,7 +2046,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 299,
+                  "id": 346,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "194:4:1",
@@ -2060,10 +2060,10 @@
               },
               {
                 "constant": false,
-                "id": 302,
+                "id": 349,
                 "name": "minedGemId",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "211:15:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2072,7 +2072,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 301,
+                  "id": 348,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "211:4:1",
@@ -2086,10 +2086,10 @@
               },
               {
                 "constant": false,
-                "id": 304,
+                "id": 351,
                 "name": "weight",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "236:11:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2098,7 +2098,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 303,
+                  "id": 350,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "236:4:1",
@@ -2112,10 +2112,10 @@
               },
               {
                 "constant": false,
-                "id": 306,
+                "id": 353,
                 "name": "height",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "257:11:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2124,7 +2124,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 305,
+                  "id": 352,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "257:4:1",
@@ -2138,10 +2138,10 @@
               },
               {
                 "constant": false,
-                "id": 308,
+                "id": 355,
                 "name": "width",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "278:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2150,7 +2150,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 307,
+                  "id": 354,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "278:4:1",
@@ -2164,10 +2164,10 @@
               },
               {
                 "constant": false,
-                "id": 310,
+                "id": 357,
                 "name": "diameter",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "298:13:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2176,7 +2176,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 309,
+                  "id": 356,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "298:4:1",
@@ -2190,10 +2190,10 @@
               },
               {
                 "constant": false,
-                "id": 312,
+                "id": 359,
                 "name": "carat",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "333:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2202,7 +2202,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 311,
+                  "id": 358,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "333:4:1",
@@ -2216,10 +2216,10 @@
               },
               {
                 "constant": false,
-                "id": 314,
+                "id": 361,
                 "name": "color",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "477:12:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2228,7 +2228,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 313,
+                  "id": 360,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "477:6:1",
@@ -2242,10 +2242,10 @@
               },
               {
                 "constant": false,
-                "id": 316,
+                "id": 363,
                 "name": "gemType",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "499:14:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2254,7 +2254,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 315,
+                  "id": 362,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "499:6:1",
@@ -2268,10 +2268,10 @@
               },
               {
                 "constant": false,
-                "id": 318,
+                "id": 365,
                 "name": "grinding",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "556:15:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2280,7 +2280,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 317,
+                  "id": 364,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "556:6:1",
@@ -2294,10 +2294,10 @@
               },
               {
                 "constant": false,
-                "id": 320,
+                "id": 367,
                 "name": "price",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "581:10:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2306,7 +2306,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 319,
+                  "id": 366,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "581:4:1",
@@ -2320,10 +2320,10 @@
               },
               {
                 "constant": false,
-                "id": 322,
+                "id": 369,
                 "name": "owner",
                 "nodeType": "VariableDeclaration",
-                "scope": 323,
+                "scope": 370,
                 "src": "601:13:1",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2332,7 +2332,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 321,
+                  "id": 368,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "601:7:1",
@@ -2348,27 +2348,27 @@
             ],
             "name": "SelectedGem",
             "nodeType": "StructDefinition",
-            "scope": 413,
+            "scope": 460,
             "src": "166:455:1",
             "visibility": "public"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 349,
+            "id": 396,
             "name": "GemSelecting",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 348,
+              "id": 395,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 325,
+                  "id": 372,
                   "indexed": false,
                   "name": "id",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "656:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2377,7 +2377,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 324,
+                    "id": 371,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "656:4:1",
@@ -2391,11 +2391,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 327,
+                  "id": 374,
                   "indexed": false,
                   "name": "minedGemId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "673:15:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2404,7 +2404,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 326,
+                    "id": 373,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "673:4:1",
@@ -2418,11 +2418,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 329,
+                  "id": 376,
                   "indexed": false,
                   "name": "weight",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "698:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2431,7 +2431,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 328,
+                    "id": 375,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "698:4:1",
@@ -2445,11 +2445,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 331,
+                  "id": 378,
                   "indexed": false,
                   "name": "height",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "719:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2458,7 +2458,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 330,
+                    "id": 377,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "719:4:1",
@@ -2472,11 +2472,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 333,
+                  "id": 380,
                   "indexed": false,
                   "name": "width",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "740:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2485,7 +2485,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 332,
+                    "id": 379,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "740:4:1",
@@ -2499,11 +2499,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 335,
+                  "id": 382,
                   "indexed": false,
                   "name": "diameter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "760:13:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2512,7 +2512,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 334,
+                    "id": 381,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "760:4:1",
@@ -2526,11 +2526,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 337,
+                  "id": 384,
                   "indexed": false,
                   "name": "carat",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "783:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2539,7 +2539,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 336,
+                    "id": 383,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "783:4:1",
@@ -2553,11 +2553,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 339,
+                  "id": 386,
                   "indexed": false,
                   "name": "color",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "803:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2566,7 +2566,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 338,
+                    "id": 385,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "803:6:1",
@@ -2580,11 +2580,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 341,
+                  "id": 388,
                   "indexed": false,
                   "name": "gemType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "825:14:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2593,7 +2593,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 340,
+                    "id": 387,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "825:6:1",
@@ -2607,11 +2607,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 343,
+                  "id": 390,
                   "indexed": false,
                   "name": "grinding",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "849:15:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2620,7 +2620,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 342,
+                    "id": 389,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "849:6:1",
@@ -2634,11 +2634,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 345,
+                  "id": 392,
                   "indexed": false,
                   "name": "price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "874:10:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2647,7 +2647,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 344,
+                    "id": 391,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "874:4:1",
@@ -2661,11 +2661,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 347,
+                  "id": 394,
                   "indexed": false,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 349,
+                  "scope": 396,
                   "src": "894:13:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2674,7 +2674,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 346,
+                    "id": 393,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "894:7:1",
@@ -2694,14 +2694,14 @@
           },
           {
             "body": {
-              "id": 411,
+              "id": 458,
               "nodeType": "Block",
               "src": "1191:364:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 373,
+                    "id": 420,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2712,11 +2712,11 @@
                     "src": "1200:18:1",
                     "subExpression": {
                       "argumentTypes": null,
-                      "id": 372,
+                      "id": 419,
                       "name": "selectedGemCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 294,
+                      "referencedDeclaration": 341,
                       "src": "1200:16:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2728,14 +2728,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 374,
+                  "id": 421,
                   "nodeType": "ExpressionStatement",
                   "src": "1200:18:1"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 393,
+                    "id": 440,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2744,25 +2744,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 375,
+                        "id": 422,
                         "name": "selectedGems",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 298,
+                        "referencedDeclaration": 345,
                         "src": "1228:12:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$323_storage_$",
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_SelectedGem_$370_storage_$",
                           "typeString": "mapping(uint256 => struct GemstoneSelecting.SelectedGem storage ref)"
                         }
                       },
-                      "id": 377,
+                      "id": 424,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 376,
+                        "id": 423,
                         "name": "selectedGemCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 294,
+                        "referencedDeclaration": 341,
                         "src": "1241:16:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2776,7 +2776,7 @@
                       "nodeType": "IndexAccess",
                       "src": "1228:30:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_SelectedGem_$323_storage",
+                        "typeIdentifier": "t_struct$_SelectedGem_$370_storage",
                         "typeString": "struct GemstoneSelecting.SelectedGem storage ref"
                       }
                     },
@@ -2787,11 +2787,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 379,
+                          "id": 426,
                           "name": "selectedGemCount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 294,
+                          "referencedDeclaration": 341,
                           "src": "1273:16:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2800,11 +2800,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 380,
+                          "id": 427,
                           "name": "_minedGemId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 351,
+                          "referencedDeclaration": 398,
                           "src": "1291:11:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2813,11 +2813,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 381,
+                          "id": 428,
                           "name": "_weight",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 353,
+                          "referencedDeclaration": 400,
                           "src": "1304:7:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2826,11 +2826,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 382,
+                          "id": 429,
                           "name": "_height",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 355,
+                          "referencedDeclaration": 402,
                           "src": "1312:7:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2839,11 +2839,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 383,
+                          "id": 430,
                           "name": "_width",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 357,
+                          "referencedDeclaration": 404,
                           "src": "1321:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2852,11 +2852,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 384,
+                          "id": 431,
                           "name": "_diameter",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 359,
+                          "referencedDeclaration": 406,
                           "src": "1329:9:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2865,11 +2865,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 385,
+                          "id": 432,
                           "name": "_carat",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 361,
+                          "referencedDeclaration": 408,
                           "src": "1340:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2878,11 +2878,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 386,
+                          "id": 433,
                           "name": "_color",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 363,
+                          "referencedDeclaration": 410,
                           "src": "1348:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -2891,11 +2891,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 387,
+                          "id": 434,
                           "name": "_gemtype",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 365,
+                          "referencedDeclaration": 412,
                           "src": "1356:8:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -2904,11 +2904,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 388,
+                          "id": 435,
                           "name": "_grinding",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 367,
+                          "referencedDeclaration": 414,
                           "src": "1366:9:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -2917,11 +2917,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 389,
+                          "id": 436,
                           "name": "_price",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 369,
+                          "referencedDeclaration": 416,
                           "src": "1377:6:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2932,18 +2932,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 390,
+                            "id": 437,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 485,
+                            "referencedDeclaration": 532,
                             "src": "1385:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 391,
+                          "id": 438,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3009,18 +3009,18 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 378,
+                        "id": 425,
                         "name": "SelectedGem",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 323,
+                        "referencedDeclaration": 370,
                         "src": "1261:11:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_SelectedGem_$323_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_SelectedGem_$370_storage_ptr_$",
                           "typeString": "type(struct GemstoneSelecting.SelectedGem storage pointer)"
                         }
                       },
-                      "id": 392,
+                      "id": 439,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3030,17 +3030,17 @@
                       "nodeType": "FunctionCall",
                       "src": "1261:135:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_SelectedGem_$323_memory",
+                        "typeIdentifier": "t_struct$_SelectedGem_$370_memory",
                         "typeString": "struct GemstoneSelecting.SelectedGem memory"
                       }
                     },
                     "src": "1228:168:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_SelectedGem_$323_storage",
+                      "typeIdentifier": "t_struct$_SelectedGem_$370_storage",
                       "typeString": "struct GemstoneSelecting.SelectedGem storage ref"
                     }
                   },
-                  "id": 394,
+                  "id": 441,
                   "nodeType": "ExpressionStatement",
                   "src": "1228:168:1"
                 },
@@ -3050,11 +3050,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 396,
+                        "id": 443,
                         "name": "selectedGemCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 294,
+                        "referencedDeclaration": 341,
                         "src": "1424:16:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3063,11 +3063,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 397,
+                        "id": 444,
                         "name": "_minedGemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 351,
+                        "referencedDeclaration": 398,
                         "src": "1442:11:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3076,11 +3076,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 398,
+                        "id": 445,
                         "name": "_weight",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 353,
+                        "referencedDeclaration": 400,
                         "src": "1455:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3089,11 +3089,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 399,
+                        "id": 446,
                         "name": "_height",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 355,
+                        "referencedDeclaration": 402,
                         "src": "1464:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3102,11 +3102,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 400,
+                        "id": 447,
                         "name": "_width",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 357,
+                        "referencedDeclaration": 404,
                         "src": "1473:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3115,11 +3115,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 401,
+                        "id": 448,
                         "name": "_diameter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 359,
+                        "referencedDeclaration": 406,
                         "src": "1481:9:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3128,11 +3128,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 402,
+                        "id": 449,
                         "name": "_carat",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 361,
+                        "referencedDeclaration": 408,
                         "src": "1492:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3141,11 +3141,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 403,
+                        "id": 450,
                         "name": "_color",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 363,
+                        "referencedDeclaration": 410,
                         "src": "1500:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -3154,11 +3154,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 404,
+                        "id": 451,
                         "name": "_gemtype",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 365,
+                        "referencedDeclaration": 412,
                         "src": "1508:8:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -3167,11 +3167,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 405,
+                        "id": 452,
                         "name": "_grinding",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 367,
+                        "referencedDeclaration": 414,
                         "src": "1518:9:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -3180,11 +3180,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 406,
+                        "id": 453,
                         "name": "_price",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 369,
+                        "referencedDeclaration": 416,
                         "src": "1529:6:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3195,18 +3195,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 407,
+                          "id": 454,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 485,
+                          "referencedDeclaration": 532,
                           "src": "1537:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 408,
+                        "id": 455,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3272,18 +3272,18 @@
                           "typeString": "address payable"
                         }
                       ],
-                      "id": 395,
+                      "id": 442,
                       "name": "GemSelecting",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 349,
+                      "referencedDeclaration": 396,
                       "src": "1411:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_uint256_$_t_address_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256,uint256,uint256,uint256,uint256,string memory,string memory,string memory,uint256,address)"
                       }
                     },
-                    "id": 409,
+                    "id": 456,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3297,29 +3297,29 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 410,
+                  "id": 457,
                   "nodeType": "EmitStatement",
                   "src": "1406:142:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 412,
+            "id": 459,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "gemSelecting",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 370,
+              "id": 417,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 351,
+                  "id": 398,
                   "name": "_minedGemId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1012:16:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3328,7 +3328,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 350,
+                    "id": 397,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1012:4:1",
@@ -3342,10 +3342,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 353,
+                  "id": 400,
                   "name": "_weight",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1030:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3354,7 +3354,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 352,
+                    "id": 399,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1030:4:1",
@@ -3368,10 +3368,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 355,
+                  "id": 402,
                   "name": "_height",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1044:12:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3380,7 +3380,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 354,
+                    "id": 401,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1044:4:1",
@@ -3394,10 +3394,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 357,
+                  "id": 404,
                   "name": "_width",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1058:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3406,7 +3406,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 356,
+                    "id": 403,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1058:4:1",
@@ -3420,10 +3420,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 359,
+                  "id": 406,
                   "name": "_diameter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1071:14:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3432,7 +3432,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 358,
+                    "id": 405,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1071:4:1",
@@ -3446,10 +3446,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 361,
+                  "id": 408,
                   "name": "_carat",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1087:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3458,7 +3458,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 360,
+                    "id": 407,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1087:4:1",
@@ -3472,10 +3472,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 363,
+                  "id": 410,
                   "name": "_color",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1100:20:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -3484,7 +3484,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 362,
+                    "id": 409,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1100:6:1",
@@ -3498,10 +3498,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 365,
+                  "id": 412,
                   "name": "_gemtype",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1122:22:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -3510,7 +3510,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 364,
+                    "id": 411,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1122:6:1",
@@ -3524,10 +3524,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 367,
+                  "id": 414,
                   "name": "_grinding",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1146:23:1",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -3536,7 +3536,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 366,
+                    "id": 413,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "1146:6:1",
@@ -3550,10 +3550,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 369,
+                  "id": 416,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 412,
+                  "scope": 459,
                   "src": "1171:11:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3562,7 +3562,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 368,
+                    "id": 415,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "1171:4:1",
@@ -3578,19 +3578,19 @@
               "src": "1011:172:1"
             },
             "returnParameters": {
-              "id": 371,
+              "id": 418,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1191:0:1"
             },
-            "scope": 413,
+            "scope": 460,
             "src": "990:565:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 414,
+        "scope": 461,
         "src": "34:2018:1"
       }
     ],
@@ -3604,12 +3604,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xC42bb5Ad0833237471f98B0d28e87975e72EF262",
-      "transactionHash": "0x3f005f8ea8fa3399aad7bed6201407441c7683d6f3152f6b7e584600be0b5290"
+      "address": "0x29129aDaa0135A5285110A33Ac9B87918603F1fe",
+      "transactionHash": "0x2e4f100533df2c77174ecbdf53a0f399afad9f54b93b1223e58e6ff8c68ecdde"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2023-11-30T06:31:54.142Z",
+  "updatedAt": "2023-12-13T08:17:34.286Z",
   "devdoc": {
     "methods": {}
   },

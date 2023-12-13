@@ -41,7 +41,7 @@ function OwnedByUser({ minedGems, account,  purchaseGem, sellGem }) {
                         name={minedGem.id}
                         value={minedGem.price}
                         onClick={(event) => {
-                          this.props.purchaseGem(event.target.name, event.target.value);
+                          purchaseGem(event.target.name, event.target.value);
                         }}
                       >
                         Process

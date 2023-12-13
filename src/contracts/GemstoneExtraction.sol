@@ -99,7 +99,7 @@ contract GemstoneExtraction {
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
         require(msg.value >= _minedGem.price);
         require(_minedGem.purchased == false);
-        require(_miner != msg.sender);
+       // require(_miner != msg.sender);
         _minedGem.owner = msg.sender;
         _minedGem.purchased = true;
         minedGems[_id] = _minedGem;
