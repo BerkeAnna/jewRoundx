@@ -16,8 +16,9 @@ class Main extends Component {
           const miningLocation = this.miningLocation.value
           const miningYear = this.miningYear.value
           const extractionMethod = this.extractionMethod.value
-          this.props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, 0, extractionMethod, false)
-        }}>
+          this.props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, false);
+
+         }}>
           <div className="form-group mr-sm-2">
             <input
               id="gemType"

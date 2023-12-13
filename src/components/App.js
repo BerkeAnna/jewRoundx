@@ -53,7 +53,7 @@ class App extends Component {
           minedGems: [...this.state.minedGems, minedGems]
         })
       }
-      console.log(minedGemCount.toString())
+   //   console.log(minedGemCount.toString())
       this.setState({loading: false})
      // console.log(this.state.minedGems)
     }else{
@@ -105,7 +105,7 @@ class App extends Component {
           selectedGems: [...this.state.minedGems, selectedGems]
         })
       }
-      console.log(selectedGemCount.toString())
+     // console.log(selectedGemCount.toString())
       this.setState({loading: false})
      // console.log(this.state.minedGems)
     }else{
@@ -121,7 +121,7 @@ class App extends Component {
       account: '',
       minedGemCount: 0,
       minedGems: [],
-      selectedGems:0,
+      selectedGemCount:0,
       selectedGems: [],
       loading: true
     }
@@ -131,14 +131,23 @@ class App extends Component {
     this.gemSelecting = this.gemSelecting.bind(this)
   }
 
-  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased) {
-       this.setState({loading: true})
-       this.state.gemstroneExtraction.methods.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, pointOfProcessing, extractionMethod, purchased).send({from: this.state.account})
-        .once('receipt', (receipt) => {
-          this.setState({  loading: false})
-        })
-     
-  }
+  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
+    this.setState({loading: true})
+    this.state.gemstroneExtraction.methods.gemMining(
+        gemType, 
+        weight, 
+        height, 
+        width, 
+        price, 
+        miningLocation, 
+        miningYear, 
+        extractionMethod, // make sure this is a string
+        purchased // make sure this is a boolean
+    ).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+    })
+}
 
   
   purchaseGem(id, price ){
@@ -152,13 +161,28 @@ class App extends Component {
     })
   }
 
+  processingGem(id, price ){
+    //const priceUint = parseInt(price);
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true })
+    this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+  }
+
   gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
+    
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({loading: true})
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
      .once('receipt', (receipt) => {
        this.setState({  loading: false})
      })
-  
+   
+
 }
 
   render() {
@@ -178,7 +202,9 @@ class App extends Component {
                                                               />} />
            
             <Route path="/ownMinedGems" element={<OwnedByUser  minedGems={this.state.minedGems}
+                                                               selectedGems={this.state.selectedGems}
                                                                gemMining={this.gemMining}
+                                                               gemSelecting={this.gemSelecting}
                                                                purchaseGem={this.purchaseGem}
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}

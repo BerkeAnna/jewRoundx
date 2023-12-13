@@ -7,7 +7,7 @@ contract GemstoneExtraction {
 
     mapping( uint => MinedGem) public minedGems;
 
-    enum PointOfProcessing {MINED, SALEOFMINEDPRODUCT, SELECTED }
+    enum PointOfProcessing {MINED, SALEOFMINEDPRODUCT,  PREPARATION, PROCESSING }
 
     struct MinedGem {
         uint id;
@@ -20,7 +20,7 @@ contract GemstoneExtraction {
         string miningLocation;
         uint miningYear;
        // uint miningMonth;
-        PointOfProcessing pointOfProcessing;
+        uint pointOfProcessing;
         string extractionMethod; //enum?
         address payable owner;
         bool purchased;
@@ -36,7 +36,7 @@ contract GemstoneExtraction {
         uint price, 
         string miningLocation,
         uint miningYear,
-        PointOfProcessing pointOfProcessing,
+        uint pointOfProcessing,
         string extractionMethod,
         address payable owner,
         bool purchased
@@ -51,7 +51,7 @@ contract GemstoneExtraction {
         uint price, 
         string miningLocation,
         uint miningYear,
-        PointOfProcessing pointOfProcessing,
+        uint pointOfProcessing,
         string extractionMethod,
         address payable owner,
         bool purchased
@@ -66,7 +66,7 @@ contract GemstoneExtraction {
         uint price, 
         string miningLocation,
         uint miningYear,
-        PointOfProcessing pointOfProcessing,
+        uint pointOfProcessing,
         string extractionMethod,
         address payable owner,
         bool purchased
@@ -76,7 +76,7 @@ contract GemstoneExtraction {
         name = "x";
     }
 
-    function gemMining(string memory _gemType, uint _weight, uint _height, uint _width,  uint _price, string memory _miningLocation, uint _miningYear, PointOfProcessing _pointOfProcessing, string memory _extractionMethod,  bool _purchased) public {
+    function gemMining(string memory _gemType, uint _weight, uint _height, uint _width,  uint _price, string memory _miningLocation, uint _miningYear, string memory _extractionMethod,  bool _purchased) public {
         require(bytes(_gemType).length > 0, "Gem type cannot be empty");
         require( _weight > 0);
         require( _height > 0);
@@ -87,9 +87,9 @@ contract GemstoneExtraction {
 
         
         minedGemCount++;
-       minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, _pointOfProcessing, _extractionMethod, msg.sender, _purchased);
+       minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, 0, _extractionMethod, msg.sender, _purchased);
 
-       emit GemMining(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, _pointOfProcessing, _extractionMethod, msg.sender, _purchased);
+       emit GemMining(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, 0, _extractionMethod, msg.sender, _purchased);
 
     }
 
@@ -104,6 +104,20 @@ contract GemstoneExtraction {
         _minedGem.purchased = true;
         minedGems[_id] = _minedGem;
         address(_miner).transfer(msg.value);
-        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  _minedGem.pointOfProcessing, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
+        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  2, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
+    }
+
+     function processingGem(uint _id) public payable{
+        MinedGem memory _minedGem = minedGems[_id];
+        address payable _miner = _minedGem.owner;
+        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
+        require(msg.value >= _minedGem.price);
+        require(_minedGem.purchased == false);
+       // require(_miner != msg.sender);
+        _minedGem.owner = msg.sender;
+        _minedGem.purchased = true;
+        minedGems[_id] = _minedGem;
+        address(_miner).transfer(msg.value);
+        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, 3, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
 }
