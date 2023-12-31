@@ -20,7 +20,7 @@ contract GemstoneExtraction {
         string miningLocation;
         uint miningYear;
        // uint miningMonth;
-        uint pointOfProcessing;
+        bool selected;
         string extractionMethod; //enum?
         address payable owner;
         bool purchased;
@@ -28,36 +28,6 @@ contract GemstoneExtraction {
     }
 
     event GemMining(
-        uint id,
-        string gemType,
-        uint weight,
-        uint height, 
-        uint width,
-        uint price, 
-        string miningLocation,
-        uint miningYear,
-        uint pointOfProcessing,
-        string extractionMethod,
-        address payable owner,
-        bool purchased
-    );
-
-     event GemPurchasing(
-        uint id,
-        string gemType,
-        uint weight,
-        uint height, 
-        uint width,
-        uint price, 
-        string miningLocation,
-        uint miningYear,
-        uint pointOfProcessing,
-        string extractionMethod,
-        address payable owner,
-        bool purchased
-     );
-
-       event GemPurchased(
        uint id,
         string gemType,
         uint weight,
@@ -66,7 +36,37 @@ contract GemstoneExtraction {
         uint price, 
         string miningLocation,
         uint miningYear,
-        uint pointOfProcessing,
+         bool selected,
+        string extractionMethod,
+        address payable owner,
+        bool purchasedvv
+    );
+
+     event GemPurchasing(
+       uint id,
+        string gemType,
+        uint weight,
+        uint height, 
+        uint width,
+        uint price, 
+        string miningLocation,
+        uint miningYear,
+         bool selected,
+        string extractionMethod,
+        address payable owner,
+        bool purchased
+     );
+
+       event GemPurchased(
+        uint id,
+        string gemType,
+        uint weight,
+        uint height, 
+        uint width,
+        uint price, 
+        string miningLocation,
+        uint miningYear,
+         bool selected,
         string extractionMethod,
         address payable owner,
         bool purchased
@@ -75,7 +75,6 @@ contract GemstoneExtraction {
     constructor() public  {
         name = "x";
     }
-
     function gemMining(string memory _gemType, uint _weight, uint _height, uint _width,  uint _price, string memory _miningLocation, uint _miningYear, string memory _extractionMethod,  bool _purchased) public {
         require(bytes(_gemType).length > 0, "Gem type cannot be empty");
         require( _weight > 0);
@@ -87,9 +86,9 @@ contract GemstoneExtraction {
 
         
         minedGemCount++;
-       minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, 0, _extractionMethod, msg.sender, _purchased);
+       minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, false, _extractionMethod, msg.sender, _purchased);
 
-       emit GemMining(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, 0, _extractionMethod, msg.sender, _purchased);
+       emit GemMining(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, false, _extractionMethod, msg.sender, _purchased);
 
     }
 
@@ -104,7 +103,7 @@ contract GemstoneExtraction {
         _minedGem.purchased = true;
         minedGems[_id] = _minedGem;
         address(_miner).transfer(msg.value);
-        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  2, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
+       emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  false, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
 
      function processingGem(uint _id) public payable{
@@ -118,6 +117,11 @@ contract GemstoneExtraction {
         _minedGem.purchased = true;
         minedGems[_id] = _minedGem;
         address(_miner).transfer(msg.value);
-        emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, 3, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
+         emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
+
+    function markGemAsSelected(uint _id) public {
+    // Itt ellenőrizd, hogy a hívó személy jogosult-e az állapot frissítésére
+    minedGems[_id].selected = true;
+}
 }

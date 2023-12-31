@@ -54,7 +54,6 @@ console.log("fitrsitika" + processingGems[0])
                     <td>{minedGem.gemType}</td>
                     <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
                     <td>{minedGem.owner}</td>
-                    <td>{minedGem.pointOfProcessing.toString()}</td>
                     <td>
                       <button
                         name={minedGem.id}
@@ -92,7 +91,7 @@ console.log("fitrsitika" + processingGems[0])
               return (
               
                                         /* TODO: sign mined or processing */
-                minedGem.purchased===true && minedGem.pointOfProcessing==0 ? (
+                minedGem.purchased===true  ? (
                   
                   <tr key={key}>
                     <th scope="row">{minedGem.id.toString()}</th>
@@ -100,7 +99,6 @@ console.log("fitrsitika" + processingGems[0])
                     <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
                     <td>{minedGem.owner}</td>
                     
-                    <td>{minedGem.pointOfProcessing.toString()}</td>
                     <td>
                       
                    
