@@ -128,6 +128,7 @@ class App extends Component {
 
     this.gemMining = this.gemMining.bind(this)
     this.purchaseGem = this.purchaseGem.bind(this)
+    this.processingGem = this.processingGem.bind(this)
     this.gemSelecting = this.gemSelecting.bind(this)
   }
 
@@ -198,6 +199,7 @@ class App extends Component {
             <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
                                                               gemMining={this.gemMining}
                                                               purchaseGem={this.purchaseGem}
+                                                              processingGem={this.processingGem}
                                                               account={this.state.account}
                                                               />} />
            
@@ -206,6 +208,7 @@ class App extends Component {
                                                                gemMining={this.gemMining}
                                                                gemSelecting={this.gemSelecting}
                                                                purchaseGem={this.purchaseGem}
+                                                               processingGem={this.processingGem}
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
                                                                     />} />

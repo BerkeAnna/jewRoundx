@@ -103,6 +103,7 @@ console.log("fitrsitika" + processingGems[0])
                       
                    
                     <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
+                      
                       Select Gem
                     </button>
                     </td>

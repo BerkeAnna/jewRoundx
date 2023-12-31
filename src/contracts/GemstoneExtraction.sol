@@ -119,6 +119,7 @@ contract GemstoneExtraction {
         address(_miner).transfer(msg.value);
          emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
+    
 
     function markGemAsSelected(uint _id) public {
     // Itt ellenőrizd, hogy a hívó személy jogosult-e az állapot frissítésére
