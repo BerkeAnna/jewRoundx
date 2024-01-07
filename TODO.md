@@ -32,3 +32,11 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
     Most a második táblából törlődik. Egy problem:
         a processinggemsnél kilistézza a "minedgem"-et és a "sleectedgem"-et is két külön sorba.
         ----> ezt kellene megcsinálni hogy vagy minden egy sorban legyen, vagy csak a selected látszódjon, és ha rámegyünk egy details gombra akkor mindent a minedről is 
+
+        
+2024.01.07. 21:07:
+    Most a 3. táblában csak a selectedformosokat jelzi. És törli az előzőkből. Ez jó.
+    Todo:
+        - a processing gems végére a polishing melléé egy details gomb, ahol összeköti a minedgemet a selectedgem adatokkal és kilistázza az összeset egy oldalon.
+        - többihez is details?
+        - ékszeres contract
