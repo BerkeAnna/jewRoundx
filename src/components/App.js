@@ -196,11 +196,8 @@ class App extends Component {
     this.setState({loading: true})
     
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
-    .once('receipt', async (receipt) => {
-      this.setState({ loading: false });
-      await this.loadBlockchainData();
-        // After successfully selecting the gem, mark it as selected
-        this.markGemAsSelected(minedGemId);
+    .once('receipt', (receipt) => {
+        this.setState({  loading: false})
     })
     .catch(error => {
         // Handle any errors here

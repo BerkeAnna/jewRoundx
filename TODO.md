@@ -22,3 +22,7 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.01.07. 15:06:
     Most a 2. 2 tábla dupláz, de :
     ![Alt text](image.png)
+
+
+2024.01.07. 19:46:
+    Most ha a második táblában rámegyek a selectgemre, akkor utána ottmarad, de az alsó táblába ez is és egy selected sor is bekerül
