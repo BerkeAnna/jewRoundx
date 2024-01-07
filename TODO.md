@@ -26,3 +26,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.01.07. 19:46:
     Most ha a második táblában rámegyek a selectgemre, akkor utána ottmarad, de az alsó táblába ez is és egy selected sor is bekerül
+
+
+2024.01.07. 20:26:
+    Most a második táblából törlődik. Egy problem:
+        a processinggemsnél kilistézza a "minedgem"-et és a "sleectedgem"-et is két külön sorba.
+        ----> ezt kellene megcsinálni hogy vagy minden egy sorban legyen, vagy csak a selected látszódjon, és ha rámegyünk egy details gombra akkor mindent a minedről is 
