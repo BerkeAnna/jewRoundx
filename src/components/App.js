@@ -130,6 +130,7 @@ class App extends Component {
     this.purchaseGem = this.purchaseGem.bind(this)
     this.processingGem = this.processingGem.bind(this)
     this.gemSelecting = this.gemSelecting.bind(this)
+    this.markGemAsSelected = this.markGemAsSelected.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
@@ -173,17 +174,39 @@ class App extends Component {
     })
   }
 
+  markGemAsSelected(id){
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true })
+    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
+    .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+    })
+    .catch(error => {
+        console.error("Error in markGemAsSelected: ", error);
+        this.setState({ loading: false });
+    });
+}
+
+
   gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
     
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({loading: true})
+    
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
-     .once('receipt', (receipt) => {
-       this.setState({  loading: false})
-     })
-   
-
+    .once('receipt', async (receipt) => {
+      this.setState({ loading: false });
+      await this.loadBlockchainData();
+        // After successfully selecting the gem, mark it as selected
+        this.markGemAsSelected(minedGemId);
+    })
+    .catch(error => {
+        // Handle any errors here
+        console.error("Error in gemSelecting: ", error);
+        this.setState({ loading: false });
+    });
 }
 
   render() {

@@ -92,26 +92,44 @@ contract GemstoneExtraction {
 
     }
 
-    function purchaseGem(uint _id) public payable{
-        MinedGem memory _minedGem = minedGems[_id];
-        address payable _miner = _minedGem.owner;
-        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
-        require(msg.value >= _minedGem.price);
-        require(_minedGem.purchased == false);
-       // require(_miner != msg.sender);
-        _minedGem.owner = msg.sender;
-        _minedGem.purchased = true;
-        minedGems[_id] = _minedGem;
-        address(_miner).transfer(msg.value);
-       emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  false, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
-    }
+    function purchaseGem(uint _id) public payable {
+    require(_id > 0 && _id <= minedGemCount, "Invalid gem ID");
+    MinedGem storage _minedGem = minedGems[_id];
+    require(!_minedGem.purchased, "Gem already purchased");
+    require(msg.value >= _minedGem.price, "Insufficient Ether sent");
 
+    address payable _miner = address(uint160(_minedGem.owner));
+    //require(_miner != msg.sender, "Buyer cannot be the owner");
+
+    _minedGem.purchased = true;
+    // Update owner to the new buyer
+    _minedGem.owner = address(uint160(msg.sender));
+
+    _miner.transfer(msg.value); // Transfer Ether to the original owner
+
+    emit GemPurchased(
+        _id,
+        _minedGem.gemType,
+        _minedGem.weight,
+        _minedGem.height,
+        _minedGem.width,
+        _minedGem.price,
+        _minedGem.miningLocation,
+        _minedGem.miningYear,
+        _minedGem.selected,
+        _minedGem.extractionMethod,
+        _minedGem.owner,
+        true
+    );
+}
+
+/*
      function processingGem(uint _id) public payable{
         MinedGem memory _minedGem = minedGems[_id];
         address payable _miner = _minedGem.owner;
-        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
-        require(msg.value >= _minedGem.price);
-        require(_minedGem.purchased == false);
+    require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
+    require(msg.value >= _minedGem.price); //???????? todo????
+    require(_minedGem.purchased == false);
        // require(_miner != msg.sender);
         _minedGem.owner = msg.sender;
         _minedGem.purchased = true;
@@ -120,9 +138,13 @@ contract GemstoneExtraction {
          emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
     
-
+*/
     function markGemAsSelected(uint _id) public {
     // Itt ellenőrizd, hogy a hívó személy jogosult-e az állapot frissítésére
     minedGems[_id].selected = true;
 }
+
+
+
+
 }

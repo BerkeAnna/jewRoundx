@@ -11,7 +11,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem })
   // Function to render rows for the 'List of mined gems'
   const renderMinedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
-      minedGem.purchased === false && (
+      minedGem.purchased === false && minedGem.selected === false &&(
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
@@ -33,8 +33,9 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem })
 
   // Function to render rows for the 'List of selected gems'
   const renderSelectedGems = () => {
+    console.log(ownedMinedGems[0])
     return ownedMinedGems.map((minedGem, key) => (
-      minedGem.purchased === true && (
+      minedGem.purchased === true &&  minedGem.selected === false && (
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
