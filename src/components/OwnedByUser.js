@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem }) {
+function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected }) {
   const navigate = useNavigate();
 
   // Filter gems based on the owner's account
@@ -32,33 +32,41 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem })
   };
 
   // Function to render rows for the 'List of selected gems'
-  const renderSelectedGems = () => {
-    console.log(ownedMinedGems[0])
+ const renderSelectedGems = () => {
+  console.log(ownedMinedGems[0])
     return ownedMinedGems.map((minedGem, key) => (
-      minedGem.purchased === true &&  minedGem.selected === false && (
-        <tr key={key}>
-          <th scope="row">{minedGem.id.toString()}</th>
-          <td>{minedGem.gemType}</td>
-          <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
-          <td>{minedGem.owner}</td>
-          <td>
-            <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
-              Select Gem
-            </button>
-          </td>
-          <td>
-            <button
-              name={minedGem.id}
-              value={minedGem.price}
-              onClick={(event) => sellGem(event.target.name)}
-            >
-              Sell
-            </button>
-          </td>
-        </tr>
-      )
-    ));
-  };
+    minedGem.purchased === true &&  minedGem.selected === false && (
+      <tr key={key}>
+        <th scope="row">{minedGem.id.toString()}</th>
+        <td>{minedGem.gemType}</td>
+        <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
+        <td>{minedGem.owner}</td>
+        <td>
+          <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
+            Select Gem form
+          </button>
+        </td>
+        <td>
+          <button
+          id={minedGem.id}
+          value={minedGem.price}
+          onClick={(event) => markGemAsSelected(event.target.id, event.target.value)}>
+            Select Gem
+          </button>
+        </td>
+        <td>
+          <button
+            name={minedGem.id}
+            value={minedGem.price}
+            onClick={(event) => sellGem(event.target.name)}
+          >
+            Sell
+          </button>
+        </td>
+      </tr>
+    )
+  ));
+};
 
   // Function to render rows for the 'List of processing gems'
   const renderProcessingGems = () => {

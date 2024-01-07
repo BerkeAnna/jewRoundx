@@ -174,18 +174,19 @@ class App extends Component {
     })
   }
 
-  markGemAsSelected(id){
+  markGemAsSelected(id, price){
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({ loading: true })
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
+    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account,value: price, gasLimit: gasLimit, gasPrice: gasPrice})
     .once('receipt', (receipt) => {
-        this.setState({ loading: false })
+      this.setState({ loading: false })
     })
     .catch(error => {
-        console.error("Error in markGemAsSelected: ", error);
-        this.setState({ loading: false });
-    });
+      // Handle any errors here
+      console.error("Error in markas: ", error);
+      this.setState({ loading: false });
+  });
 }
 
 
@@ -229,6 +230,7 @@ class App extends Component {
                                                                gemSelecting={this.gemSelecting}
                                                                purchaseGem={this.purchaseGem}
                                                                processingGem={this.processingGem}
+                                                               markGemAsSelected={this.markGemAsSelected}
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
                                                                     />} />
