@@ -72,6 +72,22 @@ contract GemstoneExtraction {
         bool purchased
     );
     
+     event GemSelected(
+        uint id,
+        string gemType,
+        uint weight,
+        uint height, 
+        uint width,
+        uint price, 
+        string miningLocation,
+        uint miningYear,
+         bool selected,
+        string extractionMethod,
+        address payable owner,
+        bool purchased
+    );
+    
+
     constructor() public  {
         name = "x";
     }
@@ -120,19 +136,15 @@ contract GemstoneExtraction {
          emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
     
+function markGemAsSelected(uint _id) public {
+    MinedGem storage _minedGem = minedGems[_id];
+    require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
+    require(_minedGem.selected == false, "Gem already selected");
+    require(_minedGem.owner == msg.sender, "Only the owner can select the gem");
 
-    function markGemAsSelected(uint _id) public payable {
-      MinedGem memory _minedGem = minedGems[_id];
-        address payable _miner = _minedGem.owner;
-        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
-        require(msg.value >= _minedGem.price);
-        require(_minedGem.selected == false);
-       // require(_miner != msg.sender);
-        _minedGem.owner = msg.sender;
-        _minedGem.selected = true;
-        _minedGem.purchased = true;
-        minedGems[_id] = _minedGem;
-        address(_miner).transfer(msg.value);
-       emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
+    _minedGem.selected = true;
+
+    emit GemSelected(_id, _minedGem.gemType, _minedGem.weight,  _minedGem.height,  _minedGem.width, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, _minedGem.extractionMethod, msg.sender,  _minedGem.purchased);
     }
+
 }

@@ -1,8 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+
+
 function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected }) {
   const navigate = useNavigate();
+
+  const handleMarkAsSelected = (gemId) => {
+    markGemAsSelected(gemId)
+      
+    
+  };
 
   // Filter gems based on the owner's account
   const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner === account);
@@ -47,12 +56,10 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
           </button>
         </td>
         <td>
-          <button
-          id={minedGem.id}
-          value={minedGem.price}
-          onClick={(event) => markGemAsSelected(event.target.id, event.target.value)}>
-            Select Gem
-          </button>
+        <button onClick={() => handleMarkAsSelected(minedGem.id)}>
+              Select Gem
+            </button>
+
         </td>
         <td>
           <button
