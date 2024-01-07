@@ -9,6 +9,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
 
   const handleMarkAsSelected = (gemId) => {
     markGemAsSelected(gemId)
+    navigate(`/gem-select/${gemId}`);
       
     
   };
