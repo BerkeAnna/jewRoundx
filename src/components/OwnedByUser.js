@@ -78,6 +78,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
 
   // Function to render rows for the 'List of processing gems'
   const renderProcessingGems = () => {
+    console.log(selectedGems[0])
     return ownedSelectedGems.map((selectedGem, key) => (
       <tr key={key}>
         <th scope="row">{selectedGem.id.toString()}</th>

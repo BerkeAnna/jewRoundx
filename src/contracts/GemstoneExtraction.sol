@@ -105,7 +105,6 @@ contract GemstoneExtraction {
        minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, false, _extractionMethod, msg.sender, _purchased);
 
        emit GemMining(minedGemCount, _gemType, _weight, _height, _width, _price, _miningLocation, _miningYear, false, _extractionMethod, msg.sender, _purchased);
-
     }
 
     function purchaseGem(uint _id) public payable{

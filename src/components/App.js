@@ -102,7 +102,7 @@ class App extends Component {
       for(var i=1; i<= selectedGemCount; i++){
         const selectedGems = await gemstroneSelecting.methods.selectedGems(i).call()
         this.setState({
-          selectedGems: [...this.state.minedGems, selectedGems]
+          selectedGems: [...this.state.selectedGems, selectedGems]
         })
       }
      // console.log(selectedGemCount.toString())
