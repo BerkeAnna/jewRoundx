@@ -250,7 +250,9 @@ polishGem(id ){
                                                                polishGem={this.polishGem}
                                                                     />} />
             <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting}/>} />
-            <Route path="/gem-details/:id" element={<GemDetails />} />
+            <Route path="/gem-details/:id" element={<GemDetails minedGems={this.state.minedGems}
+                                                                account={this.state.account}
+                                                                />} />
 
           </Routes>
         </Router> 
