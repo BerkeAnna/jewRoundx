@@ -5,6 +5,7 @@ import './App.css';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import GemSelecting from '../abis/GemstoneSelecting.json';
 import Navbar from './Navbar';
+import GemDetails from './GemDetails';
 import Main from './Main';
 import Dashboard from './Dashboard';
 import MinedGemsList from './MinedGemList';
@@ -249,6 +250,7 @@ polishGem(id ){
                                                                polishGem={this.polishGem}
                                                                     />} />
             <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting}/>} />
+            <Route path="/gem-details/:id" element={<GemDetails />} />
 
           </Routes>
         </Router> 
