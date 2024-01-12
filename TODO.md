@@ -37,6 +37,13 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.01.07. 21:07:
     Most a 3. táblában csak a selectedformosokat jelzi. És törli az előzőkből. Ez jó.
     Todo:
-        - a processing gems végére a polishing melléé egy details gomb, ahol összeköti a minedgemet a selectedgem adatokkal és kilistázza az összeset egy oldalon.
+        - a processing gems végére a polishing gomb használata után egy details gomb, ahol összeköti a minedgemet a selectedgem adatokkal és kilistázza az összeset egy oldalon.
         - többihez is details?
         - ékszeres contract
+
+2024.1.12. 20:22
+        - detail gomb megjelenik a polishing helyett, ha megvolt a polishing. A details gomb még nem működik.
+        - ezek továbbra is todo:
+              - a processing gems végére a polishing gomb használata után egy details gomb, ahol összeköti a minedgemet a selectedgem adatokkal és kilistázza az összeset egy oldalon.
+                - többihez is details?
+                - ékszeres contract

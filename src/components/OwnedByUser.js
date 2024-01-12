@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected }) {
+function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected, polishGem }) {
   const navigate = useNavigate();
 
   const handleMarkAsSelected = (gemId) => {
@@ -78,21 +78,33 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
 
   // Function to render rows for the 'List of processing gems'
   const renderProcessingGems = () => {
-    console.log(selectedGems[0])
+    console.log(selectedGems[0]);
     return ownedSelectedGems.map((selectedGem, key) => (
       <tr key={key}>
         <th scope="row">{selectedGem.id.toString()}</th>
         <td>{selectedGem.gemType}</td>
         <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
         <td>{selectedGem.owner}</td>
+        <td>{selectedGem.polishing.toString()}</td>
         <td>
-          <button onClick={() => navigate(`/gem-select/${selectedGem.id}`)}>
-            Polishing
-          </button>
+          {selectedGem.polishing ? (
+            <button 
+             >
+              Details
+            </button>
+          ) : (
+            <button 
+              id={selectedGem.id}
+              value={selectedGem.price}
+              onClick={() => polishGem(selectedGem.id)}>
+              Polishing
+            </button>
+          )}
         </td>
       </tr>
     ));
   };
+  
 
   return (
     <div id="tables" className="pt-5">

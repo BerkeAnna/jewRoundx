@@ -131,6 +131,7 @@ class App extends Component {
     this.processingGem = this.processingGem.bind(this)
     this.gemSelecting = this.gemSelecting.bind(this)
     this.markGemAsSelected = this.markGemAsSelected.bind(this)
+    this.polishGem = this.polishGem.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
@@ -207,6 +208,18 @@ class App extends Component {
     });
 }
 
+polishGem(id ){
+    //const priceUint = parseInt(price);
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true })
+    this.state.gemstroneSelecting.methods.polishGem(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+  }
+
+
   render() {
     return (
       
@@ -233,6 +246,7 @@ class App extends Component {
                                                                markGemAsSelected={this.markGemAsSelected}
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
+                                                               polishGem={this.polishGem}
                                                                     />} />
             <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting}/>} />
 
