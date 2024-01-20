@@ -24,7 +24,7 @@ function GemDetails({ selectedGems, account  }) {
           <td>{gem.carat.toString()}</td>
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
-          <td>{gem.polishing}</td>
+          <td>{gem.polishing.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
           
