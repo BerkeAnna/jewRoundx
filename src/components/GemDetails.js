@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
 
-function GemDetails({ selectedGems, account  }) {
+function GemDetails({ selectedGems, minedGems, account  }) {
 
   const { id } = useParams();
   const gemId = id;
   //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
     const gemSelected = selectedGems.filter(selectedGems => selectedGems.owner === account);
+    const minedGem = minedGems.filter(minedGems => minedGems.owner === account);
 
-  console.log(gemId)
-  const renderMinedGems = () => {
+  const renderSelectedGems = () => {
     
     console.log(gemId)
     return gemSelected.map((gem, key) => (
@@ -34,6 +34,25 @@ function GemDetails({ selectedGems, account  }) {
     ));
   };
 
+  const renderMinedGems = () => {
+    
+    console.log(gemId)
+    return minedGem.map((gem, key) => (
+      //todo: id page
+      gem.id == gemId &&(
+        <tr key={key}>
+          
+          <th scope="row">{gem.id.toString()}</th>
+          
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>{gem.owner}</td>
+          
+          
+        </tr>
+      )
+    ));
+  };
+
 /*todo:
     1. kilistazni az adott minedgemeket
     2. kilistazni az adott selectedgemeket
@@ -45,7 +64,15 @@ function GemDetails({ selectedGems, account  }) {
                   todo: - gemdetails
 
                   <h2>Data of mined gem</h2>
-                  todo: minedgem datas
+                  todo: minedgem datas ending ---- in process
+                  <table className="table">
+                      <thead>
+                        <td>ID</td>
+                        <td>Price</td>
+                        <td>Owner</td>
+                      </thead>
+                      <tbody>{renderMinedGems()}</tbody>
+                    </table>
 
                   <div id="tables" className="pt-5">
                     <h2>Data of selected gem</h2>
@@ -63,7 +90,7 @@ function GemDetails({ selectedGems, account  }) {
                         <td>Price</td>
                         <td>Owner</td>
                       </thead>
-                      <tbody>{renderMinedGems()}</tbody>
+                      <tbody>{renderSelectedGems()}</tbody>
                     </table>
                   </div>
             </div>
