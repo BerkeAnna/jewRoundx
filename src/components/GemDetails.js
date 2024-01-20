@@ -6,26 +6,29 @@ function GemDetails({ selectedGems, account  }) {
   const { id } = useParams();
   const gemId = id;
   //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
-  const gemDetails = selectedGems.filter(selectedGems => selectedGems.owner === account);
+    const gemSelected = selectedGems.filter(selectedGems => selectedGems.owner === account);
+
   console.log(gemId)
   const renderMinedGems = () => {
     
     console.log(gemId)
-    return gemDetails.map((gem, key) => (
+    return gemSelected.map((gem, key) => (
       //todo: id page
       gem.id == gemId &&(
         <tr key={key}>
           <th scope="row">{gem.id.toString()}</th>
+          <td>{gem.weight.toString()}</td>
+          <td>{gem.height.toString()}</td>
+          <td>{gem.width.toString()}</td>
+          <td>{gem.diameter.toString()}</td>
+          <td>{gem.carat.toString()}</td>
+          <td>{gem.color}</td>
           <td>{gem.gemType}</td>
+          <td>{gem.polishing}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
-          <td>
-            <button
-           
-            >
-              Process
-            </button>
-          </td>
+          
+          
         </tr>
       )
     ));
@@ -41,10 +44,25 @@ function GemDetails({ selectedGems, account  }) {
               <h1>gemdetails</h1>
                   todo: - gemdetails
 
+                  <h2>Data of mined gem</h2>
+                  todo: minedgem datas
+
                   <div id="tables" className="pt-5">
-                    <h2>List of mined gems</h2>
+                    <h2>Data of selected gem</h2>
                     <table className="table">
-                      <thead>{/* Table headers */}</thead>
+                      <thead>
+                        <td>ID</td>
+                        <td>Weight</td>
+                        <td>Height</td>
+                        <td>Width</td>
+                        <td>Diameter</td>
+                        <td>Carat</td>
+                        <td>Color</td>
+                        <td>Gemtype</td>
+                        <td>Polishing</td>
+                        <td>Price</td>
+                        <td>Owner</td>
+                      </thead>
                       <tbody>{renderMinedGems()}</tbody>
                     </table>
                   </div>
