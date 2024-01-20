@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
+import { useParams } from 'react-router-dom';
 
-function GemDetails({ minedGems, account }) {
+function GemDetails({ selectedGems, account,match  }) {
 
-  
-  const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner === account);
-
+  const { gemId } = useParams(); // URL-ből az ID kinyerése
+  //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
+  const gemDetails = selectedGems.filter(selectedGems => selectedGems.owner === account);
+  console.log(gemId)
   const renderMinedGems = () => {
-    return ownedMinedGems.map((minedGem, key) => (
+    
+    console.log(gemId)
+    return gemDetails.map((gem, key) => (
       //todo: id page
-      minedGem.purchased === false && minedGem.selected === false &&(
+      gem.id == 1 &&(
         <tr key={key}>
-          <th scope="row">{minedGem.id.toString()}</th>
-          <td>{minedGem.gemType}</td>
-          <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
-          <td>{minedGem.owner}</td>
+          <th scope="row">{gem.id.toString()}</th>
+          <td>{gem.gemType}</td>
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>{gem.owner}</td>
           <td>
             <button
            

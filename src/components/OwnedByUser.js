@@ -88,8 +88,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
         <td>{selectedGem.polishing.toString()}</td>
         <td>
           {selectedGem.polishing ? (
-            <button 
-             >
+            <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
               Details
             </button>
           ) : (
