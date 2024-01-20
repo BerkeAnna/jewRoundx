@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
 
-function GemDetails({ selectedGems, account,match  }) {
+function GemDetails({ selectedGems, account  }) {
 
-  const { gemId } = useParams(); // URL-ből az ID kinyerése
+  const { id } = useParams();
+  const gemId = id;
   //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
   const gemDetails = selectedGems.filter(selectedGems => selectedGems.owner === account);
   console.log(gemId)
@@ -12,7 +13,7 @@ function GemDetails({ selectedGems, account,match  }) {
     console.log(gemId)
     return gemDetails.map((gem, key) => (
       //todo: id page
-      gem.id == 1 &&(
+      gem.id == gemId &&(
         <tr key={key}>
           <th scope="row">{gem.id.toString()}</th>
           <td>{gem.gemType}</td>
