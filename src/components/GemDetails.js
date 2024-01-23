@@ -43,7 +43,14 @@ function GemDetails({ selectedGems, minedGems, account  }) {
         <tr key={key}>
           
           <th scope="row">{gem.id.toString()}</th>
-          
+          <td>{gem.gemType}</td>
+          <td>{gem.weight.toString()}</td>
+          <td>{gem.height.toString()}</td>
+          <td>{gem.width.toString()}</td>
+          <td>{gem.miningLocation}</td>
+          <td>{gem.miningYear.toString()}</td>
+          <td>{gem.extractionMethod}</td>
+          <td>{gem.selected.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
           
@@ -68,6 +75,14 @@ function GemDetails({ selectedGems, minedGems, account  }) {
                   <table className="table">
                       <thead>
                         <td>ID</td>
+                        <td>Type</td>
+                        <td>Weight</td>
+                        <td>Height</td>
+                        <td>Width</td>
+                        <td>Mining location</td>
+                        <td>Mining Year</td>
+                        <td>Extraction method</td>
+                        <td>Selected</td>
                         <td>Price</td>
                         <td>Owner</td>
                       </thead>

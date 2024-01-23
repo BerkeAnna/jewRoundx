@@ -86,20 +86,31 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
         <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
         <td>{selectedGem.owner}</td>
         <td>{selectedGem.polishing.toString()}</td>
-        <td>
+        
           {selectedGem.polishing ? (
-            <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
-              Details
-            </button>
+          <div>
+            <td>
+              <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                Details
+              </button>
+            </td>
+            <td>
+              <button>
+                Sell
+              </button>
+            </td>
+            </div>
           ) : (
-            <button 
-              id={selectedGem.id}
-              value={selectedGem.price}
-              onClick={() => polishGem(selectedGem.id)}>
-              Polishing
-            </button>
+            <td>
+              <button 
+                id={selectedGem.id}
+                value={selectedGem.price}
+                onClick={() => polishGem(selectedGem.id)}>
+                Polishing
+              </button>
+            </td>
           )}
-        </td>
+        
       </tr>
     ));
   };

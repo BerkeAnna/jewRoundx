@@ -47,3 +47,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
               - a processing gems végére a polishing gomb használata után egy details gomb, ahol összeköti a minedgemet a selectedgem adatokkal és kilistázza az összeset egy oldalon.
                 - többihez is details?
                 - ékszeres contract
+
+
+2024.01.23. 10:55
+        - ékszeres contract
+        - sell gomb -> drágakőpiacra kikerül a kő
+        - 

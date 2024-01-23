@@ -39,7 +39,7 @@ contract GemstoneExtraction {
          bool selected,
         string extractionMethod,
         address payable owner,
-        bool purchasedvv
+        bool purchased
     );
 
      event GemPurchasing(
