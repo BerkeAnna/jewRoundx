@@ -57,7 +57,12 @@ contract Jewelry {
     );
 
     function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width, uint _size, uint _date, bool _sale, uint _price ) public {
-         
+        require( _depth > 0);
+        require( _height > 0);
+        require( _width > 0);
+        require( _price > 0);
+        require( _gemId > 0, "GemId cannot be empty");
+        require(bytes(_name).length > 0, "Name cannot be empty");
         jewelryCount++;
        jewelry[jewelryCount] = JewelryData(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _size, _date, _sale, _price, msg.sender, msg.sender);
 
