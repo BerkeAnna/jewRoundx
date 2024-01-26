@@ -4,12 +4,14 @@ import logo from '../logo.png';
 import './App.css';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import GemSelecting from '../abis/GemstoneSelecting.json';
+import Jewelry from '../abis/Jewelry.json';
 import Navbar from './Navbar';
 import GemDetails from './GemDetails';
 import Main from './Main';
 import Dashboard from './Dashboard';
 import MinedGemsList from './MinedGemList';
 import MinedGemForm from './MinedGemForm';
+import JewelryForm from './JewelryForm';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import OwnedByUser from './OwnedByUser'
 import GemSelectingForm from './GemSelectingForm';
@@ -20,6 +22,7 @@ class App extends Component {
     await this.loadWeb3()
     await this.loadBlockchainData()
     await this.loadBlockchainData2()
+    await this.loadBlockchainData3()
   }
 
   async loadWeb3() {
@@ -61,7 +64,7 @@ class App extends Component {
       //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
       window.alert('Gemstone contract not deployed to detected network. - own error')
     }
-  /*
+/*
     const networkId = await web3.eth.net.getId()
     const networkData = GemstoneExtraction.networks[networkId]
     console.log(networkData)
@@ -111,7 +114,38 @@ class App extends Component {
      // console.log(this.state.minedGems)
     }else{
       //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
-      window.alert('Gemstone contract not deployed to detected network. - own error')
+      window.alert('Gemstone selecting contract not deployed to detected network. - own error')
+    }
+ 
+  }
+
+  async loadBlockchainData3() {
+    const web3 = window.web3
+    // Load account
+    const accounts = await web3.eth.getAccounts()
+    console.log(accounts);
+    this.setState({ account: accounts[0] })
+
+    const networkId= await web3.eth.net.getId();
+    const networkData = Jewelry.networks[networkId]
+    if(networkData){
+      const jewelry = web3.eth.Contract(Jewelry.abi, networkData.address)
+      this.setState({ jewelry })
+      const jewelryCount = await jewelry.methods.jewelryCount().call()
+      this.setState({ jewelryCount })
+
+      for(var i=1; i<= jewelryCount; i++){
+        const jewelry = await jewelry.methods.jewelrymaking(i).call()
+        this.setState({
+          jewelry: [...this.state.jewelry, jewelry]
+        })
+      }
+     // console.log(selectedGemCount.toString())
+      this.setState({loading: false})
+     // console.log(this.state.minedGems)
+    }else{
+      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
+      window.alert('Jewelry contract not deployed to detected network. - own error')
     }
  
   }
@@ -124,7 +158,8 @@ class App extends Component {
       minedGems: [],
       selectedGemCount:0,
       selectedGems: [],
-      loading: true
+      loading: true,
+      jewelry: []
     }
 
     this.gemMining = this.gemMining.bind(this)
@@ -133,6 +168,7 @@ class App extends Component {
     this.gemSelecting = this.gemSelecting.bind(this)
     this.markGemAsSelected = this.markGemAsSelected.bind(this)
     this.polishGem = this.polishGem.bind(this)
+    this.jewelrymaking = this.jewelrymaking.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
@@ -219,6 +255,17 @@ polishGem(id ){
       this.setState({ loading: false })
     })
   }
+  
+  //todo
+  jewelrymaking() {
+    this.setState({loading: true})
+    this.state.jewelry.methods.jewelrymaking(
+        
+    ).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+    })
+}
 
 
   render() {

@@ -55,4 +55,4 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - 
 
 2024.01.26. 13:22
-        - nem kell semm gomb. Auto kikerül a piacra, a sell gomb helyett making -> ürlap-> új ékszer
+        - nem kell sell gomb. Auto kikerül a piacra, a sell gomb helyett making -> ürlap-> új ékszer

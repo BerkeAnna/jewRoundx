@@ -96,7 +96,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
             </td>
             <td>
               <button>
-                Sell
+                Make jewelry
               </button>
             </td>
             </div>
