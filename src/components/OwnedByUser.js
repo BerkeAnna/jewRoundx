@@ -4,12 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected, polishGem }) {
+function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
   const navigate = useNavigate();
 
   const handleMarkAsSelected = (gemId) => {
     markGemAsSelected(gemId)
     navigate(`/gem-select/${gemId}`);
+      
+    
+  };
+
+  const handleMarkAsUsed = (gemId) => {
+    markGemAsUsed(gemId)
+    navigate(`/jewelry-making/gem/${gemId}`);
       
     
   };
@@ -95,7 +102,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
               </button>
             </td>
             <td>
-              <button>
+              <button onClick={() => navigate(`/jewelry-making/gem/${selectedGem.id}`)}>
                 Make jewelry
               </button>
             </td>

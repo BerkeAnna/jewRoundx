@@ -129,13 +129,13 @@ class App extends Component {
     const networkId= await web3.eth.net.getId();
     const networkData = Jewelry.networks[networkId]
     if(networkData){
-      const jewelry = web3.eth.Contract(Jewelry.abi, networkData.address)
-      this.setState({ jewelry })
-      const jewelryCount = await jewelry.methods.jewelryCount().call()
+      const jewelryM = web3.eth.Contract(Jewelry.abi, networkData.address)
+      this.setState({ jewelryM })
+      const jewelryCount = await jewelryM.methods.jewelryCount().call()
       this.setState({ jewelryCount })
 
       for(var i=1; i<= jewelryCount; i++){
-        const jewelry = await jewelry.methods.jewelrymaking(i).call()
+        const jewelry = await jewelryM.methods.jewelry(i).call()
         this.setState({
           jewelry: [...this.state.jewelry, jewelry]
         })
@@ -167,8 +167,9 @@ class App extends Component {
     this.processingGem = this.processingGem.bind(this)
     this.gemSelecting = this.gemSelecting.bind(this)
     this.markGemAsSelected = this.markGemAsSelected.bind(this)
+    this.markGemAsUsed = this.markGemAsUsed.bind(this)
     this.polishGem = this.polishGem.bind(this)
-    this.jewelrymaking = this.jewelrymaking.bind(this)
+    this.jewelryMaking = this.jewelryMaking.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
@@ -226,7 +227,20 @@ class App extends Component {
       this.setState({ loading: false });
   });
 }
-
+  markGemAsUsed(id){
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true })
+    this.state.gemstroneSelecting.methods.markGemAsUsed(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+    .catch(error => {
+      // Handle any errors here
+      console.error("Error in markas: ", error);
+      this.setState({ loading: false });
+  });
+  }
 
   gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
     
@@ -257,9 +271,9 @@ polishGem(id ){
   }
   
   //todo
-  jewelrymaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) {
+  jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) {
     this.setState({loading: true})
-    this.state.jewelry.methods.jewelrymaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) 
+    this.state.jewelryM.methods.jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) 
     .send({ from: this.state.account })
     .once('receipt', (receipt) => {
         this.setState({ loading: false })
@@ -291,6 +305,7 @@ polishGem(id ){
                                                                purchaseGem={this.purchaseGem}
                                                                processingGem={this.processingGem}
                                                                markGemAsSelected={this.markGemAsSelected}
+                                                               markGemAsUsed={this.markGemAsUsed}
                                                                account={this.state.account}
                                                                sellGem={this.sellGem}
                                                                polishGem={this.polishGem}
@@ -301,7 +316,8 @@ polishGem(id ){
                                                                 gemSelecting={this.gemSelecting}
                                                                 account={this.state.account}
                                                                 />} />
-             <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelrymaking={this.jewelrymaking}/>} />
+             <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
+                                                                         markGemAsUsed={this.markGemAsUsed}/>} />
 
           </Routes>
         </Router> 
