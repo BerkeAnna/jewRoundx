@@ -4,8 +4,9 @@ class JewelryForm extends Component {
 
   render() {
     return (
-      <div id="content">
+      <div id="content" className='pt-5'>
         <h1>Add jewelry</h1>
+        todo: the correct form
         <form onSubmit={(event) => {
           event.preventDefault()
           const gemType = this.gemType.value

@@ -257,11 +257,10 @@ polishGem(id ){
   }
   
   //todo
-  jewelrymaking() {
+  jewelrymaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) {
     this.setState({loading: true})
-    this.state.jewelry.methods.jewelrymaking(
-        
-    ).send({ from: this.state.account })
+    this.state.jewelry.methods.jewelrymaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) 
+    .send({ from: this.state.account })
     .once('receipt', (receipt) => {
         this.setState({ loading: false })
     })
@@ -302,6 +301,7 @@ polishGem(id ){
                                                                 gemSelecting={this.gemSelecting}
                                                                 account={this.state.account}
                                                                 />} />
+             <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelrymaking={this.jewelrymaking}/>} />
 
           </Routes>
         </Router> 
