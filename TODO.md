@@ -59,3 +59,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.01.26. 14:19
         - jewelry form átírása
+
+2024.01.26. 18:32
+        - jewelry form után a own mined gems oldalon a listázásba új tábla, előzőből törlés
