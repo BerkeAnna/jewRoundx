@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
 
+import { useParams } from 'react-router-dom';
+
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
+
 class JewelryForm extends Component {
 
   render() {
+    
+    const { id } = this.props.params; // Az URL-ből származó ID
+    const gemId = id; 
+
     return (
       <div id="content" className='pt-5'>
         <h1>Add jewelry</h1>
-        todo: the correct form
         <form onSubmit={(event) => {
           event.preventDefault()
-          const gemType = this.gemType.value
+          const name = this.name.value
           const price = window.web3.utils.toWei(this.price.value.toString(), 'Ether')
-          const weight = this.weight.value
+          const depth = this.depth.value
           const height = this.height.value
           const width = this.width.value
-          const miningLocation = this.miningLocation.value
-          const miningYear = this.miningYear.value
-          const extractionMethod = this.extractionMethod.value
-          this.props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, false);
+          const metal = this.metal.value
+          const date = this.date.value
+          const size = this.size.value
+          this.props.jewelryMaking(name, gemId, metal, depth, height, width, size, date, false, price);
 
          }}>
           <div className="form-group mr-sm-2">
             <input
-              id="gemType"
+              id="name"
               type="text"
-              ref={(input) => { this.gemType = input }}
+              ref={(input) => { this.name = input }}
               className="form-control"
-              placeholder="Type"
+              placeholder="name"
               required />
           </div>
           <div className="form-group mr-sm-2">
@@ -40,11 +49,11 @@ class JewelryForm extends Component {
           </div>
           <div className="form-group mr-sm-2">
             <input
-              id="weight"
+              id="depth"
               type="text"
-              ref={(input) => { this.weight = input }}
+              ref={(input) => { this.depth = input }}
               className="form-control"
-              placeholder="weight"
+              placeholder="depth"
               required />
           </div>
           <div className="form-group mr-sm-2">
@@ -67,44 +76,35 @@ class JewelryForm extends Component {
           </div>
           <div className="form-group mr-sm-2">
             <input
-              id="miningLocation"
+              id="size"
               type="text"
-              ref={(input) => { this.miningLocation = input }}
+              ref={(input) => { this.size = input }}
               className="form-control"
-              placeholder="miningLocation"
+              placeholder="size"
               required />
           </div>
           <div className="form-group mr-sm-2">
             <input
-              id="miningYear"
+              id="date"
               type="text"
-              ref={(input) => { this.miningYear = input }}
+              ref={(input) => { this.date = input }}
               className="form-control"
-              placeholder="miningYear"
+              placeholder="date"
               required />
           </div>
           <div className="form-group mr-sm-2">
             <input
-              id="miningYear"
+              id="metal"
               type="text"
-              ref={(input) => { this.miningYear = input }}
+              ref={(input) => { this.metal = input }}
               className="form-control"
-              placeholder="miningYear"
+              placeholder="metal"
               required />
           </div>
        
-          <div className="form-group mr-sm-2">
-            <input
-              id="extractionMethod"
-              type="text"
-              ref={(input) => { this.extractionMethod = input }}
-              className="form-control"
-              placeholder="extractionMethod"
-              required />
-          </div>
        
 
-          <button type="submit" className="btn btn-primary">Add Product</button>
+          <button type="submit" className="btn btn-primary">Make jewelry</button>
         </form>
        
       </div>
@@ -112,4 +112,4 @@ class JewelryForm extends Component {
   }
 }
 
-export default JewelryForm;
+export default withParams(JewelryForm);
