@@ -70,3 +70,4 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.01.27. 20:02.
         - list of proc. gems-nél sell gomb -> gem piac
         - list of jew. sorokban sell gomb -> jew. piac 
+        - contractokba require-k, amik ellenőrzik, hogy pl a sleected gem mérete nem lehet nagyobb a minedgemnél
