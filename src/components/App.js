@@ -16,6 +16,7 @@ import JewelryForm from './JewelryForm';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import OwnedByUser from './OwnedByUser'
 import GemSelectingForm from './GemSelectingForm';
+import GemMarket from './GemMarket';
 
 class App extends Component {
 //2:11:30
@@ -299,6 +300,15 @@ polishGem(id ){
                                                               account={this.state.account}
                                                               />} />
            
+           <Route path="/gemMarket" element={<GemMarket  minedGems={this.state.minedGems}
+                                                              selectedGems={this.state.selectedGems}
+                                                              gemMining={this.gemMining}
+                                                              purchaseGem={this.purchaseGem}
+                                                              processingGem={this.processingGem}
+                                                              account={this.state.account}
+                                                              />} />
+           
+
             <Route path="/ownMinedGems" element={<OwnedByUser  minedGems={this.state.minedGems}
                                                                selectedGems={this.state.selectedGems}
                                                                jewelry={this.state.jewelry}
