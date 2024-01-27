@@ -7,6 +7,7 @@ import GemSelecting from '../abis/GemstoneSelecting.json';
 import Jewelry from '../abis/Jewelry.json';
 import Navbar from './Navbar';
 import GemDetails from './GemDetails';
+import JewDetails from './JewDetails';
 import Main from './Main';
 import Dashboard from './Dashboard';
 import MinedGemsList from './MinedGemList';
@@ -317,7 +318,13 @@ polishGem(id ){
                                                                 gemSelecting={this.gemSelecting}
                                                                 account={this.state.account}
                                                                 />} />
-             <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
+            <Route path="/jew-details/:id" element={<JewDetails selectedGems={this.state.selectedGems}
+                                                                minedGems={this.state.minedGems}
+                                                                jewelry={this.state.jewelry}
+                                                                gemSelecting={this.gemSelecting}
+                                                                account={this.state.account}
+                                                                />} />
+            <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
                                                                          markGemAsUsed={this.markGemAsUsed}/>} />
 
           </Routes>

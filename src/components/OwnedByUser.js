@@ -137,7 +137,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{jewelry.owner}</td>
         
             <td>
-              <button >
+              <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
                 Details
               </button>
             </td>
