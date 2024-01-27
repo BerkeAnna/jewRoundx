@@ -19,9 +19,6 @@ class Navbar extends Component {
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
             <Link to="/addMinedGem" className='text-white'>Add mined gem</Link>
           </li>
-          <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
-            <Link to="/addSelectedGem" className='text-white'>Add selected gem</Link>
-          </li>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
           <Link to="/minedGems" className='text-white'>Mined Gems</Link>
           </li>

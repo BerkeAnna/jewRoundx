@@ -64,5 +64,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - jewelry form után a own mined gems oldalon a listázásba új tábla, előzőből törlés
 
 
-2024.01.27. 19.24.
+2024.01.27. 19:24.
         - jewelry táblában gombokat megcsinálni
+
+2024.01.27. 20:02.
+        - list of proc. gems-nél sell gomb -> gem piac
+        - list of jew. sorokban sell gomb -> jew. piac 
