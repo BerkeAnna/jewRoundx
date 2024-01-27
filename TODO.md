@@ -68,6 +68,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - jewelry táblában gombokat megcsinálni
 
 2024.01.27. 20:02.
-        - list of proc. gems-nél sell gomb -> gem piac
-        - list of jew. sorokban sell gomb -> jew. piac 
+        - list of proc. gems-nél sell gomb -> gem piac --- nooo nem kell sell gomb, alapból kikerül
+        - list of jew. sorokban sell gomb -> jew. piac --- nooo nem kell sell gomb, alapból kikerül
         - contractokba require-k, amik ellenőrzik, hogy pl a sleected gem mérete nem lehet nagyobb a minedgemnél
