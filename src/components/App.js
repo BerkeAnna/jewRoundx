@@ -300,6 +300,7 @@ polishGem(id ){
            
             <Route path="/ownMinedGems" element={<OwnedByUser  minedGems={this.state.minedGems}
                                                                selectedGems={this.state.selectedGems}
+                                                               jewelry={this.state.jewelry}
                                                                gemMining={this.gemMining}
                                                                gemSelecting={this.gemSelecting}
                                                                purchaseGem={this.purchaseGem}

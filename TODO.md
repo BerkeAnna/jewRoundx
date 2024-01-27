@@ -62,3 +62,7 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.01.26. 18:32
         - jewelry form után a own mined gems oldalon a listázásba új tábla, előzőből törlés
+
+
+2024.01.27. 19.24.
+        - jewelry táblában gombokat megcsinálni

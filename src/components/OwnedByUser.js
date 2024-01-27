@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
   const navigate = useNavigate();
 
   const handleMarkAsSelected = (gemId) => {
@@ -24,6 +24,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
   // Filter gems based on the owner's account
   const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner === account);
   const ownedSelectedGems = selectedGems.filter(selectedGem => selectedGem.owner === account);
+  const ownedJewelry = jewelry.filter(jewelry => jewelry.owner === account);
 
   // Function to render rows for the 'List of mined gems'
   const renderMinedGems = () => {
@@ -87,6 +88,8 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
   const renderProcessingGems = () => {
     console.log(selectedGems[0]);
     return ownedSelectedGems.map((selectedGem, key) => (
+      selectedGem.used === false &&(
+    
       <tr key={key}>
         <th scope="row">{selectedGem.id.toString()}</th>
         <td>{selectedGem.gemType}</td>
@@ -119,8 +122,32 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
           )}
         
       </tr>
+      )
     ));
   };
+
+  const renderJewelry = () => {
+    console.log(ownedJewelry[0]);
+    return ownedJewelry.map((jewelry, key) => (
+      
+      <tr key={key}>
+        <th scope="row">{jewelry.id.toString()}</th>
+        <td>{jewelry.gemType}</td>
+        <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        <td>{jewelry.owner}</td>
+        
+            <td>
+              <button >
+                Details
+              </button>
+            </td>
+        
+        
+      </tr>
+    ));
+  };
+  
+
   
 
   return (
@@ -141,6 +168,12 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
       <table className="table">
         <thead>{/* Table headers */}</thead>
         <tbody>{renderProcessingGems()}</tbody>
+      </table>
+
+      <h2>List of jewelry</h2>
+      <table className="table">
+        <thead>{/* Table headers */}</thead>
+        <tbody>{renderJewelry()}</tbody>
       </table>
     </div>
   );
