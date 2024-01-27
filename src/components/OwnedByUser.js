@@ -102,7 +102,7 @@ function OwnedByUser({ minedGems, selectedGems, account, purchaseGem, sellGem, m
               </button>
             </td>
             <td>
-              <button onClick={() => navigate(`/jewelry-making/gem/${selectedGem.id}`)}>
+              <button  onClick={() => handleMarkAsUsed(selectedGem.id)}>
                 Make jewelry
               </button>
             </td>
