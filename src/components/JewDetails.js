@@ -6,9 +6,9 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
   const { id } = useParams();
   const gemId = id;
   //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
-    const gemSelected = selectedGems.filter(selectedGems => selectedGems.owner === account);
-    const minedGem = minedGems.filter(minedGems => minedGems.owner === account);
-    const JewelryD = jewelry.filter(jewelry => jewelry.owner === account);
+    const gemSelected = selectedGems;
+    const minedGem = minedGems;
+    const JewelryD = jewelry;
 
   const renderSelectedGems = () => {
     

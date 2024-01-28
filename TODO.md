@@ -74,3 +74,7 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         ![Alt text](image-1.png)
         -gem market buy gomb nem jó, gondolom az owner miatt
         ![Alt text](image-2.png)
+
+2024.01.28. 20:45:
+        - a data of jew a detailsen belül a jewmarketben nem ír semmit. miért?
+        --- most az a problem, hogy a detailsnál csak azokat listázza ki amit a user adott meg, mást nem

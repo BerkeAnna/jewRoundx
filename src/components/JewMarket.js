@@ -1,51 +1,57 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class JewMarket extends Component {
+function JewMarket({ jewelry, account }) {
+  const navigate = useNavigate();
 
-  render() {
-    //console.table(this.props.minedGems);
+  const navigateToJewDetails = (jewId) => {
+    navigate(`/jew-details/${jewId}`);
+  };
 
-    return (
-            <div id="tables">
-                    <p>&nbsp;</p>
-                    <h2>Jew market :P</h2>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Owner</th>
-                                <th scope="col">*</th>
-                                </tr>
-                            </thead>
-                            <tbody >
-                              {this.props.jewelry.map((jewelry, key) => {
-                                return(
-                                  jewelry.owner !== this.props.account ? (
-                                            <tr key={key}>
-                                              <th scope="row">{jewelry.id.toString()}</th>
-                                              <td>{jewelry.name}</td>
-                                             
-                                              <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
-                                              <td>{jewelry.owner}</td>
-                                              <td>
-                                                <button
-                                                  
-                                                >
-                                                  Buy
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          ) : null //todo
-                                    )
-                              })}
-                            
-                            </tbody>
-                        </table>
-            </div>
-    );
-  }
+  console.log("Jewelry Data:", jewelry); // Debugging: Check the jewelry data
+
+  return (
+    <div id="tables">
+      <p>&nbsp;</p>
+      <h2>Jew market :P</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Details</th>
+            <th scope="col">Buy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {jewelry && jewelry.map((jewelryItem, key) => {
+            return(
+              jewelryItem.owner !== account ? (
+                <tr key={key}>
+                  <th scope="row">{jewelryItem.id.toString()}</th>
+                  <td>{jewelryItem.name}</td>
+                  <td>{window.web3.utils.fromWei(jewelryItem.price.toString(), 'Ether')} Eth</td>
+                  <td>{jewelryItem.owner}</td>
+                  <td>
+                    <button onClick={() => navigateToJewDetails(jewelryItem.id)}>
+                      Details
+                    </button>
+                  </td>
+                  <td>
+                    <button>
+                      Buy
+                    </button>
+                  </td>
+                </tr>
+              ) : null
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default JewMarket;
