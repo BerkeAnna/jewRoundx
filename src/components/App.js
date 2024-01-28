@@ -28,6 +28,7 @@ class App extends Component {
     await this.loadBlockchainData3()
   }
 
+  
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
