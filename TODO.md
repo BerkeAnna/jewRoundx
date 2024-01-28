@@ -72,3 +72,5 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - list of jew. sorokban sell gomb -> jew. piac --- nooo nem kell sell gomb, alapból kikerül
         - contractokba require-k, amik ellenőrzik, hogy pl a sleected gem mérete nem lehet nagyobb a minedgemnél
         ![Alt text](image-1.png)
+        -gem market buy gomb nem jó, gondolom az owner miatt
+        ![Alt text](image-2.png)

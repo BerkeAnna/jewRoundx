@@ -26,6 +26,9 @@ class Navbar extends Component {
           <Link to="/gemMarket" className='text-white'>Gem Market</Link>
           </li>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
+          <Link to="/jewMarket" className='text-white'>Jew Market</Link>
+          </li>
+          <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
            <Link to="/buyedGemsList" className='text-white'>Buyed Gems List</Link>
           </li>
         </ul>

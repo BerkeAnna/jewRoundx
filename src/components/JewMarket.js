@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class GemMarket extends Component {
+class JewMarket extends Component {
 
   render() {
     //console.table(this.props.minedGems);
@@ -8,7 +8,7 @@ class GemMarket extends Component {
     return (
             <div id="tables">
                     <p>&nbsp;</p>
-                    <h2>Gem market :D</h2>
+                    <h2>Jew market :P</h2>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -20,29 +20,24 @@ class GemMarket extends Component {
                                 </tr>
                             </thead>
                             <tbody >
-                              {this.props.selectedGems.map((selectedGem, key) => {
+                              {this.props.jewelry.map((jewelry, key) => {
                                 return(
-                                    selectedGem.used === false && selectedGem.owner != this.props.account &&(
+                                  jewelry.owner !== this.props.account ? (
                                             <tr key={key}>
-                                              <th scope="row">{selectedGem.id.toString()}</th>
-                                              <td>{selectedGem.gemType}</td>
+                                              <th scope="row">{jewelry.id.toString()}</th>
+                                              <td>{jewelry.name}</td>
                                              
-                                              <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
-                                              <td>{selectedGem.owner}</td>
+                                              <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+                                              <td>{jewelry.owner}</td>
                                               <td>
                                                 <button
-                                                  name={selectedGem.id}
-                                                  value={selectedGem.price}
-                                                  onClick={(event) => {
-                                                    //todo: owner change
-                                                    this.props.purchaseGem(event.target.name, event.target.value);
-                                                  }}
+                                                  
                                                 >
                                                   Buy
                                                 </button>
                                               </td>
                                             </tr>
-                                          ) : null
+                                          ) : null //todo
                                     )
                               })}
                             
@@ -53,4 +48,4 @@ class GemMarket extends Component {
   }
 }
 
-export default GemMarket;
+export default JewMarket;

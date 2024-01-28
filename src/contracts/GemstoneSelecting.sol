@@ -75,7 +75,7 @@ contract GemstoneSelecting {
         SelectedGem storage _selectedGem = selectedGems[_id];
         require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
         require(_selectedGem.used == false, "Gem already used");
-        require(_selectedGem.owner == msg.sender, "Only the owner can select the gem");
+        //require(_selectedGem.owner == msg.sender, "Only the owner can select the gem");
 
         _selectedGem.used = true;
 
