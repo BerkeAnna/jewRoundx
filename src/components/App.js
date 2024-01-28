@@ -290,7 +290,10 @@ polishGem(id ){
       <div className='col-6'> 
         <Router>
           {/* Navbar mindig látható */}
-          <Navbar account={this.state.account} />
+          {window.location.pathname !== "/" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket" && <Navbar account={this.state.account} />}
+
+         
+          
           <Routes>
           <Route path="/" element={<Dashboard  />} />
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
