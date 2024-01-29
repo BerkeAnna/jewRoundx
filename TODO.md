@@ -83,3 +83,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.01.28. 21:41:
         - most ha betöltöd a http://localhost:3000/ oldalt nincs navbar, ha a Login gombra mész akkor rá kell frissíteni, hogy 
                 látszódjn a navbar. És ha visszalépsz akkor is h eltűnjkön
+
+2024.01.29. 9:19:
+        - navbar még minding
