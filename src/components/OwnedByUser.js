@@ -61,11 +61,13 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{minedGem.gemType}</td>
         <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
         <td>{minedGem.owner}</td>
+      {/*} 
         <td>
           <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
             Select Gem form
           </button>
         </td>
+      */}
         <td>
         <button onClick={() => handleMarkAsSelected(minedGem.id)}>
               Select Gem
