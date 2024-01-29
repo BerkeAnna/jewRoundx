@@ -27,7 +27,9 @@ class App extends Component {
     await this.loadBlockchainData2()
     await this.loadBlockchainData3()
   }
-
+  async refreshPage() {
+    window.location.reload(false);
+  }
   
   async loadWeb3() {
     if (window.ethereum) {
@@ -288,11 +290,20 @@ polishGem(id ){
 }
 
 
+
   render() {
     return (
+     
       
       <div className='col-6'> 
+        <div className='pt-5'>
+          <button onClick={() => this.refreshPage()}>Click to reload!</button>
+          Majd később megcsinálni, hogy auto frissüljön
+        </div>
+       
+
         <Router>
+        
           {/* Navbar mindig látható */}
           {window.location.pathname !== "/" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket" && <Navbar account={this.state.account} />}
 
