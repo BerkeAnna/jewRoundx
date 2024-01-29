@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
   const navigate = useNavigate();
 
+  
+
   const handleMarkAsSelected = (gemId) => {
     markGemAsSelected(gemId)
     navigate(`/gem-select/${gemId}`);
