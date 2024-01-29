@@ -298,7 +298,6 @@ polishGem(id ){
       <div className='col-6'> 
         <div className='pt-5'>
           <button onClick={() => this.refreshPage()}>Click to reload!</button>
-          Majd később megcsinálni, hogy auto frissüljön
         </div>
        
 

@@ -154,6 +154,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
 
   return (
     <div id="tables" className="pt-5">
+    <a href='\'><button>Log out</button></a>
       <h2>List of mined gems</h2>
       <table className="table">
         <thead>{/* Table headers */}</thead>
