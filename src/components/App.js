@@ -190,8 +190,11 @@ class App extends Component {
         purchased // make sure this is a boolean
     ).send({ from: this.state.account })
     .once('receipt', (receipt) => {
+        this.loadBlockchainData();
+        this.loadBlockchainData2();
+        this.loadBlockchainData3();
         this.setState({ loading: false })
-    })
+            })
 }
 
   

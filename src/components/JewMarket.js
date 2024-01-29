@@ -50,6 +50,7 @@ function JewMarket({ jewelry, account }) {
           })}
         </tbody>
       </table>
+      <button onClick={() => navigate(`/`)}>HOME PAGE</button>
     </div>
   );
 }

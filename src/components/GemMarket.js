@@ -1,56 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class GemMarket extends Component {
+function GemMarket({ selectedGems, account, purchaseGem }) {
+  const navigate = useNavigate();
 
-  render() {
-    //console.table(this.props.minedGems);
+  const handlePurchase = (gemId, price) => {
+    purchaseGem(gemId, price);
+  };
 
-    return (
-            <div id="tables">
-                    <p>&nbsp;</p>
-                    <h2>Gem market :D</h2>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Owner</th>
-                                <th scope="col">*</th>
-                                </tr>
-                            </thead>
-                            <tbody >
-                              {this.props.selectedGems.map((selectedGem, key) => {
-                                return(
-                                    selectedGem.used === false && selectedGem.owner != this.props.account &&(
-                                            <tr key={key}>
-                                              <th scope="row">{selectedGem.id.toString()}</th>
-                                              <td>{selectedGem.gemType}</td>
-                                             
-                                              <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
-                                              <td>{selectedGem.owner}</td>
-                                              <td>
-                                                <button
-                                                  name={selectedGem.id}
-                                                  value={selectedGem.price}
-                                                  onClick={(event) => {
-                                                    //todo: owner change
-                                                    this.props.purchaseGem(event.target.name, event.target.value);
-                                                  }}
-                                                >
-                                                  Buy
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          ) : null
-                                    )
-                              })}
-                            
-                            </tbody>
-                        </table>
-            </div>
-    );
-  }
+  return (
+    <div id="tables">
+      <p>&nbsp;</p>
+      <h2>Gem market :D</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Type</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Buy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedGems && selectedGems.map((selectedGem, key) => {
+            return(
+              selectedGem.used === false && selectedGem.owner !== account ? (
+                <tr key={key}>
+                  <th scope="row">{selectedGem.id.toString()}</th>
+                  <td>{selectedGem.gemType}</td>
+                  <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
+                  <td>{selectedGem.owner}</td>
+                  <td>
+                    <button
+                      onClick={() => handlePurchase(selectedGem.id, selectedGem.price)}
+                    >
+                      Buy
+                    </button>
+                  </td>
+                </tr>
+              ) : null
+            )
+          })}
+        </tbody>
+      </table>
+      <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+    </div>
+  );
 }
 
 export default GemMarket;

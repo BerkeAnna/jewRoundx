@@ -7,6 +7,7 @@ const Dashboard = ({ account }) => {
     <div className='pt-5'>
       <h1>Navigation</h1>
       todo: kivenni innen a navbart <br/>
+      todo2: valamit tenni a lapok auto frissitéséért, most nem frissül alapból<br/>
       <Link className='text-info' to="/ownMinedGems"><button>Log in - user</button></Link><br/>
       <Link to="/gemMarket" className='text-white'><button>Gem Market</button></Link><br/>
       <Link to="/jewMarket" className='text-white'><button>Jew Market</button></Link><br/>
