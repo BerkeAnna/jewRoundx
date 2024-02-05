@@ -66,11 +66,17 @@ function gemSelecting(
     (, , uint minedWeight, uint minedHeight, uint minedWidth, , , , bool selected, , , ) = gemstoneExtraction.minedGems(_minedGemId);
 
     // Ellenőrizzük, hogy a paraméterként átadott súly kisebb-e, mint a bányászott drágakő súlya
-    require(_weight < minedWeight, "Selected gem weight must be less than mined gem weight");
+    require(_weight <= minedWeight, "Selected gem weight must be less than mined gem weight");
 
-    // Ellenőrizzük, hogy a paraméterként átadott adatok megegyeznek-e a lekérdezett adatokkal (magasság és szélesség tekintetében)
-    require(minedHeight == _height && minedWidth == _width, "The provided dimensions do not match the mined gem data");
+    
+    require(_height <= minedHeight, "Selected gem weight must be less than mined gem weight");
 
+    
+    require(_width <= minedWidth, "Selected gem width must be less than mined gem weight");
+
+    
+
+   
     // Ellenőrizzük, hogy a gyémánt még nincs kiválasztva
    // require(!selected, "The gem is already selected");
 
