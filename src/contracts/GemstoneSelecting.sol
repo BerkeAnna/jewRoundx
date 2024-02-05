@@ -1,9 +1,17 @@
 pragma solidity >=0.4.21 <0.6.0;
+import "./GemstoneExtraction.sol";
+
+interface IGemstoneExtraction {
+    function minedGems(uint) external view returns (uint id, string memory gemType, uint weight, uint height, uint width, uint price, string memory miningLocation, uint miningYear, bool selected, string memory extractionMethod, address payable owner, bool purchased);
+}
+
+
 
 contract GemstoneSelecting {
     
     uint public selectedGemCount = 0;
     mapping (uint => SelectedGem) public selectedGems;
+      IGemstoneExtraction gemstoneExtraction;
 
     struct SelectedGem{
         uint id;
@@ -37,14 +45,73 @@ contract GemstoneSelecting {
         address owner
      );
 
-        // a minedGemId majd a js-sel kerül át. Kattintás után
-      function gemSelecting(uint _minedGemId, uint _weight, uint _height, uint _width, uint _diameter, uint _carat, string memory _color, string memory _gemtype, bool _polishing, uint _price) public {
-       selectedGemCount++;
-
-       selectedGems[selectedGemCount] = SelectedGem(selectedGemCount, _minedGemId, _weight,_height, _width, _diameter, _carat, _color, _gemtype, false,_price, false, msg.sender);
-
-       emit GemSelecting(selectedGemCount, _minedGemId, _weight, _height, _width, _diameter, _carat, _color, _gemtype, false, _price, false, msg.sender);
+ constructor(address _gemstoneExtractionAddress) public {
+        gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
     }
+        // a minedGemId majd a js-sel kerül át. Kattintás után
+   // A gemSelecting függvény módosítása a GemstoneSelecting szerződésben
+function gemSelecting(
+    uint _minedGemId,
+    uint _weight,
+    uint _height,
+    uint _width,
+    uint _diameter,
+    uint _carat,
+    string memory _color,
+    string memory _gemtype,
+    bool _polishing,
+    uint _price
+) public {
+    // Lekérdezzük a bányászott gyémánt adatait a GemstoneExtraction szerződésből
+    (, , uint minedWeight, uint minedHeight, uint minedWidth, , , , bool selected, , , ) = gemstoneExtraction.minedGems(_minedGemId);
+
+    // Ellenőrizzük, hogy a paraméterként átadott súly kisebb-e, mint a bányászott drágakő súlya
+    require(_weight < minedWeight, "Selected gem weight must be less than mined gem weight");
+
+    // Ellenőrizzük, hogy a paraméterként átadott adatok megegyeznek-e a lekérdezett adatokkal (magasság és szélesség tekintetében)
+    require(minedHeight == _height && minedWidth == _width, "The provided dimensions do not match the mined gem data");
+
+    // Ellenőrizzük, hogy a gyémánt még nincs kiválasztva
+   // require(!selected, "The gem is already selected");
+
+    // Folytatjuk a gyémánt hozzáadását, ha minden ellenőrzés sikeres
+    selectedGemCount++;
+    selectedGems[selectedGemCount] = SelectedGem(
+        selectedGemCount,
+        _minedGemId,
+        _weight,
+        _height,
+        _width,
+        _diameter,
+        _carat,
+        _color,
+        _gemtype,
+        _polishing,
+        _price,
+        false,
+        msg.sender
+    );
+
+    emit GemSelecting(
+        selectedGemCount,
+        _minedGemId,
+        _weight,
+        _height,
+        _width,
+        _diameter,
+        _carat,
+        _color,
+        _gemtype,
+        _polishing,
+        _price,
+        false,
+        msg.sender
+    );
+
+    // Itt kellene hozzáadni egy új függvényhívást a GemstoneExtraction szerződéshez, hogy beállítsuk a 'selected' állapotot 'true'-ra
+}
+
+
 
      function polishGem(uint _id) public payable {
     SelectedGem storage _selectedGem = selectedGems[_id];

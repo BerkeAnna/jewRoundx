@@ -86,3 +86,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.01.29. 9:19:
         - navbar még minding
+
+2024.02.02. 8:49:
+        -problem: ha a selectingnél rossz adatot adunk meg, akkor ha kilép a formból már nem tujuk használni, mert már a selectgem gombbal eltűntetjük  
+        - és nem működik a form - jrpc errort kapok, valami nem jó, hiába adok kisebb, nagyobb, egyenlő értéket. meg kell keresni a problemet, de azért ezeket is újra ellenőrizni. a remixen elvileg működik
+
+        skálázható mérés
