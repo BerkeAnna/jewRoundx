@@ -5179,12 +5179,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x4Dd85bB76d94fd1B380C9C5e72bC3764444a0A3A",
-      "transactionHash": "0x1bf0ad76c0f520efea2f403dc7fd0d7ac3ef8cff8230f536710f707960d9c2f8"
+      "address": "0xa500A24c2519A2F50346E675f33e04C6Ef61502b",
+      "transactionHash": "0x2db5f40f43e28ea8f1937985c70063189658cacd6c079ca083eaf928cbf3e3fd"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-02-05T12:31:28.203Z",
+  "updatedAt": "2024-02-07T09:33:18.917Z",
   "devdoc": {
     "methods": {}
   },

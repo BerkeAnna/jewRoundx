@@ -92,3 +92,7 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - és nem működik a form - jrpc errort kapok, valami nem jó, hiába adok kisebb, nagyobb, egyenlő értéket. meg kell keresni a problemet, de azért ezeket is újra ellenőrizni. a remixen elvileg működik
 
         skálázható mérés
+
+2024.02.07. 10:26:
+        - gemtype nem változik, szóval nem kell megadni a formban, hanem csak vigye tovább
+        - megcserélni a selectgemnél a gombokat, előszőr menjen a form, utána a "törlés", mert így ha rosszul adom meg a formban az adatokat és kilépek, a minedgem eltűnik, de már nem tudom selectelni
