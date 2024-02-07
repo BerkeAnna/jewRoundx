@@ -96,3 +96,5 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.02.07. 10:26:
         - gemtype nem változik, szóval nem kell megadni a formban, hanem csak vigye tovább
         - megcserélni a selectgemnél a gombokat, előszőr menjen a form, utána a "törlés", mert így ha rosszul adom meg a formban az adatokat és kilépek, a minedgem eltűnik, de már nem tudom selectelni
+        - jew.sol-ban a price - require
+        - a minedgem.sol-ban require -> hogy nagyobb legyenek, mint 0 az értékek :D
