@@ -1,6 +1,13 @@
 pragma solidity >=0.4.21 <0.6.0;
 
+interface IGemstoneSelecting {
+    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);
+    function markGemAsUsed(uint _id) external;
+}
+
 contract Jewelry {
+    
+    IGemstoneSelecting gemstoneSelecting;
 
     /*struct GoldData{
         string name;
@@ -56,7 +63,14 @@ contract Jewelry {
         address payable owner
     );
 
+     constructor(address _gemstoneSelectingAddress) public {
+        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
+    }
+
     function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width, uint _size, uint _date, bool _sale, uint _price ) public {
+        (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);
+        //require(!used, "Gem already used");
+        
         require( _depth > 0);
         require( _height > 0);
         require( _width > 0);

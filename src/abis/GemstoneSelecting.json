@@ -9833,12 +9833,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x7348176a668C4225a2148022D5995b77Eb675a5C",
-      "transactionHash": "0x4aadbe30919ca3ab9b2eacbf696c932b08fa22c4b661f02f0559144495c49ac5"
+      "address": "0xf27F6fa3F4278867681fac76DA5Ee8E8bEf913a2",
+      "transactionHash": "0x9f705311215754e0fdb812810419d359fc244b4cde1aafedb8879b321341931c"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-02-07T09:33:18.914Z",
+  "updatedAt": "2024-02-09T08:00:15.799Z",
   "devdoc": {
     "methods": {}
   },
