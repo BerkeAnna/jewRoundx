@@ -99,11 +99,11 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - jew.sol-ban a price - require
         - a minedgem.sol-ban require -> hogy nagyobb legyenek, mint 0 az értékek :D
 
-2024.02.09. 9:04:
-        - gemtype nem változik, szóval nem kell megadni a formban, hanem csak vigye tovább
-        - megcserélni a selectgemnél a gombokat, előszőr menjen a form, utána a "törlés", mert így ha rosszul adom meg a formban az adatokat és kilépek, a minedgem eltűnik, de már nem tudom selectelni
-        - a minedgem.sol-ban require -> hogy nagyobb legyenek, mint 0 az értékek :D
-        - a marketben a buy gomb is kell
-        - táblákban a mértékegységek
-        - gem marketet is megcsinálni, hogy látszódjanak az eladó kövek
-        - megcsinálni egy lekérőt, ami id alapján úgyanúgy kilistázza az adatokat - külön ékszerre fix, de lehet kőre is kell a gem market miatt??
+2024.02.09. 9:04:<br>
+        - ~~gemtype nem változik, szóval nem kell megadni a formban, hanem csak vigye tovább~~ használom tovább még <br>
+        - megcserélni a selectgemnél a gombokat, előszőr menjen a form, utána a "törlés", mert így ha rosszul adom meg a formban az adatokat és kilépek, a minedgem eltűnik, de már nem tudom selectelni<br>
+        - ~~a minedgem.sol-ban require -> hogy nagyobb legyenek, mint 0 az értékek :D~~<br>
+        - a marketben a buy gomb is kell<br>
+        - ~~táblákban a mértékegységek~~<br>
+        - gem marketet is megcsinálni, hogy látszódjanak az eladó kövek<br>
+        - ~~megcsinálni egy lekérőt, ami id alapján úgyanúgy kilistázza az adatokat - külön ékszerre fix,~~ de lehet kőre is kell a gem market miatt??<br>

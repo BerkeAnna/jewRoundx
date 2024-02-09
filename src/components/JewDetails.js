@@ -18,11 +18,11 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
       gem.id == gemId &&(
         <tr key={key}>
           <th scope="row">{gem.id.toString()}</th>
-          <td>{gem.weight.toString()}</td>
-          <td>{gem.height.toString()}</td>
-          <td>{gem.width.toString()}</td>
-          <td>{gem.diameter.toString()}</td>
-          <td>{gem.carat.toString()}</td>
+          <td>{gem.weight.toString()} mm</td>
+          <td>{gem.height.toString()} mm</td>
+          <td>{gem.width.toString()} mm</td>
+          <td>{gem.diameter.toString()} mm</td>
+          <td>{gem.carat.toString()} ct</td>
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
           <td>{gem.polishing.toString()}</td>
@@ -46,9 +46,9 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           
           <th scope="row">{gem.id.toString()}</th>
           <td>{gem.gemType}</td>
-          <td>{gem.weight.toString()}</td>
-          <td>{gem.height.toString()}</td>
-          <td>{gem.width.toString()}</td>
+          <td>{gem.weight.toString()} mm</td>
+          <td>{gem.height.toString()} mm</td>
+          <td>{gem.width.toString()} mm</td>
           <td>{gem.miningLocation}</td>
           <td>{gem.miningYear.toString()}</td>
           <td>{gem.extractionMethod}</td>
@@ -71,9 +71,9 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
         <tr key={key}>
           <th scope="row">{jewelry.id.toString()}</th>
           <td>{jewelry.name}</td>
-          <td>{jewelry.depth.toString()}</td>
-          <td>{jewelry.height.toString()}</td>
-          <td>{jewelry.width.toString()}</td>
+          <td>{jewelry.depth.toString()} mm</td>
+          <td>{jewelry.height.toString()} mm</td>
+          <td>{jewelry.width.toString()} mm</td>
           <td>{jewelry.size.toString()}</td>
           <td>{jewelry.date.toString()}</td>
           <td>{jewelry.metal}</td>
