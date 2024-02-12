@@ -1,170 +1,187 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, account,  purchaseGem, sellGem }) {
- // render() {
-   // const { minedGems, account } = this.props;
-    const navigate = useNavigate();
 
-    // Szűrjük a gemeket, hogy csak azokat jelenítsük meg, amelyeknek az owner-je megegyezik a felhasználói fiókkal
-    const ownedGems = minedGems.filter((minedGem) => 
-    minedGem.owner === account ///???
-);
-    console.log("fitrsitika" + ownedGems[0])
 
-    const processingGems = selectedGems.filter((selectedGem) => 
-    selectedGem.owner === account //????
-);
 
-console.log("fitrsitika" + processingGems[0])
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
+  const navigate = useNavigate();
 
-    const pg = selectedGems.filter((selectedGem) => {
-      const minedGem = minedGems.find((mg) => mg.id === selectedGem.minedGemId);
-      return minedGem && minedGem.owner === account;
-    });
   
+
+  const handleMarkAsSelected = (gemId) => {
+    markGemAsSelected(gemId)
+    navigate(`/gem-select/${gemId}`);
+      
     
+  };
 
-    console.log(processingGems)
+  const handleMarkAsUsed = (gemId) => {
+    markGemAsUsed(gemId)
+    navigate(`/jewelry-making/gem/${gemId}`);
+      
+    
+  };
 
-    return (
-      <div id="tables">
-        <p>&nbsp;</p>
-        <h2>List of mined gems</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Owner</th>
-              <th scope="col">pp</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {ownedGems.map((minedGem, key) => {
-              return (
-               
-                                        /* TODO: sign mined or processing */
-                minedGem.purchased===false ? (
-                  
-                  <tr key={key}>
-                    <th scope="row">{minedGem.id.toString()}</th>
-                    <td>{minedGem.gemType}</td>
-                    <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
-                    <td>{minedGem.owner}</td>
-                    <td>{minedGem.pointOfProcessing.toString()}</td>
-                    <td>
-                      <button
-                        name={minedGem.id}
-                        value={minedGem.price}
-                        onClick={(event) => {
-                          purchaseGem(event.target.name, event.target.value);
-                        }}
-                      >
-                        Process
-                      </button>
-                    </td>
-                  </tr>
-                ) : null
-              );
-            }
-            )}
-          </tbody>
-        </table>
-     
-        <h2>List of selected gems</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Owner</th>
-              <th scope="col">pp</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {ownedGems.map((minedGem, key) => {
-              return (
-              
-                                        /* TODO: sign mined or processing */
-                minedGem.purchased===true && minedGem.pointOfProcessing==0 ? (
-                  
-                  <tr key={key}>
-                    <th scope="row">{minedGem.id.toString()}</th>
-                    <td>{minedGem.gemType}</td>
-                    <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
-                    <td>{minedGem.owner}</td>
-                    
-                    <td>{minedGem.pointOfProcessing.toString()}</td>
-                    <td>
-                      
-                   
-                    <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
-                      Select Gem
-                    </button>
-                    </td>
-                    <td>
-                      <button
-                        name={minedGem.id}
-                        value={minedGem.price}
-                        onClick={(event) => {
-                          this.props.sellGem(event.target.name);
-                        }}
-                      >
-                        Sell
-                      </button>
-                    </td>
-                  </tr>
-                ) : null
-              );
-            }
-            )}
-          </tbody>
-        </table>
+  // Filter gems based on the owner's account
+  const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner === account);
+  const ownedSelectedGems = selectedGems.filter(selectedGem => selectedGem.owner === account);
+  const ownedJewelry = jewelry.filter(jewelry => jewelry.owner === account);
 
-        <h2>List of processing gems</h2>
+  // Function to render rows for the 'List of mined gems'
+  const renderMinedGems = () => {
+    return ownedMinedGems.map((minedGem, key) => (
+      minedGem.purchased === false && minedGem.selected === false &&(
+        <tr key={key}>
+          <th scope="row">{minedGem.id.toString()}</th>
+          <td>{minedGem.gemType}</td>
+          <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
+          <td>{minedGem.owner}</td>
+          <td>
+            <button
+              name={minedGem.id}
+              value={minedGem.price}
+              onClick={(event) => purchaseGem(event.target.name, event.target.value)}
+            >
+              Process
+            </button>
+          </td>
+        </tr>
+      )
+    ));
+  };
+
+  // Function to render rows for the 'List of selected gems'
+ const renderSelectedGems = () => {
+  console.log(ownedMinedGems[0])
+    return ownedMinedGems.map((minedGem, key) => (
+    minedGem.purchased === true &&  minedGem.selected === false && (
+      <tr key={key}>
+        <th scope="row">{minedGem.id.toString()}</th>
+        <td>{minedGem.gemType}</td>
+        <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
+        <td>{minedGem.owner}</td>
+      {/*} 
+        <td>
+          <button onClick={() => navigate(`/gem-select/${minedGem.id}`)}>
+            Select Gem form
+          </button>
+        </td>
+      */}
+        <td>
+        <button onClick={() => handleMarkAsSelected(minedGem.id)}>
+              Select Gem
+            </button>
+
+        </td>
+        <td>
+          <button
+            name={minedGem.id}
+            value={minedGem.price}
+            onClick={(event) => sellGem(event.target.name)}
+          >
+            Sell
+          </button>
+        </td>
+      </tr>
+    )
+  ));
+};
+
+  // Function to render rows for the 'List of processing gems'
+  const renderProcessingGems = () => {
+    console.log(selectedGems[0]);
+    return ownedSelectedGems.map((selectedGem, key) => (
+      selectedGem.used === false &&(
+    
+      <tr key={key}>
+        <th scope="row">{selectedGem.id.toString()}</th>
+        <td>{selectedGem.gemType}</td>
+        <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
+        <td>{selectedGem.owner}</td>
+        <td>{selectedGem.polishing.toString()}</td>
+        
+          {selectedGem.polishing ? (
+          <div>
+            <td>
+              <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                Details
+              </button>
+            </td>
+            <td>
+              <button  onClick={() => handleMarkAsUsed(selectedGem.id)}>
+                Make jewelry
+              </button>
+            </td>
+            </div>
+          ) : (
+            <td>
+              <button 
+                id={selectedGem.id}
+                value={selectedGem.price}
+                onClick={() => polishGem(selectedGem.id)}>
+                Polishing
+              </button>
+            </td>
+          )}
+        
+      </tr>
+      )
+    ));
+  };
+
+  const renderJewelry = () => {
+    console.log(ownedJewelry[0]);
+    return ownedJewelry.map((jewelry, key) => (
+      
+      <tr key={key}>
+        <th scope="row">{jewelry.id.toString()}</th>
+        <td>{jewelry.gemType}</td>
+        <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        <td>{jewelry.owner}</td>
+        
+            <td>
+              <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
+                Details
+              </button>
+            </td>
+        
+        
+      </tr>
+    ));
+  };
+  
+
+  
+
+  return (
+    <div id="tables" className="pt-5">
+    <a href='\'><button>Log out</button></a>
+      <h2>List of mined gems</h2>
       <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {processingGems.map((selectedGem, key) => {
-            // Find the corresponding mined gem
-            
-            return (
-              <tr key={key}>
-                <th scope="row">{selectedGem.id.toString()}</th>
-                <td>{selectedGem.gemType}</td>
-                <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
-                <td>{selectedGem.owner}</td>
-                <td>
-                  <button onClick={() => navigate(`/gem-select/${selectedGem.id}`)}>
-                    Polishing
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+        <thead>{/* Table headers */}</thead>
+        <tbody>{renderMinedGems()}</tbody>
       </table>
-      </div>
-      
 
-      
-    );
-    
-  }
-//}
+      <h2>List of selected gems</h2>
+      <table className="table">
+        <thead>{/* Table headers */}</thead>
+        <tbody>{renderSelectedGems()}</tbody>
+      </table>
+
+      <h2>List of processing gems</h2>
+      <table className="table">
+        <thead>{/* Table headers */}</thead>
+        <tbody>{renderProcessingGems()}</tbody>
+      </table>
+
+      <h2>List of jewelry</h2>
+      <table className="table">
+        <thead>{/* Table headers */}</thead>
+        <tbody>{renderJewelry()}</tbody>
+      </table>
+    </div>
+  );
+}
 
 export default OwnedByUser;
