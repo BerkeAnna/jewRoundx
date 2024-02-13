@@ -18,9 +18,10 @@ function Main(props) {
    
     props.gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, false);
 
-    
-
+  
   };
+
+
 
   return (
     <div id="content">
@@ -52,6 +53,13 @@ function Main(props) {
         </div>
 
         <button type="submit" className="btn btn-primary" >Add Product</button>
+      </form>
+      <h1>image</h1>
+      <img src='' alt=''></img>
+      <h2>upload image</h2>
+      <form onSubmit={props.onSubmit} >
+        <input type='file' onChange={props.captureFile} />
+        <input type='submit'/>
       </form>
     </div>
   );

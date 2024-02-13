@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import logo from '../logo.png';
 import './App.css';
+import ipfs from './ipfs.js';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import GemSelecting from '../abis/GemstoneSelecting.json';
 import Jewelry from '../abis/Jewelry.json';
@@ -176,6 +177,8 @@ class App extends Component {
     this.markGemAsUsed = this.markGemAsUsed.bind(this)
     this.polishGem = this.polishGem.bind(this)
     this.jewelryMaking = this.jewelryMaking.bind(this)
+    this.captureFile = this.captureFile.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
@@ -289,6 +292,15 @@ polishGem(id ){
     })
 }
 
+  ///todo: írd át az appba ezt a 2t
+   captureFile () {
+    console.log('capture file...');
+  };
+
+   onSubmit () {
+    console.log('on submit...');
+  };
+
 
 
   render() {
@@ -310,7 +322,10 @@ polishGem(id ){
           
           <Routes>
           <Route path="/" element={<Dashboard  />} />
-            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
+            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining}
+                                                              captureFile = {this.captureFile}
+                                                              onSubmit = {this.onSubmit}
+                                                              />} />
             <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
                                                               gemMining={this.gemMining}
                                                               purchaseGem={this.purchaseGem}
