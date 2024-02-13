@@ -4,10 +4,19 @@ contract GemstoneExtraction {
 // https://www.youtube.com/watch?v=VH9Q2lf2mNo&t=1990s 1:11:54
     string public name;
     uint public minedGemCount = 0;
+    string ipfsHash;
 
     mapping( uint => MinedGem) public minedGems;
 
     enum PointOfProcessing {MINED, SALEOFMINEDPRODUCT,  PREPARATION, PROCESSING }
+
+    function set(string memory x) public {
+        ipfsHash = x;
+    }
+
+    function get() public view returns(string memory) {
+        return ipfsHash;
+    }
 
     struct MinedGem {
         uint id;

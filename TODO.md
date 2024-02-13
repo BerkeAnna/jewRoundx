@@ -115,3 +115,4 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.02.13. 11:49:
         - gem markastben nem látszik semmi, de a belső gemlist jó
+        - https://www.youtube.com/watch?v=SkMH0WeRYtg  20:26 
