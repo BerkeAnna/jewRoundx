@@ -112,3 +112,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.02.12. 9:30:<br>
         - IPFS
+
+2024.02.13. 11:49:
+        - gem markastben nem látszik semmi, de a belső gemlist jó
