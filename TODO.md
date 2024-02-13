@@ -111,8 +111,12 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - ha más sorrendben csinálom a kövek feldolgozását átírja az összes id-t. PL ha a minedgem 9-es id, de a jewnél 2-est kap, akkor minedt átírja <br><br>
 
 2024.02.12. 9:30:<br>
-        - IPFS
+        - IPFS<br><br>
 
-2024.02.13. 11:49:
-        - gem markastben nem látszik semmi, de a belső gemlist jó
-        - https://www.youtube.com/watch?v=SkMH0WeRYtg  20:26 
+2024.02.13. 11:49:<br>
+        - gem markastben nem látszik semmi, de a belső gemlist jó<br>
+        - https://www.youtube.com/watch?v=SkMH0WeRYtg  20:26 <br><br>
+
+2024.02.13. 21:10:<br>
+        ![alt text](image-3.png)<br>
+        ![alt text](image-4.png)<br>

@@ -166,7 +166,9 @@ class App extends Component {
       selectedGemCount:0,
       selectedGems: [],
       loading: true,
-      jewelry: []
+      jewelry: [],
+      buffer: null, 
+      ipfsHash: ''
     }
 
     this.gemMining = this.gemMining.bind(this)
@@ -293,12 +295,28 @@ polishGem(id ){
 }
 
   ///todo: írd át az appba ezt a 2t
-   captureFile () {
+   captureFile (event) {
     console.log('capture file...');
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      this.setState({buffer: Buffer(reader.result) })
+      console.log('buffer', this.state.buffer)
+    }
   };
 
-   onSubmit () {
-    console.log('on submit...');
+   onSubmit (event) {
+    event.preventDefault()
+    ipfs.files.add(this.state.buffer, (error, result) => {
+      if(error) {
+        console.error(error)
+        return
+      }
+      this.setState({ ipfsHash: result[0].hash })
+      console.log('ipfsHash', this.state.ipfsHash)
+    })
   };
 
 
