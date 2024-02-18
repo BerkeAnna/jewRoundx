@@ -119,4 +119,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.02.13. 21:10:<br>
         ![alt text](image-3.png)<br>
-        ![alt text](image-4.png)<br>
+        ![alt text](image-4.png)<br><br>
+
+2024.02.14. 12:16:<br>
+        - https://community.infura.io/t/401-unauthorized/5767<br>
+        - https://community.infura.io/t/how-to-add-data-using-ipfs-http-client/5179/12<br>
+        - https://github.com/LogeswaranA/jquery-ipfs-sample/blob/master/index.js<br><br>

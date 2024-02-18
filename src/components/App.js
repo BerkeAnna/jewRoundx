@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import logo from '../logo.png';
 import './App.css';
-import ipfs from './ipfs.js';
+//import ipfs from './ipfs.js';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import GemSelecting from '../abis/GemstoneSelecting.json';
 import Jewelry from '../abis/Jewelry.json';
@@ -20,7 +20,35 @@ import GemSelectingForm from './GemSelectingForm';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
 
+import { create as ipfshttpClient} from "ipfs-http-client";
+
+const projectId = '3b75f15f3d184d749681f209f4de2913';
+const projectSecretKey = '94a73e4ddb324032bcb64af4cd3e591f';
+const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecretKey).toString('base64');
+
+
+
+/*
+const ipfsClient =require('ipfs-http-client')
+const ipfs = ipfsClient.create({host: 'ipfs,infura.io', port: 5001, protocol: 'http'})
+*/
 class App extends Component {
+
+  state = {
+    account: '',
+    // További állapot változók
+    uploadedImages: [],
+  };
+
+  ipfs = ipfshttpClient({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+      authorization: auth,
+    },
+  });
+
 //2:11:30
   async componentWillMount() {
     await this.loadWeb3()
@@ -295,123 +323,65 @@ polishGem(id ){
 }
 
   ///todo: írd át az appba ezt a 2t
-   captureFile (event) {
-    console.log('capture file...');
-    event.preventDefault()
-    const file = event.target.files[0]
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
+  captureFile = (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
-      this.setState({buffer: Buffer(reader.result) })
-      console.log('buffer', this.state.buffer)
+      this.setState({ buffer: Buffer(reader.result) });
+      console.log('buffer', this.state.buffer);
+    };
+  };
+
+  onSubmit = async (event) => {
+    event.preventDefault();
+    console.log('Submitting file to ipfs...');
+    try {
+      const result = await this.ipfs.add(this.state.buffer);
+      this.setState({ ipfsHash: result.path });
+      console.log('IPFS Hash:', this.state.ipfsHash);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-   onSubmit (event) {
-    event.preventDefault()
-    ipfs.files.add(this.state.buffer, (error, result) => {
-      if(error) {
-        console.error(error)
-        return
-      }
-      this.setState({ ipfsHash: result[0].hash })
-      console.log('ipfsHash', this.state.ipfsHash)
-    })
-  };
-
-
-
   render() {
     return (
-     
-      
-      <div className='col-6'> 
-        <div className='pt-5'>
-          <button onClick={() => this.refreshPage()}>Click to reload!</button>
-        </div>
-       
-
-        <Router>
-        
-          {/* Navbar mindig látható */}
-          {window.location.pathname !== "/" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket" && <Navbar account={this.state.account} />}
-
-         
-          
-          <Routes>
-          <Route path="/" element={<Dashboard  />} />
-            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining}
-                                                              captureFile = {this.captureFile}
-                                                              onSubmit = {this.onSubmit}
-                                                              />} />
-            <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
-                                                              gemMining={this.gemMining}
-                                                              purchaseGem={this.purchaseGem}
-                                                              processingGem={this.processingGem}
-                                                              account={this.state.account}
-                                                              />} />
-           
-           <Route path="/gemMarket" element={<GemMarket  minedGems={this.state.minedGems}
-                                                              selectedGems={this.state.selectedGems}
-                                                              gemMining={this.gemMining}
-                                                              purchaseGem={this.purchaseGem}
-                                                              processingGem={this.processingGem}
-                                                              account={this.state.account}
-                                                              />} />
-
-            <Route path="/jewMarket" element={<JewMarket  minedGems={this.state.minedGems}
-                                                              selectedGems={this.state.selectedGems}
-                                                              jewelry={this.state.jewelry}
-                                                              gemMining={this.gemMining}
-                                                              purchaseGem={this.purchaseGem}
-                                                              processingGem={this.processingGem}
-                                                              account={this.state.account} 
-                                                              />} />
-           
-
-            <Route path="/ownMinedGems" element={<OwnedByUser  minedGems={this.state.minedGems}
-                                                               selectedGems={this.state.selectedGems}
-                                                               jewelry={this.state.jewelry}
-                                                               gemMining={this.gemMining}
-                                                               gemSelecting={this.gemSelecting}
-                                                               purchaseGem={this.purchaseGem}
-                                                               processingGem={this.processingGem}
-                                                               markGemAsSelected={this.markGemAsSelected}
-                                                               markGemAsUsed={this.markGemAsUsed}
-                                                               account={this.state.account}
-                                                               sellGem={this.sellGem}
-                                                               polishGem={this.polishGem}
-                                                                    />} />
-            <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting}/>} />
-            <Route path="/gem-details/:id" element={<GemDetails selectedGems={this.state.selectedGems}
-                                                                minedGems={this.state.minedGems}
-                                                                gemSelecting={this.gemSelecting}
-                                                                account={this.state.account}
-                                                                />} />
-            <Route path="/jew-details/:id" element={<JewDetails selectedGems={this.state.selectedGems}
-                                                                minedGems={this.state.minedGems}
-                                                                jewelry={this.state.jewelry}
-                                                                gemSelecting={this.gemSelecting}
-                                                                account={this.state.account}
-                                                                />} />
-            <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
-                                                                         markGemAsUsed={this.markGemAsUsed}/>} />
-
-          </Routes>
-        </Router> 
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex"> 
-            
-            <div id="content">
-             {}
-            </div>
-
-            </main>
+      <div className="app">
+        <div className="app__container">
+          <div className="container">
+            <h1>IPFS Uploader</h1>
+            <form onSubmit={this.onSubmitHandler}>
+              <label htmlFor="file-upload" className="custom-file-upload">
+                Select File
+              </label>
+              <input id="file-upload" type="file" name="file" onChange={this.captureFile} />
+              <button className="button" type="submit">
+                Upload File
+              </button>
+            </form>
+          </div>
+          <div className="data">
+            {this.state.uploadedImages.map((image, index) => (
+              <div key={image.cid + index}>
+                <img
+                  className="image"
+                  alt={`Uploaded #${index + 1}`}
+                  src={`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}
+                  style={{ maxWidth: "400px", margin: "15px" }}
+                />
+                <h4>Link to IPFS:</h4>
+                <a href={`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}>
+                  {`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     );
   }
 }
+
 export default App;
