@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { useParams } from 'react-router-dom';
 
+
 function GemDetails({ selectedGems, minedGems, account  }) {
 
   const { id } = useParams();

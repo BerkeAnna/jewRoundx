@@ -1,1 +1,69 @@
-/* Styles go here */
+body {
+    background-color: #eeddd6; 
+    color: #343a40; 
+    
+
+    #tables {
+        color: #343a40; 
+    }
+    tables h2 {
+        color: black; 
+      }
+
+    #tables .table{
+        border-collapse: separate; 
+        border-radius: 20px; 
+        overflow: hidden; 
+    }
+    
+    #tables .table th{
+        color: #000000;
+        background-color: #f08c73;
+    }
+    #tables .table thead th{
+        color: #343a40; 
+        background-color: #f08c73;
+    }
+
+    
+
+    #tables .table td {
+        color: #343a40; 
+        background-color: #eab0a1;
+    }
+    
+    #tables button {
+        background-color: #ec7052; 
+        color: white; 
+        border: none; 
+    }
+    
+    #tables button:hover {
+        background-color: #b30071; 
+        border: none;
+    }
+
+    .homeButton button{ 
+        background-color: #ec7052;
+        color: white;
+        border: none;
+    }
+    .homeButton button:hover{ 
+        background-color: #d469ad;
+        color: white;
+        border: none;
+    }
+
+    .dashboardButton button {
+        background-color: #ec7052;
+        color: white;
+        border: none;
+
+    }
+
+    .dashboardButton button:hover {
+        background-color: #862108;
+        color: white;
+        border: none;
+    }
+}

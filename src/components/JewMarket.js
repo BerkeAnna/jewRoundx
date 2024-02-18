@@ -11,9 +11,10 @@ function JewMarket({ jewelry, account }) {
   console.log("Jewelry Data:", jewelry); // Debugging: Check the jewelry data
 
   return (
-    <div id="tables">
+    <div >
       <p>&nbsp;</p>
       <h2>Jew market :P</h2>
+      <div id="tables">
       <table className="table">
         <thead>
           <tr>
@@ -50,7 +51,10 @@ function JewMarket({ jewelry, account }) {
           })}
         </tbody>
       </table>
+      </div>
+      <div className='homeButton'>
       <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+      </div>
     </div>
   );
 }

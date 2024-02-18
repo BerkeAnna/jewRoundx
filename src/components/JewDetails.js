@@ -98,63 +98,75 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                   todo: - gemdetails
 
                   <h2>Data of mined gem</h2>
+                  <div id="tables">
                   todo: minedgem datas ending ---- in process
                   <table className="table">
                       <thead>
-                        <td>ID</td>
-                        <td>Type</td>
-                        <td>Weight</td>
-                        <td>Height</td>
-                        <td>Width</td>
-                        <td>Mining location</td>
-                        <td>Mining Year</td>
-                        <td>Extraction method</td>
-                        <td>Selected</td>
-                        <td>Price</td>
-                        <td>Owner</td>
+                        <tr>
+                          <th>ID</th>
+                          <th>Type</th>
+                          <th>Weight</th>
+                          <th>Height</th>
+                          <th>Width</th>
+                          <th>Mining location</th>
+                          <th>Mining Year</th>
+                          <th>Extraction method</th>
+                          <th>Selected</th>
+                          <th>Price</th>
+                          <th>Owner</th>
+                        </tr>
                       </thead>
                       <tbody>{renderMinedGems()}</tbody>
                     </table>
+                    </div>
 
                   <div id="tables" className="pt-5">
                     <h2>Data of selected gem</h2>
+                    <div id="tables">
                     <table className="table">
                       <thead>
-                        <td>ID</td>
-                        <td>Weight</td>
-                        <td>Height</td>
-                        <td>Width</td>
-                        <td>Diameter</td>
-                        <td>Carat</td>
-                        <td>Color</td>
-                        <td>Gemtype</td>
-                        <td>Polishing</td>
-                        <td>Used</td>
-                        <td>Price</td>
-                        <td>Owner</td>
+                        <tr>
+                          <th>ID</th>
+                          <th>Weight</th>
+                          <th>Height</th>
+                          <th>Width</th>
+                          <th>Diameter</th>
+                          <th>Carat</th>
+                          <th>Color</th>
+                          <th>Gemtype</th>
+                          <th>Polishing</th>
+                          <th>Used</th>
+                          <th>Price</th>
+                          <th>Owner</th>
+                        </tr>
                       </thead>
                       <tbody>{renderSelectedGems()}</tbody>
                     </table>
+                    </div>
                   </div>
 
                   <div id="tables" className="pt-5">
                     <h2>Data of jewelry</h2>
+                    <div id="tables">
                     <table className="table">
                       <thead>
-                        <td>ID</td>
-                        <td>Name</td>
-                        <td>Depth</td>
-                        <td>Width</td>
-                        <td>Diameter</td>
-                        <td>Size</td>
-                        <td>Date</td>
-                        <td>Metal</td>
-                        <td>Sale</td>
-                        <td>Price</td>
-                        <td>Owner</td>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Depth</th>
+                          <th>Width</th>
+                          <th>Diameter</th>
+                          <th>Size</th>
+                          <th>Date</th>
+                          <th>Metal</th>
+                          <th>Sale</th>
+                          <th>Price</th>
+                          <th>Owner</th>
+                        </tr>
                       </thead>
                       <tbody>{renderJewelry()}</tbody>
                     </table>
+                    </div>
                   </div>
                   
             </div>

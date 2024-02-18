@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+
 function GemMarket({ selectedGems, account, purchaseGem }) {
   const navigate = useNavigate();
 
@@ -9,9 +11,10 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
   };
 
   return (
-    <div id="tables">
+    <div >
       <p>&nbsp;</p>
       <h2>Gem market :D</h2>
+      <div id="tables">
       <table className="table">
         <thead>
           <tr>
@@ -44,7 +47,10 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
           })}
         </tbody>
       </table>
-      <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+      </div>
+      <div className='homeButton'>
+        <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+      </div>
     </div>
   );
 }

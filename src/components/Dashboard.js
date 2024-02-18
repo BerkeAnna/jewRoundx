@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
 
+
 const Dashboard = ({ account }) => {
   const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
   const navigate = useNavigate(); // Hook használata az átirányításhoz
@@ -22,9 +23,9 @@ const Dashboard = ({ account }) => {
       todo: kivenni innen a navbart <br/>
       todo2: valamit tenni a lapok auto frissitéséért, most nem frissül alapból<br/>
       
-      <a href="/ownMinedGems"><button>Log in - user</button></a><br/>
-      <a href="/gemMarket"><button>Gem Market</button></a><br/>
-      <a href="/jewMarket"><button>Jew Market</button></a><br/>
+      <a href="/ownMinedGems"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>
+      <a href="/gemMarket"><div className='dashboardButton'><button>Gem Market</button></div></a><br/>
+      <a href="/jewMarket"><div className='dashboardButton'><button>Jew Market</button></div></a><br/>
 
       <h3>Search jewelry with ID</h3>
        <form onSubmit={handleSubmit}>
@@ -34,7 +35,9 @@ const Dashboard = ({ account }) => {
           onChange={handleChange} 
           placeholder="Enter Jewelry ID" 
         />
-        <button type="submit">Search</button>
+        <div className='dashboardButton'>
+          <button type="submit">Search</button>
+        </div>
       </form>
     </div>
   );
