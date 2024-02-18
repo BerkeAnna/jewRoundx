@@ -2,7 +2,11 @@ body {
     background-color: #eeddd6; 
     color: #343a40; 
     
-
+    .navbar-custom {
+        background-color: #2f0905 !important; 
+        
+    }
+    
     #tables {
         color: #343a40; 
     }
