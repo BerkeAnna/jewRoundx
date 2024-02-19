@@ -1,9 +1,9 @@
 body {
-    background-color: #eeddd6; 
+    background-color: #e2f6ef; 
     color: #343a40; 
     
     .navbar-custom {
-        background-color: #2f0905 !important; 
+        background-color: #0e052f !important; 
         
     }
     
@@ -22,52 +22,58 @@ body {
     
     #tables .table th{
         color: #000000;
-        background-color: #f08c73;
+        background-color: #73f0d3;
     }
     #tables .table thead th{
         color: #343a40; 
-        background-color: #f08c73;
+        background-color: #73f0d3;
     }
 
     
 
     #tables .table td {
         color: #343a40; 
-        background-color: #eab0a1;
+        background-color: #b9efe3;
     }
     
     #tables button {
-        background-color: #ec7052; 
+        background-color: #04dcaa; 
         color: white; 
         border: none; 
+        border-radius: 20px; 
     }
     
     #tables button:hover {
-        background-color: #b30071; 
+        background-color: #0036b3; 
         border: none;
+        border-radius: 20px; 
     }
 
     .homeButton button{ 
-        background-color: #ec7052;
+        background-color: #04dcaa;
         color: white;
         border: none;
+        border-radius: 20px; 
     }
     .homeButton button:hover{ 
-        background-color: #d469ad;
+        background-color: #0036b3;
         color: white;
         border: none;
+        border-radius: 20px; 
     }
 
     .dashboardButton button {
-        background-color: #ec7052;
+        background-color: #04dcaa;
         color: white;
         border: none;
+        border-radius: 20px; 
 
     }
 
     .dashboardButton button:hover {
-        background-color: #862108;
+        background-color: #0036b3;
         color: white;
         border: none;
+        border-radius: 20px; 
     }
 }
