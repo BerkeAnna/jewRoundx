@@ -125,3 +125,10 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - https://community.infura.io/t/401-unauthorized/5767<br>
         - https://community.infura.io/t/how-to-add-data-using-ipfs-http-client/5179/12<br>
         - https://github.com/LogeswaranA/jquery-ipfs-sample/blob/master/index.js<br><br>
+
+2024.02.20. 9:04:<br>
+        npm install ipfs-http-client@50.1.2<br>
+        rm -rf node_modules<br>
+        rm package-lock.json<br>
+        npm cache clean --force<br>
+        npm install<br>
