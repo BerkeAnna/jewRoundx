@@ -19,8 +19,8 @@ import OwnedByUser from './OwnedByUser'
 import GemSelectingForm from './GemSelectingForm';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
+import { create } from 'ipfs-http-client';
 
-import { create as ipfshttpClient} from "ipfs-http-client";
 
 const projectId = '3b75f15f3d184d749681f209f4de2913';
 const projectSecretKey = '94a73e4ddb324032bcb64af4cd3e591f';
@@ -40,14 +40,8 @@ class App extends Component {
     uploadedImages: [],
   };
 
-  ipfs = ipfshttpClient({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https',
-    headers: {
-      authorization: auth,
-    },
-  });
+   ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https', headers: { authorization: auth } });
+
 
 //2:11:30
   async componentWillMount() {
@@ -196,7 +190,8 @@ class App extends Component {
       loading: true,
       jewelry: [],
       buffer: null, 
-      ipfsHash: ''
+      ipfsHash: '',
+      uploadedImages: []
     }
 
     this.gemMining = this.gemMining.bind(this)
