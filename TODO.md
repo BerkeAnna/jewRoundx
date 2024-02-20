@@ -132,3 +132,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         rm package-lock.json<br>
         npm cache clean --force<br>
         npm install<br>
+
+2024.02.20. 9:53:<br>
+        infurán le van tiltva az ipfs - fel kellene oldani
