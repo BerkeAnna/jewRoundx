@@ -45,7 +45,10 @@ function App() {
       </form>
       {
         fileUrl && (
-          <a href={fileUrl} target= "_blank">{fileUrl}</a>
+          <div>
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer">Kattints ide a teljes méretű kép megtekintéséhez</a>
+          <img src={fileUrl} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} />
+        </div>
         )
       }
     </div>
