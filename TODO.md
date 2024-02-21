@@ -134,4 +134,14 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         npm install<br>
 
 2024.02.20. 9:53:<br>
-        infurán le van tiltva az ipfs - fel kellene oldani
+        infurán le van tiltva az ipfs - fel kellene oldani<br><br>
+
+
+2024.02.21.<br>
+        
+API Key: 2a0693137f6649c4a2bc<br>
+ API Secret: 4a4396e429b8b89395bd093448e9eaf37f06569e8a9eebb1bc1c44a15516a7cf<br>
+ JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI2OTllN2I4Zi0wZjUzLTQ4OGYtYjgzNS0xODA2ZGI3Mjc5MjciLCJlbWFpbCI6ImJlcmtlLmFubmEudkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiMmEwNjkzMTM3ZjY2NDljNGEyYmMiLCJzY29wZWRLZXlTZWNyZXQiOiI0YTQzOTZlNDI5YjhiODkzOTViZDA5MzQ0OGU5ZWFmMzdmMDY1NjllOGE5ZWViYjFiYzFjNDRhMTU1MTZhN2NmIiwiaWF0IjoxNzA4NTA2MDY0fQ.JTmo7mmMjjspnoLOGdqinVWp2cw5UutrSKSh8dwBUBE<br>
+ https://www.youtube.com/watch?v=--njAbg5M_Q<br>
+ - most felmegy a pinataba a képfeltöltés<br>
+ - kell az hogy ne a klinket jelenítse meg, haem a képet<br>

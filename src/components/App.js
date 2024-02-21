@@ -1,382 +1,56 @@
-import React, { Component } from 'react';
-import Web3 from 'web3';
-import logo from '../logo.png';
-import './App.css';
-//import ipfs from './ipfs.js';
-import GemstoneExtraction from '../abis/GemstoneExtraction.json';
-import GemSelecting from '../abis/GemstoneSelecting.json';
-import Jewelry from '../abis/Jewelry.json';
-import Navbar from './Navbar';
-import GemDetails from './GemDetails';
-import JewDetails from './JewDetails';
-import Main from './Main';
-import Dashboard from './Dashboard';
-import MinedGemsList from './MinedGemList';
-import MinedGemForm from './MinedGemForm';
-import JewelryForm from './JewelryForm';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import OwnedByUser from './OwnedByUser'
-import GemSelectingForm from './GemSelectingForm';
-import GemMarket from './GemMarket';
-import JewMarket from './JewMarket';
-import { create } from 'ipfs-http-client';
 
+import React, { useState } from 'react';
+import "./App.css";
+import axios from 'axios';
 
-const projectId = '3b75f15f3d184d749681f209f4de2913';
-const projectSecretKey = '94a73e4ddb324032bcb64af4cd3e591f';
-const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecretKey).toString('base64');
-
-
-
-/*
-const ipfsClient =require('ipfs-http-client')
-const ipfs = ipfsClient.create({host: 'ipfs,infura.io', port: 5001, protocol: 'http'})
-*/
-class App extends Component {
-
-  state = {
-    account: '',
-    // További állapot változók
-    uploadedImages: [],
-  };
-
-   ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https', headers: { authorization: auth } });
-
-
-//2:11:30
-  async componentWillMount() {
-    await this.loadWeb3()
-    await this.loadBlockchainData()
-    await this.loadBlockchainData2()
-    await this.loadBlockchainData3()
-  }
-  async refreshPage() {
-    window.location.reload(false);
-  }
+function App() {
+  const [count, setCount] = useState(0);
+  const [file, setFile] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
   
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.request({ method: 'eth_requestAccounts' })
-    } else if (window.web3) {
-      window.web3 = new Web3(window.ethereum);
-    } else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      const fileData = new FormData();
+      fileData.append("file", file);
+
+      console.log("prv key:" + process.env.REACT_APP_PINATA_PRIVATE_KEY)
+
+      const responseData = await axios({
+        method: "post",
+        url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        data: fileData,
+        headers: {
+          pinata_api_key:  process.env.REACT_APP_PINATA_API_KEY,
+          pinata_secret_api_key: process.env.REACT_APP_PINATA_PRIVATE_KEY,
+          "Content-Type": "multipart/form-data", 
+        },
+      });
+
+      const fileUrl = "https://coral-biological-monkey-396.mypinata.cloud/ipfs/" + responseData.data.IpfsHash;
+      console.log(fileUrl);
+      setFileUrl(fileUrl);
+    }catch(err){
+      console.log(err)
     }
   }
 
-  async loadBlockchainData() {
-    const web3 = window.web3
-    // Load account
-    const accounts = await web3.eth.getAccounts()
-    console.log(accounts);
-    this.setState({ account: accounts[0] })
-
-    const networkId= await web3.eth.net.getId();
-    const networkData = GemstoneExtraction.networks[networkId]
-    if(networkData){
-      const gemstroneExtraction = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
-      this.setState({ gemstroneExtraction })
-      const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call()
-      this.setState({ minedGemCount })
-
-      for(var i=1; i<= minedGemCount; i++){
-        const minedGems = await gemstroneExtraction.methods.minedGems(i).call()
-        this.setState({
-          minedGems: [...this.state.minedGems, minedGems]
-        })
+  return(
+    <div>
+      <h1>IPFS upload your file</h1>
+      <form>
+        <input type="file" onChange={(e)=>setFile(e.target.files[0])}/>
+        <button type="submit" onClick={handleSubmit}>Upload</button>
+      </form>
+      {
+        fileUrl && (
+          <a href={fileUrl} target= "_blank">{fileUrl}</a>
+        )
       }
-   //   console.log(minedGemCount.toString())
-      this.setState({loading: false})
-     // console.log(this.state.minedGems)
-    }else{
-      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
-      window.alert('Gemstone contract not deployed to detected network. - own error')
-    }
-/*
-    const networkId = await web3.eth.net.getId()
-    const networkData = GemstoneExtraction.networks[networkId]
-    console.log(networkData)
-   
-    if(networkData){
-      const gemsE = web3.eth.Contract(GemstoneExtraction.abi, networkData.address)
-      this.setState({ gemsE })
-      const minedGemCount = await gemsE.methods.minedGemCount().call()
-      console.log(minedGemCount)
-      console.log(gemsE.methods.minedGemCount())
-      for(var i = 1 ; i<= minedGemCount; i++){
-        const gem = await gemsE.methods.minedGems(i).call()
-        this.setState({
-          minedGems: [...this.state.minedGems, gem]
-        })
-      }
-      this.setState({ loading: false })
-    }else{
-      window.alert('Gemstone extraction contract not deployed to detected network.')
-    }
-   */
-  }
+    </div>
 
-  async loadBlockchainData2() {
-    const web3 = window.web3
-    // Load account
-    const accounts = await web3.eth.getAccounts()
-    console.log(accounts);
-    this.setState({ account: accounts[0] })
-
-    const networkId= await web3.eth.net.getId();
-    const networkData = GemSelecting.networks[networkId]
-    if(networkData){
-      const gemstroneSelecting = web3.eth.Contract(GemSelecting.abi, networkData.address)
-      this.setState({ gemstroneSelecting })
-      const selectedGemCount = await gemstroneSelecting.methods.selectedGemCount().call()
-      this.setState({ selectedGemCount })
-
-      for(var i=1; i<= selectedGemCount; i++){
-        const selectedGems = await gemstroneSelecting.methods.selectedGems(i).call()
-        this.setState({
-          selectedGems: [...this.state.selectedGems, selectedGems]
-        })
-      }
-     // console.log(selectedGemCount.toString())
-      this.setState({loading: false})
-     // console.log(this.state.minedGems)
-    }else{
-      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
-      window.alert('Gemstone selecting contract not deployed to detected network. - own error')
-    }
- 
-  }
-
-  async loadBlockchainData3() {
-    const web3 = window.web3
-    // Load account
-    const accounts = await web3.eth.getAccounts()
-    console.log(accounts);
-    this.setState({ account: accounts[0] })
-
-    const networkId= await web3.eth.net.getId();
-    const networkData = Jewelry.networks[networkId]
-    if(networkData){
-      const jewelryM = web3.eth.Contract(Jewelry.abi, networkData.address)
-      this.setState({ jewelryM })
-      const jewelryCount = await jewelryM.methods.jewelryCount().call()
-      this.setState({ jewelryCount })
-
-      for(var i=1; i<= jewelryCount; i++){
-        const jewelry = await jewelryM.methods.jewelry(i).call()
-        this.setState({
-          jewelry: [...this.state.jewelry, jewelry]
-        })
-      }
-     // console.log(selectedGemCount.toString())
-      this.setState({loading: false})
-     // console.log(this.state.minedGems)
-    }else{
-      //ha a networkdata nem true az ifben, akor ezt kapom. Pl ha  a mainnetre próbálom a metamaskot, szóvql lehet h az eredetiben is ez a problem? 
-      window.alert('Jewelry contract not deployed to detected network. - own error')
-    }
- 
-  }
-
-  constructor(props){
-    super(props)
-    this.state = {
-      account: '',
-      minedGemCount: 0,
-      minedGems: [],
-      selectedGemCount:0,
-      selectedGems: [],
-      loading: true,
-      jewelry: [],
-      buffer: null, 
-      ipfsHash: '',
-      uploadedImages: []
-    }
-
-    this.gemMining = this.gemMining.bind(this)
-    this.purchaseGem = this.purchaseGem.bind(this)
-    this.processingGem = this.processingGem.bind(this)
-    this.gemSelecting = this.gemSelecting.bind(this)
-    this.markGemAsSelected = this.markGemAsSelected.bind(this)
-    this.markGemAsUsed = this.markGemAsUsed.bind(this)
-    this.polishGem = this.polishGem.bind(this)
-    this.jewelryMaking = this.jewelryMaking.bind(this)
-    this.captureFile = this.captureFile.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-  }
-
-  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
-    this.setState({loading: true})
-    this.state.gemstroneExtraction.methods.gemMining(
-        gemType, 
-        weight, 
-        height, 
-        width, 
-        price, 
-        miningLocation, 
-        miningYear, 
-        extractionMethod, // make sure this is a string
-        purchased // make sure this is a boolean
-    ).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-        this.loadBlockchainData();
-        this.loadBlockchainData2();
-        this.loadBlockchainData3();
-        this.setState({ loading: false })
-            })
-}
-
-  
-  purchaseGem(id, price ){
-    //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true })
-    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-  }
-
-  processingGem(id, price ){
-    //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true })
-    this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-  }
-
-  markGemAsSelected(id){
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true })
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-    .catch(error => {
-      // Handle any errors here
-      console.error("Error in markas: ", error);
-      this.setState({ loading: false });
-  });
-}
-  markGemAsUsed(id){
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true })
-    this.state.gemstroneSelecting.methods.markGemAsUsed(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-    .catch(error => {
-      // Handle any errors here
-      console.error("Error in markas: ", error);
-      this.setState({ loading: false });
-  });
-  }
-
-  gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
-    
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({loading: true})
-    
-    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
-    .once('receipt', (receipt) => {
-        this.setState({  loading: false})
-    })
-    .catch(error => {
-        // Handle any errors here
-        console.error("Error in gemSelecting: ", error);
-        this.setState({ loading: false });
-    });
-}
-
-polishGem(id ){
-    //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true })
-    this.state.gemstroneSelecting.methods.polishGem(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice})
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-  }
-  
-  //todo
-  jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) {
-    this.setState({loading: true})
-    this.state.jewelryM.methods.jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) 
-    .send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-        this.setState({ loading: false })
-    })
-}
-
-  ///todo: írd át az appba ezt a 2t
-  captureFile = (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    const reader = new window.FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = () => {
-      this.setState({ buffer: Buffer(reader.result) });
-      console.log('buffer', this.state.buffer);
-    };
-  };
-
-  onSubmit = async (event) => {
-    event.preventDefault();
-    console.log('Submitting file to ipfs...');
-    try {
-      const result = await this.ipfs.add(this.state.buffer);
-      this.setState({ ipfsHash: result.path });
-      console.log('IPFS Hash:', this.state.ipfsHash);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  render() {
-    return (
-      <div className="app">
-        <div className="app__container">
-          <div className="container">
-            <h1>IPFS Uploader</h1>
-            <form onSubmit={this.onSubmitHandler}>
-              <label htmlFor="file-upload" className="custom-file-upload">
-                Select File
-              </label>
-              <input id="file-upload" type="file" name="file" onChange={this.captureFile} />
-              <button className="button" type="submit">
-                Upload File
-              </button>
-            </form>
-          </div>
-          <div className="data">
-            {this.state.uploadedImages.map((image, index) => (
-              <div key={image.cid + index}>
-                <img
-                  className="image"
-                  alt={`Uploaded #${index + 1}`}
-                  src={`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}
-                  style={{ maxWidth: "400px", margin: "15px" }}
-                />
-                <h4>Link to IPFS:</h4>
-                <a href={`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}>
-                  {`https://skywalker.infura-ipfs.io/ipfs/${image.path}`}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  )
 }
 
 export default App;
