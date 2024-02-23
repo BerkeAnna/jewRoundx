@@ -68,8 +68,8 @@ contract Jewelry {
     }
 
     function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width, uint _size, uint _date, bool _sale, uint _price ) public {
-        (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);
-        //require(!used, "Gem already used");
+     (,,,,,,, , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);
+require(!used, "Gem already used");
         
         require( _depth > 0);
         require( _height > 0);

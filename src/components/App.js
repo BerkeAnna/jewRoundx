@@ -178,17 +178,17 @@ class App extends Component {
     this.jewelryMaking = this.jewelryMaking.bind(this)
   }
 
-  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
+  gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, purchased) {
+  
     this.setState({loading: true})
     this.state.gemstroneExtraction.methods.gemMining(
         gemType, 
         weight, 
-        height, 
-        width, 
+        size, 
         price, 
         miningLocation, 
-        miningYear, 
-        extractionMethod, // make sure this is a string
+        miningYear, // make sure this is a string
+        fileUrl,
         purchased // make sure this is a boolean
     ).send({ from: this.state.account })
     .once('receipt', (receipt) => {

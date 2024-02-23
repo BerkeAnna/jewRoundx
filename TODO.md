@@ -109,3 +109,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - ~~megcsinálni egy lekérőt, ami id alapján úgyanúgy kilistázza az adatokat - külön ékszerre fix,~~ de lehet kőre is kell a gem market miatt??<br>
         - problem: a ownedbyuser - >List of processing gems details csak azt listázza ki amit a userhez lehet kötin, user adott hozzá. de ez már a marketnél meg van oldva
         - ha más sorrendben csinálom a kövek feldolgozását átírja az összes id-t. PL ha a minedgem 9-es id, de a jewnél 2-est kap, akkor minedt átírja
+
+2024.02.22. 17.01:
+        most ott a file kiválaszt, de ha hozzéáadom hibát kapok, de nélküle elmegy a form
+
+2024.02.23. 18:28:
+        - a minedgem foromt megcsinálni most jók a contractok
