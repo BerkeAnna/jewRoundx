@@ -47,11 +47,19 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <th scope="row">{gem.id.toString()}</th>
           <td>{gem.gemType}</td>
           <td>{gem.weight.toString()} mm</td>
-          <td>{gem.height.toString()} mm</td>
-          <td>{gem.width.toString()} mm</td>
+          <td>{gem.size.toString()} mm</td>
           <td>{gem.miningLocation}</td>
           <td>{gem.miningYear.toString()}</td>
-          <td>{gem.extractionMethod}</td>
+          <td>
+                {
+            gem.fileURL && (
+              <div>
+              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
+              
+            </div>
+            )
+          }
+          </td>
           <td>{gem.selected.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
@@ -106,11 +114,10 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                           <th>ID</th>
                           <th>Type</th>
                           <th>Weight</th>
-                          <th>Height</th>
-                          <th>Width</th>
+                          <th>Size</th>
                           <th>Mining location</th>
                           <th>Mining Year</th>
-                          <th>Extraction method</th>
+                          <th>Picture</th>
                           <th>Selected</th>
                           <th>Price</th>
                           <th>Owner</th>
