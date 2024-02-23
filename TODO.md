@@ -114,4 +114,5 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         most ott a file kiválaszt, de ha hozzéáadom hibát kapok, de nélküle elmegy a form
 
 2024.02.23. 18:28:
-        - a minedgem foromt megcsinálni most jók a contractok
+        - ~~ a minedgem foromt megcsinálni most jók a contractok~~
+        - a képek felmennek a pinataba, elmegy a form :D de a process gomb nem működik és a képet sem jeleníti meg
