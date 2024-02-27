@@ -116,3 +116,5 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.02.23. 18:28:<br>
         - ~~ a minedgem foromt megcsinálni most jók a contractok~~<br>
         - a képek felmennek a pinataba, elmegy a form :D de a process gomb nem működik és a képet sem jeleníti meg<br>
+        - ~~a mainen működik a process gomb~~ <br>
+        - most az add product nem működik - a gázlimittel lesz a gond itt is--- errort ad a tranzakciónál.
