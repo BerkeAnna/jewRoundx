@@ -213,8 +213,8 @@ class App extends Component {
 
   processingGem(id, price ){
     //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasLimit = 120000;
+    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({ loading: true })
     this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
     .once('receipt', (receipt) => {

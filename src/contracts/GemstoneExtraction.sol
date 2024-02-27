@@ -94,20 +94,19 @@ contract GemstoneExtraction {
     uint _miningYear, 
     string memory _fileURL,  
     bool _purchased
-) public
-   require(bytes(_gemType).length > 0, "Gem type cannot be empty");
-        require( _weight > 0);
-        require(bytes(_size).length > 0, "Size cannot be empty");
-        require( _price > 0);
-        require( _miningYear > 0);
-        require(bytes(_miningLocation).length > 0, "Mining location cannot be empty");
+) public {
+    require(bytes(_gemType).length > 0, "Gem type cannot be empty");
+    require(bytes(_size).length > 0, "Size cannot be empty");
+    require(_price > 0, "Price must be greater than 0");
+    require(_miningYear > 0, "Mining year must be greater than 0");
+    require(bytes(_miningLocation).length > 0, "Mining location cannot be empty");
 
-        
-        minedGemCount++;
-       minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _size, _price, _miningLocation, _miningYear, false,  msg.sender, _fileURL, _purchased);
+    minedGemCount++;
+    minedGems[minedGemCount] = MinedGem(minedGemCount, _gemType, _weight, _size, _price, _miningLocation, _miningYear, false, msg.sender, _fileURL, _purchased);
 
-       emit GemMining(minedGemCount, _gemType, _weight, _size, _price, _miningLocation, _miningYear, false, msg.sender,_fileURL, _purchased);
-    }
+    emit GemMining(minedGemCount, _gemType, _weight, _size, _price, _miningLocation, _miningYear, false, msg.sender, _fileURL, _purchased);
+}
+
 
     function purchaseGem(uint _id) public payable{
         MinedGem memory _minedGem = minedGems[_id];
@@ -123,19 +122,17 @@ contract GemstoneExtraction {
       emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.size, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  false, msg.sender, _minedGem.fileURL,  _minedGem.purchased);
     }
 
-     function processingGem(uint _id) public payable{
-        MinedGem memory _minedGem = minedGems[_id];
-        address payable _miner = _minedGem.owner;
-        require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
-        require(msg.value >= _minedGem.price);
-        require(_minedGem.purchased == false);
-       // require(_miner != msg.sender);
-        _minedGem.owner = msg.sender;
-        _minedGem.purchased = true;
-        minedGems[_id] = _minedGem;
-        address(_miner).transfer(msg.value);
-         emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.size, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, msg.sender, _minedGem.fileURL, _minedGem.purchased);
-    }
+    function processingGem(uint _id) public {
+    MinedGem storage _minedGem = minedGems[_id];
+    require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
+    require(_minedGem.purchased == true, "Gem must be purchased before processing");
+    require(_minedGem.selected == false, "Gem is already processed or selected");
+
+    _minedGem.selected = true; // Esetlegesen másik állapotot kellene itt bevezetni, ha a 'selected' nem felel meg.
+
+    emit GemPurchased(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+}
+
     
 function markGemAsSelected(uint _id) public {
     MinedGem storage _minedGem = minedGems[_id];
