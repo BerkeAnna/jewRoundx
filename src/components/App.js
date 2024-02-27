@@ -202,8 +202,8 @@ class App extends Component {
   
   purchaseGem(id, price ){
     //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasLimit = 120000;
+    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({ loading: true })
     this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
     .once('receipt', (receipt) => {
@@ -253,8 +253,8 @@ class App extends Component {
 
   gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
     
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasLimit = 120000;
+    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({loading: true})
     
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})

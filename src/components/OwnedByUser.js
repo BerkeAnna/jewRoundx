@@ -39,12 +39,12 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td>{minedGem.owner}</td>
           <td>
           <button
-            name={minedGem.id}
-            value={minedGem.price}
-            onClick={(event) => purchaseGem(event.target.name, event.target.value)}
-          >
+            onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())}
+            >
             Process
+            
           </button>
+
 
           </td>
         </tr>
