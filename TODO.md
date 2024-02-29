@@ -121,5 +121,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.02.29. 13:56:<br>
         - grinding? A gemselben? appjsbennincs...<br>
-        - ![ ](image-3.png)details gomb nem jó....
+        - ![ ](image-3.png)details gomb nem jó....<br>
+        - a gemstoneSelecting sol struct-ot módosítottam, szóval az app.jst és a formot is javítani kell még :D<br>
 

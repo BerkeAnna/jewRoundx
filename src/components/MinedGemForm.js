@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Main(props) {
+function MinedGemForm(props) {
   const navigate = useNavigate();
   const fileInputRef = useRef(null); // Using ref for file input
 
@@ -86,4 +86,4 @@ function Main(props) {
   );
 }
 
-export default Main;
+export default MinedGemForm;

@@ -16,14 +16,12 @@ contract GemstoneSelecting {
     struct SelectedGem{
         uint id;
         uint minedGemId;
-        uint weight;
-        uint height;
-        uint width;
-        uint diameter; //vastagsag
+        string size;
         uint carat; //==weight A karát a drágakövek tömegének mérésére szolgáló mértékegység. Jele: Kt, angolszász területen ct.
         string color;
         string gemType; //etc gyémánt, rubint, gránit
         bool polishing;
+        string fileURL;
         uint price;
         bool used;
         address owner;
@@ -32,14 +30,12 @@ contract GemstoneSelecting {
      event GemSelecting(
         uint id,
         uint minedGemId,
-        uint weight,
-        uint height,
-        uint width,
-        uint diameter,
+        string size,
         uint carat,
         string color,
         string gemType,
         bool polishing,
+        string fileURL,
         uint price,
         bool used,
         address owner
@@ -52,14 +48,12 @@ contract GemstoneSelecting {
    // A gemSelecting függvény módosítása a GemstoneSelecting szerződésben
 function gemSelecting(
     uint _minedGemId,
-    uint _weight,
-    uint _height,
-    uint _width,
-    uint _diameter,
+    string memory _size,
     uint _carat,
     string memory _color,
     string memory _gemtype,
     bool _polishing,
+    string memory _fileURL,
     uint _price
 ) public {
     // Lekérdezzük a bányászott gyémánt adatait a GemstoneExtraction szerződésből
@@ -82,14 +76,12 @@ function gemSelecting(
     selectedGems[selectedGemCount] = SelectedGem(
         selectedGemCount,
         _minedGemId,
-        _weight,
-        _height,
-        _width,
-        _diameter,
+        _size,
         _carat,
         _color,
         _gemtype,
         _polishing,
+        _fileURL,
         _price,
         false,
         msg.sender
@@ -98,14 +90,12 @@ function gemSelecting(
     emit GemSelecting(
         selectedGemCount,
         _minedGemId,
-        _weight,
-        _height,
-        _width,
-        _diameter,
+        _size,
         _carat,
         _color,
         _gemtype,
         _polishing,
+        _fileURL,
         _price,
         false,
         msg.sender
@@ -127,14 +117,12 @@ function gemSelecting(
     emit GemSelecting(
         _selectedGem.id, 
         _selectedGem.minedGemId, 
-        _selectedGem.weight, 
-        _selectedGem.height, 
-        _selectedGem.width, 
-        _selectedGem.diameter, 
+        _selectedGem.size,
         _selectedGem.carat, 
         _selectedGem.color, 
         _selectedGem.gemType, 
         true, 
+        _selectedGem.fileURL,
         _selectedGem.price, 
         false,
         _selectedGem.owner
@@ -149,7 +137,7 @@ function gemSelecting(
 
         _selectedGem.used = true;
 
-        emit GemSelecting(_id, _selectedGem.minedGemId, _selectedGem.weight,  _selectedGem.height,  _selectedGem.width, _selectedGem.diameter, _selectedGem.carat,  _selectedGem.color, _selectedGem.gemType, true, _selectedGem.price, _selectedGem.used, msg.sender);
+        emit GemSelecting(_id, _selectedGem.minedGemId, _selectedGem.size, _selectedGem.carat,  _selectedGem.color, _selectedGem.gemType, true,_selectedGem.fileURL, _selectedGem.price, _selectedGem.used, msg.sender);
     }
 
 //innen úgy kellene tovább menni, hogy kiválogatva ki lesz.

@@ -251,13 +251,13 @@ class App extends Component {
   });
   }
 
-  gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price) {
+  gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price) {
     
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({loading: true})
     
-    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
+    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price).send({from: this.state.account})
     .once('receipt', (receipt) => {
         this.setState({  loading: false})
         console.log("ide nem lép be")
