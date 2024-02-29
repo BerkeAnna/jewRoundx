@@ -63,16 +63,11 @@ function gemSelecting(
     uint _price
 ) public {
     // Lekérdezzük a bányászott gyémánt adatait a GemstoneExtraction szerződésből
-    (, , uint minedWeight, uint minedHeight, uint minedWidth, uint minedPrice, , , , , , ) = gemstoneExtraction.minedGems(_minedGemId);
+  (, , uint minedWeight, , , uint minedPrice, , , , , , ) = gemstoneExtraction.minedGems(_minedGemId);
 
     // Ellenőrizzük, hogy a paraméterként átadott súly kisebb-e, mint a bányászott drágakő súlya
     require(_weight <= minedWeight, "Selected gem weight must be less than mined gem weight");
 
-    
-    require(_height <= minedHeight, "Selected gem weight must be less than mined gem weight");
-
-    
-    require(_width <= minedWidth, "Selected gem width must be less than mined gem weight");
     
     require(_price >= minedPrice, "Selected gem price must be less than mined gem weight");
 
