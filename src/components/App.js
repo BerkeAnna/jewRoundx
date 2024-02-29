@@ -178,17 +178,17 @@ class App extends Component {
     this.jewelryMaking = this.jewelryMaking.bind(this)
   }
 
-  gemMining(gemType, weight, height, width, price, miningLocation, miningYear, extractionMethod, purchased) {
+  gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, purchased) {
+  
     this.setState({loading: true})
     this.state.gemstroneExtraction.methods.gemMining(
         gemType, 
         weight, 
-        height, 
-        width, 
+        size, 
         price, 
         miningLocation, 
-        miningYear, 
-        extractionMethod, // make sure this is a string
+        miningYear, // make sure this is a string
+        fileUrl,
         purchased // make sure this is a boolean
     ).send({ from: this.state.account })
     .once('receipt', (receipt) => {
@@ -202,8 +202,8 @@ class App extends Component {
   
   purchaseGem(id, price ){
     //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasLimit = 120000;
+    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({ loading: true })
     this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
     .once('receipt', (receipt) => {
@@ -213,8 +213,8 @@ class App extends Component {
 
   processingGem(id, price ){
     //const priceUint = parseInt(price);
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasLimit = 120000;
+    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({ loading: true })
     this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice})
     .once('receipt', (receipt) => {
@@ -260,6 +260,7 @@ class App extends Component {
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, weight, height, width, diameter, carat, color, gemType, grinding, price).send({from: this.state.account})
     .once('receipt', (receipt) => {
         this.setState({  loading: false})
+        console.log("ide nem lép be")
     })
     .catch(error => {
         // Handle any errors here
