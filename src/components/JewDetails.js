@@ -18,14 +18,21 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
       gem.id == gemId &&(
         <tr key={key}>
           <th scope="row">{gem.id.toString()}</th>
-          <td>{gem.weight.toString()} mm</td>
-          <td>{gem.height.toString()} mm</td>
-          <td>{gem.width.toString()} mm</td>
-          <td>{gem.diameter.toString()} mm</td>
+          <td>{gem.size.toString()} mm</td>
           <td>{gem.carat.toString()} ct</td>
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
           <td>{gem.polishing.toString()}</td>
+          <td>
+                {
+            gem.fileURL && (
+              <div>
+              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
+              
+            </div>
+            )
+          }
+          </td>
           <td>{gem.used.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
@@ -134,14 +141,12 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Weight</th>
-                          <th>Height</th>
-                          <th>Width</th>
-                          <th>Diameter</th>
+                          <th>Size</th>
                           <th>Carat</th>
                           <th>Color</th>
                           <th>Gemtype</th>
                           <th>Polishing</th>
+                          <th>Picture</th>
                           <th>Used</th>
                           <th>Price</th>
                           <th>Owner</th>

@@ -18,10 +18,7 @@ function GemDetails({ selectedGems, minedGems, account  }) {
       gem.id == gemId &&(
         <tr key={key}>
           <th scope="row">{gem.id.toString()}</th>
-          <td>{gem.weight.toString()}</td>
-          <td>{gem.height.toString()}</td>
-          <td>{gem.width.toString()}</td>
-          <td>{gem.diameter.toString()}</td>
+          <td>{gem.size.toString()}</td>
           <td>{gem.carat.toString()}</td>
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
@@ -47,8 +44,7 @@ function GemDetails({ selectedGems, minedGems, account  }) {
           <th scope="row">{gem.id.toString()}</th>
           <td>{gem.gemType}</td>
           <td>{gem.weight.toString()}</td>
-          <td>{gem.height.toString()}</td>
-          <td>{gem.width.toString()}</td>
+          <td>{gem.size.toString()}</td>
           <td>{gem.miningLocation}</td>
           <td>{gem.miningYear.toString()}</td>
           <td>{gem.extractionMethod}</td>
