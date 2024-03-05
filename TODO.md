@@ -126,3 +126,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.03.03. 16:27:<br>
         - a jewmakinghez kell a fileurl, a formban és az app.js-ben és a képfeltöltés is
+
+2024.03.05. 15:13<br>
+        - hozzáaádja a jewelryt csak az ownedbyuser oldalonn nem jelenik meg az új sor, de todo
