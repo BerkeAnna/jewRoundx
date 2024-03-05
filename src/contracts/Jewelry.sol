@@ -39,10 +39,9 @@ contract Jewelry {
         uint depth;
         uint height;
         uint width;
-        uint size; //mekkora ujjra valo pl
-        uint date;
         bool sale;
         uint price;
+        string fileURL;
         address payable jeweler;
         address payable owner;
     }
@@ -55,10 +54,9 @@ contract Jewelry {
         uint depth,
         uint height,
         uint width,
-        uint size,
-        uint date,
         bool sale,
         uint price,
+        string fileURL,
         address payable jeweler,
         address payable owner
     );
@@ -67,20 +65,14 @@ contract Jewelry {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
     }
 
-    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width, uint _size, uint _date, bool _sale, uint _price ) public {
-        (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);
-        //require(!used, "Gem already used");
+    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width,  bool _sale, uint _price, string memory _fileURL ) public {
+     //  (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);
+     //   require(!used, "Gem already used");
         
-        require( _depth > 0);
-        require( _height > 0);
-        require( _width > 0);
-        require( _price > 0);
-        require( _gemId > 0, "GemId cannot be empty");
-        require(bytes(_name).length > 0, "Name cannot be empty");
         jewelryCount++;
-       jewelry[jewelryCount] = JewelryData(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _size, _date, _sale, _price, msg.sender, msg.sender);
+       jewelry[jewelryCount] = JewelryData(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
 
-       emit JewelryMaking(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _size, _date, _sale, _price, msg.sender, msg.sender);
+       emit JewelryMaking(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
 
     
     }

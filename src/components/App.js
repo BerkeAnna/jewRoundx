@@ -131,17 +131,16 @@ class App extends Component {
     const accounts = await web3.eth.getAccounts()
     console.log(accounts);
     this.setState({ account: accounts[0] })
-
-    const networkId= await web3.eth.net.getId();
-    const networkData = Jewelry.networks[networkId]
+    const networkId = await web3.eth.net.getId();
+    const networkData = Jewelry.networks[networkId];
     if(networkData){
-      const jewelryM = web3.eth.Contract(Jewelry.abi, networkData.address)
-      this.setState({ jewelryM })
-      const jewelryCount = await jewelryM.methods.jewelryCount().call()
+      const makeJew = web3.eth.Contract(Jewelry.abi, networkData.address);
+      this.setState({ makeJew });
+      const jewelryCount = await makeJew.methods.jewelryCount().call()
       this.setState({ jewelryCount })
 
       for(var i=1; i<= jewelryCount; i++){
-        const jewelry = await jewelryM.methods.jewelry(i).call()
+        const jewelry = await makeJew.methods.jewelry(i).call()
         this.setState({
           jewelry: [...this.state.jewelry, jewelry]
         })
@@ -260,7 +259,7 @@ class App extends Component {
     this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price).send({from: this.state.account})
     .once('receipt', (receipt) => {
         this.setState({  loading: false})
-        console.log("ide nem lép be")
+        console.log("ide sem lép be")
     })
     .catch(error => {
         // Handle any errors here
@@ -281,14 +280,27 @@ polishGem(id ){
   }
   
   //todo
-  jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) {
-    this.setState({loading: true})
-    this.state.jewelryM.methods.jewelryMaking(name, gemId, metal, depth, height, width, size, date, sale, price  ) 
-    .send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-        this.setState({ loading: false })
-    })
-}
+  jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileURL) {
+    const gasLimit = 90000; // You may want to estimate this dynamically.
+  
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei'); // Get current gas price
+    this.setState({ loading: true })
+    console.log("itt még megvan")
+   this.state.makeJew.methods.jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileURL).send({from: this.state.account})
+
+      .once('receipt', (receipt) => {
+        console.log("ide nem lép be")
+        // Sikeres tranzakció esetén ez a blokk fog végrehajtódni.
+        this.setState({ loading: false });
+        console.log("A tranzakció sikeres volt, a receipt:", receipt);
+      })
+      .catch(error => {
+        // Hiba esetén itt kezeljük le az eseményeket.
+        console.error("Hiba történt a jewelryMaking függvényben: ", error);
+        this.setState({ loading: false });
+      });
+  }
+  
 
 
 

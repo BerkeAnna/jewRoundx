@@ -1,115 +1,118 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-import { useParams } from 'react-router-dom';
+function JewelryForm(props) { // Assuming web3 is passed as a prop
+  const navigate = useNavigate();
+  const params = useParams();
+  const fileInputRef = useRef(null);
+  const [fileUrl, setFileUrl] = useState('');
+  const { id } = useParams();
 
-function withParams(Component) {
-  return props => <Component {...props} params={useParams()} />;
-}
-
-class JewelryForm extends Component {
-
-  render() {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     
-    const { id } = this.props.params; // Az URL-ből származó ID
-    const gemId = id; 
+    const formData = new FormData(event.target);
+    const file = fileInputRef.current.files[0];
+    
+    if (file) {
+      try {
+        const fileData = new FormData();
+        fileData.append("file", file);
+
+        const response = await axios.post(
+          'https://api.pinata.cloud/pinning/pinFileToIPFS',
+          fileData,
+          {
+            headers: {
+              'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
+              'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
+            },
+          }
+        );
+        const fileUrlResult = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        
+        setFileUrl(fileUrlResult);
+      } catch (err) {
+        console.error("Error uploading file: ", err);
+        return;
+      }
+    }
+
+    
+    console.log("Form data: Size:", formData.get('size')); 
+    
+
+    formData.append('fileUrl', fileUrl);
+    //const file = fileInputRef.current.files[0];
+
+    console.log("file url:::::", fileUrl)
+
+    const gemId = id;
+    const name = formData.get('name').toString();
+    const metal = formData.get('metal').toString();
+    const depth = formData.get('depth');
+    const height = formData.get('height');
+    const width = formData.get('width');
+    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const sale = false;
+
+
+    if (!name) {
+      console.error("Size is required.");
+      return; // Megakadályozza a további végrehajtást, ha a méret nincs megadva
+    }
+    console.log(gemId + " " + name  + " " +  metal + " " + depth + " " + height + " " + width + " " + price + " " +  fileUrl)
+    props.jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileUrl);
+      // After submission logic, you might want to navigate the user to another route or show a success message.
+    };
+      
+  
+  
+
 
     return (
       <div id="content" className='pt-5'>
         <h1>Add jewelry</h1>
-        <form onSubmit={(event) => {
-          event.preventDefault()
-          const name = this.name.value
-          const price = window.web3.utils.toWei(this.price.value.toString(), 'Ether')
-          const depth = this.depth.value
-          const height = this.height.value
-          const width = this.width.value
-          const metal = this.metal.value
-          const date = this.date.value
-          const size = this.size.value
-          this.props.jewelryMaking(name, gemId, metal, depth, height, width, size, date, false, price);
+        <form onSubmit={handleSubmit}>
+         
+          <div className="form-group mr-sm-2">
+          <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
 
-         }}>
-          <div className="form-group mr-sm-2">
-            <input
-              id="name"
-              type="text"
-              ref={(input) => { this.name = input }}
-              className="form-control"
-              placeholder="name"
-              required />
           </div>
           <div className="form-group mr-sm-2">
-            <input
-              id="price"
-              type="text"
-              ref={(input) => { this.price = input }}
-              className="form-control"
-              placeholder="Price"
-              required />
+          <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
+
           </div>
           <div className="form-group mr-sm-2">
-            <input
-              id="depth"
-              type="text"
-              ref={(input) => { this.depth = input }}
-              className="form-control"
-              placeholder="depth"
-              required />
+          <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
+
           </div>
           <div className="form-group mr-sm-2">
-            <input
-              id="height"
-              type="text"
-              ref={(input) => { this.height = input }}
-              className="form-control"
-              placeholder="height"
-              required />
+          <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
+
           </div>
           <div className="form-group mr-sm-2">
-            <input
-              id="width"
-              type="text"
-              ref={(input) => { this.width = input }}
-              className="form-control"
-              placeholder="width"
-              required />
+          <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
+
           </div>
+         
           <div className="form-group mr-sm-2">
-            <input
-              id="size"
-              type="text"
-              ref={(input) => { this.size = input }}
-              className="form-control"
-              placeholder="size"
-              required />
-          </div>
-          <div className="form-group mr-sm-2">
-            <input
-              id="date"
-              type="text"
-              ref={(input) => { this.date = input }}
-              className="form-control"
-              placeholder="date"
-              required />
-          </div>
-          <div className="form-group mr-sm-2">
-            <input
-              id="metal"
-              type="text"
-              ref={(input) => { this.metal = input }}
-              className="form-control"
-              placeholder="metal"
-              required />
+          <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
+
           </div>
        
-       
+          <div className="form-group mr-sm-2">
+            <input type="file" ref={fileInputRef} className="form-control" />
+          </div>
 
           <button type="submit" className="btn btn-primary">Make jewelry</button>
         </form>
        
       </div>
     );
-  }
-}
+    }
 
-export default withParams(JewelryForm);
+
+
+export default JewelryForm;

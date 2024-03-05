@@ -121,6 +121,8 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.02.29. 13:56:<br>
         - grinding? A gemselben? appjsbennincs...<br>
-        - ![ ](image-3.png)details gomb nem jó....<br>
-        - a gemstoneSelecting sol struct-ot módosítottam, szóval az app.jst és a formot is javítani kell még :D<br>
+        ~~- ![ ](image-3.png)details gomb nem jó....<br>~~
+        - a gemstoneSelecting sol struct-ot módosítottam, szóval az app.jst és a formot is javítani kell még :D<br><br><br>
 
+2024.03.03. 16:27:<br>
+        - a jewmakinghez kell a fileurl, a formban és az app.js-ben és a képfeltöltés is

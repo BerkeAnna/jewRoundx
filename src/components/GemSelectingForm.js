@@ -50,7 +50,7 @@ function GemSelectingForm(props) {
 
     formData.append('fileUrl', fileUrl);
 
-    
+    console.log("file url:::::", fileUrl)
 
     const minedGemId = id; 
     const gemType = formData.get('gemType').toString();
@@ -99,7 +99,7 @@ function GemSelectingForm(props) {
        
           <div className="form-group mr-sm-2">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
-        </div>
+          </div>
           <div className="form-group mr-sm-2">
           <input type="file" ref={fileInputRef} className="form-control" />
       

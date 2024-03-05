@@ -17,7 +17,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
   };
 
   const handleMarkAsUsed = (gemId) => {
-    markGemAsUsed(gemId)
+   // markGemAsUsed(gemId)
     navigate(`/jewelry-making/gem/${gemId}`);
       
     
