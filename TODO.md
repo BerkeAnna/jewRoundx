@@ -129,3 +129,4 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 
 2024.03.05. 15:13<br>
         - hozzáaádja a jewelryt csak az ownedbyuser oldalonn nem jelenik meg az új sor, de todo
+        - 15:15: sorry, megjelenik
