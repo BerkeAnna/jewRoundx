@@ -23,12 +23,13 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
           <td>{gem.polishing.toString()}</td>
+          
           <td>
                 {
             gem.fileURL && (
               <div>
               <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
-              
+
             </div>
             )
           }
@@ -36,6 +37,7 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{gem.used.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
+          <td>{gem.fileURL}</td>
           
           
         </tr>
@@ -70,6 +72,7 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{gem.selected.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
+          <td>{gem.fileURL}</td>
           
           
         </tr>
@@ -86,16 +89,28 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
         <tr key={key}>
           <th scope="row">{jewelry.id.toString()}</th>
           <td>{jewelry.name}</td>
+          
+          <td>{jewelry.metal.toString()} </td>
           <td>{jewelry.depth.toString()} mm</td>
           <td>{jewelry.height.toString()} mm</td>
           <td>{jewelry.width.toString()} mm</td>
-          <td>{jewelry.size.toString()}</td>
-          <td>{jewelry.date.toString()}</td>
-          <td>{jewelry.metal}</td>
+   
           <td>{jewelry.sale.toString()}</td>
           <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        
+          <td>
+          {jewelry.fileURL && (
+            <div>
+              <a href={jewelry.fileURL} target="_blank" rel="noopener noreferrer">
+                <img src={jewelry.fileURL} alt="Jewelry" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} />
+              </a>
+            </div>
+          )}
+          </td>
+         
+          <td>{jewelry.jeweler}</td>
           <td>{jewelry.owner}</td>
-          
+          <td>{jewelry.fileURL}</td>
           
         </tr>
       )
@@ -165,14 +180,14 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                         <tr>
                           <th>ID</th>
                           <th>Name</th>
-                          <th>Depth</th>
-                          <th>Width</th>
-                          <th>Diameter</th>
-                          <th>Size</th>
-                          <th>Date</th>
                           <th>Metal</th>
+                          <th>Depth</th>
+                          <th>Height</th>
+                          <th>Width</th>
                           <th>Sale</th>
                           <th>Price</th>
+                          <th>Picture</th>
+                          <th>Jeweler</th>
                           <th>Owner</th>
                         </tr>
                       </thead>

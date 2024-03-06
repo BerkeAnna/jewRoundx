@@ -130,3 +130,8 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
 2024.03.05. 15:13<br>
         - hozzáaádja a jewelryt csak az ownedbyuser oldalonn nem jelenik meg az új sor, de todo
         - 15:15: sorry, megjelenik
+
+2024.03.06. 19:15:<br>
+        - a jewdetailsban nem jelenik meg a kép
+        - a List of processing gems részben pedig állítsni kell a markasused-ot
+        - van egy kis problem az id-kal. ha nem sorrendbe megyunk a kövekkel a lépéseken gond van...

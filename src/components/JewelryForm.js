@@ -2,11 +2,9 @@ import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-function JewelryForm(props) { // Assuming web3 is passed as a prop
+function JewelryForm(props) {
   const navigate = useNavigate();
-  const params = useParams();
-  const fileInputRef = useRef(null);
-  const [fileUrl, setFileUrl] = useState('');
+  const fileInputRef = useRef(null); // Using ref for file input
   const { id } = useParams();
 
   const handleSubmit = async (event) => {
@@ -15,6 +13,7 @@ function JewelryForm(props) { // Assuming web3 is passed as a prop
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
     
+    let fileUrl = "";
     if (file) {
       try {
         const fileData = new FormData();
@@ -30,9 +29,8 @@ function JewelryForm(props) { // Assuming web3 is passed as a prop
             },
           }
         );
-        const fileUrlResult = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
         
-        setFileUrl(fileUrlResult);
       } catch (err) {
         console.error("Error uploading file: ", err);
         return;

@@ -4,9 +4,7 @@ import axios from 'axios';
 
 function GemSelectingForm(props) {
   const navigate = useNavigate();
-  const params = useParams();
-  const fileInputRef = useRef(null);
-  const [fileUrl, setFileUrl] = useState('');
+  const fileInputRef = useRef(null); // Using ref for file input
   const { id } = useParams();
 
   const handleSubmit = async (event) => {
@@ -16,6 +14,7 @@ function GemSelectingForm(props) {
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
 
+    let fileUrl = "";
     if (file) {
       try {
         const fileData = new FormData();
@@ -28,8 +27,7 @@ function GemSelectingForm(props) {
           },
         });
 
-        const fileUrlResult = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-        setFileUrl(fileUrlResult); // Update state with the URL of the uploaded file
+        fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
       } catch (err) {
         console.error("Error uploading file: ", err);
         return; // Exit if there's an error
