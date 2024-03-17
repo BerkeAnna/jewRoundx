@@ -141,3 +141,6 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
        - ha létrehozol egy új ganache workspace-t, akkor a metamaskban is hozzá kell adni a hálózatot manuálisan:<br>
        ![alt text](image-5.png)![alt text](image-6.png)<br>
        
+2024.03.17. 13:01:<br>
+        - az id-k megoldása: a crete függvényekben van  agond, mert ott új id-t generál, nem veszi át a szülő idját., hanem a count alapján növeli
+        --> most ha hozzáadok két minedgemet, és utána lesz selected visszafelé irányba, szóval előszőr a 2.ak sleectelem, akkor az csak akkor jeleink meg ha az előtte lévő is --- de így az id nem  rossz ---- 13:37: most jók a köve sora :D

@@ -12,6 +12,7 @@ contract GemstoneSelecting {
     uint public selectedGemCount = 0;
     mapping (uint => SelectedGem) public selectedGems;
       IGemstoneExtraction gemstoneExtraction;
+mapping(uint => bool) public selectedMinedGems;
 
     struct SelectedGem{
         uint id;
@@ -73,8 +74,8 @@ function gemSelecting(
 
     // Folytatjuk a gyémánt hozzáadását, ha minden ellenőrzés sikeres
     selectedGemCount++;
-    selectedGems[selectedGemCount] = SelectedGem(
-        selectedGemCount,
+    selectedGems[_minedGemId] = SelectedGem(
+        _minedGemId,
         _minedGemId,
         _size,
         _carat,
@@ -88,7 +89,7 @@ function gemSelecting(
     );
 
     emit GemSelecting(
-        selectedGemCount,
+        _minedGemId,
         _minedGemId,
         _size,
         _carat,
