@@ -135,3 +135,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - a jewdetailsban nem jelenik meg a kép
         - a List of processing gems részben pedig állítsni kell a markasused-ot
         - van egy kis problem az id-kal. ha nem sorrendbe megyunk a kövekkel a lépéseken gond van...
+
+2024.03.17. 11:22: <br>
+       ~~ - new ganache: 20240317-aw --- a metamaskban hozzáadni új addresseket ~~<br>
+       - ha létrehozol egy új ganache workspace-t, akkor a metamaskban is hozzá kell adni a hálózatot manuálisan:<br>
+       ![alt text](image-5.png)![alt text](image-6.png)<br>
+       
