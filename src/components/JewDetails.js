@@ -41,6 +41,7 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           
           
         </tr>
+        
       )
     ));
   };

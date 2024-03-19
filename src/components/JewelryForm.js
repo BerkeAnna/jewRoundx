@@ -8,8 +8,10 @@ function JewelryForm(props) {
   const { id } = useParams();
 
   const handleSubmit = async (event) => {
+    console.log("preventdef bef")
     event.preventDefault();
     
+    console.log("preventdef after")
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
     

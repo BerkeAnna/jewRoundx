@@ -135,7 +135,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     console.log(ownedJewelry[0]);
     return ownedJewelry.map((jewelry, key) => (
       
+      
       <tr key={key}>
+        
         <th scope="row">{jewelry.id.toString()}</th>
         <td>{jewelry.gemType}</td>
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
