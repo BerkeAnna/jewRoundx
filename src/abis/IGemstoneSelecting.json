@@ -87,7 +87,7 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity >=0.4.21 <0.6.0;\n\ninterface IGemstoneSelecting {\n    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);\n    function markGemAsUsed(uint _id) external;\n}\n\ncontract Jewelry {\n    \n    IGemstoneSelecting gemstoneSelecting;\n\n    /*struct GoldData{\n        string name;\n        uint gemId;\n        uint goldCarat;\n\n    }\n\n     struct SilverData{\n        string name;\n        uint gemId;\n\n    }\n\n     struct MedicalMetalData{\n        string name;\n        uint gemId;\n\n    }*/\n\n    uint public jewelryCount = 0;\n    mapping( uint => JewelryData) public jewelry;\n\n    struct JewelryData{\n        uint id;\n        string name;\n        uint gemId;\n        string metal;\n        uint depth;\n        uint height;\n        uint width;\n        bool sale;\n        uint price;\n        string fileURL;\n        address payable jeweler;\n        address payable owner;\n    }\n\n    event JewelryMaking(\n        uint id,\n        string name,\n        uint gemId,\n        string metal,\n        uint depth,\n        uint height,\n        uint width,\n        bool sale,\n        uint price,\n        string fileURL,\n        address payable jeweler,\n        address payable owner\n    );\n\n     constructor(address _gemstoneSelectingAddress) public {\n        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);\n    }\n\n    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width,  bool _sale, uint _price, string memory _fileURL ) public {\n     //  (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);\n     //   require(!used, \"Gem already used\");\n        \n        jewelryCount++;\n       jewelry[jewelryCount] = JewelryData(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n       emit JewelryMaking(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n    \n    }\n\n \n}",
+  "source": "pragma solidity >=0.4.21 <0.6.0;\n\ninterface IGemstoneSelecting {\n    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);\n    function markGemAsUsed(uint _id) external;\n}\n\ncontract Jewelry {\n    \n    IGemstoneSelecting gemstoneSelecting;\n\n    /*struct GoldData{\n        string name;\n        uint gemId;\n        uint goldCarat;\n\n    }\n\n     struct SilverData{\n        string name;\n        uint gemId;\n\n    }\n\n     struct MedicalMetalData{\n        string name;\n        uint gemId;\n\n    }*/\n\n    uint public jewelryCount = 0;\n    mapping( uint => JewelryData) public jewelry;\n\n    struct JewelryData{\n        uint id;\n        string name;\n        uint gemId;\n        string metal;\n        uint depth;\n        uint height;\n        uint width;\n        bool sale;\n        uint price;\n        string fileURL;\n        address payable jeweler;\n        address payable owner;\n    }\n\n    event JewelryMaking(\n        uint id,\n        string name,\n        uint gemId,\n        string metal,\n        uint depth,\n        uint height,\n        uint width,\n        bool sale,\n        uint price,\n        string fileURL,\n        address payable jeweler,\n        address payable owner\n    );\n\n     constructor(address _gemstoneSelectingAddress) public {\n        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);\n    }\n\n    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width,  bool _sale, uint _price, string memory _fileURL ) public {\n     //  (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);\n     //   require(!used, \"Gem already used\");\n        \n        jewelryCount++;\n       jewelry[_gemId] = JewelryData(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n       emit JewelryMaking(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n    \n    }\n\n \n}",
   "sourcePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/Jewelry.sol",
   "ast": {
     "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/Jewelry.sol",
@@ -1525,7 +1525,7 @@
             "body": {
               "id": 927,
               "nodeType": "Block",
-              "src": "1685:473:2",
+              "src": "1685:455:2",
               "statements": [
                 {
                   "expression": {
@@ -1588,11 +1588,11 @@
                       "indexExpression": {
                         "argumentTypes": null,
                         "id": 890,
-                        "name": "jewelryCount",
+                        "name": "_gemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 798,
-                        "src": "1868:12:2",
+                        "referencedDeclaration": 869,
+                        "src": "1868:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1603,7 +1603,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "1860:21:2",
+                      "src": "1860:15:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_JewelryData_$827_storage",
                         "typeString": "struct Jewelry.JewelryData storage ref"
@@ -1617,11 +1617,11 @@
                         {
                           "argumentTypes": null,
                           "id": 893,
-                          "name": "jewelryCount",
+                          "name": "_gemId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 798,
-                          "src": "1896:12:2",
+                          "referencedDeclaration": 869,
+                          "src": "1890:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1634,7 +1634,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 867,
-                          "src": "1910:5:2",
+                          "src": "1898:5:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -1647,7 +1647,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 869,
-                          "src": "1917:6:2",
+                          "src": "1905:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1660,7 +1660,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 871,
-                          "src": "1925:6:2",
+                          "src": "1913:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -1673,7 +1673,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 873,
-                          "src": "1933:6:2",
+                          "src": "1921:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1686,7 +1686,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 875,
-                          "src": "1941:7:2",
+                          "src": "1929:7:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1699,7 +1699,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 877,
-                          "src": "1950:6:2",
+                          "src": "1938:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1712,7 +1712,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 879,
-                          "src": "1958:5:2",
+                          "src": "1946:5:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
                             "typeString": "bool"
@@ -1725,7 +1725,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 881,
-                          "src": "1965:6:2",
+                          "src": "1953:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1738,7 +1738,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 883,
-                          "src": "1973:8:2",
+                          "src": "1961:8:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -1753,7 +1753,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 1001,
-                            "src": "1983:3:2",
+                            "src": "1971:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
@@ -1767,7 +1767,7 @@
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "1983:10:2",
+                          "src": "1971:10:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address_payable",
                             "typeString": "address payable"
@@ -1782,7 +1782,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 1001,
-                            "src": "1995:3:2",
+                            "src": "1983:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
@@ -1796,7 +1796,7 @@
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "1995:10:2",
+                          "src": "1983:10:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address_payable",
                             "typeString": "address payable"
@@ -1859,7 +1859,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 827,
-                        "src": "1884:11:2",
+                        "src": "1878:11:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_JewelryData_$827_storage_ptr_$",
                           "typeString": "type(struct Jewelry.JewelryData storage pointer)"
@@ -1873,13 +1873,13 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "1884:122:2",
+                      "src": "1878:116:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_JewelryData_$827_memory",
                         "typeString": "struct Jewelry.JewelryData memory"
                       }
                     },
-                    "src": "1860:146:2",
+                    "src": "1860:134:2",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_JewelryData_$827_storage",
                       "typeString": "struct Jewelry.JewelryData storage ref"
@@ -1887,7 +1887,7 @@
                   },
                   "id": 909,
                   "nodeType": "ExpressionStatement",
-                  "src": "1860:146:2"
+                  "src": "1860:134:2"
                 },
                 {
                   "eventCall": {
@@ -1896,11 +1896,11 @@
                       {
                         "argumentTypes": null,
                         "id": 911,
-                        "name": "jewelryCount",
+                        "name": "_gemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 798,
-                        "src": "2035:12:2",
+                        "referencedDeclaration": 869,
+                        "src": "2023:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1913,7 +1913,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 867,
-                        "src": "2049:5:2",
+                        "src": "2031:5:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -1926,7 +1926,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 869,
-                        "src": "2056:6:2",
+                        "src": "2038:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1939,7 +1939,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 871,
-                        "src": "2064:6:2",
+                        "src": "2046:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -1952,7 +1952,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 873,
-                        "src": "2072:6:2",
+                        "src": "2054:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1965,7 +1965,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 875,
-                        "src": "2080:7:2",
+                        "src": "2062:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1978,7 +1978,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 877,
-                        "src": "2089:6:2",
+                        "src": "2071:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1991,7 +1991,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 879,
-                        "src": "2097:5:2",
+                        "src": "2079:5:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -2004,7 +2004,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 881,
-                        "src": "2104:6:2",
+                        "src": "2086:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2017,7 +2017,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 883,
-                        "src": "2112:8:2",
+                        "src": "2094:8:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -2032,7 +2032,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1001,
-                          "src": "2122:3:2",
+                          "src": "2104:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -2046,7 +2046,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "2122:10:2",
+                        "src": "2104:10:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
@@ -2061,7 +2061,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1001,
-                          "src": "2134:3:2",
+                          "src": "2116:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -2075,7 +2075,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "2134:10:2",
+                        "src": "2116:10:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
@@ -2138,7 +2138,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 853,
-                      "src": "2021:13:2",
+                      "src": "2009:13:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$_t_uint256_$_t_uint256_$_t_bool_$_t_uint256_$_t_string_memory_ptr_$_t_address_payable_$_t_address_payable_$returns$__$",
                         "typeString": "function (uint256,string memory,uint256,string memory,uint256,uint256,uint256,bool,uint256,string memory,address payable,address payable)"
@@ -2152,7 +2152,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "2021:124:2",
+                    "src": "2009:118:2",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
@@ -2160,7 +2160,7 @@
                   },
                   "id": 926,
                   "nodeType": "EmitStatement",
-                  "src": "2016:129:2"
+                  "src": "2004:123:2"
                 }
               ]
             },
@@ -2419,17 +2419,17 @@
               "src": "1685:0:2"
             },
             "scope": 929,
-            "src": "1508:650:2",
+            "src": "1508:632:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
         "scope": 930,
-        "src": "360:1803:2"
+        "src": "360:1785:2"
       }
     ],
-    "src": "0:2163:2"
+    "src": "0:2145:2"
   },
   "legacyAST": {
     "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/Jewelry.sol",
@@ -3867,7 +3867,7 @@
             "body": {
               "id": 927,
               "nodeType": "Block",
-              "src": "1685:473:2",
+              "src": "1685:455:2",
               "statements": [
                 {
                   "expression": {
@@ -3930,11 +3930,11 @@
                       "indexExpression": {
                         "argumentTypes": null,
                         "id": 890,
-                        "name": "jewelryCount",
+                        "name": "_gemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 798,
-                        "src": "1868:12:2",
+                        "referencedDeclaration": 869,
+                        "src": "1868:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -3945,7 +3945,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "1860:21:2",
+                      "src": "1860:15:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_JewelryData_$827_storage",
                         "typeString": "struct Jewelry.JewelryData storage ref"
@@ -3959,11 +3959,11 @@
                         {
                           "argumentTypes": null,
                           "id": 893,
-                          "name": "jewelryCount",
+                          "name": "_gemId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 798,
-                          "src": "1896:12:2",
+                          "referencedDeclaration": 869,
+                          "src": "1890:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -3976,7 +3976,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 867,
-                          "src": "1910:5:2",
+                          "src": "1898:5:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -3989,7 +3989,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 869,
-                          "src": "1917:6:2",
+                          "src": "1905:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -4002,7 +4002,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 871,
-                          "src": "1925:6:2",
+                          "src": "1913:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -4015,7 +4015,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 873,
-                          "src": "1933:6:2",
+                          "src": "1921:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -4028,7 +4028,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 875,
-                          "src": "1941:7:2",
+                          "src": "1929:7:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -4041,7 +4041,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 877,
-                          "src": "1950:6:2",
+                          "src": "1938:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -4054,7 +4054,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 879,
-                          "src": "1958:5:2",
+                          "src": "1946:5:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
                             "typeString": "bool"
@@ -4067,7 +4067,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 881,
-                          "src": "1965:6:2",
+                          "src": "1953:6:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -4080,7 +4080,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 883,
-                          "src": "1973:8:2",
+                          "src": "1961:8:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
                             "typeString": "string memory"
@@ -4095,7 +4095,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 1001,
-                            "src": "1983:3:2",
+                            "src": "1971:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
@@ -4109,7 +4109,7 @@
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "1983:10:2",
+                          "src": "1971:10:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address_payable",
                             "typeString": "address payable"
@@ -4124,7 +4124,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 1001,
-                            "src": "1995:3:2",
+                            "src": "1983:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
@@ -4138,7 +4138,7 @@
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": null,
-                          "src": "1995:10:2",
+                          "src": "1983:10:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address_payable",
                             "typeString": "address payable"
@@ -4201,7 +4201,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 827,
-                        "src": "1884:11:2",
+                        "src": "1878:11:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_JewelryData_$827_storage_ptr_$",
                           "typeString": "type(struct Jewelry.JewelryData storage pointer)"
@@ -4215,13 +4215,13 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "1884:122:2",
+                      "src": "1878:116:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_JewelryData_$827_memory",
                         "typeString": "struct Jewelry.JewelryData memory"
                       }
                     },
-                    "src": "1860:146:2",
+                    "src": "1860:134:2",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_JewelryData_$827_storage",
                       "typeString": "struct Jewelry.JewelryData storage ref"
@@ -4229,7 +4229,7 @@
                   },
                   "id": 909,
                   "nodeType": "ExpressionStatement",
-                  "src": "1860:146:2"
+                  "src": "1860:134:2"
                 },
                 {
                   "eventCall": {
@@ -4238,11 +4238,11 @@
                       {
                         "argumentTypes": null,
                         "id": 911,
-                        "name": "jewelryCount",
+                        "name": "_gemId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 798,
-                        "src": "2035:12:2",
+                        "referencedDeclaration": 869,
+                        "src": "2023:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4255,7 +4255,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 867,
-                        "src": "2049:5:2",
+                        "src": "2031:5:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -4268,7 +4268,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 869,
-                        "src": "2056:6:2",
+                        "src": "2038:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4281,7 +4281,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 871,
-                        "src": "2064:6:2",
+                        "src": "2046:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -4294,7 +4294,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 873,
-                        "src": "2072:6:2",
+                        "src": "2054:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4307,7 +4307,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 875,
-                        "src": "2080:7:2",
+                        "src": "2062:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4320,7 +4320,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 877,
-                        "src": "2089:6:2",
+                        "src": "2071:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4333,7 +4333,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 879,
-                        "src": "2097:5:2",
+                        "src": "2079:5:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -4346,7 +4346,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 881,
-                        "src": "2104:6:2",
+                        "src": "2086:6:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -4359,7 +4359,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 883,
-                        "src": "2112:8:2",
+                        "src": "2094:8:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -4374,7 +4374,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1001,
-                          "src": "2122:3:2",
+                          "src": "2104:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -4388,7 +4388,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "2122:10:2",
+                        "src": "2104:10:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
@@ -4403,7 +4403,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1001,
-                          "src": "2134:3:2",
+                          "src": "2116:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -4417,7 +4417,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "2134:10:2",
+                        "src": "2116:10:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
@@ -4480,7 +4480,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 853,
-                      "src": "2021:13:2",
+                      "src": "2009:13:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$_t_uint256_$_t_uint256_$_t_bool_$_t_uint256_$_t_string_memory_ptr_$_t_address_payable_$_t_address_payable_$returns$__$",
                         "typeString": "function (uint256,string memory,uint256,string memory,uint256,uint256,uint256,bool,uint256,string memory,address payable,address payable)"
@@ -4494,7 +4494,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "2021:124:2",
+                    "src": "2009:118:2",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
@@ -4502,7 +4502,7 @@
                   },
                   "id": 926,
                   "nodeType": "EmitStatement",
-                  "src": "2016:129:2"
+                  "src": "2004:123:2"
                 }
               ]
             },
@@ -4761,17 +4761,17 @@
               "src": "1685:0:2"
             },
             "scope": 929,
-            "src": "1508:650:2",
+            "src": "1508:632:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
         "scope": 930,
-        "src": "360:1803:2"
+        "src": "360:1785:2"
       }
     ],
-    "src": "0:2163:2"
+    "src": "0:2145:2"
   },
   "compiler": {
     "name": "solc",
@@ -4779,7 +4779,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-03-19T13:38:15.065Z",
+  "updatedAt": "2024-03-19T14:10:00.972Z",
   "devdoc": {
     "methods": {}
   },

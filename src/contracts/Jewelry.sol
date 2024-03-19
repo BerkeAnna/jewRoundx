@@ -70,9 +70,9 @@ contract Jewelry {
      //   require(!used, "Gem already used");
         
         jewelryCount++;
-       jewelry[jewelryCount] = JewelryData(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
+       jewelry[_gemId] = JewelryData(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
 
-       emit JewelryMaking(jewelryCount, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
+       emit JewelryMaking(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
 
     
     }
