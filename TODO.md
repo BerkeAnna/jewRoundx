@@ -149,4 +149,12 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
        ~~ - az id-s gond a makeJewnél is fennáll. Azt javítani. <br>~~
     ~~    - ha megvan a makejew, akkor tötölje a List of processing gems-ből is. mert most ottmarad<br>~~
        ~~ - órán tesztelni, hogy most az id-k jók e a jewmakingben is :D<br>~~
-        - processing gemnél csak akkor jelenik meg egy id, ha az előtte lévőek már ott vannak. szóval, ha csak  a2es id-jú megy át proc-ra, akkor nem látszik. De ha utána hozzáadom az 1. id-sat akkor mind2 látszik
+        - processing gemnél csak akkor jelenik meg egy id, ha az előtte lévőek már ott vannak. szóval, ha csak  a2es id-jú megy át proc-ra, akkor nem látszik. De ha utána hozzáadom az 1. id-sat akkor mind2 látszik<br><br>
+
+2024.03.22. 17:43: <br>
+        - a http://localhost:3000/gem-details/{id} oldfalon rossz a megjelenítés<br>
+        -gem marketnél kell detail gomb, nem elég a buy<br>
+        - a gem marketnél a buy gomb hibára fut másik usernél<br>
+        - a sell gombot az owner oldalon ki lehet dobni<br>
+        - majd kell előszőr egy login - select jew oldal. És a belépés után lehet a marketekbe navigálni<br>
+        - http://localhost:3000/gemMarket ez nem ugyanaz http://localhost:3000/minedGems

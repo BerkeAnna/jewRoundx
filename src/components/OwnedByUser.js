@@ -162,25 +162,67 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     <a href='\'><button>Log out</button></a>
       <h2>List of mined gems</h2>
       <table className="table">
-        <thead>{/* Table headers */}</thead>
+        <thead>
+          { 
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">*</th>
+          </tr>
+          }
+        </thead>
         <tbody>{renderMinedGems()}</tbody>
       </table>
 
       <h2>List of selected gems</h2>
       <table className="table">
-        <thead>{/* Table headers */}</thead>
+      <thead>
+          { 
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">*</th>
+            <th scope="col">*</th>
+          </tr>
+          }
+        </thead>
         <tbody>{renderSelectedGems()}</tbody>
       </table>
 
       <h2>List of processing gems</h2>
       <table className="table">
-        <thead>{/* Table headers */}</thead>
+      <thead>
+          { 
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Used - todo: delete</th>
+            <th scope="col">*</th>
+          </tr>
+          }
+        </thead>
         <tbody>{renderProcessingGems()}</tbody>
       </table>
 
       <h2>List of jewelry</h2>
       <table className="table">
-        <thead>{/* Table headers */}</thead>
+      <thead>
+          { 
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">??</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">*</th>
+          </tr>
+          }
+        </thead>
         <tbody>{renderJewelry()}</tbody>
       </table>
     </div>

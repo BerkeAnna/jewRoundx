@@ -36,7 +36,7 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
                   <td>{selectedGem.owner}</td>
                   <td>
                     <button
-                      onClick={() => handlePurchase(selectedGem.id, selectedGem.price)}
+                      onClick={() => handlePurchase(selectedGem.id.toString(), selectedGem.price.toString())}
                     >
                       Buy
                     </button>
