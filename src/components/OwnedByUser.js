@@ -17,7 +17,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
   };
 
   const handleMarkAsUsed = (gemId) => {
-   // markGemAsUsed(gemId)
+    markGemAsUsed(gemId)
     navigate(`/jewelry-making/gem/${gemId}`);
       
     
@@ -100,9 +100,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{selectedGem.gemType}</td>
         <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
         <td>{selectedGem.owner}</td>
-        <td>{selectedGem.polishing.toString()}</td>
+        <td>{selectedGem.used.toString()}</td>
         
-          {selectedGem.polishing ? (
+          {selectedGem.polishing && !selectedGem.used ?  (
           <div>
             <td>
               <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>

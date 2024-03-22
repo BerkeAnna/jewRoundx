@@ -146,7 +146,7 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         --> most ha hozzáadok két minedgemet, és utána lesz selected visszafelé irányba, szóval előszőr a 2.ak sleectelem, akkor az csak akkor jeleink meg ha az előtte lévő is --- de így az id nem  rossz ---- 13:37: most jók a köve sora :D
 
  2024.03.19. 13:26: <br>
-        - az id-s gond a makeJewnél is fennáll. Azt javítani. <br>
-        - ha megvan a makejew, akkor tötölje a List of processing gems-ből is. mert most ottmarad<br>
-        - órán tesztelni, hogy most az id-k jók e a jewmakingben is :D<br>
+       ~~ - az id-s gond a makeJewnél is fennáll. Azt javítani. <br>~~
+    ~~    - ha megvan a makejew, akkor tötölje a List of processing gems-ből is. mert most ottmarad<br>~~
+       ~~ - órán tesztelni, hogy most az id-k jók e a jewmakingben is :D<br>~~
         - processing gemnél csak akkor jelenik meg egy id, ha az előtte lévőek már ott vannak. szóval, ha csak  a2es id-jú megy át proc-ra, akkor nem látszik. De ha utána hozzáadom az 1. id-sat akkor mind2 látszik
