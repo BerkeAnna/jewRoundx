@@ -34,6 +34,7 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
                   <td>{selectedGem.gemType}</td>
                   <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
                   <td>{selectedGem.owner}</td>
+                  
                   <td>
                     <button
                       onClick={() => handlePurchase(selectedGem.id.toString(), selectedGem.price.toString())}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
 
 
-const Dashboard = ({ account }) => {
+const LoggedIn = ({ account }) => {
   const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
   const navigate = useNavigate(); // Hook használata az átirányításhoz
 
@@ -19,9 +19,15 @@ const Dashboard = ({ account }) => {
 
   return (
     <div className='pt-5'>
-      <h1>Hi guest!</h1>
+      <h1>Hi user!</h1>
       
-      <a href="/loggedIn"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>
+      <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
+      <a href="/"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>
+      <a href="/gemMarket"><div className='dashboardButton'><button>Gem Market</button></div></a><br/>
+      <a href="/jewMarket"><div className='dashboardButton'><button>Jew Market</button></div></a><br/>
+      <a href="/repair"><div className='dashboardButton'><button>Repair</button></div></a><br/>
+      <a href="/profile"><div className='dashboardButton'><button>Profile</button></div></a><br/>
+      <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
 
       <h3>Search jewelry with ID</h3>
        <form onSubmit={handleSubmit}>
@@ -39,4 +45,4 @@ const Dashboard = ({ account }) => {
   );
 };
 
-export default Dashboard;
+export default LoggedIn;

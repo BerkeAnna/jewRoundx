@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
 
 
-const Dashboard = ({ account }) => {
+const Repair = ({ account }) => {
   const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
   const navigate = useNavigate(); // Hook használata az átirányításhoz
 
@@ -19,24 +19,9 @@ const Dashboard = ({ account }) => {
 
   return (
     <div className='pt-5'>
-      <h1>Hi guest!</h1>
-      
-      <a href="/loggedIn"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>
-
-      <h3>Search jewelry with ID</h3>
-       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          value={jewelryId} 
-          onChange={handleChange} 
-          placeholder="Enter Jewelry ID" 
-        />
-        <div className='dashboardButton'>
-          <button type="submit">Search</button>
-        </div>
-      </form>
-    </div>
+      <h1>Repair page in process....</h1>
+     </div>
   );
 };
 
-export default Dashboard;
+export default Repair;

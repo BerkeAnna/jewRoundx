@@ -157,4 +157,13 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - a gem marketnél a buy gomb hibára fut másik usernél<br>
         - a sell gombot az owner oldalon ki lehet dobni<br>
         - majd kell előszőr egy login - select jew oldal. És a belépés után lehet a marketekbe navigálni<br>
-        - http://localhost:3000/gemMarket ez nem ugyanaz http://localhost:3000/minedGems
+                ->>> van egy dashboard, ahol be lehet loginelni és van egy kereső a jewekhez
+                ->>> ha van egy belépett felhasználó, akkor egy másik középen látszó menü lesz:
+                        --->>>> üdv xy.
+                        ---->>>> saját termékek gomb
+                        ---->>> add mined gem gomb
+                        ----> gem market gomb
+                        ---->>> jew market
+                ---- viszont jew market mehetne a látogató felületre is. Mert mi van, ha ezen az oldalon akarja megvásárolni? De lehet elég lesz az, hogy ez a kereskedőlnek van. De vendég lekérheti az adatokat, de itt nem tud venni.
+                
+      ~~  - http://localhost:3000/gemMarket ez nem ugyanaz http://localhost:3000/minedGems ~~

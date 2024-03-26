@@ -18,6 +18,9 @@ import OwnedByUser from './OwnedByUser'
 import GemSelectingForm from './GemSelectingForm';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
+import LoggedIn from './LoggedIn';
+import Repair from './Repair';
+import Profile from './Profile';
 
 class App extends Component {
 //2:11:30
@@ -317,20 +320,24 @@ polishGem(id ){
         <Router>
         
           {/* Navbar mindig látható */}
-          {window.location.pathname !== "/" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket" && <Navbar account={this.state.account} />}
+          {window.location.pathname !== "/" && window.location.pathname !== "/loggedin" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket" && <Navbar account={this.state.account} />}
 
          
           
           <Routes>
-          <Route path="/" element={<Dashboard  />} />
+            <Route path="/" element={<Dashboard  />} />
+            <Route path="/loggedin" element={<LoggedIn  />} />
+            <Route path="/repair" element={<Repair  />} />
+            <Route path="/profile" element={<Profile  />} />
+            
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
-            <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
+           {/* <Route path="/minedGems" element={<MinedGemsList  minedGems={this.state.minedGems}
                                                               gemMining={this.gemMining}
                                                               purchaseGem={this.purchaseGem}
                                                               processingGem={this.processingGem}
                                                               account={this.state.account}
                                                               />} />
-           
+            */}
            <Route path="/gemMarket" element={<GemMarket  minedGems={this.state.minedGems}
                                                               selectedGems={this.state.selectedGems}
                                                               gemMining={this.gemMining}

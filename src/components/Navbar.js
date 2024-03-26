@@ -5,7 +5,7 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-custom navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a className="navbar-brand text-white col-sm-3 col-md-2 mr-0" href="/">
+        <a className="navbar-brand text-white col-sm-3 col-md-2 mr-0" href="/loggedIn">
           Mined gems
         </a>
         <ul className='navbar-nav px-3 justify-content-center d-flex flex-row'>
@@ -13,7 +13,7 @@ class Navbar extends Component {
             <a href="/addMinedGem" className='text-white'>Add mined gem</a>
           </li>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
-            <a href="/minedGems" className='text-white'>Mined Gems</a>
+            <a href="/gemMarket" className='text-white'>Mined Gems</a>
           </li>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
             <a href="/buyedGemsList" className='text-white'>Buyed Gems List</a>

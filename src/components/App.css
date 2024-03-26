@@ -1,6 +1,13 @@
 body {
     background-color: #e2f6ef; 
     color: #343a40; 
+    display: flex; /* Use Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    min-height: 100vh; /* Ensure full vertical height */
+    justify-content: flex-start; /* Align content to start */
     
     .navbar-custom {
         background-color: #0e052f !important; 
@@ -67,6 +74,9 @@ body {
         color: white;
         border: none;
         border-radius: 20px; 
+        width: 450px; /* Tripled width for button consistency */
+        text-align: center; /* Ensure text is centered within the button */
+        margin: 5px 0; 
 
     }
 
@@ -75,5 +85,12 @@ body {
         color: white;
         border: none;
         border-radius: 20px; 
+    }
+
+    input[type="text"] {
+        width: 150px; /* Match button width for consistency */
+        padding: 5px; /* Add some padding for aesthetics */
+        margin-bottom: 10px; /* Add some space below the input */
+        border-radius: 5px; /* Match border radius of buttons */
     }
 }
