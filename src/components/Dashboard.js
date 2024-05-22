@@ -18,7 +18,7 @@ const Dashboard = ({ account }) => {
   };
 
   return (
-    <div className='pt-5'>
+    <div className='centered-content pt-5'>
       <h1>Hi guest!</h1>
       
       <a href="/loggedIn"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>

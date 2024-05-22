@@ -1,96 +1,108 @@
 body {
     background-color: #e2f6ef; 
     color: #343a40; 
-    display: flex; /* Use Flexbox */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    min-height: 100vh; /* Ensure full vertical height */
-    justify-content: flex-start; /* Align content to start */
-    
-    .navbar-custom {
-        background-color: #0e052f !important; 
-        
-    }
-    
-    #tables {
-        color: #343a40; 
-    }
-    tables h2 {
-        color: black; 
-      }
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin: 0; 
+    padding: 0; 
+    min-height: 100vh; 
+    justify-content: flex-start; 
+}
 
-    #tables .table{
-        border-collapse: separate; 
-        border-radius: 20px; 
-        overflow: hidden; 
-    }
-    
-    #tables .table th{
-        color: #000000;
-        background-color: #73f0d3;
-    }
-    #tables .table thead th{
-        color: #343a40; 
-        background-color: #73f0d3;
-    }
+.navbar-custom {
+    background-color: #0e052f !important; 
+}
 
-    
+.wid {
+    width: 100vw; /* Ensure it takes full viewport width */
+}
 
-    #tables .table td {
-        color: #343a40; 
-        background-color: #b9efe3;
-    }
-    
-    #tables button {
-        background-color: #04dcaa; 
-        color: white; 
-        border: none; 
-        border-radius: 20px; 
-    }
-    
-    #tables button:hover {
-        background-color: #0036b3; 
-        border: none;
-        border-radius: 20px; 
-    }
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
 
-    .homeButton button{ 
-        background-color: #04dcaa;
-        color: white;
-        border: none;
-        border-radius: 20px; 
-    }
-    .homeButton button:hover{ 
-        background-color: #0036b3;
-        color: white;
-        border: none;
-        border-radius: 20px; 
-    }
+#tables {
+    color: #343a40; 
+}
 
-    .dashboardButton button {
-        background-color: #04dcaa;
-        color: white;
-        border: none;
-        border-radius: 20px; 
-        width: 450px; /* Tripled width for button consistency */
-        text-align: center; /* Ensure text is centered within the button */
-        margin: 5px 0; 
+tables h2 {
+    color: black; 
+}
 
-    }
+#tables .table {
+    border-collapse: separate; 
+    border-radius: 20px; 
+    overflow: hidden; 
+}
 
-    .dashboardButton button:hover {
-        background-color: #0036b3;
-        color: white;
-        border: none;
-        border-radius: 20px; 
-    }
+#tables .table th {
+    color: #000000;
+    background-color: #73f0d3;
+}
 
-    input[type="text"] {
-        width: 150px; /* Match button width for consistency */
-        padding: 5px; /* Add some padding for aesthetics */
-        margin-bottom: 10px; /* Add some space below the input */
-        border-radius: 5px; /* Match border radius of buttons */
-    }
+#tables .table thead th {
+    color: #343a40; 
+    background-color: #73f0d3;
+}
+
+#tables .table td {
+    color: #343a40; 
+    background-color: #b9efe3;
+}
+
+#tables button {
+    background-color: #04dcaa; 
+    color: white; 
+    border: none; 
+    border-radius: 20px; 
+}
+
+#tables button:hover {
+    background-color: #0036b3; 
+    border: none;
+    border-radius: 20px; 
+}
+
+.homeButton button { 
+    background-color: #04dcaa;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+}
+
+.homeButton button:hover { 
+    background-color: #0036b3;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+}
+
+.dashboardButton button {
+    background-color: #04dcaa;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+    width: 450px; 
+    text-align: center; 
+    margin: 5px 0; 
+}
+
+.dashboardButton button:hover {
+    background-color: #0036b3;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+}
+
+input[type="text"] {
+    width: 150px; 
+    padding: 5px; 
+    margin-bottom: 10px; 
+    border-radius: 5px; 
 }

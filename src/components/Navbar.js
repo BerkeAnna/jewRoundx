@@ -10,6 +10,9 @@ class Navbar extends Component {
         </a>
         <ul className='navbar-nav px-3 justify-content-center d-flex flex-row'>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
+            <a href="/loggedIn" className='text-white'>Home</a>
+          </li>
+          {/*<li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
             <a href="/addMinedGem" className='text-white'>Add mined gem</a>
           </li>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
@@ -18,6 +21,7 @@ class Navbar extends Component {
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
             <a href="/buyedGemsList" className='text-white'>Buyed Gems List</a>
           </li>
+    */}
         </ul>
         <ul className='navbar-nav px-3'>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>

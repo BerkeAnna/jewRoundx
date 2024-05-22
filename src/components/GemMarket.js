@@ -22,6 +22,7 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
             <th scope="col">Type</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
+            <th scope="col">Details</th>
             <th scope="col">Buy</th>
           </tr>
         </thead>
@@ -34,7 +35,11 @@ function GemMarket({ selectedGems, account, purchaseGem }) {
                   <td>{selectedGem.gemType}</td>
                   <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
                   <td>{selectedGem.owner}</td>
-                  
+                  <td>
+                  <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                      Details
+                    </button>
+                  </td>
                   <td>
                     <button
                       onClick={() => handlePurchase(selectedGem.id.toString(), selectedGem.price.toString())}

@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
-
+import { useNavigate } from 'react-router-dom';
 
 const LoggedIn = ({ account }) => {
-  const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
-  const navigate = useNavigate(); // Hook használata az átirányításhoz
+  const [jewelryId, setJewelryId] = useState('');
+  const navigate = useNavigate();
 
-  // Kezeljük az ID beviteli mező változásait
   const handleChange = (e) => {
     setJewelryId(e.target.value);
   };
 
-  // Kezeljük a keresés gombra kattintást
   const handleSubmit = (e) => {
-    e.preventDefault(); // Megakadályozzuk az alapértelmezett űrlap beküldési viselkedését
-    navigate(`/jew-details/${jewelryId}`); // Átirányítjuk a felhasználót a megfelelő oldalra
+    e.preventDefault();
+    navigate(`/jew-details/${jewelryId}`);
   };
 
   return (
-    <div className='pt-5'>
-      <h1>Hi user!</h1>
+    <div className='centered-content pt-5'>
+      <h1>Hi {account}!</h1>
       
       <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
       <a href="/"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>
@@ -30,7 +27,7 @@ const LoggedIn = ({ account }) => {
       <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
 
       <h3>Search jewelry with ID</h3>
-       <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input 
           type="text" 
           value={jewelryId} 

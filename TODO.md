@@ -152,8 +152,8 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
         - processing gemnél csak akkor jelenik meg egy id, ha az előtte lévőek már ott vannak. szóval, ha csak  a2es id-jú megy át proc-ra, akkor nem látszik. De ha utána hozzáadom az 1. id-sat akkor mind2 látszik<br><br>
 
 2024.03.22. 17:43: <br>
-        - a http://localhost:3000/gem-details/{id} oldfalon rossz a megjelenítés<br>
-        -gem marketnél kell detail gomb, nem elég a buy<br>
+        ~~- a http://localhost:3000/gem-details/{id} oldfalon rossz a megjelenítés<br>~~
+        ~~-gem marketnél kell detail gomb, nem elég a buy<br>~~
         - a gem marketnél a buy gomb hibára fut másik usernél<br>
         - a sell gombot az owner oldalon ki lehet dobni<br>
         - majd kell előszőr egy login - select jew oldal. És a belépés után lehet a marketekbe navigálni<br>
@@ -166,4 +166,9 @@ List of selected gems-ben katt a "select gem" gmbra -> selected form feljön. ->
                         ---->>> jew market
                 ---- viszont jew market mehetne a látogató felületre is. Mert mi van, ha ezen az oldalon akarja megvásárolni? De lehet elég lesz az, hogy ez a kereskedőlnek van. De vendég lekérheti az adatokat, de itt nem tud venni.
                 
-      ~~  - http://localhost:3000/gemMarket ez nem ugyanaz http://localhost:3000/minedGems ~~
+      ~~- http://localhost:3000/gemMarket ez nem ugyanaz http://localhost:3000/minedGems~~
+
+2024.05.22. 9:19: <br>
+        -"kamu" login megvan....
+        - lekérni bejelenetkezés nnélkül nem lehet adatot.
+        
