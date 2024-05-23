@@ -70,9 +70,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity >=0.4.21 <0.6.0;\nimport \"./GemstoneExtraction.sol\";\n\ninterface IGemstoneExtraction {\n    function minedGems(uint) external view returns (uint id, string memory gemType, uint weight, uint height, uint width, uint price, string memory miningLocation, uint miningYear, bool selected, string memory extractionMethod, address payable owner, bool purchased);\n}\n\n\n\ncontract GemstoneSelecting {\n    \n    uint public selectedGemCount = 0;\n    mapping (uint => SelectedGem) public selectedGems;\n      IGemstoneExtraction gemstoneExtraction;\nmapping(uint => bool) public selectedMinedGems;\n\n    struct SelectedGem{\n        uint id;\n        uint minedGemId;\n        string size;\n        uint carat; //==weight A karát a drágakövek tömegének mérésére szolgáló mértékegység. Jele: Kt, angolszász területen ct.\n        string color;\n        string gemType; //etc gyémánt, rubint, gránit\n        bool polishing;\n        string fileURL;\n        uint price;\n        bool used;\n        address owner;\n    }\n\n     event GemSelecting(\n        uint id,\n        uint minedGemId,\n        string size,\n        uint carat,\n        string color,\n        string gemType,\n        bool polishing,\n        string fileURL,\n        uint price,\n        bool used,\n        address owner\n     );\n\n constructor(address _gemstoneExtractionAddress) public {\n        gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);\n    }\n        // a minedGemId majd a js-sel kerül át. Kattintás után\n   // A gemSelecting függvény módosítása a GemstoneSelecting szerződésben\nfunction gemSelecting(\n    uint _minedGemId,\n    string memory _size,\n    uint _carat,\n    string memory _color,\n    string memory _gemtype,\n    bool _polishing,\n    string memory _fileURL,\n    uint _price\n) public {\n    // Lekérdezzük a bányászott gyémánt adatait a GemstoneExtraction szerződésből\n    //(, ,, , , , , , , , , ) = gemstoneExtraction.minedGems(_minedGemId);\n\n    // Ellenőrizzük, hogy a paraméterként átadott súly kisebb-e, mint a bányászott drágakő súlya\n    \n   // require(_weight <= minedWeight, \"Selected gem width must be less than mined gem weight\");\n    \n   // require(_price >= minedPrice, \"Selected gem price must be less than mined gem weight\");\n\n    \n\n   \n    // Ellenőrizzük, hogy a gyémánt még nincs kiválasztva\n   // require(!selected, \"The gem is already selected\");\n\n    // Folytatjuk a gyémánt hozzáadását, ha minden ellenőrzés sikeres\n    selectedGemCount++;\n    selectedGems[_minedGemId] = SelectedGem(\n        _minedGemId,\n        _minedGemId,\n        _size,\n        _carat,\n        _color,\n        _gemtype,\n        _polishing,\n        _fileURL,\n        _price,\n        false,\n        msg.sender\n    );\n\n    emit GemSelecting(\n        _minedGemId,\n        _minedGemId,\n        _size,\n        _carat,\n        _color,\n        _gemtype,\n        _polishing,\n        _fileURL,\n        _price,\n        false,\n        msg.sender\n    );\n\n    // Itt kellene hozzáadni egy új függvényhívást a GemstoneExtraction szerződéshez, hogy beállítsuk a 'selected' állapotot 'true'-ra\n}\n\n\n\n     function polishGem(uint _id) public payable {\n    SelectedGem storage _selectedGem = selectedGems[_id];\n    require(_selectedGem.owner == msg.sender, \"Caller is not the owner\");\n\n    // További logika a fizetés és a polírozási folyamat kezelésére\n\n    _selectedGem.polishing = true;\n\n    emit GemSelecting(\n        _selectedGem.id, \n        _selectedGem.minedGemId, \n        _selectedGem.size,\n        _selectedGem.carat, \n        _selectedGem.color, \n        _selectedGem.gemType, \n        true, \n        _selectedGem.fileURL,\n        _selectedGem.price, \n        false,\n        _selectedGem.owner\n    );\n     }\n\n    function markGemAsUsed(uint _id) public {\n        SelectedGem storage _selectedGem = selectedGems[_id];\n        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, \"Invalid gem ID\");\n        require(_selectedGem.used == false, \"Gem already used\");\n        //require(_selectedGem.owner == msg.sender, \"Only the owner can select the gem\");\n\n        _selectedGem.used = true;\n\n        emit GemSelecting(_id, _selectedGem.minedGemId, _selectedGem.size, _selectedGem.carat,  _selectedGem.color, _selectedGem.gemType, true,_selectedGem.fileURL, _selectedGem.price, _selectedGem.used, msg.sender);\n    }\n\n//innen úgy kellene tovább menni, hogy kiválogatva ki lesz.\n// az itt felvitt adatokkal látszik, hogy feldolgozatlan gyémánt/ rubint/etc\n//utána két külön .sol-ban kezelni a gyémántot és a többi drágakövet. (könyvjelzőből drágakőpiac, gyéméntpiac) adataival\n//a vágást azokkal a .sol-okkal menti el\n//utána a csiszolás, utána a polirozas\n//tanusitvány kiadása???\n//ékszerész veszi meg -> ékszertervezés\n//befejezés , felületkezelés\n//minőségellenőrzés \n}",
-  "sourcePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/GemstoneSelecting.sol",
+  "sourcePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneSelecting.sol",
   "ast": {
-    "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/GemstoneSelecting.sol",
+    "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneSelecting.sol",
     "exportedSymbols": {
       "GemstoneSelecting": [
         754
@@ -99,7 +99,7 @@
         "src": "0:32:1"
       },
       {
-        "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/GemstoneExtraction.sol",
+        "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneExtraction.sol",
         "file": "./GemstoneExtraction.sol",
         "id": 482,
         "nodeType": "ImportDirective",
@@ -1660,7 +1660,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1001,
+                            "referencedDeclaration": 1056,
                             "src": "2740:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -1911,7 +1911,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1001,
+                          "referencedDeclaration": 1056,
                           "src": "2966:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -2383,7 +2383,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1001,
+                            "referencedDeclaration": 1056,
                             "src": "3279:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -2444,10 +2444,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3249:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3239,10 +3239,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3878:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3371,10 +3371,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3973:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3741,7 +3741,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1001,
+                          "referencedDeclaration": 1056,
                           "src": "4360:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -3901,7 +3901,7 @@
     "src": "0:4875:1"
   },
   "legacyAST": {
-    "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/GemstoneSelecting.sol",
+    "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneSelecting.sol",
     "exportedSymbols": {
       "GemstoneSelecting": [
         754
@@ -3928,7 +3928,7 @@
         "src": "0:32:1"
       },
       {
-        "absolutePath": "/home/berkeanna/folder/2/jewRoundx/src/contracts/GemstoneExtraction.sol",
+        "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/GemstoneExtraction.sol",
         "file": "./GemstoneExtraction.sol",
         "id": 482,
         "nodeType": "ImportDirective",
@@ -5489,7 +5489,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1001,
+                            "referencedDeclaration": 1056,
                             "src": "2740:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -5740,7 +5740,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1001,
+                          "referencedDeclaration": 1056,
                           "src": "2966:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -6212,7 +6212,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1001,
+                            "referencedDeclaration": 1056,
                             "src": "3279:3:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -6273,10 +6273,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3249:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7068,10 +7068,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3878:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7200,10 +7200,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1004,
-                        1005
+                        1059,
+                        1060
                       ],
-                      "referencedDeclaration": 1005,
+                      "referencedDeclaration": 1060,
                       "src": "3973:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7570,7 +7570,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1001,
+                          "referencedDeclaration": 1056,
                           "src": "4360:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -7735,7 +7735,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-03-17T12:35:12.420Z",
+  "updatedAt": "2024-05-23T11:52:58.539Z",
   "devdoc": {
     "methods": {}
   },

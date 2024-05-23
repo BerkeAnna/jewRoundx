@@ -181,5 +181,7 @@ JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI2OT
 
 <br><br>
 2024.05.23. 13:15<br>
--A list of processing gems-ig jó.
-- utána a make jewelry formmal van gond, a gomb átirányít a formra, nem írt hibát, de a kész jewek között nem látom az újat.
+-A list of processing gems-ig jó.<br>
+- utána a make jewelry formmal van gond, a gomb átirányít a formra, nem írt hibát, de a kész jewek között nem látom az újat. - 05.23.13:39: nyílván csak lassanadja be a adatokat, mert mostmár látszik az előző -- jah, ha most http://localhost:3000/jew-details/8 erre rám,egyek, mert ez a 8. , akkor látom a selected gemig, de a jewelry még nincs ott, de az owned oldalról már törlődött <br> --- a jewmarketben csak másét látni!!! de az owned oldalon ott van és jó is :D (13:57)
+http://localhost:3000/jewelry-making/gem/8<br>
+

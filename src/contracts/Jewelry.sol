@@ -60,6 +60,11 @@ contract Jewelry {
         address payable jeweler,
         address payable owner
     );
+    
+    event JewelryBought(
+        uint id,
+        address payable newOwner
+    );
 
      constructor(address _gemstoneSelectingAddress) public {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
@@ -75,6 +80,17 @@ contract Jewelry {
        emit JewelryMaking(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);
 
     
+    }
+
+     function buyJewelry(uint _id) public payable {
+        JewelryData storage jew = jewelry[_id];
+        require(jew.sale, "Jewelry is not for sale");
+        require(msg.value >= jew.price, "Insufficient funds");
+
+        jew.owner.transfer(msg.value);
+        jew.owner = msg.sender;
+
+        emit JewelryBought(_id, msg.sender);
     }
 
  
