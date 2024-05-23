@@ -17,15 +17,15 @@ function GemDetails({ selectedGems, minedGems, account  }) {
       //todo: id page
       gem.id == gemId &&(
         <tr key={key}>
-          <th scope="row">{gem.id.toString()}</th>
-          <th scope="col">{gem.size.toString()}</th>
-          <th scope="col">{gem.carat.toString()}</th>
-          <th scope="col">{gem.color}</th>
-          <th scope="col">{gem.gemType}</th>
-          <th scope="col">{gem.polishing.toString()}</th>
-          <th scope="col">{gem.used.toString()}</th>
-          <th scope="col">{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</th>
-          <th scope="col">{gem.owner}</th>
+          <td>{gem.id.toString()}</td>
+          <td>{gem.size.toString()}</td>
+          <td>{gem.carat.toString()}</td>
+          <td>{gem.color}</td>
+          <td>{gem.gemType}</td>
+          <td>{gem.polishing.toString()}</td>
+          <td>{gem.used.toString()}</td>
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>{gem.owner}</td>
           
           
         </tr>
@@ -41,16 +41,16 @@ function GemDetails({ selectedGems, minedGems, account  }) {
       gem.id == gemId &&(
         <tr key={key}>
           
-          <th scope="row">{gem.id.toString()}</th>
-          <th scope="col">{gem.gemType}</th>
-          <th scope="col">{gem.weight.toString()}</th>
-          <th scope="col">{gem.size.toString()}</th>
-          <th scope="col">{gem.miningLocation}</th>
-          <th scope="col">{gem.miningYear.toString()}</th>
-          <th scope="col">{gem.extractionMethod}</th>
-          <th scope="col">{gem.selected.toString()}</th>
-          <th scope="col">{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</th>
-          <th scope="col">{gem.owner}</th>
+          <td>{gem.id.toString()}</td>
+          <td>{gem.gemType}</td>
+          <td>{gem.weight.toString()}</td>
+          <td>{gem.size.toString()}</td>
+          <td>{gem.miningLocation}</td>
+          <td>{gem.miningYear.toString()}</td>
+          <td>{gem.extractionMethod}</td>
+          <td>{gem.selected.toString()}</td>
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>{gem.owner}</td>
           
           
         </tr>
