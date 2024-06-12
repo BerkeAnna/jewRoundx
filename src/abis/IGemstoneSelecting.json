@@ -87,7 +87,7 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity >=0.4.21 <0.6.0;\n\ninterface IGemstoneSelecting {\n    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);\n    function markGemAsUsed(uint _id) external;\n}\n\ncontract Jewelry {\n    \n    IGemstoneSelecting gemstoneSelecting;\n\n    /*struct GoldData{\n        string name;\n        uint gemId;\n        uint goldCarat;\n\n    }\n\n     struct SilverData{\n        string name;\n        uint gemId;\n\n    }\n\n     struct MedicalMetalData{\n        string name;\n        uint gemId;\n\n    }*/\n\n    uint public jewelryCount = 0;\n    mapping( uint => JewelryData) public jewelry;\n\n    struct JewelryData{\n        uint id;\n        string name;\n        uint gemId;\n        string metal;\n        uint depth;\n        uint height;\n        uint width;\n        bool sale;\n        uint price;\n        string fileURL;\n        address payable jeweler;\n        address payable owner;\n    }\n\n    event JewelryMaking(\n        uint id,\n        string name,\n        uint gemId,\n        string metal,\n        uint depth,\n        uint height,\n        uint width,\n        bool sale,\n        uint price,\n        string fileURL,\n        address payable jeweler,\n        address payable owner\n    );\n    \n    event JewelryBought(\n        uint id,\n        address payable newOwner\n    );\n\n     constructor(address _gemstoneSelectingAddress) public {\n        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);\n    }\n\n    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width,  bool _sale, uint _price, string memory _fileURL ) public {\n     //  (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);\n     //   require(!used, \"Gem already used\");\n        \n        jewelryCount++;\n       jewelry[_gemId] = JewelryData(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n       emit JewelryMaking(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n    \n    }\n\n     function buyJewelry(uint _id) public payable {\n        JewelryData storage jew = jewelry[_id];\n        require(jew.sale, \"Jewelry is not for sale\");\n        require(msg.value >= jew.price, \"Insufficient funds\");\n\n        jew.owner.transfer(msg.value);\n        jew.owner = msg.sender;\n\n        emit JewelryBought(_id, msg.sender);\n    }\n\n \n}",
+  "source": "pragma solidity >=0.4.21 <0.6.0;\n\ninterface IGemstoneSelecting {\n    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);\n    function markGemAsUsed(uint _id) external;\n}\n\ncontract Jewelry {\n    \n    IGemstoneSelecting gemstoneSelecting;\n\n    /*struct GoldData{\n        string name;\n        uint gemId;\n        uint goldCarat;\n\n    }\n\n     struct SilverData{\n        string name;\n        uint gemId;\n\n    }\n\n     struct MedicalMetalData{\n        string name;\n        uint gemId;\n\n    }*/\n\n    uint public jewelryCount = 0;\n    mapping( uint => JewelryData) public jewelry;\n\n    struct JewelryData{\n        uint id;\n        string name;\n        uint gemId;\n        string metal;\n        uint depth;\n        uint height;\n        uint width;\n        bool sale;\n        uint price;\n        string fileURL;\n        address payable jeweler;\n        address payable owner;\n    }\n\n    event JewelryMaking(\n        uint id,\n        string name,\n        uint gemId,\n        string metal,\n        uint depth,\n        uint height,\n        uint width,\n        bool sale,\n        uint price,\n        string fileURL,\n        address payable jeweler,\n        address payable owner\n    );\n    \n    event JewelryBought(\n        uint id,\n        address payable newOwner\n    );\n\n     constructor(address _gemstoneSelectingAddress) public {\n        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);\n    }\n\n    function jewelryMaking(string memory _name, uint _gemId, string memory _metal, uint _depth, uint _height, uint _width,  bool _sale, uint _price, string memory _fileURL ) public {\n     //  (, , , , , , , , , , , bool used, ) = gemstoneSelecting.selectedGems(_gemId);\n     //   require(!used, \"Gem already used\");\n        \n        jewelryCount++;\n       jewelry[_gemId] = JewelryData(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n       emit JewelryMaking(_gemId, _name, _gemId, _metal, _depth, _height, _width, _sale, _price, _fileURL, msg.sender, msg.sender);\n\n    \n    }\n\n     function buyJewelry(uint _id) public payable {\n        JewelryData storage jew = jewelry[_id];\n        require(jew.sale, \"Jewelry is not for sale\");\n        require(msg.value <= jew.price, \"Insufficient funds\");\n\n        jew.owner.transfer(msg.value);\n        jew.owner = msg.sender;\n\n        emit JewelryBought(_id, msg.sender);\n    }\n\n \n}",
   "sourcePath": "/home/berkeanna/folder/jewRoundx/src/contracts/Jewelry.sol",
   "ast": {
     "absolutePath": "/home/berkeanna/folder/jewRoundx/src/contracts/Jewelry.sol",
@@ -2718,7 +2718,7 @@
                           }
                         },
                         "nodeType": "BinaryOperation",
-                        "operator": ">=",
+                        "operator": "<=",
                         "rightExpression": {
                           "argumentTypes": null,
                           "expression": {
@@ -5773,7 +5773,7 @@
                           }
                         },
                         "nodeType": "BinaryOperation",
-                        "operator": ">=",
+                        "operator": "<=",
                         "rightExpression": {
                           "argumentTypes": null,
                           "expression": {
@@ -6205,7 +6205,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-05-23T11:52:58.527Z",
+  "updatedAt": "2024-06-12T09:16:37.701Z",
   "devdoc": {
     "methods": {}
   },

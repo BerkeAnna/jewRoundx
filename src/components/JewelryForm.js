@@ -55,7 +55,7 @@ function JewelryForm(props) {
     const height = formData.get('height');
     const width = formData.get('width');
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
-    const sale = false;
+    const sale = true;
 
 
     if (!name) {

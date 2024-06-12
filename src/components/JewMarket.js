@@ -1,34 +1,31 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function JewMarket({ jewelry, account }) {
+function JewMarket({ jewelry, account, buyJewelry }) {
   const navigate = useNavigate();
 
   const navigateToJewDetails = (jewId) => {
     navigate(`/jew-details/${jewId}`);
   };
 
-  console.log("Jewelry Data:", jewelry); // Debugging: Check the jewelry data
-
   return (
-    <div >
+    <div>
       <p>&nbsp;</p>
       <h2>Jew market :P</h2>
       <div id="tables">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Details</th>
-            <th scope="col">Buy</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jewelry && jewelry.map((jewelryItem, key) => {
-            return(
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Details</th>
+              <th scope="col">Buy</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jewelry && jewelry.map((jewelryItem, key) => (
               jewelryItem.owner !== account ? (
                 <tr key={key}>
                   <th scope="row">{jewelryItem.id.toString()}</th>
@@ -41,19 +38,18 @@ function JewMarket({ jewelry, account }) {
                     </button>
                   </td>
                   <td>
-                    <button>
+                    <button onClick={() => buyJewelry(jewelryItem.id, jewelryItem.price)}>
                       Buy
                     </button>
                   </td>
                 </tr>
               ) : null
-            )
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className='homeButton'>
-      <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+        <button onClick={() => navigate(`/`)}>HOME PAGE</button>
       </div>
     </div>
   );

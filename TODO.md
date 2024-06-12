@@ -185,3 +185,15 @@ JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI2OT
 - utána a make jewelry formmal van gond, a gomb átirányít a formra, nem írt hibát, de a kész jewek között nem látom az újat. - 05.23.13:39: nyílván csak lassanadja be a adatokat, mert mostmár látszik az előző -- jah, ha most http://localhost:3000/jew-details/8 erre rám,egyek, mert ez a 8. , akkor látom a selected gemig, de a jewelry még nincs ott, de az owned oldalról már törlődött <br> --- a jewmarketben csak másét látni!!! de az owned oldalon ott van és jó is :D (13:57)
 http://localhost:3000/jewelry-making/gem/8<br>
 
+- majd különszedni a usereket regisztrációval, hogy csak kereskedőről van szó, vagy vásárlóról, vagy vendégről<br>
+- //a tranzakció kellene !!!! de valami nem jóóóó - app.js<br>
+        -> sokkal nagyobb összeget ad át a metamasknak. miért?<br>
+14:46:
+<br>
+-most átadja a jó összeget, de hibára fut: ![alt text](image-8.png) - There was an error during the purchase: Internal JSON-RPC error.. Please try again.
+Ezt javítani!!!
+
+
+2024.06.12.11:30:
+MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!! 
+![alt text](image-9.png)

@@ -113,6 +113,8 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{jewelry.owner}</td>
           <td>{jewelry.fileURL}</td>
           
+          <td>{jewelry.sale.toString()} </td>
+          
         </tr>
       )
     ));
@@ -190,6 +192,8 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                           <th>Picture</th>
                           <th>Jeweler</th>
                           <th>Owner</th>
+                          <th>.</th>
+                          <th>Sale</th>
                         </tr>
                       </thead>
                       <tbody>{renderJewelry()}</tbody>

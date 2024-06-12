@@ -138,6 +138,7 @@ class App extends Component {
     this.markGemAsUsed = this.markGemAsUsed.bind(this);
     this.polishGem = this.polishGem.bind(this);
     this.jewelryMaking = this.jewelryMaking.bind(this);
+    this.buyJewelry = this.buyJewelry.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
   }
 
@@ -252,6 +253,31 @@ class App extends Component {
       });
     }
 
+    async buyJewelry(id, price) {
+      const gasLimit = 100000;
+      // const gasPrice = window.web3.utils.toWei('20', 'gwei'); // Opciók kipróbálása gas price nélkül
+      this.setState({ loading: true });
+      console.log('itt meg megvagyok 1');
+      try {
+        console.log('itt meg megvagyok 1.2');
+        const receipt = await this.state.makeJew.methods.buyJewelry(id).send({ from: this.state.account, value: price, gasLimit: gasLimit });
+        console.log('itt meg megvagyok 2');
+        this.setState({ loading: false });
+        console.log('itt meg megvagyok 3');
+        this.loadBlockchainData3(); // Reload data to reflect the change
+        console.log('itt meg megvagyok 4');
+        console.log('Transaction receipt:', receipt);
+        console.log('itt meg megvagyok 5');
+      } catch (error) {
+        console.log('itt meg megvagyok 6');
+        console.error("Error in buyJewelry:", error);
+        console.log('itt meg megvagyok 7');
+        this.setState({ loading: false });
+        console.log('itt meg megvagyok 8');
+      }
+    }
+    
+    
  
     refreshPage = () => {
       window.location.reload();
@@ -285,13 +311,9 @@ class App extends Component {
                 purchaseGem={this.purchaseGem}
                 processingGem={this.processingGem}
                 account={this.state.account} />} />
-              <Route path="/jewMarket" element={<JewMarket minedGems={this.state.minedGems}
-                selectedGems={this.state.selectedGems}
-                jewelry={this.state.jewelry}
-                gemMining={this.gemMining}
-                purchaseGem={this.purchaseGem}
-                processingGem={this.processingGem}
-                account={this.state.account} />} />
+              <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
+                account={this.state.account}
+                buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />
               <Route path="/ownMinedGems" element={<OwnedByUser minedGems={this.state.minedGems}
                 selectedGems={this.state.selectedGems}
                 jewelry={this.state.jewelry}
@@ -322,7 +344,6 @@ class App extends Component {
       );
     }
   }
-
   
 
 export default App;

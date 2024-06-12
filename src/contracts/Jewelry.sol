@@ -85,7 +85,7 @@ contract Jewelry {
      function buyJewelry(uint _id) public payable {
         JewelryData storage jew = jewelry[_id];
         require(jew.sale, "Jewelry is not for sale");
-        require(msg.value >= jew.price, "Insufficient funds");
+        require(msg.value <= jew.price, "Insufficient funds");
 
         jew.owner.transfer(msg.value);
         jew.owner = msg.sender;
