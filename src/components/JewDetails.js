@@ -37,10 +37,11 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{gem.used.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
-          <td>{gem.fileURL}</td>
+           {/*<td>{gem.fileURL}</td>*/}
           
           
         </tr>
+        
         
       )
     ));
@@ -73,7 +74,7 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
           <td>{gem.selected.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
-          <td>{gem.fileURL}</td>
+           {/*<td>{gem.fileURL}</td>*/}
           
           
         </tr>
@@ -111,7 +112,7 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
          
           <td>{jewelry.jeweler}</td>
           <td>{jewelry.owner}</td>
-          <td>{jewelry.fileURL}</td>
+          {/*<td>{jewelry.fileURL}</td>*/}
           
           <td>{jewelry.sale.toString()} </td>
           
@@ -192,7 +193,6 @@ function JewDetails({ selectedGems, minedGems, jewelry,account  }) {
                           <th>Picture</th>
                           <th>Jeweler</th>
                           <th>Owner</th>
-                          <th>.</th>
                           <th>Sale</th>
                         </tr>
                       </thead>
