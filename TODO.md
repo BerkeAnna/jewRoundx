@@ -197,3 +197,10 @@ Ezt javítani!!!
 2024.06.12.11:30:
 MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!! 
 ![alt text](image-9.png)
+
+2024.06.13. 9:15:
+- gem marketen nem jelenik meg semmi
+- nem látszik az előzők adatai, a gem detailsnál, ha a gemet más veszi meg.
+![alt text](image-10.png)
+- de ha utána megcsinálom a make jewet, akkor utána látzik az eredeti bányász adatiai is. Akkor a gem odlalon van vmi hiba. Javítani!
+![alt text](image-11.png)

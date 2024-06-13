@@ -307,10 +307,16 @@ class App extends Component {
               <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
               <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
                 selectedGems={this.state.selectedGems}
+                jewelry={this.state.jewelry}
                 gemMining={this.gemMining}
+                gemSelecting={this.gemSelecting}
                 purchaseGem={this.purchaseGem}
                 processingGem={this.processingGem}
-                account={this.state.account} />} />
+                markGemAsSelected={this.markGemAsSelected}
+                markGemAsUsed={this.markGemAsUsed}
+                account={this.state.account}
+                sellGem={this.sellGem}
+                polishGem={this.polishGem} />} />
               <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
                 account={this.state.account}
                 buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />
