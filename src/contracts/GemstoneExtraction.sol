@@ -138,7 +138,7 @@ function markGemAsSelected(uint _id) public {
     MinedGem storage _minedGem = minedGems[_id];
     require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
     require(_minedGem.selected == false, "Gem already selected");
-    require(_minedGem.owner == msg.sender, "Only the owner can select the gem");
+    //require(_minedGem.owner == msg.sender, "Only the owner can select the gem");
 
     _minedGem.selected = true;
 
