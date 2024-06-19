@@ -199,10 +199,22 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 ![alt text](image-9.png)
 
 2024.06.13. 9:15:
-- gem marketen nem jelenik meg semmi
-- nem látszik az előzők adatai, a gem detailsnál, ha a gemet más veszi meg.
+~~ - gem marketen nem jelenik meg semmi ~~
+~~ - nem látszik az előzők adatai, a gem detailsnál, ha a gemet más veszi meg. ~~
 ![alt text](image-10.png)
-- de ha utána megcsinálom a make jewet, akkor utána látzik az eredeti bányász adatiai is. Akkor a gem odlalon van vmi hiba. Javítani!
+~~ - de ha utána megcsinálom a make jewet, akkor utána látzik az eredeti bányász adatiai is. Akkor a gem odlalon van vmi hiba. Javítani! ~~
 ![alt text](image-11.png)
 
+2024.06.18. 9:50:
+- a gem-details oldalon nincsenek még képek megjelenítve
+- meg kellene nézni, hogy a fizetésekkel - összegekkel mizu. 
+        -> ha megveszünk vmit, akkor mi hova kerül?
+        -> a transaction fv csak egynél lett meg?
+        
+2024.06.18. 11:02:
+- most nincs olyan, hogy "sell", ha van egy kész jewelrym, akár én csináltam, akár más. Ha a jewelry táblámban van, akkor auto benne van a jew marketben és bárki megveheti. -> javítani kell, hogy csak akkor legyen rajta a marketen, ha eladom.
+- de egy idő után eltűntek vagy én nem értem ki hova lett. Kövileg ezt a vevős részt egy migrate után, hogy ne legyen más adat. mert így valami bezavart és lett egy rossz tranzakció, ami után default 0 értékeket  adott.
 
+
+2024.06.18. 13:27:
+- buyJewelry függvényben (Jewelry.sol) működik a transfer . Az eladó megkapja az összeget. A többinél is meg kell csinálni.

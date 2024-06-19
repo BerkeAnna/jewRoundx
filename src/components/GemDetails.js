@@ -23,6 +23,16 @@ function GemDetails({ selectedGems, minedGems, account  }) {
           <td>{gem.color}</td>
           <td>{gem.gemType}</td>
           <td>{gem.polishing.toString()}</td>
+          <td>
+                {
+            gem.fileURL && (
+              <div>
+              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
+
+            </div>
+            )
+          }
+          </td>
           <td>{gem.used.toString()}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
@@ -49,6 +59,16 @@ function GemDetails({ selectedGems, minedGems, account  }) {
           <td>{gem.miningYear.toString()}</td>
           <td>{gem.extractionMethod}</td>
           <td>{gem.selected.toString()}</td>
+          <td>
+                {
+            gem.fileURL && (
+              <div>
+              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
+
+            </div>
+            )
+          }
+          </td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>{gem.owner}</td>
           
@@ -81,6 +101,7 @@ function GemDetails({ selectedGems, minedGems, account  }) {
                         <th scope="col">Mining Year</th>
                         <th scope="col">Extraction method</th>
                         <th scope="col">Selected</th>
+                        <th scope="col">Picture</th>
                         <th scope="col">Price</th>
                         <th scope="col">Owner</th>
                         </thead>
@@ -98,6 +119,7 @@ function GemDetails({ selectedGems, minedGems, account  }) {
                         <th scope="col">Color</th>
                         <th scope="col">Gemtype</th>
                         <th scope="col">Polishing</th>
+                        <th scope="col">Picture</th>
                         <th scope="col">Used</th>
                         <th scope="col">Price</th>
                         <th scope="col">Owner</th>
