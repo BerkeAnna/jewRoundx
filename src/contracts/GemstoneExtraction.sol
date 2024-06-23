@@ -133,16 +133,20 @@ contract GemstoneExtraction {
     emit GemPurchased(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
 }
 
-    
-function markGemAsSelected(uint _id) public {
+    function markGemAsSelected(uint _id) public payable {
     MinedGem storage _minedGem = minedGems[_id];
     require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
     require(_minedGem.selected == false, "Gem already selected");
-    //require(_minedGem.owner == msg.sender, "Only the owner can select the gem");
+    require(_minedGem.purchased == true, "Gem must be purchased before selection");
+    require(msg.value >= _minedGem.price, "Insufficient funds");
+
+    //address payable _seller = _minedGem.owner;
+    _minedGem.owner.transfer(msg.value);
 
     _minedGem.selected = true;
 
-    emit GemSelected(_id, _minedGem.gemType, _minedGem.weight,  _minedGem.size, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear, true, msg.sender, _minedGem.fileURL, _minedGem.purchased);
-    }
+    emit GemSelected(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, msg.sender, _minedGem.fileURL, _minedGem.purchased);
+}
+
 
 }

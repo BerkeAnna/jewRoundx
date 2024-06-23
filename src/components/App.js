@@ -185,20 +185,20 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
-
-  markGemAsSelected(id) {
+  markGemAsSelected(id, price) {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       })
       .catch(error => {
-        console.error("Error in markas: ", error);
+        console.error("Error in markGemAsSelected: ", error);
         this.setState({ loading: false });
       });
   }
+  
 
   markGemAsUsed(id) {
     const gasLimit = 90000;

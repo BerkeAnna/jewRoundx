@@ -218,3 +218,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.06.18. 13:27:
 - buyJewelry függvényben (Jewelry.sol) működik a transfer . Az eladó megkapja az összeget. A többinél is meg kell csinálni.
+
+2024.06.19. 8:55:
+        - Gemmining fv az addMInedGem odlalon nem vonja le a pricet- csak a gátzköltségeket. Ez jóóóó
+        - Process gomb - ownedMinedgems - ő levont 1 ETH-t saját magától és gondolom a szerződés kapta...
+     !  - a gem marketen a megvételnél csak a gázok mentek. maga az 1 ETH nem. Ezt javítani! (select gem)
+        - make jewelryben is csak a gázok csökkentek. Ez is jóóóó
+        - jew marketen a buy gomb használata során működik a tranzakció. Az adó megkapja, a vevőtől levonja az ETH-t
+        - mikor már megvettem a jewet a visszavétel működik! -igen, ilyenkor az eredeti tulaj látja a jewmarketen. És vissza tudja vásárolni - ugyanúgy megtörténik a tranzakció
+
+2024.06.23. 18:08:
+        - ahova a ! jel van rakva elvileg megcsináltam. Felkommitolom.
