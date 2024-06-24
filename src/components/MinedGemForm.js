@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -51,7 +51,15 @@ function MinedGemForm(props) {
   };
 
   return (
-    <div id="content">
+    <div className="card" style={{ 
+      marginBottom: '20px', 
+      padding: '20px', 
+      backgroundColor: '#FFF7F3', 
+      width: '90%', 
+      margin: 'auto', 
+      textAlign: 'center', 
+      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+    }}>
       <h1>Add Product</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group mr-sm-2">
@@ -73,14 +81,13 @@ function MinedGemForm(props) {
           <input id="miningYear" name="miningYear" type="text" className="form-control" placeholder="Mining Year" required />
         </div>
         <div className="form-group mr-sm-2">
-        <input
+          <input
             type="file"
             ref={fileInputRef} // Use the ref here for file input
             className="form-control"
           />
-       
         </div>
-        <button type="submit" className="btn btn-primary">Add Product</button>
+        <button type="submit" className="custom-button btn btn-primary">Add Product</button>
       </form>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -72,47 +72,42 @@ function JewelryForm(props) {
 
 
     return (
-      <div id="content" className='pt-5'>
+      <div className="card" style={{ 
+        marginBottom: '20px', 
+        padding: '20px', 
+        backgroundColor: '#FFF7F3', 
+        width: '90%', 
+        margin: 'auto', 
+        textAlign: 'center', 
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+      }}>
         <h1>Add jewelry</h1>
         <form onSubmit={handleSubmit}>
-         
           <div className="form-group mr-sm-2">
-          <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
-
+            <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
           </div>
           <div className="form-group mr-sm-2">
-          <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
-
+            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
           </div>
           <div className="form-group mr-sm-2">
-          <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
-
+            <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
           </div>
           <div className="form-group mr-sm-2">
-          <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
-
+            <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
           </div>
           <div className="form-group mr-sm-2">
-          <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
-
+            <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
           </div>
-         
           <div className="form-group mr-sm-2">
-          <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
-
+            <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
           </div>
-       
           <div className="form-group mr-sm-2">
             <input type="file" ref={fileInputRef} className="form-control" />
           </div>
-
-          <button type="submit" className="btn btn-primary">Make jewelry</button>
+          <button type="submit"  className="custom-button btn btn-primary">Make jewelry</button>
         </form>
-       
       </div>
     );
-    }
-
-
+}
 
 export default JewelryForm;

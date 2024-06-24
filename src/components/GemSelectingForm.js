@@ -69,47 +69,43 @@ function GemSelectingForm(props) {
   };
 
 
-    return (
-      <div id="content">
-        <h1>Add Product</h1>
-        <form onSubmit={handleSubmit}>
-        
-          <div className="form-group mr-sm-2">
+  return (
+    <div className="card" style={{ 
+      marginBottom: '20px', 
+      padding: '20px', 
+      backgroundColor: '#FFF7F3', 
+      width: '90%', 
+      margin: 'auto', 
+      textAlign: 'center', 
+      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+    }}>
+      <h1>Add Product</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group mr-sm-2">
           <input id="size" name="size" type="text" className="form-control" placeholder="size" required />
-
-          </div>
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input id="carat" name="carat" type="text" className="form-control" placeholder="carat" required />
-
-          </div>
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input id="color" name="color" type="text" className="form-control" placeholder="color" required />
-
-          </div>
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input id="gemType" name="gemType" type="text" className="form-control" placeholder="gemType" required />
-
-          </div>
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input id="grinding" name="grinding" type="text" className="form-control" placeholder="grinding" required />
-
-          </div>
-       
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
-          </div>
-          <div className="form-group mr-sm-2">
+        </div>
+        <div className="form-group mr-sm-2">
           <input type="file" ref={fileInputRef} className="form-control" />
-      
-          </div>
-       
-
-          <button type="submit" className="btn btn-primary">Add Product</button>
-        </form>
-       
-      </div>
-    );
-  }
-
+        </div>
+        <button type="submit" className="custom-button btn btn-primary">Add Product</button>
+      </form>
+    </div>
+  );
+}
 
 export default GemSelectingForm;

@@ -58,7 +58,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
         </table>
       </div>
       <div className='homeButton'>
-        <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+        <button onClick={() => navigate(`/loggedIn`)}>HOME PAGE</button>
       </div>
     </div>
   );

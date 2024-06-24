@@ -49,7 +49,7 @@ function JewMarket({ jewelry, account, buyJewelry }) {
         </table>
       </div>
       <div className='homeButton'>
-        <button onClick={() => navigate(`/`)}>HOME PAGE</button>
+        <button onClick={() => navigate(`/loggedIn`)}>HOME PAGE</button>
       </div>
     </div>
   );
