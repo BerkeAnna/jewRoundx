@@ -1,135 +1,89 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
-
-function GemDetails({ selectedGems, minedGems, account  }) {
-
+function GemDetails({ selectedGems, minedGems, account }) {
   const { id } = useParams();
   const gemId = id;
-  //todo: selected gem, aminke az id-ja megegyezik az urlben lévővel.
-    const gemSelected = selectedGems.filter(selectedGems => selectedGems.owner);
-    const minedGem = minedGems.filter(minedGems => minedGems.owner);
+
+  const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
+  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
 
   const renderSelectedGems = () => {
-    
-    console.log(gemId)
     return gemSelected.map((gem, key) => (
-      //todo: id page
-      gem.id == gemId &&(
-        <tr key={key}>
-          <td>{gem.id.toString()}</td>
-          <td>{gem.size.toString()}</td>
-          <td>{gem.carat.toString()}</td>
-          <td>{gem.color}</td>
-          <td>{gem.gemType}</td>
-          <td>{gem.polishing.toString()}</td>
-          <td>
-                {
-            gem.fileURL && (
-              <div>
-              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
-
-            </div>
-            )
-          }
-          </td>
-          <td>{gem.used.toString()}</td>
-          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-          <td>{gem.owner}</td>
-          
-          
-        </tr>
-      )
+      <div key={key} className="card" style={{ 
+        marginBottom: '20px', 
+        padding: '20px', 
+        backgroundColor: '#FFF7F3', // kékses árnyalatú háttér
+        width: '90%', 
+        margin: 'auto', 
+        textAlign: 'center', 
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' // shadow
+      }}>
+        <h2>Selected Gem Details</h2>
+        {gem.fileURL && (
+          <div>
+            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
+              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+            </a>
+          </div>
+        )}
+        <p><strong>ID:</strong> {gem.id.toString()}</p>
+        <p><strong>Size:</strong> {gem.size.toString()}</p>
+        <p><strong>Carat:</strong> {gem.carat.toString()}</p>
+        <p><strong>Color:</strong> {gem.color}</p>
+        <p><strong>Gem Type:</strong> {gem.gemType}</p>
+        <p><strong>Polishing:</strong> {gem.polishing.toString()}</p>
+        <p><strong>Used:</strong> {gem.used.toString()}</p>
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Jeweler:</strong> {gem.owner}</p>
+      </div>
     ));
   };
 
   const renderMinedGems = () => {
-    
-    console.log(gemId)
     return minedGem.map((gem, key) => (
-      //todo: id page
-      gem.id == gemId &&(
-        <tr key={key}>
-          
-          <td>{gem.id.toString()}</td>
-          <td>{gem.gemType}</td>
-          <td>{gem.weight.toString()}</td>
-          <td>{gem.size.toString()}</td>
-          <td>{gem.miningLocation}</td>
-          <td>{gem.miningYear.toString()}</td>
-          <td>{gem.extractionMethod}</td>
-          <td>{gem.selected.toString()}</td>
-          <td>
-                {
-            gem.fileURL && (
-              <div>
-              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer"><img src={gem.fileURL} alt="Feltöltött kép" style={{maxWidth: '100%', maxHeight: '500px', marginTop: '20px'}} /></a>
-
-            </div>
-            )
-          }
-          </td>
-          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-          <td>{gem.owner}</td>
-          
-          
-        </tr>
-      )
+      <div key={key} className="card" style={{ 
+        marginBottom: '20px', 
+        padding: '20px', 
+        backgroundColor: '#FFF7F3', // kékses árnyalatú háttér
+        width: '90%', 
+        margin: 'auto', 
+        textAlign: 'center', 
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' // shadow
+      }}>
+        <h2>Mined Gem Details</h2>
+        {gem.fileURL && (
+          <div>
+            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
+              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+            </a>
+          </div>
+        )}
+        <p><strong>ID:</strong> {gem.id.toString()}</p>
+        <p><strong>Type:</strong> {gem.gemType}</p>
+        <p><strong>Weight:</strong> {gem.weight.toString()}</p>
+        <p><strong>Size:</strong> {gem.size.toString()}</p>
+        <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
+        <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
+        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
+        <p><strong>Selected:</strong> {gem.selected.toString()}</p>
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Miner:</strong> {gem.owner}</p>
+      </div>
     ));
   };
 
-/*todo:
-    1. kilistazni az adott minedgemeket
-    2. kilistazni az adott selectedgemeket
-    3. kilistazni osszeparositva oket
-*/
-    return (
-            <div className="pt-5">
-              <h1>gemdetails</h1>
-                  todo: - gemdetails
-
-                  <h2>Data of mined gem</h2>
-                  todo: minedgem datas ending ---- in process
-                  <div id="tables" className="pt-5">
-                    <table className="table">
-                        <thead>
-                        <th scope="col">ID</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Weight</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">Mining location</th>
-                        <th scope="col">Mining Year</th>
-                        <th scope="col">Extraction method</th>
-                        <th scope="col">Selected</th>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Owner</th>
-                        </thead>
-                        <tbody>{renderMinedGems()}</tbody>
-                    </table>
-                  </div>
-
-                  <div id="tables" className="pt-5">
-                    <h2>Data of selected gem</h2>
-                    <table className="table">
-                      <thead>
-                      <th scope="col">ID</th>
-                      <th scope="col">size</th>
-                        <th scope="col">Carat</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Gemtype</th>
-                        <th scope="col">Polishing</th>
-                        <th scope="col">Picture</th>
-                        <th scope="col">Used</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Owner</th>
-                      </thead>
-                      <tbody>{renderSelectedGems()}</tbody>
-                    </table>
-                  </div>
-            </div>
-    );
-  }
-
+  return (
+    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+      <h1>Gem Details</h1>
+      <div className="pt-5">
+        {renderMinedGems()}
+      </div>
+      <div className="pt-5">
+        {renderSelectedGems()}
+      </div>
+    </div>
+  );
+}
 
 export default GemDetails;

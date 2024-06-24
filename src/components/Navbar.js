@@ -25,7 +25,7 @@ class Navbar extends Component {
         </ul>
         <ul className='navbar-nav px-3'>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-2'>
-            <a href="/ownMinedGems" className='text-info'><span id='account'>{this.props.account}</span></a>
+            <a href="/ownMinedGems" className='text-danger'><span id='account'>{this.props.account}</span></a>
           </li>
         </ul>
       </nav>
