@@ -285,11 +285,11 @@ class App extends Component {
   
     render() {
       return (
-        <div className='col-12 wid'>
-          <div className='pt-5'>
+        <div className='col-12 wid pt-5'>
+         {/* <div className='pt-5'>
             <button onClick={() => this.refreshPage()}>Click to reload!</button>
           </div>
-  
+          */}
           <Router>
             {this.state.isLoggedIn && window.location.pathname !== "/" && window.location.pathname !== "/loggedin" /*&& window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket"*/ && <Navbar account={this.state.account} />}
   

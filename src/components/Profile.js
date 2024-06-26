@@ -20,6 +20,11 @@ const Profile = ({ account }) => {
   return (
     <div className='pt-5'>
       <h1>Profile page in process....</h1>
+      <h1>Hi xy!</h1>
+      <h2>TODO:</h2>
+      <p>-metamaskból adatok</p>
+      <p>- név, miből mennyi van jelenleg</p>
+      <p>- gomb a saját gems oldalra irányításhoz </p>
      </div>
   );
 };

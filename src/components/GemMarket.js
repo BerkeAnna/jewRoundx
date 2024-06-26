@@ -30,6 +30,9 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
             >
               Sell
             </button>
+            <button  className="btn btn-secondary" onClick={() => navigate(`/gem-details/${minedGem.id}`)}>
+                Details
+              </button>
           </div>
         </div>
       )
