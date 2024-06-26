@@ -36,7 +36,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
         <p><strong>Polishing:</strong> {gem.polishing.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Jeweler:</strong> {gem.owner}</p>
+        <p><strong>Gem cutter:</strong> {gem.owner}</p>
       </div>
     ));
   };
