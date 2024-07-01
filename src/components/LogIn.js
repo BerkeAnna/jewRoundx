@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import Web3 from 'web3';
+import { useNavigate } from 'react-router-dom';
+
 
 const LogIn = ({ account }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [accountAddress, setAccountAddress] = useState('');
+  const navigate = useNavigate();
+
 
   const detectCurrentProvider = () => {
     let provider;
@@ -52,6 +56,10 @@ const LogIn = ({ account }) => {
         ) : (
           <div>
             <p>Connected as: {accountAddress}</p>
+            <button onClick={() => navigate('/dashboard')}>
+              Dashboard
+            </button>
+          
             <button onClick={onDisconnect}>
               Logout
             </button>

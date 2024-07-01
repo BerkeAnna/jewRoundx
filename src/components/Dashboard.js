@@ -22,6 +22,7 @@ const Dashboard = ({ account }) => {
       <h1>Hi guest!</h1>
       
       <a href="/loggedIn"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>
+      <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
 
       <h3>Search jewelry with ID</h3>
        <form onSubmit={handleSubmit}>

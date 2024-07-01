@@ -1,6 +1,7 @@
 const GemstoneExtraction = artifacts.require("GemstoneExtraction");
 const GemstoneSelecting = artifacts.require("GemstoneSelecting");
 const Jewelry = artifacts.require("Jewelry");
+const UserRegistry = artifacts.require("UserRegistry");
 
 module.exports = async function(deployer) {
   await deployer.deploy(GemstoneExtraction);
@@ -10,4 +11,7 @@ module.exports = async function(deployer) {
   const gemstoneSelecting = await GemstoneSelecting.deployed();
   
   await deployer.deploy(Jewelry, gemstoneSelecting.address);
+  const jewelry = await Jewelry.deployed();
+  
+  await deployer.deploy(UserRegistry);
 };

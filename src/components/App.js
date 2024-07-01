@@ -299,9 +299,11 @@ class App extends Component {
                 !this.state.isLoggedIn ? (
                   <LogIn />
                 ) : (
-                  <Dashboard />
+                  <LogIn />
                 )
               } />
+              
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/loggedin" element={<LoggedIn account={this.state.account}/>} />
               <Route path="/repair" element={<Repair />} />
               <Route path="/profile" element={<Profile />} />
