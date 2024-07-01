@@ -229,3 +229,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.06.23. 18:08:
         - ahova a ! jel van rakva elvileg megcsináltam. Felkommitolom.
+
+2024.07.01. 15:00
+        -most ha csatl. a metamask, akkor a loginnal kiírja a addresst, majd logoutolhat.
+        - az kellene , hogy most loginnál kiírja, hogy melyik "tárca" van használatban. ha még nincs hozzá fiók, akkor lesz alatta egy logout, és egy regisztráció. 
+        - ha van már fiók akkor egy login lesz latta. és beenged lépni
