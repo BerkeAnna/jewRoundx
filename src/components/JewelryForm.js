@@ -78,10 +78,9 @@ function JewelryForm(props) {
         backgroundColor: '#FFF7F3', 
         width: '90%', 
         margin: 'auto', 
-        textAlign: 'center', 
-        
-      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-      marginTop: '60px' // Added marginTop for additional space
+        textAlign: 'center',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+        marginTop: '60px' // Added marginTop for additional space
       }}>
         <h1>Add jewelry</h1>
         <form onSubmit={handleSubmit}>
