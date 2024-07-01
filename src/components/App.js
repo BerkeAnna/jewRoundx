@@ -21,6 +21,7 @@ import JewMarket from './JewMarket';
 import LoggedIn from './LoggedIn';
 import Repair from './Repair';
 import Profile from './Profile';
+import LogIn from './LogIn';
 
 class App extends Component {
   async componentWillMount() {
@@ -296,7 +297,7 @@ class App extends Component {
             <Routes>
               <Route path="/" element={
                 !this.state.isLoggedIn ? (
-                  <h1>Login with MetaMask!</h1>
+                  <LogIn />
                 ) : (
                   <Dashboard />
                 )
