@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const LoggedIn = ({ account }) => {
+const LoggedIn = () => {
+  const location = useLocation();
+  const { username, account } = location.state || { username: 'Guest', account: '0x0' };
   const [jewelryId, setJewelryId] = useState('');
   const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ const LoggedIn = ({ account }) => {
 
   return (
     <div className='centered-content pt-5'>
-      <h1>Hi {account}!</h1>
+      <h1>Hi {username}!</h1>
       
       <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
       <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>

@@ -2,27 +2,27 @@ pragma solidity >=0.4.21 <0.6.0;
 
 contract UserRegistry {
     struct User {
-        string name;
-        string email;
-        string role;
+        address userAddress;
+        string username;
         bool isRegistered;
     }
 
     mapping(address => User) private users;
 
-    function registerUser(string memory _name, string memory _email, string memory _role) public {
-        require(!users[msg.sender].isRegistered, "User already registered");
+    event UserRegistered(address userAddress, string username);
 
-        users[msg.sender] = User({
-            name: _name,
-            email: _email,
-            role: _role,
-            isRegistered: true
-        });
+    function registerUser(string memory _username) public {
+        require(!users[msg.sender].isRegistered, "User already registered");
+        users[msg.sender] = User(msg.sender, _username, true);
+        emit UserRegistered(msg.sender, _username);
     }
 
-    function getUser(address _userAddress) public view returns (string memory, string memory, string memory, bool) {
-        User memory user = users[_userAddress];
-        return (user.name, user.email, user.role, user.isRegistered);
+    function isUserRegistered(address _userAddress) public view returns (bool) {
+        return users[_userAddress].isRegistered;
+    }
+
+    function getUsername(address _userAddress) public view returns (string memory) {
+        require(users[_userAddress].isRegistered, "User not registered");
+        return users[_userAddress].username;
     }
 }
