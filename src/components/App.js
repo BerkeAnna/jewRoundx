@@ -292,7 +292,7 @@ class App extends Component {
           </div>
           */}
           <Router>
-            {this.state.isLoggedIn && window.location.pathname !== "/" && window.location.pathname !== "/loggedin" /*&& window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket"*/ && <Navbar account={this.state.account} />}
+            {this.state.isLoggedIn && window.location.pathname !== "/" /* && window.location.pathname !== "/loggedin" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket"*/ && <Navbar account={this.state.account} />}
   
             <Routes>
               <Route path="/" element={

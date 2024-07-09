@@ -234,3 +234,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         -most ha csatl. a metamask, akkor a loginnal kiírja a addresst, majd logoutolhat.
         - az kellene , hogy most loginnál kiírja, hogy melyik "tárca" van használatban. ha még nincs hozzá fiók, akkor lesz alatta egy logout, és egy regisztráció. 
         - ha van már fiók akkor egy login lesz latta. és beenged lépni
+
+2024.07.04. 23:02
+        -Tesztelni a legutóbb felkommitoltat, az előtti elvileg jó, itt is tesztelni a formokat!!!!

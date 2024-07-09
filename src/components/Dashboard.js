@@ -19,7 +19,7 @@ const Dashboard = ({ account }) => {
 
   return (
     <div className='centered-content pt-5'>
-      <h1>Hi guest!</h1>
+      <h1>Hi!</h1>
       
       <a href="/loggedIn"><div className='dashboardButton'><button>Log in - user</button></div></a><br/>
       <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>

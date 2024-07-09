@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoggedIn = () => {
   const location = useLocation();
-  const { username, account } = location.state || { username: 'Guest', account: '0x0' };
+  const { username, account } = location.state || { username: '', account: '0x0' };
   const [jewelryId, setJewelryId] = useState('');
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const LoggedIn = () => {
 
   return (
     <div className='centered-content pt-5'>
-      <h1>Hi {username}!</h1>
+      {username !== '' && <h1>Hi {username}!</h1>}
       
       <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
       <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>

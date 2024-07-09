@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Web3 from 'web3';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import UserRegistry from '../abis/UserRegistry.json'; // Az okosszerződés ABI-ja
 
 const LogIn = () => {
@@ -9,6 +9,16 @@ const LogIn = () => {
   const [hasAccount, setHasAccount] = useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
+  const [jewelryId, setJewelryId] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/jew-details/${jewelryId}`);
+  };
+
+  const handleChange = (e) => {
+    setJewelryId(e.target.value);
+  };
 
   const detectCurrentProvider = () => {
     let provider;
@@ -89,8 +99,8 @@ const LogIn = () => {
       <h1>Connect with metamask!</h1>
       <div>
         {!isConnected ? (
-          <div>
-            <button onClick={onConnect}>
+          <div className='dashboardButton'>
+            <button type="submit" onClick={onConnect}>
               login
             </button>
           </div>
@@ -99,29 +109,51 @@ const LogIn = () => {
             <p>Connected as: {accountAddress}</p>
             {!hasAccount ? (
               <div>
+              <div className='dashboardButton'>
                 <input 
                   type="text" 
                   placeholder="Enter username" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)} 
                 />
-                <button onClick={onRegister}>
+                <button type="submit" onClick={onRegister}>
                   Register
                 </button>
-                <button onClick={onDisconnect}>
+              </div>
+              <div className='dashboardButton'>
+                <button type="submit" onClick={onDisconnect}>
                   Logout
                 </button>
+              </div>
               </div>
             ) : (
-              <div>
-                <button onClick={() => navigate('/loggedIn', { state: { username: username, account: accountAddress } })}>
+              <div >
+                <div className='dashboardButton'>
+                <button  type="submit" onClick={() => navigate('/loggedIn', { state: { username: username, account: accountAddress } })}>
                   Dashboard
                 </button>
-                <button onClick={onDisconnect}>
+                </div>
+                <div className='dashboardButton'>
+                <button type="submit" onClick={onDisconnect}>
                   Logout
                 </button>
+                </div>
               </div>
             )}
+            <div className='pt-5'>
+            <h3>Search jewelry with ID</h3>
+              <form onSubmit={handleSubmit}>
+                <input 
+                  type="text" 
+                  value={jewelryId} 
+                  onChange={handleChange} 
+                  placeholder="Enter Jewelry ID" 
+                />
+                <div className='dashboardButton'>
+                  <button type="submit">Search</button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>
