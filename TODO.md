@@ -237,3 +237,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.04. 23:02
         -Tesztelni a legutóbb felkommitoltat, az előtti elvileg jó, itt is tesztelni a formokat!!!!
+
+2024.07.10.15:58:
+        - a userRegistryhez hozzáaadtam a rolet, lehet vele később hiba...

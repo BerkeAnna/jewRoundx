@@ -111,7 +111,7 @@ const LogIn = () => {
       <div>
         {!isConnected ? (
           <div>
-             <h1>Hi guest!</h1>
+             <h1>Hi!</h1>
              <h1>Connect with metamask!</h1>
             <div className='dashboardButton'>
               <button type="submit" onClick={onConnect}>
