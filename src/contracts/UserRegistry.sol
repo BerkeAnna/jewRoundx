@@ -4,17 +4,18 @@ contract UserRegistry {
     struct User {
         address userAddress;
         string username;
+        string role; // Added role field
         bool isRegistered;
     }
 
     mapping(address => User) private users;
 
-    event UserRegistered(address userAddress, string username);
+    event UserRegistered(address userAddress, string username, string role);
 
-    function registerUser(string memory _username) public {
+    function registerUser(string memory _username, string memory _role) public {
         require(!users[msg.sender].isRegistered, "User already registered");
-        users[msg.sender] = User(msg.sender, _username, true);
-        emit UserRegistered(msg.sender, _username);
+        users[msg.sender] = User(msg.sender, _username, _role, true);
+        emit UserRegistered(msg.sender, _username, _role);
     }
 
     function isUserRegistered(address _userAddress) public view returns (bool) {
@@ -24,5 +25,10 @@ contract UserRegistry {
     function getUsername(address _userAddress) public view returns (string memory) {
         require(users[_userAddress].isRegistered, "User not registered");
         return users[_userAddress].username;
+    }
+
+    function getUserRole(address _userAddress) public view returns (string memory) {
+        require(users[_userAddress].isRegistered, "User not registered");
+        return users[_userAddress].role;
     }
 }
