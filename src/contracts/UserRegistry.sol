@@ -4,7 +4,7 @@ contract UserRegistry {
     struct User {
         address userAddress;
         string username;
-        string role; // Added role field
+        string role;
         bool isRegistered;
     }
 
@@ -30,5 +30,11 @@ contract UserRegistry {
     function getUserRole(address _userAddress) public view returns (string memory) {
         require(users[_userAddress].isRegistered, "User not registered");
         return users[_userAddress].role;
+    }
+
+    function getUserInfo(address _userAddress) public view returns (address, string memory, string memory) {
+        require(users[_userAddress].isRegistered, "User not registered");
+        User memory user = users[_userAddress];
+        return (user.userAddress, user.username, user.role);
     }
 }

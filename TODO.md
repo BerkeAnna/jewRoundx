@@ -240,3 +240,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.10.15:58:
         - a userRegistryhez hozzáaadtam a rolet, lehet vele később hiba...
+
+2024.07.12. 8:53:
+        - most kiírja a user adatokat a profil oldalon.

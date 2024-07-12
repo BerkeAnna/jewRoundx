@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
-import logo from '../logo.png';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 import GemSelecting from '../abis/GemstoneSelecting.json';
 import Jewelry from '../abis/Jewelry.json';
+import UserRegistryABI from '../abis/UserRegistry.json'; // Importáld az ABI-t
 import Navbar from './Navbar';
+import Profile from './Profile';
 import GemDetails from './GemDetails';
 import JewDetails from './JewDetails';
 import Main from './Main';
@@ -13,14 +15,12 @@ import Dashboard from './Dashboard';
 import MinedGemsList from './MinedGemList';
 import MinedGemForm from './MinedGemForm';
 import JewelryForm from './JewelryForm';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import OwnedByUser from './OwnedByUser'
+import OwnedByUser from './OwnedByUser';
 import GemSelectingForm from './GemSelectingForm';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
 import LoggedIn from './LoggedIn';
 import Repair from './Repair';
-import Profile from './Profile';
 import LogIn from './LogIn';
 
 class App extends Component {
@@ -29,6 +29,7 @@ class App extends Component {
     await this.loadBlockchainData();
     await this.loadBlockchainData2();
     await this.loadBlockchainData3();
+    await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
   }
 
   async loadWeb3() {
@@ -118,6 +119,32 @@ class App extends Component {
     }
   }
 
+  async loadBlockchainData4() {
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
+
+    const networkId = await web3.eth.net.getId();
+    const networkData = UserRegistryABI.networks[networkId];
+    if (networkData) {
+      const userRegistry = new web3.eth.Contract(UserRegistryABI.abi, networkData.address);
+      this.setState({ userRegistry });
+
+      const userInfo = await userRegistry.methods.getUserInfo(accounts[0]).call();
+      console.log('User Info:', userInfo);
+      this.setState({
+        userInfo: {
+          address: userInfo[0],
+          username: userInfo[1],
+          role: userInfo[2]
+        }
+      });
+      this.setState({ loading: false });
+    } else {
+      window.alert('UserRegistry contract not deployed to detected network.');
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -126,9 +153,10 @@ class App extends Component {
       minedGems: [],
       selectedGemCount: 0,
       selectedGems: [],
-      loading: true,
       jewelry: [],
-      isLoggedIn: false
+      userInfo: null,
+      isLoggedIn: false,
+      loading: true,
     };
 
     this.gemMining = this.gemMining.bind(this);
@@ -163,6 +191,7 @@ class App extends Component {
         this.loadBlockchainData();
         this.loadBlockchainData2();
         this.loadBlockchainData3();
+        this.loadBlockchainData4();
         this.setState({ loading: false });
       });
   }
@@ -186,6 +215,7 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
+
   markGemAsSelected(id, price) {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
@@ -199,7 +229,6 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
-  
 
   markGemAsUsed(id) {
     const gasLimit = 90000;
@@ -252,107 +281,83 @@ class App extends Component {
         console.error("Hiba történt a jewelryMaking függvényben: ", error);
         this.setState({ loading: false });
       });
-    }
+  }
 
-    async buyJewelry(id, price) {
-      const gasLimit = 100000;
-      // const gasPrice = window.web3.utils.toWei('20', 'gwei'); // Opciók kipróbálása gas price nélkül
-      this.setState({ loading: true });
-      console.log('itt meg megvagyok 1');
-      try {
-        console.log('itt meg megvagyok 1.2');
-        const receipt = await this.state.makeJew.methods.buyJewelry(id).send({ from: this.state.account, value: price, gasLimit: gasLimit });
-        console.log('itt meg megvagyok 2');
-        this.setState({ loading: false });
-        console.log('itt meg megvagyok 3');
-        this.loadBlockchainData3(); // Reload data to reflect the change
-        console.log('itt meg megvagyok 4');
-        console.log('Transaction receipt:', receipt);
-        console.log('itt meg megvagyok 5');
-      } catch (error) {
-        console.log('itt meg megvagyok 6');
-        console.error("Error in buyJewelry:", error);
-        console.log('itt meg megvagyok 7');
-        this.setState({ loading: false });
-        console.log('itt meg megvagyok 8');
-      }
-    }
-    
-    
- 
-    refreshPage = () => {
-      window.location.reload();
-    }
-  
-    render() {
-      return (
-        <div className='col-12 wid pt-5'>
-         {/* <div className='pt-5'>
-            <button onClick={() => this.refreshPage()}>Click to reload!</button>
-          </div>
-          */}
-          <Router>
-            {this.state.isLoggedIn && window.location.pathname !== "/" /* && window.location.pathname !== "/loggedin" && window.location.pathname !== "/gemMarket" && window.location.pathname !== "/jewMarket"*/ && <Navbar account={this.state.account} />}
-  
-            <Routes>
-              <Route path="/" element={
-                !this.state.isLoggedIn ? (
-                  <LogIn />
-                ) : (
-                  <LogIn />
-                )
-              } />
-              
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/loggedin" element={<LoggedIn account={this.state.account}/>} />
-              <Route path="/repair" element={<Repair />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
-              <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
-                selectedGems={this.state.selectedGems}
-                jewelry={this.state.jewelry}
-                gemMining={this.gemMining}
-                gemSelecting={this.gemSelecting}
-                purchaseGem={this.purchaseGem}
-                processingGem={this.processingGem}
-                markGemAsSelected={this.markGemAsSelected}
-                markGemAsUsed={this.markGemAsUsed}
-                account={this.state.account}
-                sellGem={this.sellGem}
-                polishGem={this.polishGem} />} />
-              <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
-                account={this.state.account}
-                buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />
-              <Route path="/ownMinedGems" element={<OwnedByUser minedGems={this.state.minedGems}
-                selectedGems={this.state.selectedGems}
-                jewelry={this.state.jewelry}
-                gemMining={this.gemMining}
-                gemSelecting={this.gemSelecting}
-                purchaseGem={this.purchaseGem}
-                processingGem={this.processingGem}
-                markGemAsSelected={this.markGemAsSelected}
-                markGemAsUsed={this.markGemAsUsed}
-                account={this.state.account}
-                sellGem={this.sellGem}
-                polishGem={this.polishGem} />} />
-              <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting} />} />
-              <Route path="/gem-details/:id" element={<GemDetails selectedGems={this.state.selectedGems}
-                minedGems={this.state.minedGems}
-                gemSelecting={this.gemSelecting}
-                account={this.state.account} />} />
-              <Route path="/jew-details/:id" element={<JewDetails selectedGems={this.state.selectedGems}
-                minedGems={this.state.minedGems}
-                jewelry={this.state.jewelry}
-                gemSelecting={this.gemSelecting}
-                account={this.state.account} />} />
-              <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
-                markGemAsUsed={this.markGemAsUsed} />} />
-            </Routes>
-          </Router>
-        </div>
-      );
+  async buyJewelry(id, price) {
+    const gasLimit = 100000;
+    this.setState({ loading: true });
+    try {
+      const receipt = await this.state.makeJew.methods.buyJewelry(id).send({ from: this.state.account, value: price, gasLimit: gasLimit });
+      this.setState({ loading: false });
+      this.loadBlockchainData3(); // Reload data to reflect the change
+      console.log('Transaction receipt:', receipt);
+    } catch (error) {
+      console.error("Error in buyJewelry:", error);
+      this.setState({ loading: false });
     }
   }
-  
+
+  refreshPage = () => {
+    window.location.reload();
+  }
+
+  render() {
+    return (
+      <div className='col-12 wid pt-5'>
+        <Router>
+          {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
+
+          <Routes>
+            <Route path="/" element={<LogIn />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
+            <Route path="/repair" element={<Repair />} />
+            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} />} />
+            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
+            <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
+              selectedGems={this.state.selectedGems}
+              jewelry={this.state.jewelry}
+              gemMining={this.gemMining}
+              gemSelecting={this.gemSelecting}
+              purchaseGem={this.purchaseGem}
+              processingGem={this.processingGem}
+              markGemAsSelected={this.markGemAsSelected}
+              markGemAsUsed={this.markGemAsUsed}
+              account={this.state.account}
+              sellGem={this.sellGem}
+              polishGem={this.polishGem} />} />
+            <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
+              account={this.state.account}
+              buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />
+            <Route path="/ownMinedGems" element={<OwnedByUser minedGems={this.state.minedGems}
+              selectedGems={this.state.selectedGems}
+              jewelry={this.state.jewelry}
+              gemMining={this.gemMining}
+              gemSelecting={this.gemSelecting}
+              purchaseGem={this.purchaseGem}
+              processingGem={this.processingGem}
+              markGemAsSelected={this.markGemAsSelected}
+              markGemAsUsed={this.markGemAsUsed}
+              account={this.state.account}
+              sellGem={this.sellGem}
+              polishGem={this.polishGem} />} />
+            <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting} />} />
+            <Route path="/gem-details/:id" element={<GemDetails selectedGems={this.state.selectedGems}
+              minedGems={this.state.minedGems}
+              gemSelecting={this.gemSelecting}
+              account={this.state.account} />} />
+            <Route path="/jew-details/:id" element={<JewDetails selectedGems={this.state.selectedGems}
+              minedGems={this.state.minedGems}
+              jewelry={this.state.jewelry}
+              gemSelecting={this.gemSelecting}
+              account={this.state.account} />} />
+            <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
+              markGemAsUsed={this.markGemAsUsed} />} />
+          </Routes>
+        </Router>
+      </div>
+    );
+  }
+}
 
 export default App;
