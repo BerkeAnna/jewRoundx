@@ -93,5 +93,16 @@ contract Jewelry {
         emit JewelryBought(_id, msg.sender);
     }
 
+    function getJewelryCountByOwner(address _owner) public view returns (uint) {
+    uint count = 0;
+    for (uint i = 1; i <= jewelryCount; i++) {
+        if (jewelry[i].owner == _owner) {
+            count++;
+        }
+    }
+    return count;
+}
+
+
  
 }

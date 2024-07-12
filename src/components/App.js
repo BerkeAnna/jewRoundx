@@ -106,18 +106,24 @@ class App extends Component {
       this.setState({ makeJew });
       const jewelryCount = await makeJew.methods.jewelryCount().call();
       this.setState({ jewelryCount });
-
+  
+      let ownedJewelryCount = 0;
       for (var i = 1; i <= jewelryCount; i++) {
         const jewelry = await makeJew.methods.jewelry(i).call();
+        if (jewelry.owner === accounts[0]) {
+          ownedJewelryCount++;
+        }
         this.setState({
           jewelry: [...this.state.jewelry, jewelry]
         });
       }
-      this.setState({ loading: false });
+  
+      this.setState({ ownedJewelryCount, loading: false });
     } else {
       window.alert('Jewelry contract not deployed to detected network. - own error');
     }
   }
+  
 
   async loadBlockchainData4() {
     const web3 = window.web3;
@@ -155,10 +161,11 @@ class App extends Component {
       selectedGems: [],
       jewelry: [],
       userInfo: null,
+      ownedJewelryCount: 0, // Hozzáadva
       isLoggedIn: false,
       loading: true,
     };
-
+  
     this.gemMining = this.gemMining.bind(this);
     this.purchaseGem = this.purchaseGem.bind(this);
     this.processingGem = this.processingGem.bind(this);
@@ -170,6 +177,7 @@ class App extends Component {
     this.buyJewelry = this.buyJewelry.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
   }
+  
 
   async refreshPage() {
     window.location.reload(false);
@@ -312,7 +320,8 @@ class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
             <Route path="/repair" element={<Repair />} />
-            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} />} />
+            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount} />} />
+
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
             <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
               selectedGems={this.state.selectedGems}

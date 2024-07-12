@@ -243,3 +243,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.12. 8:53:
         - most kiírja a user adatokat a profil oldalon.
+
+2024.07.12. 9:05:
+        - Owned Jewelry Count kiírja  a profilon
