@@ -17,23 +17,20 @@ const Profile = ({ userInfo, ownedJewelryCount }) => {
   };
 
   return (
-    <div className='pt-5'>
-      <h1>Profile page in process....</h1>
+    <div className='pt-5 text-center'>
       <h1>Hi {userInfo ? userInfo.username : 'xy'}!</h1>
-      <h2>TODO:</h2>
-      <p>-metamaskból adatok</p>
-      <p>address: {userInfo ? userInfo.address : ''}</p>
-      <p>name: {userInfo ? userInfo.username : ''}</p>
-      <p>Owned Jewelry Count: {ownedJewelryCount}</p>
-      <p>- név, miből mennyi van jelenleg</p>
-      <p>- gomb a saját gems oldalra irányításhoz </p>
+    
       {userInfo && (
-        <div>
-          <p>Address: {userInfo.address}</p>
-          <p>Username: {userInfo.username}</p>
-          <p>Role: {userInfo.role}</p>
+        <div className='pt-5'>
+            <p><b>address:</b> {userInfo ? userInfo.address : ''}</p>
+            <p><b>name:</b> {userInfo ? userInfo.username : ''}</p>
+            <p><b>Role:</b> {userInfo ? userInfo.role : ''}</p>
         </div>
       )}
+
+      
+      <p><b>Owned jewelry count:</b> {ownedJewelryCount}</p>
+
     </div>
   );
 };
