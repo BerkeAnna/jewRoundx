@@ -320,7 +320,7 @@ class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
             <Route path="/repair" element={<Repair />} />
-            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount} />} />
+            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } /*ide meg kellene adni a selectedGemCount={}*/ />} />
 
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
             <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
