@@ -101,8 +101,17 @@ contract Jewelry {
         }
     }
     return count;
-}
+    }
 
+    function getJewelryCountByJeweler(address _jeweler) public view returns (uint) {
+        uint count = 0;
+        for (uint i = 1; i <= jewelryCount; i++) {
+            if (jewelry[i].jeweler == _jeweler) {
+                count++;
+            }
+        }
+        return count;
+    }
 
  
 }

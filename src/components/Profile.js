@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import UserRegistryABI from '../abis/UserRegistry.json';
 
-const Profile = ({ userInfo, ownedJewelryCount,/* selectedGemCount,*/ ownedMinedGemCount }) => {
+const Profile = ({ userInfo, ownedJewelryCount,/* selectedGemCount,*/ ownedMinedGemCount, ownedMadeJewelryCount }) => {
   const [jewelryId, setJewelryId] = useState('');
   const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ const Profile = ({ userInfo, ownedJewelryCount,/* selectedGemCount,*/ ownedMined
       <p>address: {userInfo ? userInfo.address : ''}</p>
       <p>name: {userInfo ? userInfo.username : ''}</p>
       <p>Currently owned jewelry: {ownedJewelryCount}</p>
+      <p>Owned made jewelry: {ownedMadeJewelryCount}</p>
      {/* <p>Selected Gem Count: {selectedGemCount}</p>*/}
       <p>All the mined gem mined so far: {ownedMinedGemCount}</p>
       <p>- név, miből mennyi van jelenleg</p>
