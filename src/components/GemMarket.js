@@ -13,8 +13,8 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
   const renderSelectedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
-        <div key={key} className="card" style={{ marginBottom: '20px', padding: '20px', backgroundColor: '#FFF7F3', width: '23%', margin: '10px', textAlign: 'center', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
-          <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} style={{ maxWidth: '100%', maxHeight: '150px', marginTop: '20px' }} />
+        <div key={key} className="card" style={{ width: '30%', marginBottom: '20px', padding: '20px', backgroundColor: '#FFF7F3', margin: '10px', textAlign: 'center', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
+       <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} style={{ width: '100%', height: '150px', objectFit: 'contain', marginTop: '20px' }} />
           <div className="card-body">
             <h5 className="card-title">{minedGem.gemType}</h5>
             <p className="card-text">Price: {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
@@ -43,7 +43,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
     <div className="gem-market">
       <p>&nbsp;</p>
       <h2>Gem market :D</h2>
-      <div className="gem-cards">
+      <div className="gem-cards" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {renderSelectedGems()}
       </div>
       <div className='homeButton'>
