@@ -87,13 +87,18 @@ class App extends Component {
       const selectedGemCount = await gemstroneSelecting.methods.selectedGemCount().call();
       this.setState({ selectedGemCount });
 
+      let cuttedGemCount = 0;
+
       for (var i = 1; i <= selectedGemCount; i++) {
         const selectedGems = await gemstroneSelecting.methods.selectedGems(i).call();
+        if(selectedGems.owner === accounts[0] ){
+          cuttedGemCount++;
+        }
         this.setState({
           selectedGems: [...this.state.selectedGems, selectedGems]
         });
       }
-      this.setState({ loading: false });
+      this.setState({ cuttedGemCount, loading: false });
     } else {
       window.alert('Gemstone selecting contract not deployed to detected network. - own error');
     }
@@ -168,6 +173,7 @@ class App extends Component {
       selectedGemCount: 0,
       ownedMinedGemCount: 0,
       ownedMadeJewelry: 0,
+      cuttedGemCount: 0,
       selectedGems: [],
       jewelry: [],
       userInfo: null,
@@ -330,7 +336,7 @@ class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
             <Route path="/repair" element={<Repair />} />
-            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } ownedMinedGemCount={this.state.ownedMinedGemCount } ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /*ide meg kellene adni a selectedGemCount={}*/ />} />
+            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } cuttedGemCount={this.state.cuttedGemCount} ownedMinedGemCount={this.state.ownedMinedGemCount } ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /*ide meg kellene adni a selectedGemCount={}*/ />} />
 
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
             <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
