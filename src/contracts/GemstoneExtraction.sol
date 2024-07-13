@@ -148,5 +148,15 @@ contract GemstoneExtraction {
     emit GemSelected(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, msg.sender, _minedGem.fileURL, _minedGem.purchased);
 }
 
+    function getGemstoneCountByOrder(address _owner) public view returns (uint) {
+        uint count = 0;
+        for(uint i=1; i <= minedGemCount; i++){
+            if(minedGems[i].owner == _owner){
+                count++;
+            }
+        }
+        return count;
+    }
+
 
 }

@@ -58,13 +58,17 @@ class App extends Component {
       const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call();
       this.setState({ minedGemCount });
 
+      let ownedMinedGemCount = 0;
       for (var i = 1; i <= minedGemCount; i++) {
         const minedGems = await gemstroneExtraction.methods.minedGems(i).call();
+        if(minedGems.owner === accounts[0]){
+          ownedMinedGemCount++;
+        }
         this.setState({
           minedGems: [...this.state.minedGems, minedGems]
         });
       }
-      this.setState({ loading: false });
+      this.setState({ ownedMinedGemCount, loading: false });
     } else {
       window.alert('Gemstone contract not deployed to detected network. - own error');
     }
@@ -158,6 +162,7 @@ class App extends Component {
       minedGemCount: 0,
       minedGems: [],
       selectedGemCount: 0,
+      ownedMinedGemCount: 0,
       selectedGems: [],
       jewelry: [],
       userInfo: null,
@@ -320,7 +325,7 @@ class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
             <Route path="/repair" element={<Repair />} />
-            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } /*ide meg kellene adni a selectedGemCount={}*/ />} />
+            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } ownedMinedGemCount={this.state.ownedMinedGemCount } /*ide meg kellene adni a selectedGemCount={}*/ />} />
 
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
             <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}

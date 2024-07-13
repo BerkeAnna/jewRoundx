@@ -246,3 +246,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.12. 9:05:
         - Owned Jewelry Count kiírja  a profilon
+
+2024.07.13. 10:32:
+        -most a prfilon úgy néz ki, hogy a jelenleg birtokolt ékszereket összeszámmolja.
+        - a mined gemeknél ugye nem változik a miner, szóval kilistázza eddig összesen mennyi követ bányászott az adott user.
