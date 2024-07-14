@@ -250,3 +250,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.07.13. 10:32:
         -most a prfilon úgy néz ki, hogy a jelenleg birtokolt ékszereket összeszámmolja.
         - a mined gemeknél ugye nem változik a miner, szóval kilistázza eddig összesen mennyi követ bányászott az adott user.
+
+2024.07.14. 22:00:
+        - most a bejelentkzés is megvan az oldalon... :D

@@ -5,6 +5,7 @@ contract UserRegistry {
         address userAddress;
         string username;
         string role;
+        bytes32 passwordHash;
         bool isRegistered;
     }
 
@@ -12,9 +13,9 @@ contract UserRegistry {
 
     event UserRegistered(address userAddress, string username, string role);
 
-    function registerUser(string memory _username, string memory _role) public {
+    function registerUser(string memory _username, string memory _role, bytes32 _passwordHash) public {
         require(!users[msg.sender].isRegistered, "User already registered");
-        users[msg.sender] = User(msg.sender, _username, _role, true);
+        users[msg.sender] = User(msg.sender, _username, _role, _passwordHash, true);
         emit UserRegistered(msg.sender, _username, _role);
     }
 
@@ -36,5 +37,16 @@ contract UserRegistry {
         require(users[_userAddress].isRegistered, "User not registered");
         User memory user = users[_userAddress];
         return (user.userAddress, user.username, user.role);
+    }
+
+    function authenticateUser(address _userAddress, bytes32 _passwordHash) public view returns (bool) {
+        require(users[_userAddress].isRegistered, "User not registered");
+        return users[_userAddress].passwordHash == _passwordHash;
+    }
+
+    // Add this function to get the user's password hash
+    function getUserPass(address _userAddress) public view returns (bytes32) {
+        require(users[_userAddress].isRegistered, "User not registered");
+        return users[_userAddress].passwordHash;
     }
 }

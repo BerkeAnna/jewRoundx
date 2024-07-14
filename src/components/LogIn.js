@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import Web3 from 'web3';
-import { useNavigate, useLocation } from 'react-router-dom';
-import UserRegistry from '../abis/UserRegistry.json'; // Import the ABI
+import { useNavigate } from 'react-router-dom';
+import UserRegistry from '../abis/UserRegistry.json';
+import { sha3 } from 'web3-utils';
 
 const LogIn = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [accountAddress, setAccountAddress] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
   const [username, setUsername] = useState('');
-  const [role, setRole] = useState('Miner'); // Default role
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('Miner');
+  const [enteredPassword, setEnteredPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [jewelryId, setJewelryId] = useState('');
 
@@ -54,11 +59,18 @@ const LogIn = () => {
     return await contract.methods.getUserRole(userAddress).call();
   };
 
-  const registerUser = async (web3, userAddress, username, role) => {
+  const registerUser = async (web3, userAddress, username, role, passwordHash) => {
     const networkId = await web3.eth.net.getId();
     const deployedNetwork = UserRegistry.networks[networkId];
     const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    await contract.methods.registerUser(username, role).send({ from: userAddress });
+    await contract.methods.registerUser(username, role, passwordHash).send({ from: userAddress });
+  };
+
+  const authenticateUser = async (web3, userAddress, passwordHash) => {
+    const networkId = await web3.eth.net.getId();
+    const deployedNetwork = UserRegistry.networks[networkId];
+    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
+    return await contract.methods.authenticateUser(userAddress, passwordHash).call();
   };
 
   const onConnect = async () => {
@@ -89,8 +101,33 @@ const LogIn = () => {
       const currentProvider = detectCurrentProvider();
       if (currentProvider) {
         const web3 = new Web3(currentProvider);
-        await registerUser(web3, accountAddress, username, role);
+        const passwordHash = sha3(password);
+        await registerUser(web3, accountAddress, username, role, passwordHash);
         setHasAccount(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onAuthenticate = async () => {
+    if (!enteredPassword) {
+      setErrorMessage("Invalid password. Please try again.");
+      return;
+    }
+
+    try {
+      const currentProvider = detectCurrentProvider();
+      if (currentProvider) {
+        const web3 = new Web3(currentProvider);
+        const passwordHash = sha3(enteredPassword);
+        const isAuthenticated = await authenticateUser(web3, accountAddress, passwordHash);
+        setIsAuthenticated(isAuthenticated);
+        if (isAuthenticated) {
+          navigate('/loggedIn', { state: { username: username, account: accountAddress } });
+        } else {
+          setErrorMessage("Invalid password. Please try again.");
+        }
       }
     } catch (err) {
       console.log(err);
@@ -103,16 +140,19 @@ const LogIn = () => {
     setHasAccount(false);
     setUsername('');
     setRole('Miner');
+    setPassword('');
+    setEnteredPassword('');
+    setIsAuthenticated(false);
+    setErrorMessage('');
   };
 
   return (
     <div className='centered-content pt-5'>
-     
       <div>
         {!isConnected ? (
           <div>
-             <h1>Hi!</h1>
-             <h1>Connect with metamask!</h1>
+            <h1>Hi!</h1>
+            <h1>Connect with metamask!</h1>
             <div className='dashboardButton'>
               <button type="submit" onClick={onConnect}>
                 login
@@ -127,10 +167,17 @@ const LogIn = () => {
                 <p>Username: {username}</p>
                 <p>Role: {role}</p>
                 <div className='dashboardButton'>
-                  <button type="submit" onClick={() => navigate('/loggedIn', { state: { username: username, account: accountAddress } })}>
+                  <input 
+                    type="password" 
+                    placeholder="Enter password" 
+                    value={enteredPassword} 
+                    onChange={(e) => setEnteredPassword(e.target.value)} 
+                  />
+                  <button type="submit" onClick={onAuthenticate}>
                     Dashboard
                   </button>
                 </div>
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                 <div className='dashboardButton'>
                   <button type="submit" onClick={onDisconnect}>
                     Logout
@@ -145,6 +192,12 @@ const LogIn = () => {
                     placeholder="Enter username" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
+                  />
+                  <input 
+                    type="password" 
+                    placeholder="Enter password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
                   />
                   <div>
                     <select value={role} onChange={(e) => setRole(e.target.value)}>
