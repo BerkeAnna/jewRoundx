@@ -13,9 +13,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
     return gemSelected.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
-        padding: '20px', 
+        padding: '10px', 
         backgroundColor: '#FFF7F3', 
-        width: '90%', 
+        width: '80%', 
         margin: 'auto', 
         textAlign: 'center', 
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
@@ -45,9 +45,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
     return minedGem.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
-        padding: '20px', 
+        padding: '10px', 
         backgroundColor: '#FFF7F3', 
-        width: '90%', 
+        width: '80%', 
         margin: 'auto', 
         textAlign: 'center', 
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
@@ -78,9 +78,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
     return jewelryDetails.map((jewelry, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
-        padding: '20px', 
+        padding: '10px', 
         backgroundColor: '#FFF7F3', 
-        width: '90%', 
+        width: '80%', 
         margin: 'auto', 
         textAlign: 'center', 
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'

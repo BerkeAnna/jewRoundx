@@ -12,18 +12,18 @@ function GemDetails({ selectedGems, minedGems, account }) {
     return gemSelected.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
-        padding: '20px', 
-        backgroundColor: '#FFF7F3', // kékses árnyalatú háttér
-        width: '90%', 
+        padding: '10px', 
+        backgroundColor: '#FFF7F3', 
+        width: '80%', 
         margin: 'auto', 
         textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' // shadow
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
       }}>
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />
             </a>
           </div>
         )}
@@ -44,18 +44,18 @@ function GemDetails({ selectedGems, minedGems, account }) {
     return minedGem.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
-        padding: '20px', 
-        backgroundColor: '#FFF7F3', // kékses árnyalatú háttér
-        width: '90%', 
+        padding: '10px', 
+        backgroundColor: '#FFF7F3', 
+        width: '80%', 
         margin: 'auto', 
         textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' // shadow
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
       }}>
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />
             </a>
           </div>
         )}
