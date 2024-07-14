@@ -253,3 +253,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.14. 22:00:
         - most a bejelentkzés is megvan az oldalon... :D
+
+2024.07.14. 22:41:
+        - most mégjobb a login

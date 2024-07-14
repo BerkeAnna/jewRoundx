@@ -166,13 +166,16 @@ const LogIn = () => {
               <div>
                 <p>Username: {username}</p>
                 <p>Role: {role}</p>
-                <div className='dashboardButton'>
+                <div>
                   <input 
                     type="password" 
                     placeholder="Enter password" 
                     value={enteredPassword} 
                     onChange={(e) => setEnteredPassword(e.target.value)} 
                   />
+                  
+                </div>
+                <div className='dashboardButton'>
                   <button type="submit" onClick={onAuthenticate}>
                     Dashboard
                   </button>
@@ -186,13 +189,15 @@ const LogIn = () => {
               </div>
             ) : (
               <div>
-                <div className='dashboardButton'>
+                <div>
                   <input 
                     type="text" 
                     placeholder="Enter username" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
                   />
+                  </div>
+                  <div>
                   <input 
                     type="password" 
                     placeholder="Enter password" 
@@ -206,7 +211,7 @@ const LogIn = () => {
                       <option value="Jeweler">Jeweler</option>
                     </select>
                   </div>
-                  <div>
+                  <div className='dashboardButton'>
                     <button type="submit" onClick={onRegister}>
                       Register
                     </button>
