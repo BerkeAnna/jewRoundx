@@ -267,3 +267,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.07.15. 13:38:
         -most a polishing is használva van. De nem ez kell. Meg kell fordítani, és aegy forsale legyen a polishing helyett
         - ha itt van a listámban látszójon a : details, make jewelry, forsale. Ha a forsale-re kattintok, akkor kerüljön ki  a piacra. És nálam ne legyen ott utána csak a  : details, és remove from market. Akkor az előbbi állapotba kerül vissza a from market lenyomásával.
+
+2024.07.15. 14:19: 
+        -most a forsale- remove from mamrket műkszik
+        - a piac kell hozzá és ok

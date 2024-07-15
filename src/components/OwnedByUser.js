@@ -76,25 +76,36 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td>{selectedGem.owner}</td>
           <td>{selectedGem.used.toString()}</td>
           <td className="button-container">
-            {selectedGem.polishing && !selectedGem.used ? (
+         
+            {!selectedGem.forSale && !selectedGem.used ? (
               <>
-              <p>polishing: {selectedGem.polishing.toString()}</p>
-              <p>used: {selectedGem.used.toString()}</p>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
                   Details
                 </button>
                 <button onClick={() => handleMarkAsUsed(selectedGem.id)}>
                   Make jewelry
                 </button>
-              </>
-            ) : (
-              <button
+                <button
                 id={selectedGem.id}
                 value={selectedGem.price}
                 onClick={() => polishGem(selectedGem.id)}
               >
-                Polishing
+                ForSale
               </button>
+              </>
+            ) : (
+              <div>
+                <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                Details
+                </button>
+                <button
+                  id={selectedGem.id}
+                  value={selectedGem.price}
+                  onClick={() => polishGem(selectedGem.id)}
+                >
+                  Remove from market
+                </button>
+              </div>
             )}
           </td>
         </tr>

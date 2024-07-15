@@ -32,7 +32,7 @@ function GemDetails({ selectedGems, minedGems, account }) {
         <p><strong>Carat:</strong> {gem.carat.toString()}</p>
         <p><strong>Color:</strong> {gem.color}</p>
         <p><strong>Gem Type:</strong> {gem.gemType}</p>
-        <p><strong>Polishing:</strong> {gem.polishing.toString()}</p>
+        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {gem.owner}</p>

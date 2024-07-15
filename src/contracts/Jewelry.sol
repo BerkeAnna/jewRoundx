@@ -1,7 +1,7 @@
 pragma solidity >=0.4.21 <0.6.0;
 
 interface IGemstoneSelecting {
-    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool polishing, uint price, bool used, address owner);
+    function selectedGems(uint) external view returns (uint id, uint minedGemId, uint weight, uint height, uint width, uint diameter, uint carat, string memory color, string memory gemType, bool forSale, uint price, bool used, address owner);
     function markGemAsUsed(uint _id) external;
 }
 

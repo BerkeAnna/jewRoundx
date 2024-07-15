@@ -18,7 +18,7 @@ contract GemstoneSelecting {
         uint carat;
         string color;
         string gemType;
-        bool polishing;
+        bool forSale;
         string fileURL;
         uint price;
         bool used;
@@ -32,7 +32,7 @@ contract GemstoneSelecting {
         uint carat,
         string color,
         string gemType,
-        bool polishing,
+        bool forSale,
         string fileURL,
         uint price,
         bool used,
@@ -49,7 +49,7 @@ contract GemstoneSelecting {
         uint _carat,
         string memory _color,
         string memory _gemtype,
-        bool _polishing,
+        bool _forSale,
         string memory _fileURL,
         uint _price
     ) public {
@@ -86,7 +86,7 @@ contract GemstoneSelecting {
     function polishGem(uint _id) public payable {
         SelectedGem storage _selectedGem = selectedGems[_id];
         require(_selectedGem.owner == msg.sender, "Caller is not the owner");
-        _selectedGem.polishing = true;
+        _selectedGem.forSale = !(_selectedGem.forSale);
 
         emit GemSelecting(
             _selectedGem.id, 
