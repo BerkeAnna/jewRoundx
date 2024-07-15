@@ -271,3 +271,5 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.07.15. 14:19: 
         -most a forsale- remove from mamrket műkszik
         - a piac kell hozzá és ok
+        - ID-kat ellenőrizniiii!
+        - 15:32: most átkön a sleectgemes gemmarketes tranz. de kér új dadatokat. ott valami nem jó! azt javítani. Ott cak át kellene venni és a forsalet mód

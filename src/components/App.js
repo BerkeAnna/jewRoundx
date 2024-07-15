@@ -17,6 +17,7 @@ import MinedGemForm from './MinedGemForm';
 import JewelryForm from './JewelryForm';
 import OwnedByUser from './OwnedByUser';
 import GemSelectingForm from './GemSelectingForm';
+import MinedGemMarket from './MinedGemMarket';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
 import LoggedIn from './LoggedIn';
@@ -192,6 +193,7 @@ class App extends Component {
     this.jewelryMaking = this.jewelryMaking.bind(this);
     this.buyJewelry = this.buyJewelry.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
+    this.transferGemOwnership = this.transferGemOwnership.bind(this);
   }
   
 
@@ -242,7 +244,7 @@ class App extends Component {
 
   markGemAsSelected(id, price) {
     const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
     this.setState({ loading: true });
     this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
       .once('receipt', (receipt) => {
@@ -292,6 +294,20 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
+  transferGemOwnership(id) {
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
+    this.setState({ loading: true });
+    this.state.gemstroneSelecting.methods.transferGemOwnership(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false });
+      })
+      .catch(error => {
+        console.error("Error in transferGemOwnership: ", error);
+        this.setState({ loading: false });
+      });
+  }
+
 
   jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileURL) {
     const gasLimit = 90000;
@@ -339,7 +355,7 @@ class App extends Component {
             <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } cuttedGemCount={this.state.cuttedGemCount} ownedMinedGemCount={this.state.ownedMinedGemCount } ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /*ide meg kellene adni a selectedGemCount={}*/ />} />
 
             <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
-            <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
+            <Route path="/minedGemMarket" element={<MinedGemMarket minedGems={this.state.minedGems}
               selectedGems={this.state.selectedGems}
               jewelry={this.state.jewelry}
               gemMining={this.gemMining}
@@ -351,6 +367,19 @@ class App extends Component {
               account={this.state.account}
               sellGem={this.sellGem}
               polishGem={this.polishGem} />} />
+            <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
+              selectedGems={this.state.selectedGems}
+              jewelry={this.state.jewelry}
+              gemMining={this.gemMining}
+              gemSelecting={this.gemSelecting}
+              purchaseGem={this.purchaseGem}
+              processingGem={this.processingGem}
+              markGemAsSelected={this.markGemAsSelected}
+              markGemAsUsed={this.markGemAsUsed}
+              account={this.state.account}
+              sellGem={this.sellGem}
+              polishGem={this.polishGem} 
+              transferGemOwnership={this.transferGemOwnership}/>} />
             <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
               account={this.state.account}
               buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />

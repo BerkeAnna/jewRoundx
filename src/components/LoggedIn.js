@@ -36,7 +36,7 @@ const LoggedIn = () => {
        {role === 'Gem cutter' && (
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
-          <a href="/gemMarket"><div className='dashboardButton'><button>Gem Market</button></div></a><br/>
+          <a href="/minedGemMarket"><div className='dashboardButton'><button>Mined Gem Market</button></div></a><br/>
           <a href="/profile"><div className='dashboardButton'><button>Profile</button></div></a><br/>
           <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
         </div>
@@ -45,6 +45,7 @@ const LoggedIn = () => {
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
           <a href="/jewMarket"><div className='dashboardButton'><button>Jew Market</button></div></a><br/>
+          <a href="/gemMarket"><div className='dashboardButton'><button>Gem Market</button></div></a><br/>
           <a href="/profile"><div className='dashboardButton'><button>Profile</button></div></a><br/>
           <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
         </div>
@@ -53,6 +54,7 @@ const LoggedIn = () => {
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
           <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>
+          <a href="/minedGemMarket"><div className='dashboardButton'><button>Mined Gem Market</button></div></a><br/>
           <a href="/gemMarket"><div className='dashboardButton'><button>Gem Market</button></div></a><br/>
           <a href="/jewMarket"><div className='dashboardButton'><button>Jew Market</button></div></a><br/>
           <a href="/repair"><div className='dashboardButton'><button>Repair</button></div></a><br/>

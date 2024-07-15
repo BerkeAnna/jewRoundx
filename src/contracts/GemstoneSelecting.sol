@@ -85,7 +85,7 @@ contract GemstoneSelecting {
 
     function polishGem(uint _id) public payable {
         SelectedGem storage _selectedGem = selectedGems[_id];
-        require(_selectedGem.owner == msg.sender, "Caller is not the owner");
+       // require(_selectedGem.owner == msg.sender, "Caller is not the owner");
         _selectedGem.forSale = !(_selectedGem.forSale);
 
         emit GemSelecting(
@@ -111,7 +111,7 @@ contract GemstoneSelecting {
 
         emit GemSelecting(_id, _selectedGem.minedGemId, _selectedGem.size, _selectedGem.carat,  _selectedGem.color, _selectedGem.gemType, true,_selectedGem.fileURL, _selectedGem.price, _selectedGem.used, msg.sender);
     }
-
+    
     function getSelectedGemsCountByOwner(address _owner) public view returns (uint) {
         uint count = 0;
         for (uint i = 1; i <= selectedGemCount; i++) {
@@ -121,4 +121,28 @@ contract GemstoneSelecting {
         }
         return count;
     }
+
+   function transferGemOwnership(uint _id) public {
+    SelectedGem storage _selectedGem = selectedGems[_id];
+    require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
+    require(_selectedGem.owner != msg.sender, "You already own this gem");
+
+    _selectedGem.owner = msg.sender;
+    _selectedGem.forSale = false;
+
+    emit GemSelecting(
+        _selectedGem.id,
+        _selectedGem.minedGemId,
+        _selectedGem.size,
+        _selectedGem.carat,
+        _selectedGem.color,
+        _selectedGem.gemType,
+        _selectedGem.forSale,
+        _selectedGem.fileURL,
+        _selectedGem.price,
+        _selectedGem.used,
+        _selectedGem.owner
+    );
+}
+
 }
