@@ -8819,12 +8819,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xBA6e7597AE47aD36d437caC06Eb98dd861b45b8e",
-      "transactionHash": "0xcc1499e19818801a297f01ac7c7e9fa494fd1e556126f7c3a5d10a1ff3eecd6e"
+      "address": "0xE7326B42340ECBC4C0d4b5E63501Bc261C2Ae367",
+      "transactionHash": "0xef48d4886e9feb3d06947387aee6df99497f419a1f48b5158d3006e3ac3b8cf5"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-07-14T20:32:01.264Z",
+  "updatedAt": "2024-07-15T08:35:46.392Z",
   "devdoc": {
     "methods": {}
   },

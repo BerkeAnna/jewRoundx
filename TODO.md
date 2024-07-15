@@ -256,3 +256,11 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.14. 22:41:
         - most mégjobb a login
+
+2024.07.015. 10.41:
+        - az árakat rendezni. Az összeghez adódjon hozzá a költség is, ami korábban volt. pl. egy minedgem bányászása 0.004 eth, és a követ 1 eth. Akkor a fizetendő 1.004 eth + ennek a gáza???
+        - gem cutter nem kell. Az ékszerész vágja. vagy kell egy ékkő piac is, nem csak mined gemes
+        - a jewelernek legyen meg az a hozzáfáráse mint a gemcutternek. De a gemcutter csak gemcutter.
+                - ha a jeweler megveszi a yners követ, akkor fel tudja dolgozni a követ. Átkerül nála a foly.lévő kövekhez. Abból tud ékszert csinálni. De ha nem kell neki a kő. AKkor legyen egy sell gomb, amivel eladásra tudja kínálni a követ. És akkor kikerül egy piacra. Ahol ékszerész meg tudja venni. És nála kerül be a foly.levo kövekhez.
+                -a minernek csak a miner funkciói lesznek.
+                

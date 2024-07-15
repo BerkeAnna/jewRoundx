@@ -78,6 +78,8 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td className="button-container">
             {selectedGem.polishing && !selectedGem.used ? (
               <>
+              <p>polishing: {selectedGem.polishing.toString()}</p>
+              <p>used: {selectedGem.used.toString()}</p>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
                   Details
                 </button>

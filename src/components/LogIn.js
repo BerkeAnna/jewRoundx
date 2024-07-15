@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
 import UserRegistry from '../abis/UserRegistry.json';
@@ -124,7 +124,11 @@ const LogIn = () => {
         const isAuthenticated = await authenticateUser(web3, accountAddress, passwordHash);
         setIsAuthenticated(isAuthenticated);
         if (isAuthenticated) {
-          navigate('/loggedIn', { state: { username: username, account: accountAddress } });
+          // Store user data in localStorage
+          localStorage.setItem('username', username);
+          localStorage.setItem('account', accountAddress);
+          localStorage.setItem('role', role);
+          navigate('/loggedIn', { state: { username: username, account: accountAddress, role: role } });
         } else {
           setErrorMessage("Invalid password. Please try again.");
         }
@@ -144,6 +148,10 @@ const LogIn = () => {
     setEnteredPassword('');
     setIsAuthenticated(false);
     setErrorMessage('');
+    // Clear user data from localStorage
+    localStorage.removeItem('username');
+    localStorage.removeItem('account');
+    localStorage.removeItem('role');
   };
 
   return (
