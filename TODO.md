@@ -263,4 +263,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         - a jewelernek legyen meg az a hozzáfáráse mint a gemcutternek. De a gemcutter csak gemcutter.
                 - ha a jeweler megveszi a yners követ, akkor fel tudja dolgozni a követ. Átkerül nála a foly.lévő kövekhez. Abból tud ékszert csinálni. De ha nem kell neki a kő. AKkor legyen egy sell gomb, amivel eladásra tudja kínálni a követ. És akkor kikerül egy piacra. Ahol ékszerész meg tudja venni. És nála kerül be a foly.levo kövekhez.
                 -a minernek csak a miner funkciói lesznek.
-                
+
+2024.07.15. 13:38:
+        -most a polishing is használva van. De nem ez kell. Meg kell fordítani, és aegy forsale legyen a polishing helyett
+        - ha itt van a listámban látszójon a : details, make jewelry, forsale. Ha a forsale-re kattintok, akkor kerüljön ki  a piacra. És nálam ne legyen ott utána csak a  : details, és remove from market. Akkor az előbbi állapotba kerül vissza a from market lenyomásával.
