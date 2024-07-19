@@ -6,7 +6,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-custom navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a className="navbar-brand text-white col-sm-3 col-md-2 mr-0" href="/loggedIn">
-          Mined gems
+          JewRx
         </a>
         <ul className='navbar-nav px-3 justify-content-center d-flex flex-row'>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
