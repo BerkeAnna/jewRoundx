@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
-import UserRegistry from '../abis/UserRegistry.json';
+import { firestore } from "../firebase";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { sha3 } from 'web3-utils';
 
 const LogIn = () => {
@@ -16,6 +17,10 @@ const LogIn = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [jewelryId, setJewelryId] = useState('');
+
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const ref = collection(firestore, "users");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,41 +43,6 @@ const LogIn = () => {
     return provider;
   };
 
-  const checkIfAccountExists = async (web3, userAddress) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = UserRegistry.networks[networkId];
-    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    return await contract.methods.isUserRegistered(userAddress).call();
-  };
-
-  const getUsername = async (web3, userAddress) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = UserRegistry.networks[networkId];
-    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    return await contract.methods.getUsername(userAddress).call();
-  };
-
-  const getUserRole = async (web3, userAddress) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = UserRegistry.networks[networkId];
-    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    return await contract.methods.getUserRole(userAddress).call();
-  };
-
-  const registerUser = async (web3, userAddress, username, role, passwordHash) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = UserRegistry.networks[networkId];
-    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    await contract.methods.registerUser(username, role, passwordHash).send({ from: userAddress });
-  };
-
-  const authenticateUser = async (web3, userAddress, passwordHash) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = UserRegistry.networks[networkId];
-    const contract = new web3.eth.Contract(UserRegistry.abi, deployedNetwork && deployedNetwork.address);
-    return await contract.methods.authenticateUser(userAddress, passwordHash).call();
-  };
-
   const onConnect = async () => {
     try {
       const currentProvider = detectCurrentProvider();
@@ -81,32 +51,47 @@ const LogIn = () => {
         const web3 = new Web3(currentProvider);
         const userAccounts = await web3.eth.getAccounts();
         setAccountAddress(userAccounts[0]);
-        const accountExists = await checkIfAccountExists(web3, userAccounts[0]);
-        if (accountExists) {
-          const username = await getUsername(web3, userAccounts[0]);
-          const userRole = await getUserRole(web3, userAccounts[0]);
-          setUsername(username);
-          setRole(userRole);
+
+        // Check if account exists in Firestore
+        const q = query(ref, where("address", "==", userAccounts[0]));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          setUsername(userData.user);
+          setRole(userData.role);
+          setHasAccount(true);
+        } else {
+          setHasAccount(false);
         }
-        setHasAccount(accountExists);
+
         setIsConnected(true);
       }
     } catch (err) {
-      console.log(err);
+      console.log("MetaMask connection error:", err);
+      setErrorMessage("MetaMask connection error. Please try again.");
     }
   };
 
   const onRegister = async () => {
     try {
-      const currentProvider = detectCurrentProvider();
-      if (currentProvider) {
-        const web3 = new Web3(currentProvider);
-        const passwordHash = sha3(password);
-        await registerUser(web3, accountAddress, username, role, passwordHash);
-        setHasAccount(true);
-      }
+      const username = usernameRef.current.value;
+      const password = passwordRef.current.value;
+      const passwordHash = sha3(password);
+
+      const data = {
+        user: username,
+        password: passwordHash,
+        address: accountAddress,
+        role: role
+      };
+
+      await addDoc(ref, data);
+      setHasAccount(true);
+      console.log("User successfully added!");
     } catch (err) {
-      console.log(err);
+      console.log("Error adding user: ", err);
+      setErrorMessage("Error adding user. Please try again.");
     }
   };
 
@@ -117,13 +102,16 @@ const LogIn = () => {
     }
 
     try {
-      const currentProvider = detectCurrentProvider();
-      if (currentProvider) {
-        const web3 = new Web3(currentProvider);
-        const passwordHash = sha3(enteredPassword);
-        const isAuthenticated = await authenticateUser(web3, accountAddress, passwordHash);
-        setIsAuthenticated(isAuthenticated);
-        if (isAuthenticated) {
+      const passwordHash = sha3(enteredPassword);
+
+      // Retrieve user data from Firestore
+      const q = query(ref, where("address", "==", accountAddress));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        if (userData.password === passwordHash) {
+          setIsAuthenticated(true);
           // Store user data in localStorage
           localStorage.setItem('username', username);
           localStorage.setItem('account', accountAddress);
@@ -132,9 +120,12 @@ const LogIn = () => {
         } else {
           setErrorMessage("Invalid password. Please try again.");
         }
+      } else {
+        setErrorMessage("User not found. Please register.");
       }
     } catch (err) {
-      console.log(err);
+      console.log("Authentication error:", err);
+      setErrorMessage("Authentication error. Please try again.");
     }
   };
 
@@ -160,10 +151,10 @@ const LogIn = () => {
         {!isConnected ? (
           <div>
             <h1>Hi!</h1>
-            <h1>Connect with metamask!</h1>
+            <h1>Connect with MetaMask!</h1>
             <div className='dashboardButton'>
               <button type="submit" onClick={onConnect}>
-                login
+                Login
               </button>
             </div>
           </div>
@@ -181,7 +172,6 @@ const LogIn = () => {
                     value={enteredPassword} 
                     onChange={(e) => setEnteredPassword(e.target.value)} 
                   />
-                  
                 </div>
                 <div className='dashboardButton'>
                   <button type="submit" onClick={onAuthenticate}>
@@ -201,29 +191,27 @@ const LogIn = () => {
                   <input 
                     type="text" 
                     placeholder="Enter username" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
+                    ref={usernameRef} 
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <input 
                     type="password" 
                     placeholder="Enter password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
+                    ref={passwordRef} 
                   />
-                  <div>
-                    <select value={role} onChange={(e) => setRole(e.target.value)}>
-                      <option value="Miner">Miner</option>
-                      <option value="Gem cutter">Gem cutter</option>
-                      <option value="Jeweler">Jeweler</option>
-                    </select>
-                  </div>
-                  <div className='dashboardButton'>
-                    <button type="submit" onClick={onRegister}>
-                      Register
-                    </button>
-                  </div>
+                </div>
+                <div>
+                  <select value={role} onChange={(e) => setRole(e.target.value)}>
+                    <option value="Miner">Miner</option>
+                    <option value="Gem Cutter">Gem Cutter</option>
+                    <option value="Jeweler">Jeweler</option>
+                  </select>
+                </div>
+                <div className='dashboardButton'>
+                  <button type="submit" onClick={onRegister}>
+                    Register
+                  </button>
                 </div>
                 <div className='dashboardButton'>
                   <button type="submit" onClick={onDisconnect}>

@@ -22,8 +22,7 @@ const LoggedIn = () => {
 
   return (
     <div className='centered-content pt-5'>
-      {username !== '' && <h1>Hi {username}!</h1>}
-      <p>{role} this is the role</p>
+      
       
       {role === 'Miner' && (
         <div>
@@ -33,7 +32,7 @@ const LoggedIn = () => {
           <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
         </div>
       )}
-       {role === 'Gem cutter' && (
+       {role === 'Gem Cutter' && (
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
           <a href="/minedGemMarket"><div className='dashboardButton'><button>Mined Gem Market</button></div></a><br/>
@@ -50,7 +49,7 @@ const LoggedIn = () => {
           <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
         </div>
       )}
-      {role !== 'Miner' && role !== 'Jeweler' && role !== 'Gem cutter' &&  (
+      {role !== 'Miner' && role !== 'Jeweler' && role !== 'Gem Cutter' &&  (
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
           <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>

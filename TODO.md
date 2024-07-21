@@ -273,3 +273,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         - a piac kell hozzá és ok
         - ID-kat ellenőrizniiii!
         - 15:32: most átkön a sleectgemes gemmarketes tranz. de kér új dadatokat. ott valami nem jó! azt javítani. Ott cak át kellene venni és a forsalet mód
+
+2024.07.21. 9:42:
+        - előállítási hely kell a minedgemhez - mert lehet szintetikus
+        - a minedgemhez és a selectedgemhez legyen textarea, hogy lehessen részletesebb leírást is adni
