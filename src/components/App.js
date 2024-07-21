@@ -23,6 +23,7 @@ import JewMarket from './JewMarket';
 import LoggedIn from './LoggedIn';
 import Repair from './Repair';
 import LogIn from './LogIn';
+import ProtectedRoute from '../ProtectedRoute'; // Helyes import útvonal
 
 class App extends Component {
   async componentWillMount() {
@@ -55,14 +56,14 @@ class App extends Component {
     const networkData = GemstoneExtraction.networks[networkId];
     if (networkData) {
       const gemstroneExtraction = new web3.eth.Contract(GemstoneExtraction.abi, networkData.address);
-      this.setState({ gemstroneExtraction });
+      this.setState({ gemstroneExtraction }); // Állapot frissítése
       const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call();
       this.setState({ minedGemCount });
 
       let ownedMinedGemCount = 0;
       for (var i = 1; i <= minedGemCount; i++) {
         const minedGems = await gemstroneExtraction.methods.minedGems(i).call();
-        if(minedGems.owner === accounts[0]){
+        if (minedGems.owner === accounts[0]) {
           ownedMinedGemCount++;
         }
         this.setState({
@@ -71,9 +72,10 @@ class App extends Component {
       }
       this.setState({ ownedMinedGemCount, loading: false });
     } else {
-      window.alert('Gemstone contract not deployed to detected network. - own error');
+      window.alert('Gemstone contract not deployed to detected network.');
     }
-  }
+}
+
 
   async loadBlockchainData2() {
     const web3 = window.web3;
@@ -178,9 +180,13 @@ class App extends Component {
       selectedGems: [],
       jewelry: [],
       userInfo: null,
-      ownedJewelryCount: 0, // Hozzáadva
+      ownedJewelryCount: 0,
       isLoggedIn: false,
       loading: true,
+      gemstroneExtraction: null, // Hozzáadva
+      gemstroneSelecting: null, // Hozzáadva
+      makeJew: null, // Hozzáadva
+      userRegistry: null // Hozzáadva
     };
   
     this.gemMining = this.gemMining.bind(this);
@@ -194,7 +200,8 @@ class App extends Component {
     this.buyJewelry = this.buyJewelry.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
-  }
+}
+
   
 
   async refreshPage() {
@@ -203,24 +210,33 @@ class App extends Component {
 
   gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, purchased) {
     this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.gemMining(
-      gemType,
-      weight,
-      size,
-      price,
-      miningLocation,
-      miningYear,
-      fileUrl,
-      purchased
-    ).send({ from: this.state.account })
-      .once('receipt', (receipt) => {
-        this.loadBlockchainData();
-        this.loadBlockchainData2();
-        this.loadBlockchainData3();
-        this.loadBlockchainData4();
-        this.setState({ loading: false });
-      });
-  }
+    if (this.state.gemstroneExtraction) {
+      this.state.gemstroneExtraction.methods.gemMining(
+        gemType,
+        weight,
+        size,
+        price,
+        miningLocation,
+        miningYear,
+        fileUrl,
+        purchased
+      ).send({ from: this.state.account })
+        .once('receipt', (receipt) => {
+          this.loadBlockchainData();
+          this.loadBlockchainData2();
+          this.loadBlockchainData3();
+          this.loadBlockchainData4();
+          this.setState({ loading: false });
+        })
+        .catch(error => {
+          console.error("Error in gemMining: ", error);
+          this.setState({ loading: false });
+        });
+    } else {
+      console.error("gemstroneExtraction is not defined");
+    }
+}
+
 
   purchaseGem(id, price) {
     const gasLimit = 120000;
@@ -349,64 +365,105 @@ class App extends Component {
 
           <Routes>
             <Route path="/" element={<LogIn />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/loggedin" element={<LoggedIn account={this.state.account} />} />
-            <Route path="/repair" element={<Repair />} />
-            <Route path="/profile" element={<Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount } cuttedGemCount={this.state.cuttedGemCount} ownedMinedGemCount={this.state.ownedMinedGemCount } ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /*ide meg kellene adni a selectedGemCount={}*/ />} />
-
-            <Route path="/addMinedGem" element={<MinedGemForm gemMining={this.gemMining} />} />
-            <Route path="/minedGemMarket" element={<MinedGemMarket minedGems={this.state.minedGems}
-              selectedGems={this.state.selectedGems}
-              jewelry={this.state.jewelry}
-              gemMining={this.gemMining}
-              gemSelecting={this.gemSelecting}
-              purchaseGem={this.purchaseGem}
-              processingGem={this.processingGem}
-              markGemAsSelected={this.markGemAsSelected}
-              markGemAsUsed={this.markGemAsUsed}
-              account={this.state.account}
-              sellGem={this.sellGem}
-              polishGem={this.polishGem} />} />
-            <Route path="/gemMarket" element={<GemMarket minedGems={this.state.minedGems}
-              selectedGems={this.state.selectedGems}
-              jewelry={this.state.jewelry}
-              gemMining={this.gemMining}
-              gemSelecting={this.gemSelecting}
-              purchaseGem={this.purchaseGem}
-              processingGem={this.processingGem}
-              markGemAsSelected={this.markGemAsSelected}
-              markGemAsUsed={this.markGemAsUsed}
-              account={this.state.account}
-              sellGem={this.sellGem}
-              polishGem={this.polishGem} 
-              transferGemOwnership={this.transferGemOwnership}/>} />
-            <Route path="/jewMarket" element={<JewMarket jewelry={this.state.jewelry}
-              account={this.state.account}
-              buyJewelry={(id, price) => this.buyJewelry(id, price)} />} />
-            <Route path="/ownMinedGems" element={<OwnedByUser minedGems={this.state.minedGems}
-              selectedGems={this.state.selectedGems}
-              jewelry={this.state.jewelry}
-              gemMining={this.gemMining}
-              gemSelecting={this.gemSelecting}
-              purchaseGem={this.purchaseGem}
-              processingGem={this.processingGem}
-              markGemAsSelected={this.markGemAsSelected}
-              markGemAsUsed={this.markGemAsUsed}
-              account={this.state.account}
-              sellGem={this.sellGem}
-              polishGem={this.polishGem} />} />
-            <Route path="/gem-select/:id" element={<GemSelectingForm gemSelecting={this.gemSelecting} />} />
-            <Route path="/gem-details/:id" element={<GemDetails selectedGems={this.state.selectedGems}
-              minedGems={this.state.minedGems}
-              gemSelecting={this.gemSelecting}
-              account={this.state.account} />} />
-            <Route path="/jew-details/:id" element={<JewDetails selectedGems={this.state.selectedGems}
-              minedGems={this.state.minedGems}
-              jewelry={this.state.jewelry}
-              gemSelecting={this.gemSelecting}
-              account={this.state.account} />} />
-            <Route path="/jewelry-making/gem/:id" element={<JewelryForm jewelryMaking={this.jewelryMaking}
-              markGemAsUsed={this.markGemAsUsed} />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/loggedin" element={<ProtectedRoute><LoggedIn account={this.state.account} /></ProtectedRoute>} />
+            <Route path="/repair" element={<ProtectedRoute><Repair /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount} cuttedGemCount={this.state.cuttedGemCount} ownedMinedGemCount={this.state.ownedMinedGemCount} ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /></ProtectedRoute>} />
+            <Route path="/addMinedGem" element={<ProtectedRoute><MinedGemForm gemMining={this.gemMining} /></ProtectedRoute>} />
+            <Route path="/minedGemMarket" element={
+              <ProtectedRoute>
+                <MinedGemMarket 
+                  minedGems={this.state.minedGems}
+                  selectedGems={this.state.selectedGems}
+                  jewelry={this.state.jewelry}
+                  gemMining={this.gemMining}
+                  gemSelecting={this.gemSelecting}
+                  purchaseGem={this.purchaseGem}
+                  processingGem={this.processingGem}
+                  markGemAsSelected={this.markGemAsSelected}
+                  markGemAsUsed={this.markGemAsUsed}
+                  account={this.state.account}
+                  sellGem={this.sellGem}
+                  polishGem={this.polishGem}
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/gemMarket" element={
+              <ProtectedRoute>
+                <GemMarket 
+                  minedGems={this.state.minedGems}
+                  selectedGems={this.state.selectedGems}
+                  jewelry={this.state.jewelry}
+                  gemMining={this.gemMining}
+                  gemSelecting={this.gemSelecting}
+                  purchaseGem={this.purchaseGem}
+                  processingGem={this.processingGem}
+                  markGemAsSelected={this.markGemAsSelected}
+                  markGemAsUsed={this.markGemAsUsed}
+                  account={this.state.account}
+                  sellGem={this.sellGem}
+                  polishGem={this.polishGem} 
+                  transferGemOwnership={this.transferGemOwnership}
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/jewMarket" element={
+              <ProtectedRoute>
+                <JewMarket 
+                  jewelry={this.state.jewelry}
+                  account={this.state.account}
+                  buyJewelry={(id, price) => this.buyJewelry(id, price)} 
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/ownMinedGems" element={
+              <ProtectedRoute>
+                <OwnedByUser 
+                  minedGems={this.state.minedGems}
+                  selectedGems={this.state.selectedGems}
+                  jewelry={this.state.jewelry}
+                  gemMining={this.gemMining}
+                  gemSelecting={this.gemSelecting}
+                  purchaseGem={this.purchaseGem}
+                  processingGem={this.processingGem}
+                  markGemAsSelected={this.markGemAsSelected}
+                  markGemAsUsed={this.markGemAsUsed}
+                  account={this.state.account}
+                  sellGem={this.sellGem}
+                  polishGem={this.polishGem} 
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/gem-select/:id" element={<ProtectedRoute><GemSelectingForm gemSelecting={this.gemSelecting} /></ProtectedRoute>} />
+            <Route path="/gem-details/:id" element={
+              <ProtectedRoute>
+                <GemDetails 
+                  selectedGems={this.state.selectedGems}
+                  minedGems={this.state.minedGems}
+                  gemSelecting={this.gemSelecting}
+                  account={this.state.account} 
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/jew-details/:id" element={
+              <ProtectedRoute>
+                <JewDetails 
+                  selectedGems={this.state.selectedGems}
+                  minedGems={this.state.minedGems}
+                  jewelry={this.state.jewelry}
+                  gemSelecting={this.gemSelecting}
+                  account={this.state.account} 
+                />
+              </ProtectedRoute>
+            } />
+            <Route path="/jewelry-making/gem/:id" element={
+              <ProtectedRoute>
+                <JewelryForm 
+                  jewelryMaking={this.jewelryMaking}
+                  markGemAsUsed={this.markGemAsUsed} 
+                />
+              </ProtectedRoute>
+            } />
           </Routes>
         </Router>
       </div>

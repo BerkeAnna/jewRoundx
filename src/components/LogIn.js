@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
-import { firestore } from "../firebase";
+import { firestore, auth } from "../firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { sha3 } from 'web3-utils';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
 const LogIn = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -75,15 +76,18 @@ const LogIn = () => {
 
   const onRegister = async () => {
     try {
-      const username = usernameRef.current.value;
+      const email = usernameRef.current.value;
       const password = passwordRef.current.value;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const passwordHash = sha3(password);
+      const user = userCredential.user;
 
       const data = {
-        user: username,
+        user: email,
         password: passwordHash,
         address: accountAddress,
-        role: role
+        role: role,
+        uid: user.uid
       };
 
       await addDoc(ref, data);
@@ -100,26 +104,30 @@ const LogIn = () => {
       setErrorMessage("Invalid password. Please try again.");
       return;
     }
-
+  
     try {
-      const passwordHash = sha3(enteredPassword);
-
+      const email = username;
+      const userCredential = await signInWithEmailAndPassword(auth, email, enteredPassword);
+      const user = userCredential.user;
+  
+      // Generálj egy ID tokent a Firebase Authentication-től
+      const token = await user.getIdToken();
+  
       // Retrieve user data from Firestore
-      const q = query(ref, where("address", "==", accountAddress));
+      const q = query(ref, where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
-
+  
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
-        if (userData.password === passwordHash) {
-          setIsAuthenticated(true);
-          // Store user data in localStorage
-          localStorage.setItem('username', username);
-          localStorage.setItem('account', accountAddress);
-          localStorage.setItem('role', role);
-          navigate('/loggedIn', { state: { username: username, account: accountAddress, role: role } });
-        } else {
-          setErrorMessage("Invalid password. Please try again.");
-        }
+        setIsAuthenticated(true);
+  
+        // Store user data and token in localStorage
+        localStorage.setItem('username', username);
+        localStorage.setItem('account', accountAddress);
+        localStorage.setItem('role', role);
+        localStorage.setItem('token', token);
+  
+        navigate('/loggedIn', { state: { username: username, account: accountAddress, role: role } });
       } else {
         setErrorMessage("User not found. Please register.");
       }
@@ -128,6 +136,31 @@ const LogIn = () => {
       setErrorMessage("Authentication error. Please try again.");
     }
   };
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Ellenőrizd a token érvényességét a szerveren (ha van ilyen végpontod)
+        const response = await fetch('/api/validateToken', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+  
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem('token');
+        }
+      }
+    };
+  
+    checkToken();
+  }, []);
+  
 
   const onDisconnect = async () => {
     setIsConnected(false);
@@ -143,7 +176,9 @@ const LogIn = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('account');
     localStorage.removeItem('role');
+    localStorage.removeItem('token');
   };
+  
 
   return (
     <div className='centered-content pt-5'>
@@ -190,7 +225,7 @@ const LogIn = () => {
                 <div>
                   <input 
                     type="text" 
-                    placeholder="Enter username" 
+                    placeholder="Enter email" 
                     ref={usernameRef} 
                   />
                 </div>
