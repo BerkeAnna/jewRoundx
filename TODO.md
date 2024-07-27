@@ -277,3 +277,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.07.21. 9:42:
         - előállítási hely kell a minedgemhez - mert lehet szintetikus
         - a minedgemhez és a selectedgemhez legyen textarea, hogy lehessen részletesebb leírást is adni
+
+2024.07.27. 22:58:
+        - 20240727-AE --- ez az új ganache workspace
