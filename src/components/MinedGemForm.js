@@ -22,7 +22,6 @@ function MinedGemForm(props) {
           headers: {
             'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
             'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-            // "Content-Type": "multipart/form-data", // Ez nem szükséges, az axios kezeli
           },
         });
 
@@ -33,21 +32,25 @@ function MinedGemForm(props) {
       }
     }
 
-    // Itt már rendelkezésre áll a fileUrl, így hozzáadhatjuk a formData-hoz
-    formData.append('fileUrl', fileUrl);
-
-    const gemType = formData.get('gemType');
+    const gemType = formData.get('gemType').toString();
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
-    const weight = formData.get('weight');
-    const size = formData.get('size');
-    const miningLocation = formData.get('miningLocation');
-    const miningYear = formData.get('miningYear');
+    const weight = formData.get('weight').toString();
+    const depth = formData.get('depth').toString();
+    const height = formData.get('height').toString();
+    const width = formData.get('width').toString();
+    const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
+    const miningLocation = formData.get('miningLocation').toString();
+    const miningYear = formData.get('miningYear').toString();
 
-    // A props.gemMining vagy egy másik API hívás itt jönne, ami elküldi a formData összes adatát
-    console.log(gemType, price, weight, size, miningLocation, miningYear, fileUrl);
-    // Ezt a részt igazítsd a saját logikádhoz
-    // props.gemMining(gemType, price, weight, size, miningLocation, miningYear, fileUrl);
-    props.gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, false);
+    try {
+      // Wait for the MetaMask transaction to complete
+      await props.gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, false);
+
+      // After the transaction is confirmed, navigate to the desired page
+    } catch (error) {
+      console.error("Error in gemMining: ", error);
+    }
+    navigate('/loggedIn');
   };
 
   return (
@@ -61,7 +64,7 @@ function MinedGemForm(props) {
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
       marginTop: '60px' // Added marginTop for additional space
     }}>
-      <h1>Add Product</h1>
+      <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group mr-sm-2">
           <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Type" required />
@@ -73,7 +76,13 @@ function MinedGemForm(props) {
           <input id="weight" name="weight" type="text" className="form-control" placeholder="Weight" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input id="size" name="size" type="text" className="form-control" placeholder="Size" required />
+          <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth" required />
+        </div>
+        <div className="form-group mr-sm-2">
+          <input id="height" name="height" type="text" className="form-control" placeholder="Height" required />
+        </div>
+        <div className="form-group mr-sm-2">
+          <input id="width" name="width" type="text" className="form-control" placeholder="Width" required />
         </div>
         <div className="form-group mr-sm-2">
           <input id="miningLocation" name="miningLocation" type="text" className="form-control" placeholder="Mining Location" required />
@@ -82,13 +91,9 @@ function MinedGemForm(props) {
           <input id="miningYear" name="miningYear" type="text" className="form-control" placeholder="Mining Year" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input
-            type="file"
-            ref={fileInputRef} // Use the ref here for file input
-            className="form-control"
-          />
+          <input type="file" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" className="custom-button btn btn-primary">Add Product</button>
+        <button type="submit" className="custom-button btn btn-primary">Add Mined Gem</button>
       </form>
     </div>
   );

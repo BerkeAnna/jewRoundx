@@ -5516,12 +5516,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xFc3dc911Ba653aD79Cb47c927803074c14Fe1aDB",
-      "transactionHash": "0xbffb0e4f211b94f0ab822912581a34d3c5e2ade71c7d69760e4625904cae0709"
+      "address": "0x55677E2534EC552379b73e0CDCaDC33921076d6f",
+      "transactionHash": "0x73bf23ba2959a477e4e95e902d573ca4061008ae01933e51466664de31f878bb"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-07-29T07:42:12.140Z",
+  "updatedAt": "2024-07-29T08:12:53.648Z",
   "devdoc": {
     "methods": {}
   },

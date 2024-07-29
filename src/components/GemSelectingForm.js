@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,7 +10,6 @@ function GemSelectingForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Assuming the form fields are similar to MinedGemForm and included in the form
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
 
@@ -34,40 +33,31 @@ function GemSelectingForm(props) {
       }
     }
 
-    // Here you can include additional logic to handle the form submission,
-    // such as sending the data to your backend or blockchain.
-    // Make sure to include the `fileUrl` if needed.
-    
-    // Example of accessing form data:
-    // const gemType = formData.get('gemType');
-    // You would then pass these values to your API or smart contract interaction logic.
-    
-    console.log("Form data: Size:", formData.get('size')); // Ellenőrizd, hogy ez nem null vagy üres string
-
-
-
-    formData.append('fileUrl', fileUrl);
-
-    console.log("file url:::::", fileUrl)
-
-    const minedGemId = id; 
     const gemType = formData.get('gemType').toString();
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
-    const size = formData.get('size').toString(); // Biztosítja, hogy a méret szövegként legyen átalakítva
-
-    const carat = formData.get('carat');
+    const depth = formData.get('depth').toString();
+    const height = formData.get('height').toString();
+    const width = formData.get('width').toString();
+    const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
+    const carat = formData.get('carat').toString();
     const color = formData.get('color').toString();
-    const grinding = formData.get('grinding');
-    console.log(minedGemId)
-   // const minedGemId = 1
-   if (!size) {
-    console.error("Size is required.");
-    return; // Megakadályozza a további végrehajtást, ha a méret nincs megadva
-  }
-  props.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price);
-    // After submission logic, you might want to navigate the user to another route or show a success message.
-  };
+    const grinding = formData.get('grinding').toString();
 
+    if (!size) {
+      console.error("Size is required.");
+      return; // Prevent further execution if the size is not provided
+    }
+
+    const minedGemId = parseInt(id, 10);
+
+    try {
+      await props.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price);
+      // After submission logic, you might want to navigate the user to another route or show a success message.
+      navigate('/loggedIn');
+    } catch (error) {
+      console.error("Error in gemSelecting: ", error);
+    }
+  };
 
   return (
     <div className="card" style={{ 
@@ -80,22 +70,28 @@ function GemSelectingForm(props) {
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
       marginTop: '60px' // Added marginTop for additional space
     }}>
-      <h1>Add Product</h1>
+      <h1>Select Gem</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group mr-sm-2">
-          <input id="size" name="size" type="text" className="form-control" placeholder="size" required />
+          <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input id="carat" name="carat" type="text" className="form-control" placeholder="carat" required />
+          <input id="height" name="height" type="text" className="form-control" placeholder="Height" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input id="color" name="color" type="text" className="form-control" placeholder="color" required />
+          <input id="width" name="width" type="text" className="form-control" placeholder="Width" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input id="gemType" name="gemType" type="text" className="form-control" placeholder="gemType" required />
+          <input id="carat" name="carat" type="text" className="form-control" placeholder="Carat" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input id="grinding" name="grinding" type="text" className="form-control" placeholder="grinding" required />
+          <input id="color" name="color" type="text" className="form-control" placeholder="Color" required />
+        </div>
+        <div className="form-group mr-sm-2">
+          <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Gem Type" required />
+        </div>
+        <div className="form-group mr-sm-2">
+          <input id="grinding" name="grinding" type="text" className="form-control" placeholder="Grinding" required />
         </div>
         <div className="form-group mr-sm-2">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
@@ -103,7 +99,7 @@ function GemSelectingForm(props) {
         <div className="form-group mr-sm-2">
           <input type="file" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" className="custom-button btn btn-primary">Add Product</button>
+        <button type="submit" className="custom-button btn btn-primary">Select Gem</button>
       </form>
     </div>
   );
