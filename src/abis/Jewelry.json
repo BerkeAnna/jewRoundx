@@ -8169,12 +8169,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x81F72BF7A6EeB5f6ee0395eEB3A9512Cde37161E",
-      "transactionHash": "0x3bbb7fe210e3fca2bb14cdc9eea03ec3799d6f10674b72e955362fbf2982d0ed"
+      "address": "0x31578A489F23a0Dd0F25B55c65503d3d70530CB2",
+      "transactionHash": "0xbfe5c2979b013ee56c4e68ea3ab73c8bba8c78e03327d7de307f7e0bc20ae1e5"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-07-27T20:53:59.117Z",
+  "updatedAt": "2024-07-28T07:13:35.393Z",
   "devdoc": {
     "methods": {}
   },

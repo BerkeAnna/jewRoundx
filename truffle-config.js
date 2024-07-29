@@ -4,7 +4,7 @@ module.exports = {
   networks: {
     development: {
       host: "172.26.0.1",
-      port: 7548,
+      port: 7549,
       network_id: "*"
     },
     loc_development_development: {

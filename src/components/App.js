@@ -37,8 +37,13 @@ class App extends Component {
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      this.setState({ account: (await window.web3.eth.getAccounts())[0], isLoggedIn: true });
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        this.setState({ account: (await window.web3.eth.getAccounts())[0], isLoggedIn: true });
+      } catch (error) {
+        console.error("Error in loadWeb3: ", error);
+        window.alert('Error in accessing MetaMask account.');
+      }
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
       this.setState({ account: (await window.web3.eth.getAccounts())[0], isLoggedIn: true });
@@ -46,20 +51,22 @@ class App extends Component {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
   }
+  
 
   async loadBlockchainData() {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] });
-
+  
     const networkId = await web3.eth.net.getId();
+    console.log('Network ID:', networkId);
     const networkData = GemstoneExtraction.networks[networkId];
     if (networkData) {
       const gemstroneExtraction = new web3.eth.Contract(GemstoneExtraction.abi, networkData.address);
-      this.setState({ gemstroneExtraction }); // Állapot frissítése
+      this.setState({ gemstroneExtraction });
       const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call();
       this.setState({ minedGemCount });
-
+  
       let ownedMinedGemCount = 0;
       for (var i = 1; i <= minedGemCount; i++) {
         const minedGems = await gemstroneExtraction.methods.minedGems(i).call();
@@ -74,8 +81,8 @@ class App extends Component {
     } else {
       window.alert('Gemstone contract not deployed to detected network.');
     }
-}
-
+  }
+  
 
   async loadBlockchainData2() {
     const web3 = window.web3;
@@ -222,20 +229,23 @@ class App extends Component {
         purchased
       ).send({ from: this.state.account })
         .once('receipt', (receipt) => {
+          console.log('Receipt:', receipt);
           this.loadBlockchainData();
           this.loadBlockchainData2();
           this.loadBlockchainData3();
           this.loadBlockchainData4();
           this.setState({ loading: false });
         })
-        .catch(error => {
+        .on('error', (error) => {
           console.error("Error in gemMining: ", error);
           this.setState({ loading: false });
         });
     } else {
       console.error("gemstroneExtraction is not defined");
+      this.setState({ loading: false });
     }
-}
+  }
+  
 
 
   purchaseGem(id, price) {
