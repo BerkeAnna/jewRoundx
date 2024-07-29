@@ -96,9 +96,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
         <p><strong>Metal:</strong> {jewelry.metal}</p>
-        <p><strong>Depth:</strong> {jewelry.depth.toString()} mm</p>
-        <p><strong>Height:</strong> {jewelry.height.toString()} mm</p>
-        <p><strong>Width:</strong> {jewelry.width.toString()} mm</p>
+        <p><strong>Size:</strong> {jewelry.size.toString()} mm</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>

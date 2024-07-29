@@ -280,3 +280,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.27. 22:58:
         - 20240727-AE --- ez az új ganache workspace
+
+2024.07.29. 9:58: 
+        - Size: 1x1x1 mm in jewelry details

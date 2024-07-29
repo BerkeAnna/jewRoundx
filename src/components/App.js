@@ -335,11 +335,11 @@ class App extends Component {
   }
 
 
-  jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileURL) {
+  jewelryMaking(name, gemId, metal, size, sale, price, fileURL) {  // size instead of depth, height, and width
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({ loading: true });
-    this.state.makeJew.methods.jewelryMaking(name, gemId, metal, depth, height, width, sale, price, fileURL).send({ from: this.state.account })
+    this.state.makeJew.methods.jewelryMaking(name, gemId, metal, size, sale, price, fileURL).send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       })
@@ -347,7 +347,8 @@ class App extends Component {
         console.error("Hiba történt a jewelryMaking függvényben: ", error);
         this.setState({ loading: false });
       });
-  }
+}
+
 
   async buyJewelry(id, price) {
     const gasLimit = 100000;
