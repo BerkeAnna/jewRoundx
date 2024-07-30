@@ -100,19 +100,20 @@ class App extends Component {
       let cuttedGemCount = 0;
 
       for (var i = 1; i <= selectedGemCount; i++) {
-        const selectedGems = await gemstroneSelecting.methods.selectedGems(i).call();
-        if(selectedGems.owner === accounts[0] ){
+        const selectedGem = await gemstroneSelecting.methods.getSelectedGem(i).call();
+        if (selectedGem.owner === accounts[0]) {
           cuttedGemCount++;
         }
         this.setState({
-          selectedGems: [...this.state.selectedGems, selectedGems]
+          selectedGems: [...this.state.selectedGems, selectedGem]
         });
       }
       this.setState({ cuttedGemCount, loading: false });
     } else {
       window.alert('Gemstone selecting contract not deployed to detected network. - own error');
     }
-  }
+}
+
 
   async loadBlockchainData3() {
     const web3 = window.web3;
@@ -207,6 +208,7 @@ class App extends Component {
     this.buyJewelry = this.buyJewelry.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
+    this.updateGem = this.updateGem.bind(this);  // Bind the updateGem method
 }
 
   
@@ -296,12 +298,12 @@ class App extends Component {
       });
   }
 
-  gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price) {
+  gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({ loading: true });
 
-    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price).send({ from: this.state.account })
+    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price).send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       })
@@ -309,7 +311,8 @@ class App extends Component {
         console.error("Error in gemSelecting: ", error);
         this.setState({ loading: false });
       });
-  }
+}
+
 
   polishGem(id) {
     const gasLimit = 90000;
@@ -349,6 +352,23 @@ class App extends Component {
       });
 }
 
+updateGem(jewelryId, newGemId) {
+  const gasLimit = 90000;
+  const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+  this.setState({ loading: true });
+
+  this.state.makeJew.methods.updateGem(jewelryId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false });
+      this.loadBlockchainData3(); // Reload data to reflect the change
+    })
+    .catch(error => {
+      console.error("Error in updateGem: ", error);
+      this.setState({ loading: false });
+    });
+}
+
+
 
   async buyJewelry(id, price) {
     const gasLimit = 100000;
@@ -375,6 +395,7 @@ class App extends Component {
           {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
 
           <Routes>
+            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} /></ProtectedRoute>} />
             <Route path="/" element={<LogIn />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/loggedin" element={<ProtectedRoute><LoggedIn account={this.state.account} /></ProtectedRoute>} />

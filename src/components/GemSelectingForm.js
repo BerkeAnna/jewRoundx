@@ -33,15 +33,15 @@ function GemSelectingForm(props) {
       }
     }
 
+    const color = formData.get('color').toString();
     const gemType = formData.get('gemType').toString();
+    const colorGemType = `${color} ${gemType}`; // Combine color and gem type
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
     const carat = formData.get('carat').toString();
-    const color = formData.get('color').toString();
-    const grinding = formData.get('grinding').toString();
 
     if (!size) {
       console.error("Size is required.");
@@ -51,8 +51,7 @@ function GemSelectingForm(props) {
     const minedGemId = parseInt(id, 10);
 
     try {
-      await props.gemSelecting(minedGemId, size, carat, color, gemType, grinding, fileUrl, price);
-      // After submission logic, you might want to navigate the user to another route or show a success message.
+      await props.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price);
       navigate('/loggedIn');
     } catch (error) {
       console.error("Error in gemSelecting: ", error);
@@ -89,9 +88,6 @@ function GemSelectingForm(props) {
         </div>
         <div className="form-group mr-sm-2">
           <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Gem Type" required />
-        </div>
-        <div className="form-group mr-sm-2">
-          <input id="grinding" name="grinding" type="text" className="form-control" placeholder="Grinding" required />
         </div>
         <div className="form-group mr-sm-2">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />

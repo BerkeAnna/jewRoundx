@@ -1,4 +1,5 @@
 pragma solidity >=0.4.21 <0.6.0;
+
 import "./GemstoneExtraction.sol";
 
 interface IGemstoneExtraction {
@@ -7,22 +8,26 @@ interface IGemstoneExtraction {
 
 contract GemstoneSelecting {
     uint public selectedGemCount = 0;
-    mapping (uint => SelectedGem) public selectedGems;
+    mapping (uint => SelectedGem) private selectedGems;
     IGemstoneExtraction gemstoneExtraction;
     mapping(uint => bool) public selectedMinedGems;
+
+    struct GemDetails {
+        string size;
+        uint carat;
+        string colorGemType; // Combined color and gem type
+    }
 
     struct SelectedGem {
         uint id;
         uint minedGemId;
-        string size;
-        uint carat;
-        string color;
-        string gemType;
+        GemDetails details;
         bool forSale;
         string fileURL;
         uint price;
         bool used;
         address owner;
+        address gemCutter;
     }
 
     event GemSelecting(
@@ -30,13 +35,13 @@ contract GemstoneSelecting {
         uint minedGemId,
         string size,
         uint carat,
-        string color,
-        string gemType,
+        string colorGemType, // Combined color and gem type
         bool forSale,
         string fileURL,
         uint price,
         bool used,
-        address owner
+        address owner,
+        address gemCutter
     );
 
     constructor(address _gemstoneExtractionAddress) public {
@@ -47,59 +52,57 @@ contract GemstoneSelecting {
         uint _minedGemId,
         string memory _size,
         uint _carat,
-        string memory _color,
-        string memory _gemtype,
-        bool _forSale,
+        string memory _colorGemType, // Combined color and gem type
         string memory _fileURL,
         uint _price
     ) public {
         selectedGemCount++;
-        selectedGems[_minedGemId] = SelectedGem(
-            _minedGemId,
-            _minedGemId,
-            _size,
-            _carat,
-            _color,
-            _gemtype,
-            false,
-            _fileURL,
-            _price,
-            false,
-            msg.sender
-        );
+        SelectedGem storage gem = selectedGems[_minedGemId];
+        gem.id = _minedGemId;
+        gem.minedGemId = _minedGemId;
+        gem.details = GemDetails({
+            size: _size,
+            carat: _carat,
+            colorGemType: _colorGemType // Combined color and gem type
+        });
+        gem.forSale = false;
+        gem.fileURL = _fileURL;
+        gem.price = _price;
+        gem.used = false;
+        gem.owner = msg.sender;
+        gem.gemCutter = msg.sender;
 
         emit GemSelecting(
-            _minedGemId,
-            _minedGemId,
-            _size,
-            _carat,
-            _color,
-            _gemtype,
-            false,
-            _fileURL,
-            _price,
-            false,
-            msg.sender
+            gem.id,
+            gem.minedGemId,
+            gem.details.size,
+            gem.details.carat,
+            gem.details.colorGemType, // Combined color and gem type
+            gem.forSale,
+            gem.fileURL,
+            gem.price,
+            gem.used,
+            gem.owner,
+            gem.gemCutter
         );
     }
 
     function polishGem(uint _id) public payable {
         SelectedGem storage _selectedGem = selectedGems[_id];
-       // require(_selectedGem.owner == msg.sender, "Caller is not the owner");
-        _selectedGem.forSale = !(_selectedGem.forSale);
+        _selectedGem.forSale = !_selectedGem.forSale;
 
         emit GemSelecting(
-            _selectedGem.id, 
-            _selectedGem.minedGemId, 
-            _selectedGem.size,
-            _selectedGem.carat, 
-            _selectedGem.color, 
-            _selectedGem.gemType, 
-            true, 
+            _selectedGem.id,
+            _selectedGem.minedGemId,
+            _selectedGem.details.size,
+            _selectedGem.details.carat,
+            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.forSale,
             _selectedGem.fileURL,
-            _selectedGem.price, 
-            false,
-            _selectedGem.owner
+            _selectedGem.price,
+            _selectedGem.used,
+            _selectedGem.owner,
+            _selectedGem.gemCutter
         );
     }
 
@@ -109,9 +112,21 @@ contract GemstoneSelecting {
         require(_selectedGem.used == false, "Gem already used");
         _selectedGem.used = true;
 
-        emit GemSelecting(_id, _selectedGem.minedGemId, _selectedGem.size, _selectedGem.carat,  _selectedGem.color, _selectedGem.gemType, true,_selectedGem.fileURL, _selectedGem.price, _selectedGem.used, msg.sender);
+        emit GemSelecting(
+            _id,
+            _selectedGem.minedGemId,
+            _selectedGem.details.size,
+            _selectedGem.details.carat,
+            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.forSale,
+            _selectedGem.fileURL,
+            _selectedGem.price,
+            _selectedGem.used,
+            _selectedGem.owner,
+            _selectedGem.gemCutter
+        );
     }
-    
+
     function getSelectedGemsCountByOwner(address _owner) public view returns (uint) {
         uint count = 0;
         for (uint i = 1; i <= selectedGemCount; i++) {
@@ -122,27 +137,56 @@ contract GemstoneSelecting {
         return count;
     }
 
-   function transferGemOwnership(uint _id) public {
-    SelectedGem storage _selectedGem = selectedGems[_id];
-    require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
-    require(_selectedGem.owner != msg.sender, "You already own this gem");
+    function transferGemOwnership(uint _id) public {
+        SelectedGem storage _selectedGem = selectedGems[_id];
+        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
+        require(_selectedGem.owner != msg.sender, "You already own this gem");
 
-    _selectedGem.owner = msg.sender;
-    _selectedGem.forSale = false;
+        _selectedGem.owner = msg.sender;
+        _selectedGem.forSale = false;
 
-    emit GemSelecting(
-        _selectedGem.id,
-        _selectedGem.minedGemId,
-        _selectedGem.size,
-        _selectedGem.carat,
-        _selectedGem.color,
-        _selectedGem.gemType,
-        _selectedGem.forSale,
-        _selectedGem.fileURL,
-        _selectedGem.price,
-        _selectedGem.used,
-        _selectedGem.owner
-    );
-}
+        emit GemSelecting(
+            _selectedGem.id,
+            _selectedGem.minedGemId,
+            _selectedGem.details.size,
+            _selectedGem.details.carat,
+            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.forSale,
+            _selectedGem.fileURL,
+            _selectedGem.price,
+            _selectedGem.used,
+            _selectedGem.owner,
+            _selectedGem.gemCutter
+        );
+    }
 
+    // Public getter for selectedGems
+    function getSelectedGem(uint _id) public view returns (
+        uint id,
+        uint minedGemId,
+        string memory size,
+        uint carat,
+        string memory colorGemType, // Combined color and gem type
+        bool forSale,
+        string memory fileURL,
+        uint price,
+        bool used,
+        address owner,
+        address gemCutter
+    ) {
+        SelectedGem storage gem = selectedGems[_id];
+        return (
+            gem.id,
+            gem.minedGemId,
+            gem.details.size,
+            gem.details.carat,
+            gem.details.colorGemType, // Combined color and gem type
+            gem.forSale,
+            gem.fileURL,
+            gem.price,
+            gem.used,
+            gem.owner,
+            gem.gemCutter
+        );
+    }
 }

@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
+function Repair({ selectedGems, updateGem }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-const Repair = ({ account }) => {
-  const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
-  const navigate = useNavigate(); // Hook használata az átirányításhoz
-
-  // Kezeljük az ID beviteli mező változásait
-  const handleChange = (e) => {
-    setJewelryId(e.target.value);
+  const handleRepair = (gemId) => {
+    updateGem(parseInt(id), gemId);
+    navigate(`/jew-details/${id}`);
   };
 
-  // Kezeljük a keresés gombra kattintást
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Megakadályozzuk az alapértelmezett űrlap beküldési viselkedését
-    navigate(`/jew-details/${jewelryId}`); // Átirányítjuk a felhasználót a megfelelő oldalra
+  const renderSelectedGems = () => {
+    return selectedGems.map((gem, key) => (
+      <tr key={key}>
+        <td>{gem.id.toString()}</td>
+        <td>{gem.size.toString()}</td>
+        <td>{gem.carat.toString()}</td>
+        <td>{gem.color}</td>
+        <td>{gem.gemType}</td>
+        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+        <td>
+          <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
+            Select
+          </button>
+        </td>
+      </tr>
+    ));
   };
 
   return (
-    <div className='pt-5'>
-      <h1>Repair page in process....</h1>
-     </div>
+    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+      <h1>Repair Jewelry</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Size</th>
+            <th>Carat</th>
+            <th>Color</th>
+            <th>Gem Type</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>{renderSelectedGems()}</tbody>
+      </table>
+    </div>
   );
-};
+}
 
 export default Repair;

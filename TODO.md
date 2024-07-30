@@ -283,3 +283,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.29. 9:58: 
         - Size: 1x1x1 mm in jewelry details
+
+2024.07.29. 10:26: 
+        - Size: everywhere

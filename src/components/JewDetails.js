@@ -31,12 +31,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
         <p><strong>ID:</strong> {gem.id.toString()}</p>
         <p><strong>Size:</strong> {gem.size.toString()} mm</p>
         <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
-        <p><strong>Color:</strong> {gem.color}</p>
-        <p><strong>Gem Type:</strong> {gem.gemType}</p>
+        <p><strong>Color and gem type:</strong> {gem.colorGemType}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Gem cutter:</strong> {gem.owner}</p>
+        <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
+        <p><strong>Owner:</strong> {gem.owner}</p>
       </div>
     ));
   };
@@ -105,6 +105,46 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
     ));
   };
 
+  const renderPreviousGems = () => {
+    return jewelryDetails.map((jewelry, key) => {
+      if (!jewelry.previousGemIds) return null; // Handle undefined previousGemIds
+      return jewelry.previousGemIds.map((gemId, subKey) => {
+        const previousGem = selectedGems.find(gem => gem.id === gemId);
+        if (!previousGem) return null;
+        
+        return (
+          <div key={`${key}-${subKey}`} className="card" style={{ 
+            marginBottom: '20px', 
+            padding: '10px', 
+            backgroundColor: '#FFF7F3', 
+            width: '80%', 
+            margin: 'auto', 
+            textAlign: 'center', 
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+          }}>
+            <h2>Previous Selected Gem Details</h2>
+            {previousGem.fileURL && (
+              <div>
+                <a href={previousGem.fileURL} target="_blank" rel="noopener noreferrer">
+                  <img src={previousGem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+                </a>
+              </div>
+            )}
+            <p><strong>ID:</strong> {previousGem.id.toString()}</p>
+            <p><strong>Size:</strong> {previousGem.size.toString()} mm</p>
+            <p><strong>Carat:</strong> {previousGem.carat.toString()} ct</p>
+            <p><strong>Color:</strong> {previousGem.color}</p>
+            <p><strong>Gem Type:</strong> {previousGem.gemType}</p>
+            <p><strong>forSale:</strong> {previousGem.forSale.toString()}</p>
+            <p><strong>Used:</strong> {previousGem.used.toString()}</p>
+            <p><strong>Price:</strong> {window.web3.utils.fromWei(previousGem.price.toString(), 'Ether')} Eth</p>
+            <p><strong>Gem cutter:</strong> {previousGem.owner}</p>
+          </div>
+        );
+      });
+    });
+  };
+
   return (
     <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
       <h1>Gem Details</h1>
@@ -116,6 +156,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
       </div>
       <div className="pt-5">
         {renderJewelry()}
+      </div>
+      <div className="pt-5">
+        {renderPreviousGems()}
       </div>
     </div>
   );

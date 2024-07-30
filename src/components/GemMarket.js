@@ -7,9 +7,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
 
   const handleMarkAsSelected = (gemId) => {
     transferGemOwnership(gemId);
-    navigate(`/gem-select/${gemId}`);
 };
-
 
   const renderGemsForSale = () => {
     return gemsForSale.map((gem, key) => (
@@ -19,7 +17,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
           <h5 className="card-title">{gem.gemType}</h5>
           <p className="card-text">Price: {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
           <p className="card-text">Owner: {gem.owner}</p>
-          <button className="btn btn-primary" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
+          <button className="btn btn-primary" onClick={() => handleMarkAsSelected(gem.id)}>
             Select Gem
           </button>
           <button

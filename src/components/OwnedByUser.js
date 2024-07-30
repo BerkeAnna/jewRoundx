@@ -117,12 +117,15 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     return ownedJewelry.map((jewelry, key) => (
       <tr key={key}>
         <th scope="row">{jewelry.id.toString()}</th>
-        <td>{jewelry.gemType}</td>
+        <td>{jewelry.name}</td>
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
         <td>{jewelry.owner}</td>
         <td className="button-container">
           <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
             Details
+          </button>
+          <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn btn-primary">
+            Repair
           </button>
         </td>
       </tr>
@@ -180,7 +183,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">??</th>
+            <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
             <th scope="col">*</th>
