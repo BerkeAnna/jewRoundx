@@ -286,3 +286,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.29. 10:26: 
         - Size: everywhere
+
+2024.07.30. 13:15
+        - maker and owner 
