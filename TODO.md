@@ -298,3 +298,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.09. 5:35
         csináltam egy clone-t win-re (D/suli/szakdoga/jewRoundX). A firebase-t még nem adtam hozzá, csak install volt. Még kellene a firebase.json. De elvileg működik winen is.
+
+2024.08.11. 12:19
+        most végigmegy az alap folyamat. A repair még hiányzik
