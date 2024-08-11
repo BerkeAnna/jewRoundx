@@ -289,3 +289,12 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.07.30. 13:15
         - maker and owner 
+
+2024.08.05. 8:07
+        function getLength() public view returns (uint256) {
+        return arr.length;
+    }
+    ilyet csinálni a prevGemhez. Hátha így le tudom kérni
+
+2024.08.09. 5:35
+        csináltam egy clone-t win-re (D/suli/szakdoga/jewRoundX). A firebase-t még nem adtam hozzá, csak install volt. Még kellene a firebase.json. De elvileg működik winen is.
