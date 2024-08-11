@@ -11,19 +11,15 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
-        
-        // Konvertálás int formátumba
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
-        console.log("Prev gems id (int): ", gemIdsAsInt);
-
         setPrevGemsArray(gemIdsAsInt);
-        console.log("Prev", gemIdsAsInt);
+
+        console.log("Prev gems id (int): ", gemIdsAsInt); // Konolra kiírjuk az ID-kat
       } catch (error) {
         console.error("Error fetching jewelry details: ", error);
       }
@@ -31,8 +27,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
     fetchJewelryDetails();
   }, [id, jewelryContract]);
+
   const renderSelectedGems = () => {
-    return gemSelected.map((gem, key) => (
+    // Szűrjük ki az összes követ, amelyek ID-ja szerepel a prevGemsArray tömbben
+    const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
+
+    return filteredSelectedGems.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
         padding: '10px', 
@@ -64,7 +64,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   const renderMinedGems = () => {
-    return minedGem.map((gem, key) => (
+    const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
+
+    return filteredMinedGems.map((gem, key) => (
       <div key={key} className="card" style={{ 
         marginBottom: '20px', 
         padding: '10px', 

@@ -301,3 +301,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.11. 12:19
         most végigmegy az alap folyamat. A repair még hiányzik
+
+2024.08.11. 13:33
+        most kilistázza a köveket, mindet ami a konzolos tömbben is szerepel
+        todo: szépíteni. 
+        repair során új képet hozzáadni
