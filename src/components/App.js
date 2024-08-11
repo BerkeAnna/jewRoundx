@@ -485,6 +485,7 @@ updateGem(jewelryId, newGemId) {
                   jewelry={this.state.jewelry}
                   gemSelecting={this.gemSelecting}
                   account={this.state.account} 
+                  jewelryContract={this.state.makeJew}
                 />
               </ProtectedRoute>
             } />

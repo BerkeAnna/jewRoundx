@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account }) {
+function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract  }) {
   const { id } = useParams();
   const gemId = id;
 
@@ -9,6 +9,28 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
   const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
+
+  const [prevGemsArray, setPrevGemsArray] = useState([]);
+  
+
+  useEffect(() => {
+    const fetchJewelryDetails = async () => {
+      try {
+        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        
+        // Konvertálás int formátumba
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
+        console.log("Prev gems id (int): ", gemIdsAsInt);
+
+        setPrevGemsArray(gemIdsAsInt);
+        console.log("Prev", gemIdsAsInt);
+      } catch (error) {
+        console.error("Error fetching jewelry details: ", error);
+      }
+    };
+
+    fetchJewelryDetails();
+  }, [id, jewelryContract]);
   const renderSelectedGems = () => {
     return gemSelected.map((gem, key) => (
       <div key={key} className="card" style={{ 
@@ -101,6 +123,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account }) {
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
+        <p><strong>asfad:</strong> {jewelry.previousGemIds}</p>
+     
       </div>
     ));
   };
