@@ -39,7 +39,8 @@ contract Jewelry {
     event JewelryBought(uint id, address payable newOwner);
     event GemUpdated(uint jewelryId, uint newGemId);
 
-    constructor() public {
+     constructor(address _gemstoneSelectingAddress) public {
+        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
     }
 
    function jewelryMaking(
@@ -54,7 +55,7 @@ contract Jewelry {
     jewelryCount++;
 
     // Initialize an array with one element, the provided gem ID
-    jewelry[jewelryCount].previousGemIds.push(_gemId);
+   
 
     jewelry[jewelryCount] = JewelryData(
         jewelryCount,
@@ -68,6 +69,7 @@ contract Jewelry {
         msg.sender,
         msg.sender
     );
+     jewelry[jewelryCount].previousGemIds.push(_gemId);
 
     emit JewelryMaking(
         jewelryCount,
