@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract  }) {
+function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract }) {
   const { id } = useParams();
   const gemId = id;
 
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
-
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
 
@@ -19,7 +18,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
         setPrevGemsArray(gemIdsAsInt);
 
-        console.log("Prev gems id (int): ", gemIdsAsInt); // Konolra kiírjuk az ID-kat
+        console.log("Prev gems id (int): ", gemIdsAsInt);
       } catch (error) {
         console.error("Error fetching jewelry details: ", error);
       }
@@ -28,20 +27,22 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     fetchJewelryDetails();
   }, [id, jewelryContract]);
 
+  const cardStyle = {
+    marginBottom: '20px', // Növelt margó a kártyák között
+    marginTop: '20px',
+    padding: '10px',
+    backgroundColor: '#FFF7F3',
+    width: '80%',
+    margin: 'auto',
+    textAlign: 'center',
+    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+  };
+
   const renderSelectedGems = () => {
-    // Szűrjük ki az összes követ, amelyek ID-ja szerepel a prevGemsArray tömbben
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredSelectedGems.map((gem, key) => (
-      <div key={key} className="card" style={{ 
-        marginBottom: '20px', 
-        padding: '10px', 
-        backgroundColor: '#FFF7F3', 
-        width: '80%', 
-        margin: 'auto', 
-        textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-      }}>
+      <div key={key} className="card" style={cardStyle}>
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
@@ -67,15 +68,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredMinedGems.map((gem, key) => (
-      <div key={key} className="card" style={{ 
-        marginBottom: '20px', 
-        padding: '10px', 
-        backgroundColor: '#FFF7F3', 
-        width: '80%', 
-        margin: 'auto', 
-        textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-      }}>
+      <div key={key} className="card" style={cardStyle}>
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>
@@ -100,15 +93,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
-      <div key={key} className="card" style={{ 
-        marginBottom: '20px', 
-        padding: '10px', 
-        backgroundColor: '#FFF7F3', 
-        width: '80%', 
-        margin: 'auto', 
-        textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-      }}>
+      <div key={key} className="card" style={cardStyle}>
         <h2>Jewelry Details</h2>
         {jewelry.fileURL && (
           <div>
@@ -126,7 +111,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
         <p><strong>asfad:</strong> {jewelry.previousGemIds}</p>
-     
       </div>
     ));
   };
@@ -137,17 +121,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       return jewelry.previousGemIds.map((gemId, subKey) => {
         const previousGem = selectedGems.find(gem => gem.id === gemId);
         if (!previousGem) return null;
-        
+
         return (
-          <div key={`${key}-${subKey}`} className="card" style={{ 
-            marginBottom: '20px', 
-            padding: '10px', 
-            backgroundColor: '#FFF7F3', 
-            width: '80%', 
-            margin: 'auto', 
-            textAlign: 'center', 
-            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-          }}>
+          <div key={`${key}-${subKey}`} className="card" style={cardStyle}>
             <h2>Previous Selected Gem Details</h2>
             {previousGem.fileURL && (
               <div>

@@ -16,8 +16,7 @@ function Repair({ selectedGems, updateGem }) {
         <td>{gem.id.toString()}</td>
         <td>{gem.size.toString()}</td>
         <td>{gem.carat.toString()}</td>
-        <td>{gem.color}</td>
-        <td>{gem.gemType}</td>
+        <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
           <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
@@ -37,8 +36,7 @@ function Repair({ selectedGems, updateGem }) {
             <th>ID</th>
             <th>Size</th>
             <th>Carat</th>
-            <th>Color</th>
-            <th>Gem Type</th>
+            <th>Color and type</th>
             <th>Price</th>
             <th>Action</th>
           </tr>
