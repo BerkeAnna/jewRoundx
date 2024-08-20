@@ -395,7 +395,7 @@ updateGem(jewelryId, newGemId) {
           {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
 
           <Routes>
-            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} /></ProtectedRoute>} />
+            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}/></ProtectedRoute>} />
             <Route path="/" element={<LogIn />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/loggedin" element={<ProtectedRoute><LoggedIn account={this.state.account} /></ProtectedRoute>} />

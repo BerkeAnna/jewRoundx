@@ -15521,12 +15521,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x25B0a8ec6dB223Cc3001338D30e8687bA7df52a4",
-      "transactionHash": "0xeffdc27c64247e4a125c7cf1f03810a55cdba9badf68dee21207f213fba51e04"
+      "address": "0x54d343E0C105b8054f5ac7CFD17A7Cd375d59d02",
+      "transactionHash": "0x84f829a849572e73e1d0a4627f28d0fb4e5ef911fffcc0da8aa6caa7ceae7164"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-08-16T06:54:58.704Z",
+  "updatedAt": "2024-08-19T16:57:05.250Z",
   "devdoc": {
     "methods": {}
   },

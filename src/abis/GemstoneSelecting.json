@@ -13920,12 +13920,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xc1051498598862C7F7c8a819240485d088D51562",
-      "transactionHash": "0xe23c987efaca569a80fba5c6353bd2d547a76784ba5a76ba9a75535744307b44"
+      "address": "0x84526B849225CD654D38065DED09EA605222F749",
+      "transactionHash": "0x9ac5f3b325b5cb66dbbd924493f99c05718da38d5e299164818f9cddb78beecd"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-08-16T06:54:58.700Z",
+  "updatedAt": "2024-08-19T16:57:05.247Z",
   "devdoc": {
     "methods": {}
   },

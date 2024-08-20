@@ -312,3 +312,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         - kellene a makejewhez egy olyan, hogy az első kő a főkő, és ha adunk hozzá, mivel több kőv van benne, akkor van egy olyan, hogy "making proc" or "in process" és "add more gem". És utána amint azt mondom, hogy finish, akkor kerül piacra. A .sol-ban pedig tárolni kellene az id mellett h melyik id-jú ékszerhez tartozik a kő.
         - a repair után nem tűnik el a List of processing gems -ből a felhasznált kő. Még kell egy bool változót módosítni, mint makingnél
         - repair listában nem írja ki az összes adatot, tostring?
+
+
+2024.08.20. 9:00:
+        - kellene a makejewhez egy olyan, hogy az első kő a főkő, és ha adunk hozzá, mivel több kőv van benne, akkor van egy olyan, hogy "making proc" or "in process" és "add more gem". És utána amint azt mondom, hogy finish, akkor kerül piacra. A .sol-ban pedig tárolni kellene az id mellett h melyik id-jú ékszerhez tartozik a kő.

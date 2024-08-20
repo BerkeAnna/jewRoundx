@@ -1,17 +1,19 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function Repair({ selectedGems, updateGem }) {
+function Repair({ selectedGems, updateGem, markGemAsUsed  }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const handleRepair = (gemId) => {
+    markGemAsUsed(gemId);
     updateGem(parseInt(id), gemId);
     navigate(`/jew-details/${id}`);
   };
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => (
+      gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
         <td>{gem.size.toString()}</td>
@@ -24,6 +26,7 @@ function Repair({ selectedGems, updateGem }) {
           </button>
         </td>
       </tr>
+      )
     ));
   };
 

@@ -10705,12 +10705,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xb8491FbEc7e372491c38614c246A3C4BC3442A30",
-      "transactionHash": "0x282e624865f6f7b14046acb8012042223144cf409611739779a6b61c3aa45381"
+      "address": "0x8185B5231c6e44F409b27fdC6451763eaCe4880c",
+      "transactionHash": "0xf210c04e8ca51be086408a13b1890f34783211ff27f04a258522b5532d1bbe5e"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-08-16T06:54:58.695Z",
+  "updatedAt": "2024-08-19T16:57:05.244Z",
   "devdoc": {
     "methods": {}
   },
