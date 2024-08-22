@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewProcessing({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract  }) {
+function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract  }) {
   const { id } = useParams();
   const gemId = id;
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, minedGems, jewe
     updateGem(parseInt(id), gemId);
     navigate(`/jew-details/${id}`);
   };
+
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
@@ -32,7 +33,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, minedGems, jewe
   }, [id, jewelryContract]);
 
   const cardStyle = {
-    marginBottom: '20px', // Növelt margó a kártyák között
+    marginBottom: '20px',
     marginTop: '20px',
     padding: '10px',
     backgroundColor: '#FFF7F3',
@@ -60,42 +61,28 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, minedGems, jewe
       )
     ));
   };
-  const renderSelectedOwnedGem = () => {
-    const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
-
-    return filteredSelectedGems.map((gem, key) => (
-      <div key={key} className="card" style={cardStyle}>
-        <h2>Selected Gem Details</h2>
-        {gem.fileURL && (
-          <div>
-            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
-            </a>
-          </div>
-        )}
-        <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> {gem.size.toString()} mm</p>
-        <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
-        <p><strong>Color and gem type:</strong> {gem.colorGemType}</p>
-        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
-        <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
-        <p><strong>Owner:</strong> {gem.owner}</p>
-        <button onClick={() => navigate(`/change-gem/${id}`)}>Change</button>
-
-      </div>
-    ));
-  };
 
   return (
     <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
-      <h1>Processing Jewelry</h1>
+      <h1>Change Gem</h1>
       <h3>Choose the next gem</h3>
-      
-      <div>{renderSelectedOwnedGem()}</div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Size</th>
+            <th>Carat</th>
+            <th>Color and type</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {renderSelectedGems()}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default JewProcessing;
+export default JewChangeGem;

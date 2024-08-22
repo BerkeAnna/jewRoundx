@@ -21,6 +21,7 @@ import MinedGemMarket from './MinedGemMarket';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
 import JewProcessing from './JewProcessing';
+import JewChangeGem from './JewChangeGem';
 import LoggedIn from './LoggedIn';
 import Repair from './Repair';
 import LogIn from './LogIn';
@@ -513,7 +514,18 @@ updateGem(jewelryId, newGemId) {
              <Route path="/jew-processing/:id" element={
               <ProtectedRoute>
                 <JewProcessing 
-                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}
+                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
+                 jewelry={this.state.jewelry} 
+                 jewelryContract={this.state.makeJew}
+                />
+              </ProtectedRoute>
+            } />
+             <Route path="/change-gem/:id" element={
+              <ProtectedRoute>
+                <JewChangeGem  
+                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
+                 jewelry={this.state.jewelry} 
+                 jewelryContract={this.state.makeJew}
                 />
               </ProtectedRoute>
             } />

@@ -327,3 +327,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.22. 10:18
          //todo: add gem working as repair. 
+
+2024.08.22. 12:01
+        TODO: a repair oldalon előszőr listázza ki, hogy milyen kövek vannak a jewelryben. Mindegyiknek legyen egy "change" gomb. És arra kattintva listázza ki a cserélhető köveket. És ott lehessen "select"-tel kiválasztani mire cserélem.
+
+        A gem választásnál legyen a sor elején valami illusztráció: https://chatgpt.com/c/92201457-9a16-48fe-959e-578f6137afbc
+        - vagy a képet kicsinyítve tegye oda
