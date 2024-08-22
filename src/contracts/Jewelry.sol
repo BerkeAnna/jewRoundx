@@ -164,7 +164,7 @@ contract Jewelry {
 }
 
  
- 
+ //todo: ezt megnézni...
    function replaceGem(uint oldGemId, uint newGemId) public {
     // Ellenőrizzük, hogy mindkét kő létezik-e
     require(selectedGems[oldGemId].id > 0, "Old gem does not exist.");
