@@ -105,12 +105,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
         <p><strong>Metal:</strong> {jewelry.metal}</p>
-        <p><strong>Size:</strong> {jewelry.size.toString()} mm</p>
+        <p><strong>Details:</strong> {jewelry.physicalDetails.toString()} mm</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
+        <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
-        <p><strong>asfad:</strong> {jewelry.previousGemIds}</p>
       </div>
     ));
   };

@@ -209,6 +209,7 @@ class App extends Component {
     this.refreshPage = this.refreshPage.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
     this.updateGem = this.updateGem.bind(this);  // Bind the updateGem method
+    this.markedAsFinished = this.markedAsFinished.bind(this);
 }
 
   
@@ -297,6 +298,21 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
+  markedAsFinished(id) {
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    this.setState({ loading: true });
+    this.state.makeJew.methods.markedAsFinished(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+        .once('receipt', (receipt) => {
+            this.setState({ loading: false });
+        })
+        .catch(error => {
+            console.error("Error in mark as finished: ", error);
+            this.setState({ loading: false });
+        });
+}
+
+
 
   gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
     const gasLimit = 90000;
@@ -338,19 +354,21 @@ class App extends Component {
   }
 
 
-  jewelryMaking(name, gemId, metal, size, sale, price, fileURL) {  // size instead of depth, height, and width
+  jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL) {  // physicalDetails, a combined metal and size
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('7000', 'gwei');
     this.setState({ loading: true });
-    this.state.makeJew.methods.jewelryMaking(name, gemId, metal, size, sale, price, fileURL).send({ from: this.state.account })
+    this.state.makeJew.methods.jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL).send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       })
       .catch(error => {
-        console.error("Hiba történt a jewelryMaking függvényben: ", error);
+        console.error("Error occurred in jewelryMaking function: ", error);
         this.setState({ loading: false });
       });
-}
+  }
+
+  
 
 updateGem(jewelryId, newGemId) {
   const gasLimit = 90000;
@@ -383,6 +401,7 @@ updateGem(jewelryId, newGemId) {
       this.setState({ loading: false });
     }
   }
+  
 
   refreshPage = () => {
     window.location.reload();
@@ -460,6 +479,7 @@ updateGem(jewelryId, newGemId) {
                   processingGem={this.processingGem}
                   markGemAsSelected={this.markGemAsSelected}
                   markGemAsUsed={this.markGemAsUsed}
+                  markedAsFinished={this.markedAsFinished}
                   account={this.state.account}
                   sellGem={this.sellGem}
                   polishGem={this.polishGem} 

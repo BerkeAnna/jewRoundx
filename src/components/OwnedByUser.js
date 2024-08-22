@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished }) {
   const navigate = useNavigate();
 
   const handleMarkAsSelected = (gemId) => {
@@ -13,6 +13,12 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     markGemAsUsed(gemId);
     navigate(`/jewelry-making/gem/${gemId}`);
   };
+
+  const handleMarkedAsFinished = (gemId) => {
+    markedAsFinished(gemId);
+    navigate(`/ownMinedGems`);
+  };
+
 
   // Filter gems based on the owner's account
   const ownedMinedGems = minedGems.filter((minedGem) => minedGem.owner === account);
@@ -115,6 +121,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
 
   const renderJewelry = () => {
     return ownedJewelry.map((jewelry, key) => (
+      
+      !jewelry.processing ? (
+        <>
       <tr key={key}>
         <th scope="row">{jewelry.id.toString()}</th>
         <td>{jewelry.name}</td>
@@ -128,7 +137,40 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
             Repair
           </button>
         </td>
+         
       </tr>
+      </>
+    ):
+    <></>
+    ));
+  };
+
+  const renderProcessingJewelry = () => {
+    return ownedJewelry.map((jewelry, key) => (
+      
+      jewelry.processing ? (
+        <>
+      <tr key={key}>
+        <th scope="row">{jewelry.id.toString()}</th>
+        <td>{jewelry.name}</td>
+        <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        <td>{jewelry.owner}</td>
+        <td className="button-container">
+          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
+            Details
+          </button>
+          <button className="btn btn-primary">
+            Add gem
+          </button>
+          <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn btn-primary">
+            Finish
+          </button>
+        </td>
+         
+      </tr>
+      </>
+    ):
+    <></>
     ));
   };
 
@@ -176,6 +218,20 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           </tr>
         </thead>
         <tbody>{renderProcessingGems()}</tbody>
+      </table>
+
+      <h2>List of processing jewelry</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Owner</th>
+            <th scope="col">*</th>
+          </tr>
+        </thead>
+        <tbody>{renderProcessingJewelry()}</tbody>
       </table>
 
       <h2>List of jewelry</h2>

@@ -10,7 +10,7 @@ function JewMarket({ jewelry, account, buyJewelry }) {
 
   const renderJewelryItems = () => {
     return jewelry.map((jewelryItem, key) => (
-      jewelryItem.owner !== account && (
+      jewelryItem.owner !== account && jewelryItem.processing === false && jewelryItem.sale === true && (
         <div key={key} className="card" style={{ width: '30%', marginBottom: '20px', padding: '20px', backgroundColor: '#FFF7F3', margin: '10px', textAlign: 'center', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
           {jewelryItem.fileURL && (
             <img src={jewelryItem.fileURL} className="card-img-top" alt={`${jewelryItem.name}`} style={{ width: '100%', height: '150px', objectFit: 'contain', marginTop: '20px' }} />

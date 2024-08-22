@@ -43,6 +43,7 @@ function JewelryForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
+    const physicalDetails = `${metal} ${size}`; // Combine metal and size into one string
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = true;
 
@@ -51,7 +52,7 @@ function JewelryForm(props) {
       return; // Prevent further execution if the name is not provided
     }
 
-    props.jewelryMaking(name, gemId, metal, size, sale, price, fileUrl);
+    props.jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
 
     // After submission logic, you might want to navigate the user to another route or show a success message.
   };

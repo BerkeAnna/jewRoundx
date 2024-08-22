@@ -316,3 +316,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.20. 9:00:
         - kellene a makejewhez egy olyan, hogy az első kő a főkő, és ha adunk hozzá, mivel több kőv van benne, akkor van egy olyan, hogy "making proc" or "in process" és "add more gem". És utána amint azt mondom, hogy finish, akkor kerül piacra. A .sol-ban pedig tárolni kellene az id mellett h melyik id-jú ékszerhez tartozik a kő.
+
+2024.08.21. 23:26
+        TODO: nem a jewfromba kell a gemlista. Hanem csinálja meg az alap ékszert, de utáa ne kerüljön piacra, hanem processben legyen. Ott Legen egy add gem gomd és ott irányítson át a listára ahol kiválasztható mit ad még hozzá. Majd egy finish gomb is
+
+2024.08.22. 9:39
+        Soljew meg lett. Appban hozzáadni a függvéynt és bekötni a finish gombhoz a markedasfinishedet
+
+        a jewmarketben csak azokat ahol finished már
+
+2024.08.22. 10:18
+         //todo: add gem working as repair. 

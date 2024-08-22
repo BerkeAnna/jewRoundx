@@ -18,7 +18,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
           <p className="card-text">Price: {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
           <p className="card-text">Owner: {gem.owner}</p>
           <button className="btn btn-primary" onClick={() => handleMarkAsSelected(gem.id)}>
-            Select Gem
+            Buy
           </button>
           <button
             className="btn btn-secondary"

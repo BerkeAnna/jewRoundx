@@ -9,15 +9,14 @@ contract Jewelry {
     IGemstoneSelecting gemstoneSelecting;
     uint public jewelryCount = 0;
     mapping(uint => JewelryData) public jewelry;
-    //uint[] initialPreviousGems;
 
     struct JewelryData {
         uint id;
         string name;
-        uint[] previousGemIds; // Array to store the history of previous gem IDs
-        string metal;
-        string size;
-        bool sale;
+        uint[] previousGemIds;
+        string physicalDetails;  // Combine metal and size into a single string
+        bool sale;                // Separate out the `sale` and `processing` fields
+        bool processing;
         uint price;
         string fileURL;
         address payable jeweler;
@@ -27,9 +26,9 @@ contract Jewelry {
     event JewelryMaking(
         uint id,
         string name,
-        string metal,
-        string size,
+        string physicalDetails,
         bool sale,
+        bool processing,
         uint price,
         string fileURL,
         address payable jeweler,
@@ -38,79 +37,79 @@ contract Jewelry {
 
     event JewelryBought(uint id, address payable newOwner);
     event GemUpdated(uint jewelryId, uint newGemId);
+    event JewelryFinished(uint id, address owner);
 
-     constructor(address _gemstoneSelectingAddress) public {
+
+    constructor(address _gemstoneSelectingAddress) public {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
     }
 
-   function jewelryMaking(
-    string memory _name,
-    uint _gemId,
-    string memory _metal,
-    string memory _size,
-    bool _sale,
-    uint _price,
-    string memory _fileURL
-) public {
-    jewelryCount++;
+    function jewelryMaking(
+        string memory _name,
+        uint _gemId,
+        string memory _physicalDetails,  // Accept combined physical details
+        bool _sale,
+        uint _price,
+        string memory _fileURL
+    ) public {
+        jewelryCount++;
 
-    // Initialize an array with one element, the provided gem ID
-   
+        jewelry[jewelryCount] = JewelryData(
+            jewelryCount,
+            _name,
+            new uint[](0) ,
+            _physicalDetails,    // Store the combined physical details
+            false,
+            true,               // Initialize processing to false
+            _price,
+            _fileURL,
+            msg.sender,
+            msg.sender
+        );
+        jewelry[jewelryCount].previousGemIds.push(_gemId);
 
-    jewelry[jewelryCount] = JewelryData(
-        jewelryCount,
-        _name, // Assign the initialized array here
-        new uint[](0),
-        _metal,
-        _size,
-        _sale,
-        _price,
-        _fileURL,
-        msg.sender,
-        msg.sender
-    );
-     jewelry[jewelryCount].previousGemIds.push(_gemId);
+        emit JewelryMaking(
+            jewelryCount,
+            _name,
+            _physicalDetails,
+            false,
+            true,
+            _price,
+            _fileURL,
+            msg.sender,
+            msg.sender
+        );
+    }
 
-    emit JewelryMaking(
-        jewelryCount,
-        _name,
-        _metal,
-        _size,
-        _sale,
-        _price,
-        _fileURL,
-        msg.sender,
-        msg.sender
+
+ function getJewelryDetails(uint _id) public view returns (
+    uint id,
+    string memory name,
+    uint[] memory previousGemIds, 
+    string memory physicalDetails, 
+    bool processing,  // <-- Ez a boolean itt van a sorrendben
+    bool sale,        // <-- És ez itt van
+    uint price,
+    string memory fileURL, 
+    address jeweler, 
+    address owner
+) {
+    JewelryData storage jew = jewelry[_id];
+    return (
+        jew.id,
+        jew.name,
+        jew.previousGemIds,
+        jew.physicalDetails,
+        jew.processing,  // <-- Ez a helyes sorrend szerint
+        jew.sale,        // <-- És ez is
+        jew.price,
+        jew.fileURL,
+        jew.jeweler,
+        jew.owner
     );
 }
 
 
-    function getJewelryDetails(uint _id) public view returns (
-        uint id, 
-        string memory name, 
-        uint[] memory previousGemIds, 
-        string memory metal, 
-        string memory size, 
-        bool sale, 
-        uint price, 
-        string memory fileURL, 
-        address jeweler, 
-        address owner
-    ) {
-        JewelryData storage jew = jewelry[_id];
-        return (
-            jew.id,
-            jew.name,
-            jew.previousGemIds,
-            jew.metal,
-            jew.size,
-            jew.sale,
-            jew.price,
-            jew.fileURL,
-            jew.jeweler,
-            jew.owner
-        );
-    }
 
     function buyJewelry(uint _id) public payable {
         JewelryData storage jew = jewelry[_id];
@@ -128,7 +127,7 @@ contract Jewelry {
         JewelryData storage jew = jewelry[_jewelryId];
         require(msg.sender == jew.owner, "Only the owner can update the gem");
 
-        jew.previousGemIds.push(_newGemId); // Add new gemId to previousGemIds
+        jew.previousGemIds.push(_newGemId);
 
         emit GemUpdated(_jewelryId, _newGemId);
     }
@@ -152,4 +151,19 @@ contract Jewelry {
         }
         return count;
     }
+
+    //todo: finish: change processing v. to false.
+ function markedAsFinished(uint _id) public payable {
+    JewelryData storage _jewelry = jewelry[_id];
+    require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
+    require(_jewelry.processing == true, "Jewelry already finished");
+
+    _jewelry.processing = false;  // processing set to false when finished
+    _jewelry.sale = true;  // sale set to true, making it available for sale
+    emit JewelryFinished(_id, _jewelry.owner);
+}
+
+
+
+    //todo: add gem working as repair. 
 }
