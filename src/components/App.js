@@ -20,6 +20,7 @@ import GemSelectingForm from './GemSelectingForm';
 import MinedGemMarket from './MinedGemMarket';
 import GemMarket from './GemMarket';
 import JewMarket from './JewMarket';
+import JewProcessing from './JewProcessing';
 import LoggedIn from './LoggedIn';
 import Repair from './Repair';
 import LogIn from './LogIn';
@@ -506,6 +507,13 @@ updateGem(jewelryId, newGemId) {
                   gemSelecting={this.gemSelecting}
                   account={this.state.account} 
                   jewelryContract={this.state.makeJew}
+                />
+              </ProtectedRoute>
+            } />
+             <Route path="/jew-processing/:id" element={
+              <ProtectedRoute>
+                <JewProcessing 
+                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}
                 />
               </ProtectedRoute>
             } />

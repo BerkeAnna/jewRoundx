@@ -159,7 +159,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
             Details
           </button>
-          <button className="btn btn-primary">
+          <button onClick={() => navigate(`/jew-processing/${jewelry.id}`)}>
             Add gem
           </button>
           <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn btn-primary">
