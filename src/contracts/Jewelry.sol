@@ -163,6 +163,34 @@ contract Jewelry {
     emit JewelryFinished(_id, _jewelry.owner);
 }
 
+ 
+ 
+   function replaceGem(uint oldGemId, uint newGemId) public {
+    // Ellenőrizzük, hogy mindkét kő létezik-e
+    require(selectedGems[oldGemId].id > 0, "Old gem does not exist.");
+    require(selectedGems[newGemId].id > 0, "New gem does not exist.");
+    
+    // Hozzáférés az új kőhöz
+    SelectedGem storage newGem = selectedGems[newGemId];
+    
+    // Beállítjuk az új kő previousGemId mezőjét a régi kő azonosítójára
+    newGem.previousGemId = oldGemId;
+
+    // (Opcionális) Esemény kibocsátása a csere rögzítésére
+    emit GemSelecting(
+        newGem.id,
+        newGem.minedGemId,
+        newGem.details.size,
+        newGem.details.carat,
+        newGem.details.colorGemType, // Combined color and gem type
+        newGem.forSale,
+        newGem.fileURL,
+        newGem.price,
+        newGem.used,
+        newGem.owner,
+        newGem.gemCutter
+    );
+}
 
 
     //todo: add gem working as repair. 

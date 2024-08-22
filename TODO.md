@@ -333,3 +333,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
         A gem választásnál legyen a sor elején valami illusztráció: https://chatgpt.com/c/92201457-9a16-48fe-959e-578f6137afbc
         - vagy a képet kicsinyítve tegye oda
+
+2024.08.22. 17:24
+        TODO: repairnél a replaceGem fvv a jewelry.solban nem működik. Ha rámegyek a repairen h melyikre cserélem hibát ad....

@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract  }) {
+function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem }) {
   const { id } = useParams();
-  const gemId = id;
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-  const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
-  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
-  const jewelryDetails = jewelry.filter(item => item.id == gemId);
+  
+  const handleRepair = (newGemId) => {
+    const oldGemId = parseInt(id);
 
-  const handleRepair = (gemId) => {
-    markGemAsUsed(gemId);
-    updateGem(parseInt(id), gemId);
-    navigate(`/jew-details/${id}`);
-  };
+    replaceGem(oldGemId, newGemId)
+            markGemAsUsed(newGemId);
+            updateGem(oldGemId, newGemId);
+            navigate(`/jew-details/${id}`);
+       
+};
+
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -22,8 +23,6 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
         setPrevGemsArray(gemIdsAsInt);
-
-        console.log("Prev gems id (int): ", gemIdsAsInt);
       } catch (error) {
         console.error("Error fetching jewelry details: ", error);
       }
@@ -31,17 +30,6 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
 
     fetchJewelryDetails();
   }, [id, jewelryContract]);
-
-  const cardStyle = {
-    marginBottom: '20px',
-    marginTop: '20px',
-    padding: '10px',
-    backgroundColor: '#FFF7F3',
-    width: '80%',
-    margin: 'auto',
-    textAlign: 'center',
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-  };
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => (

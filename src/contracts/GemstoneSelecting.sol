@@ -21,6 +21,7 @@ contract GemstoneSelecting {
     struct SelectedGem {
         uint id;
         uint minedGemId;
+        uint previousGemId;
         GemDetails details;
         bool forSale;
         string fileURL;

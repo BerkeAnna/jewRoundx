@@ -212,6 +212,8 @@ class App extends Component {
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
     this.updateGem = this.updateGem.bind(this);  // Bind the updateGem method
     this.markedAsFinished = this.markedAsFinished.bind(this);
+    this.replaceGem = this.replaceGem.bind(this);
+
 }
 
   
@@ -387,6 +389,22 @@ updateGem(jewelryId, newGemId) {
       this.setState({ loading: false });
     });
 }
+replaceGem(oldGemId, newGemId) {
+  const gasLimit = 90000;
+  const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+  this.setState({ loading: true });
+
+  this.state.makeJew.methods.replaceGem(oldGemId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false });
+      this.loadBlockchainData2(); // Reload data to reflect the change
+    })
+    .catch(error => {
+      console.error("Error in replaceGem: ", error);
+      this.setState({ loading: false });
+    });
+}
+
 
 
 
@@ -416,7 +434,10 @@ updateGem(jewelryId, newGemId) {
           {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
 
           <Routes>
-            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}/></ProtectedRoute>} />
+            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
+                 jewelry={this.state.jewelry} 
+                 jewelryContract={this.state.makeJew}
+                 replaceGem={this.replaceGem}/></ProtectedRoute>} />
             <Route path="/" element={<LogIn />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/loggedin" element={<ProtectedRoute><LoggedIn account={this.state.account} /></ProtectedRoute>} />
@@ -517,15 +538,22 @@ updateGem(jewelryId, newGemId) {
                  selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
                  jewelry={this.state.jewelry} 
                  jewelryContract={this.state.makeJew}
+                 
                 />
               </ProtectedRoute>
             } />
              <Route path="/change-gem/:id" element={
               <ProtectedRoute>
-                <JewChangeGem  
-                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
-                 jewelry={this.state.jewelry} 
-                 jewelryContract={this.state.makeJew}
+               <JewChangeGem  
+                  selectedGems={this.state.selectedGems} 
+                  updateGem={this.updateGem} 
+                  markGemAsUsed={this.markGemAsUsed}  
+                  minedGems={this.state.minedGems}
+                  jewelry={this.state.jewelry} 
+                  jewelryContract={this.state.makeJew}
+                  account={this.state.account} 
+                  selectingContract={this.state.gemstroneSelecting}
+                  replaceGem={this.replaceGem}  // Ezt így kell átadni
                 />
               </ProtectedRoute>
             } />
