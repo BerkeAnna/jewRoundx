@@ -346,4 +346,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         tezsteletm remixen. Ott műkösdütt. Deployold migráld ujra és nézd meg. Elvileg működik
 
 2024.08.24. 19.21
-        most kiírja a previousGemId default 0-t
+        most kiírja a previousGemId default 0-t, de a replaceGem-ben a setPreviousGemId nem működik
+        TODO: kell majd a formokhoz egy back gomb és az az alapj státuszt visszaállítja.. pl used
+        ![alt text](image-12.png)
+        MOstmár csak a jewelryId -t kell megtalálni valahonnan a replace-hez

@@ -8,8 +8,10 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
   
   const handleRepair = (newGemId) => {
     const oldGemId = parseInt(id);
-
-    replaceGem(oldGemId, newGemId)
+    //nem kapja meg a new gemet ás meg kell keresni a jewId-t is az 1helyére
+    console.log('Jewelry ID:', 1, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
+    replaceGem(1,oldGemId, newGemId);
+    console.log("replaceGem");
             markGemAsUsed(newGemId);
             updateGem(oldGemId, newGemId);
             navigate(`/jew-details/${id}`);

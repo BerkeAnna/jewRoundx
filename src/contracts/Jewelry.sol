@@ -17,7 +17,7 @@ interface IGemstoneSelecting {
         address owner
     );
     function markGemAsUsed(uint _id) external;
-    function setPreviousGemId(uint gemId, uint previousGemId) external;  // Új funkció az interfészhez
+     function setPreviousGemId(uint gemId, uint previousGemId) external;
 }
 
 contract Jewelry {
@@ -55,7 +55,7 @@ contract Jewelry {
     event JewelryFinished(uint id, address owner);
 
     constructor(address _gemstoneSelectingAddress) public {
-        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
+    gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
     }
 
     function jewelryMaking(

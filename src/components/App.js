@@ -389,12 +389,12 @@ updateGem(jewelryId, newGemId) {
       this.setState({ loading: false });
     });
 }
-replaceGem(oldGemId, newGemId) {
+replaceGem(jewelryId, oldGemId, newGemId) {
   const gasLimit = 90000;
   const gasPrice = window.web3.utils.toWei('7000', 'gwei');
   this.setState({ loading: true });
 
-  this.state.makeJew.methods.replaceGem(oldGemId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+  this.state.makeJew.methods.replaceGem(jewelryId, oldGemId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
     .once('receipt', (receipt) => {
       this.setState({ loading: false });
       this.loadBlockchainData2(); // Reload data to reflect the change
