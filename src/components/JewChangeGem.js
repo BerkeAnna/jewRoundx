@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem }) {
-  const { id } = useParams();
+  const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
   
+  
   const handleRepair = (newGemId) => {
-    const oldGemId = parseInt(id);
-    //nem kapja meg a new gemet ás meg kell keresni a jewId-t is az 1helyére
-    console.log('Jewelry ID:', 1, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
-    replaceGem(1,oldGemId, newGemId);
-    console.log("replaceGem");
-            markGemAsUsed(newGemId);
-            updateGem(oldGemId, newGemId);
-            navigate(`/jew-details/${id}`);
-       
+    //const oldGemId = parseInt(id); // Assuming this is the jewelryId from useParams
+    
+    console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
+    markGemAsUsed(newGemId);
+    replaceGem(id, oldGemId, newGemId);
+    updateGem(oldGemId, newGemId);
+    navigate(`/jew-details/${id}`);
+
 };
+  
 
 
   useEffect(() => {
@@ -43,8 +44,8 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
         <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
-            Select
+          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+            Select-
           </button>
         </td>
       </tr>

@@ -12,13 +12,11 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
 
   const handleRepair = (newGemId) => {
     const oldGemId = parseInt(id);
-
-            markGemAsUsed(newGemId);
-            
-    replaceGem(oldGemId, newGemId)
-            navigate(`/jew-details/${id}`);
-    
+    markGemAsUsed(newGemId);
+    replaceGem(oldGemId, newGemId);
+    navigate(`/jew-details/${id}`);
 };
+
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -87,11 +85,11 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-        <button onClick={() => navigate(`/change-gem/${id}`)}>Change</button>
-
+        <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
       </div>
     ));
-  };
+};
+
 
   return (
     <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>

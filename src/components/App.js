@@ -543,7 +543,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                 />
               </ProtectedRoute>
             } />
-             <Route path="/change-gem/:id" element={
+             <Route path="/repair/:id/change-gem/:oldGemId" element={
               <ProtectedRoute>
                <JewChangeGem  
                   selectedGems={this.state.selectedGems} 

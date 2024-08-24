@@ -350,3 +350,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         TODO: kell majd a formokhoz egy back gomb és az az alapj státuszt visszaállítja.. pl used
         ![alt text](image-12.png)
         MOstmár csak a jewelryId -t kell megtalálni valahonnan a replace-hez
+
+2024.08.24. 20:59:
+        most elvarázsolódik valahova. Lefut 2 trnz de nem adja hozzá, nem klistázza
+
+2024.08.24. 21.08 
+        most működik a replacegem, de mikor megcsináltam egy replacet az updategemre hibát dobott a metamask és console is írta. megnézni!!
