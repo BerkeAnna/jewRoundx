@@ -15,17 +15,20 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     const fetchJewelryDetails = async () => {
       try {
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
-        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
+  
+        // Convert BigNumber to numbers (or strings if you prefer)
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-
+  
         console.log("Prev gems id (int): ", gemIdsAsInt);
       } catch (error) {
         console.error("Error fetching jewelry details: ", error);
       }
     };
-
+  
     fetchJewelryDetails();
   }, [id, jewelryContract]);
+  
 
   const cardStyle = {
     marginBottom: '20px', // Növelt margó a kártyák között
@@ -60,7 +63,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-        <p><strong>previousGemId:</strong> {gem.previousGemId}</p>
+        <p><strong>previousGemId:</strong> {gem.previousGemId.toString()}</p>
       </div>
     ));
   };

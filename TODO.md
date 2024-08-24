@@ -336,3 +336,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.22. 17:24
         TODO: repairnél a replaceGem fvv a jewelry.solban nem működik. Ha rámegyek a repairen h melyikre cserélem hibát ad....
+
+2024.08.24. 12:40:
+        TODO: tesztelni a replaceGem fv-t. Migrálva volt már
+        MI lenne ha prevGem helyett dátum lenne
+
+2024.08.24. 15:09.
+
+        tezsteletm remixen. Ott műkösdütt. Deployold migráld ujra és nézd meg. Elvileg működik
+
+2024.08.24. 19.21
+        most kiírja a previousGemId default 0-t

@@ -1,7 +1,5 @@
 pragma solidity >=0.4.21 <0.6.0;
 
-import "./GemstoneExtraction.sol";
-
 interface IGemstoneExtraction {
     function minedGems(uint) external view returns (uint id, string memory gemType, uint weight, uint height, uint width, uint price, string memory miningLocation, uint miningYear, bool selected, string memory extractionMethod, address payable owner, bool purchased);
 }
@@ -47,6 +45,12 @@ contract GemstoneSelecting {
 
     constructor(address _gemstoneExtractionAddress) public {
         gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
+    }
+
+    function setPreviousGemId(uint gemId, uint previousGemId) public {
+        SelectedGem storage gem = selectedGems[gemId];
+        require(gem.id > 0, "Gem does not exist.");
+        gem.previousGemId = previousGemId;
     }
 
     function gemSelecting(
@@ -165,6 +169,7 @@ contract GemstoneSelecting {
     function getSelectedGem(uint _id) public view returns (
         uint id,
         uint minedGemId,
+        uint previousGemId,
         string memory size,
         uint carat,
         string memory colorGemType, // Combined color and gem type
@@ -179,6 +184,7 @@ contract GemstoneSelecting {
         return (
             gem.id,
             gem.minedGemId,
+            gem.previousGemId,
             gem.details.size,
             gem.details.carat,
             gem.details.colorGemType, // Combined color and gem type
@@ -189,5 +195,22 @@ contract GemstoneSelecting {
             gem.owner,
             gem.gemCutter
         );
+    }
+
+    function getGemDetails(uint _id) public view returns (
+        uint id,
+        uint minedGemId,
+        uint previousGemId,
+        string memory size,
+        uint carat,
+        string memory colorGemType,
+        bool forSale,
+        string memory fileURL,
+        uint price,
+        bool used,
+        address owner,
+        address gemCutter
+    ) {
+        return getSelectedGem(_id);
     }
 }
