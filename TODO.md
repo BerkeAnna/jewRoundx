@@ -356,3 +356,10 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.24. 21.08 
         most működik a replacegem, de mikor megcsináltam egy replacet az updategemre hibát dobott a metamask és console is írta. megnézni!!
+
+2024.08.26. 09:12
+        A getPastEvents metódus a Web3.js könyvtár része, és lehetővé teszi, hogy lekérj eseményeket (events) 
+        egy okos szerződésből a blokkláncról. Ez a metódus nem korlátozódik arra, hogy csak az aktuálisan megjelenített 
+        oldalon lévő tranzakciókat listázza, hanem az összes olyan eseményt, amely megfelel a megadott szűrőknek 
+        és paramétereknek.
+        MOst a jewDetailsebn csakpárat ír ki, de kommentezve ott az összeset lekérő

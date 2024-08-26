@@ -10,25 +10,71 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
   
-        // Convert BigNumber to numbers (or strings if you prefer)
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
   
-        console.log("Prev gems id (int): ", gemIdsAsInt);
+        console.log("Jewelry Details:", details);
+  
+        // Események lekérése
+        const events = await jewelryContract.getPastEvents('allEvents', {
+          fromBlock: 0, // Minden blokkot lekérünk
+          toBlock: 'latest'
+        });
+  
+        // Események szűrése az adott ékszer vagy gem id-ja alapján
+        const filteredEvents = events.filter(event => {
+          const returnValues = event.returnValues;
+          return parseInt(returnValues.id) === parseInt(id);
+        });
+  
+        console.log("Filtered Jewelry and Gem Transaction Events:", filteredEvents);
+  
       } catch (error) {
-        console.error("Error fetching jewelry details: ", error);
+        console.error("Error fetching jewelry details:", error);
       }
     };
   
     fetchJewelryDetails();
   }, [id, jewelryContract]);
   
+  /*//ez minden tranzakciót listáz
+  useEffect(() => {
+    const fetchJewelryDetails = async () => {
+      
+      try {
+        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+  
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
+        setPrevGemsArray(gemIdsAsInt);
+  
+        console.log("Jewelry Details:", details);
+        
+        // Események lekérése
+        /*A getPastEvents metódus a Web3.js könyvtár része, és lehetővé teszi, hogy lekérj eseményeket (events) 
+        egy okos szerződésből a blokkláncról. Ez a metódus nem korlátozódik arra, hogy csak az aktuálisan megjelenített 
+        oldalon lévő tranzakciókat listázza, hanem az összes olyan eseményt, amely megfelel a megadott szűrőknek és paramétereknek.
+        */
+      /*  const events = await jewelryContract.getPastEvents('allEvents', {
+          fromBlock: 0, // Minden blokkot lekérünk
+          toBlock: 'latest'
+        });
+        
+        console.log("All Jewelry Transaction Events:", events);
+        
+        
+      } catch (error) {
+        console.error("Error fetching jewelry details:", error);
+      }
+    };
+  
+    fetchJewelryDetails();
+  }, [id, jewelryContract]);
+  */
 
   const cardStyle = {
     marginBottom: '20px', // Növelt margó a kártyák között
