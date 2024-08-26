@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract }) {
+function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
   const gemId = id;
 
@@ -10,74 +10,69 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
+  const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
+  const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
+  const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
+
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
-  
+
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-  
+
         console.log("Jewelry Details:", details);
-  
-        // Események lekérése
-        const events = await jewelryContract.getPastEvents('allEvents', {
-          fromBlock: 0, // Minden blokkot lekérünk
+
+        // Események lekérése Jewelry szerződésből
+        const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
+          fromBlock: 0,
           toBlock: 'latest'
         });
-  
-        // Események szűrése az adott ékszer vagy gem id-ja alapján
-        const filteredEvents = events.filter(event => {
+
+        const filteredJewelry = jewelryEvents.filter(event => {
           const returnValues = event.returnValues;
           return parseInt(returnValues.id) === parseInt(id);
         });
-  
-        console.log("Filtered Jewelry and Gem Transaction Events:", filteredEvents);
-  
-      } catch (error) {
-        console.error("Error fetching jewelry details:", error);
-      }
-    };
-  
-    fetchJewelryDetails();
-  }, [id, jewelryContract]);
-  
-  /*//ez minden tranzakciót listáz
-  useEffect(() => {
-    const fetchJewelryDetails = async () => {
-      
-      try {
-        const details = await jewelryContract.methods.getJewelryDetails(id).call();
-  
-        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
-        setPrevGemsArray(gemIdsAsInt);
-  
-        console.log("Jewelry Details:", details);
-        
-        // Események lekérése
-        /*A getPastEvents metódus a Web3.js könyvtár része, és lehetővé teszi, hogy lekérj eseményeket (events) 
-        egy okos szerződésből a blokkláncról. Ez a metódus nem korlátozódik arra, hogy csak az aktuálisan megjelenített 
-        oldalon lévő tranzakciókat listázza, hanem az összes olyan eseményt, amely megfelel a megadott szűrőknek és paramétereknek.
-        */
-      /*  const events = await jewelryContract.getPastEvents('allEvents', {
-          fromBlock: 0, // Minden blokkot lekérünk
+
+        setFilteredJewelryEvents(filteredJewelry);
+
+        // Események lekérése GemstoneSelecting szerződésből
+        const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
+          fromBlock: 0,
           toBlock: 'latest'
         });
-        
-        console.log("All Jewelry Transaction Events:", events);
-        
-        
+
+        const filteredSelectedGems = selectedGemEvents.filter(event => {
+          const returnValues = event.returnValues;
+          return parseInt(returnValues.id) === parseInt(id);
+        });
+
+        setFilteredSelectedGemEvents(filteredSelectedGems);
+
+        // Események lekérése GemstoneExtraction szerződésből
+        const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
+          fromBlock: 0,
+          toBlock: 'latest'
+        });
+
+        const filteredMinedGems = minedGemEvents.filter(event => {
+          const returnValues = event.returnValues;
+          return parseInt(returnValues.id) === parseInt(id);
+        });
+
+        setFilteredMinedGemEvents(filteredMinedGems);
+
       } catch (error) {
-        console.error("Error fetching jewelry details:", error);
+        console.error("Error fetching details:", error);
       }
     };
-  
+
     fetchJewelryDetails();
-  }, [id, jewelryContract]);
-  */
+  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
   const cardStyle = {
-    marginBottom: '20px', // Növelt margó a kártyák között
+    marginBottom: '20px',
     marginTop: '20px',
     padding: '10px',
     backgroundColor: '#FFF7F3',
@@ -110,6 +105,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
         <p><strong>previousGemId:</strong> {gem.previousGemId.toString()}</p>
+
+        {/* Események megjelenítése */}
+        <hr />
+        <h3>Transaction Details</h3>
+        {renderTransactionDetails(filteredSelectedGemEvents, gem.id)}
       </div>
     ));
   };
@@ -137,6 +137,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.owner}</p>
+
+        {/* Események megjelenítése */}
+        <hr />
+        <h3>Transaction Details</h3>
+        {renderTransactionDetails(filteredMinedGemEvents, gem.id)}
       </div>
     ));
   };
@@ -161,40 +166,34 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
+
+        {/* Események megjelenítése */}
+        <hr />
+        <h3>Transaction Details</h3>
+        {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
       </div>
     ));
   };
 
-  const renderPreviousGems = () => {
-    return jewelryDetails.map((jewelry, key) => {
-      if (!jewelry.previousGemIds) return null; // Handle undefined previousGemIds
-      return jewelry.previousGemIds.map((gemId, subKey) => {
-        const previousGem = selectedGems.find(gem => gem.id === gemId);
-        if (!previousGem) return null;
+  const renderTransactionDetails = (events, gemId) => {
+    const gemEvents = events.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
 
-        return (
-          <div key={`${key}-${subKey}`} className="card" style={cardStyle}>
-            <h2>Previous Selected Gem Details</h2>
-            {previousGem.fileURL && (
-              <div>
-                <a href={previousGem.fileURL} target="_blank" rel="noopener noreferrer">
-                  <img src={previousGem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
-                </a>
-              </div>
-            )}
-            <p><strong>ID:</strong> {previousGem.id.toString()}</p>
-            <p><strong>Size:</strong> {previousGem.size.toString()} mm</p>
-            <p><strong>Carat:</strong> {previousGem.carat.toString()} ct</p>
-            <p><strong>Color:</strong> {previousGem.color}</p>
-            <p><strong>Gem Type:</strong> {previousGem.gemType}</p>
-            <p><strong>forSale:</strong> {previousGem.forSale.toString()}</p>
-            <p><strong>Used:</strong> {previousGem.used.toString()}</p>
-            <p><strong>Price:</strong> {window.web3.utils.fromWei(previousGem.price.toString(), 'Ether')} Eth</p>
-            <p><strong>Gem cutter:</strong> {previousGem.owner}</p>
-          </div>
-        );
-      });
-    });
+    if (gemEvents.length === 0) {
+      return <p>No transaction events found for this item.</p>;
+    }
+
+    return (
+      <ul>
+        {gemEvents.map((event, index) => (
+          <li key={index}>
+            <strong>Event:</strong> {event.event}<br />
+            <strong>Transaction Hash:</strong> {event.transactionHash}<br />
+            <strong>Block Number:</strong> {event.blockNumber}<br />
+            <strong>Data:</strong> {JSON.stringify(event.returnValues)}
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -208,9 +207,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       </div>
       <div className="pt-5">
         {renderJewelry()}
-      </div>
-      <div className="pt-5">
-        {renderPreviousGems()}
       </div>
     </div>
   );

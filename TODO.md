@@ -363,3 +363,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         oldalon lévő tranzakciókat listázza, hanem az összes olyan eseményt, amely megfelel a megadott szűrőknek 
         és paramétereknek.
         MOst a jewDetailsebn csakpárat ír ki, de kommentezve ott az összeset lekérő
+
+2024.08.26. 11:30
+        most kiírja a trans detailst, viszont a jewelry adatait kiírja a selectednél is. Igazából az event-ektől függ állítóéag.
