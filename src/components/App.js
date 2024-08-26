@@ -291,7 +291,7 @@ class App extends Component {
 
   markGemAsUsed(id) {
     const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
     this.setState({ loading: true });
     this.state.gemstroneSelecting.methods.markGemAsUsed(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
       .once('receipt', (receipt) => {
@@ -376,7 +376,7 @@ class App extends Component {
 
 updateGem(jewelryId, newGemId) {
   const gasLimit = 90000;
-  const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+  const gasPrice = window.web3.utils.toWei('8000', 'gwei');
   this.setState({ loading: true });
 
   this.state.makeJew.methods.updateGem(jewelryId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
