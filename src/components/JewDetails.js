@@ -17,52 +17,45 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
+        // Jewelry részletek lekérése
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
 
-        console.log("Jewelry Details:", details);
-
-        // Jewelry szerződés eseményeinek lekérdezése
+        // Jewelry események lekérése
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
 
         const filteredJewelry = jewelryEvents.filter(event => {
-          const returnValues = event.returnValues;
-          return parseInt(returnValues.id) === parseInt(id);
+          return parseInt(event.returnValues.id) === parseInt(id);
         });
 
-        console.log("Jewelry Events:", filteredJewelry);  // Ellenőrizze az eseményeket a konzolban
         setFilteredJewelryEvents(filteredJewelry);
 
-        // GemstoneSelecting szerződés eseményeinek lekérdezése
+        // Selected Gems események lekérése
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
 
         const filteredSelectedGems = selectedGemEvents.filter(event => {
-          const returnValues = event.returnValues;
-          return parseInt(returnValues.id) === parseInt(id);
+          return prevGemsArray.includes(parseInt(event.returnValues.id));
         });
 
-        console.log("Selected Gem Events:", filteredSelectedGems);  // Ellenőrizze az eseményeket a konzolban
         setFilteredSelectedGemEvents(filteredSelectedGems);
 
-        // GemstoneExtraction szerződés eseményeinek lekérdezése
+        // Mined Gems események lekérése
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
 
         const filteredMinedGems = minedGemEvents.filter(event => {
-          const returnValues = event.returnValues;
-          return parseInt(returnValues.id) === parseInt(id);
+          return prevGemsArray.includes(parseInt(event.returnValues.id));
         });
 
-        console.log("Mined Gem Events:", filteredMinedGems);  // Ellenőrizze az eseményeket a konzolban
         setFilteredMinedGemEvents(filteredMinedGems);
 
       } catch (error) {
@@ -71,7 +64,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     };
 
     fetchJewelryDetails();
-  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
+  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, prevGemsArray]);
 
   const cardStyle = {
     marginBottom: '20px',
@@ -85,8 +78,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   const renderSelectedGems = () => {
+    // A prevGemsArray alapján szűrjük a selectedGems elemeit
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
-
     return filteredSelectedGems.map((gem, key) => (
       <div key={key} className="card" style={cardStyle}>
         <h2>Selected Gem Details</h2>
@@ -117,6 +110,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   const renderMinedGems = () => {
+    // A prevGemsArray alapján szűrjük a minedGems elemeit
     const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredMinedGems.map((gem, key) => (
@@ -146,7 +140,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
             {renderTransactionDetails(filteredMinedGemEvents, gem.id)}
         </div>
     ));
-};
+  };
 
 
   const renderJewelry = () => {
@@ -178,10 +172,13 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     ));
   };
 
-  const renderTransactionDetails = (events, gemId) => {
-    const gemEvents = events.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
+const renderTransactionDetails = (events, gemId) => {
+    const gemEvents = events.filter(event => {
+        const eventId = parseInt(event.returnValues.id);  // Convert the BigNumber to a regular number
+        return eventId === parseInt(gemId);
+    });
 
-    console.log("Filtered Events for ID:", gemId, gemEvents);  // Ellenőrizze a szűrt eseményeket
+    //console.log("Filtered Events for ID:", gemId, gemEvents);  // Ellenőrizze a szűrt eseményeket
 
     if (gemEvents.length === 0) {
         return <p>No transaction events found for this item.</p>;

@@ -369,3 +369,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.29. 10:51
         most a consolon megjelennek a trnzok
+
+2024.08.29.11:44
+        működik a trans, de azért ellenőrizni. és szépíteni
