@@ -185,15 +185,23 @@ const renderTransactionDetails = (events, gemId) => {
     }
 
     return (
-        <ul>
-            {gemEvents.map((event, index) => (
-                <li key={index}>
-                    <strong>Event:</strong> {event.event}<br />
-                    <strong>Transaction Hash:</strong> {event.transactionHash}<br />
-                    <strong>Block Number:</strong> {event.blockNumber}<br />
-                    <strong>Data:</strong> {JSON.stringify(event.returnValues)}
-                </li>
-            ))}
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+            {gemEvents.map((event, index) => {
+                const { owner, gemCutter, jeweler, newOwner } = event.returnValues;  // Destructure the needed fields
+
+                return (
+                    <li key={index} style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
+                      <strong>Event:</strong> {event.event}<br />
+                        <strong>Transaction Hash:</strong> {event.transactionHash}<br />
+                        <strong>Block Number:</strong> {event.blockNumber}<br />
+                        {owner && <div><strong>Owner:</strong> {owner}</div>}
+                        {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
+                        {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
+                        {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+                        {/*<strong>Data:</strong> {JSON.stringify(event.returnValues)}<br />*/}
+                    </li>
+                );
+            })}
         </ul>
     );
 };
