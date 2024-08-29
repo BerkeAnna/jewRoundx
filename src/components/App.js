@@ -530,6 +530,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   account={this.state.account} 
                   jewelryContract={this.state.makeJew}
                   gemstoneSelectingContract={this.state.gemstroneSelecting}
+                  gemstoneExtractionContract={this.state.gemstroneExtraction}
                 />
               </ProtectedRoute>
             } />

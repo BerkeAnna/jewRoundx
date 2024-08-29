@@ -366,3 +366,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.26. 11:30
         most kiírja a trans detailst, viszont a jewelry adatait kiírja a selectednél is. Igazából az event-ektől függ állítóéag.
+
+2024.08.29. 10:51
+        most a consolon megjelennek a trnzok
