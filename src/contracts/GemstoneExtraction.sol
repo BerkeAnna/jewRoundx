@@ -39,7 +39,7 @@ contract GemstoneExtraction {
         bool purchased
     );
 
-     event GemPurchasing(
+     event GemProcessing(
        uint id,
         string gemType,
         uint weight,
@@ -80,6 +80,21 @@ contract GemstoneExtraction {
         string fileURL,
         bool purchased
     );
+
+     event TransferGemOwnership(
+        uint id,
+        string gemType,
+        uint weight,
+        string size,
+        uint price, 
+        string miningLocation,
+        uint miningYear,
+         bool selected,
+        address payable owner,
+        string fileURL,
+        bool purchased
+    );
+    
     
 
     constructor() public  {
@@ -118,7 +133,7 @@ contract GemstoneExtraction {
         _minedGem.owner = msg.sender;
         _minedGem.purchased = true;
         minedGems[_id] = _minedGem;
-        address(_miner).transfer(msg.value);
+       // address(_miner).transfer(msg.value);
       emit GemPurchased(minedGemCount, _minedGem.gemType, _minedGem.weight,  _minedGem.size, _minedGem.price, _minedGem.miningLocation,  _minedGem.miningYear,  false, msg.sender, _minedGem.fileURL,  _minedGem.purchased);
     }
 
@@ -130,7 +145,7 @@ contract GemstoneExtraction {
 
     _minedGem.selected = true; // Esetlegesen másik állapotot kellene itt bevezetni, ha a 'selected' nem felel meg.
 
-    emit GemPurchased(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+    emit GemProcessing(_id, _minedGem.gemType, _minedGem.weight, _minedGem.size, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
 }
 
     function markGemAsSelected(uint _id) public payable {
@@ -156,7 +171,7 @@ contract GemstoneExtraction {
             }
         }
         return count;
-    }
+  }
 
 
 }

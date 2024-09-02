@@ -20,14 +20,6 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
           <button className="btn btn-primary" onClick={() => handleMarkAsSelected(gem.id)}>
             Buy
           </button>
-          <button
-            className="btn btn-secondary"
-            name={gem.id}
-            value={gem.price}
-            onClick={(event) => sellGem(event.target.name)}
-          >
-            Sell
-          </button>
           <button className="btn btn-secondary" onClick={() => navigate(`/gem-details/${gem.id}`)}>
             Details
           </button>

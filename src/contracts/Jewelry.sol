@@ -17,7 +17,7 @@ interface IGemstoneSelecting {
         address owner
     );
     function markGemAsUsed(uint _id) external;
-     function setPreviousGemId(uint gemId, uint previousGemId) external;
+    function setPreviousGemId(uint gemId, uint previousGemId) external;
 }
 
 contract Jewelry {
@@ -29,8 +29,8 @@ contract Jewelry {
         uint id;
         string name;
         uint[] previousGemIds;
-        string physicalDetails;  // Kombinált fizikai részletek (fém és méret)
-        bool sale;                // Különválasztva a `sale` és `processing` mezőket
+        string physicalDetails;
+        bool sale;
         bool processing;
         uint price;
         string fileURL;
@@ -55,13 +55,13 @@ contract Jewelry {
     event JewelryFinished(uint id, address owner);
 
     constructor(address _gemstoneSelectingAddress) public {
-    gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
+        gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
     }
 
     function jewelryMaking(
         string memory _name,
         uint _gemId,
-        string memory _physicalDetails,  // Elfogad kombinált fizikai részleteket
+        string memory _physicalDetails,
         bool _sale,
         uint _price,
         string memory _fileURL
@@ -74,7 +74,7 @@ contract Jewelry {
             new uint[](0), // Kezdetben üres gem ID-k tömbje
             _physicalDetails,    // Tárolja a kombinált fizikai részleteket
             _sale,
-            true,               // Kezdetben a feldolgozás `true`
+            true,
             _price,
             _fileURL,
             msg.sender,
@@ -96,15 +96,11 @@ contract Jewelry {
     }
 
     function replaceGem(uint jewelryId, uint oldGemId, uint newGemId) public {
-
-        // Állítsuk be a previousGemId-t a GemstoneSelecting szerződésben
         gemstoneSelecting.setPreviousGemId(newGemId, oldGemId);
 
-        // Adjunk hozzá az új gem ID-t az ékszer előző gem ID-k listájához
         JewelryData storage jew = jewelry[jewelryId];
         jew.previousGemIds.push(newGemId);
 
-        // Esemény kibocsátása a csere nyilvántartására
         emit GemUpdated(jewelryId, newGemId);
     }
 
@@ -181,8 +177,9 @@ contract Jewelry {
         require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
         require(_jewelry.processing == true, "Jewelry already finished");
 
-        _jewelry.processing = false;  // A feldolgozás befejezett
-        _jewelry.sale = true;  // Értékesítésre állítjuk
+        _jewelry.processing = false;
+        _jewelry.sale = true;
+
         emit JewelryFinished(_id, _jewelry.owner);
     }
 }

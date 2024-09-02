@@ -43,6 +43,45 @@ contract GemstoneSelecting {
         address gemCutter
     );
 
+    event PolishGem(
+        uint id,
+        uint minedGemId,
+        string size,
+        uint carat,
+        string colorGemType, // Combined color and gem type
+        bool forSale,
+        string fileURL,
+        uint price,
+        bool used,
+        address owner,
+        address gemCutter
+    );
+    event MarkGemAsUsed(
+        uint id,
+        uint minedGemId,
+        string size,
+        uint carat,
+        string colorGemType, // Combined color and gem type
+        bool forSale,
+        string fileURL,
+        uint price,
+        bool used,
+        address owner,
+        address gemCutter
+    );
+    event TransferGemOwnership(
+        uint id,
+        uint minedGemId,
+        string size,
+        uint carat,
+        string colorGemType, // Combined color and gem type
+        bool forSale,
+        string fileURL,
+        uint price,
+        bool used,
+        address owner,
+        address gemCutter
+    );
     constructor(address _gemstoneExtractionAddress) public {
         gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
     }
@@ -96,7 +135,7 @@ contract GemstoneSelecting {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
 
-        emit GemSelecting(
+        emit PolishGem(
             _selectedGem.id,
             _selectedGem.minedGemId,
             _selectedGem.details.size,
@@ -117,7 +156,7 @@ contract GemstoneSelecting {
         require(_selectedGem.used == false, "Gem already used");
         _selectedGem.used = true;
 
-        emit GemSelecting(
+        emit MarkGemAsUsed(
             _id,
             _selectedGem.minedGemId,
             _selectedGem.details.size,
@@ -150,7 +189,7 @@ contract GemstoneSelecting {
         _selectedGem.owner = msg.sender;
         _selectedGem.forSale = false;
 
-        emit GemSelecting(
+        emit TransferGemOwnership(
             _selectedGem.id,
             _selectedGem.minedGemId,
             _selectedGem.details.size,

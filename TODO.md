@@ -381,3 +381,13 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         • Ezért a hogyanra a válasz: tranzakciót kell a file tároláshoz
         rendelni
         ÖTLET: módosítani úgy, hiogy a mostani + egy olyan branch ahol adattárolót használ. Sebességet összemérni..
+
+
+2024.09.02. 13:47
+        Tesztelni a tranzakciókat. nyírván a processnél magas a gáz, de kisebbel nem is engedi, nem baj
+        de teszt az elejétől végéig
+
+2024.09.02. 14:28
+        Most végig megy a tranzakciók. De a valuta tranzot még ellenőrizni mindenhol jól utal -e
+        chai teszting
+        cypress?

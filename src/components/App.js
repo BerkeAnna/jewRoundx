@@ -430,6 +430,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
   render() {
     return (
       <div className='col-12 wid pt-5'>
+       
         <Router>
           {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
 

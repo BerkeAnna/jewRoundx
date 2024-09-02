@@ -76,11 +76,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.id.toString()}</td>
-          <td>{selectedGem.gemType}</td>
+          <td>{selectedGem.details}</td>
           <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
           <td>{selectedGem.owner}</td>
-          <td>{selectedGem.used.toString()}</td>
           <td className="button-container">
          
             {!selectedGem.forSale && !selectedGem.used ? (
@@ -209,11 +207,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">ID</th>
-            <th scope="col">Type</th>
+            <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
-            <th scope="col">Used - todo: delete</th>
             <th scope="col">*</th>
           </tr>
         </thead>
