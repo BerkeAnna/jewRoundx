@@ -372,3 +372,12 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.08.29.11:44
         működik a trans, de azért ellenőrizni. és szépíteni
+
+2024.08.29. 14:31
+        A blockchain biztonságosnak tűnik - tekintve az adattárolási
+        lehetőségeket
+        • De: alapvetően a blockchain nem erre van kitalálva, hanem
+        tranzakciós szemléletű (és lassú...)
+        • Ezért a hogyanra a válasz: tranzakciót kell a file tároláshoz
+        rendelni
+        ÖTLET: módosítani úgy, hiogy a mostani + egy olyan branch ahol adattárolót használ. Sebességet összemérni..
