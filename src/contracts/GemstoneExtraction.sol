@@ -125,7 +125,7 @@ contract GemstoneExtraction {
 
     function purchaseGem(uint _id) public payable{
         MinedGem memory _minedGem = minedGems[_id];
-        address payable _miner = _minedGem.owner;
+        address _miner = _minedGem.owner;
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
         require(msg.value >= _minedGem.price);
         require(_minedGem.purchased == false);
