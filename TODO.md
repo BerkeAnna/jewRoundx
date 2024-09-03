@@ -391,3 +391,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         Most végig megy a tranzakciók. De a valuta tranzot még ellenőrizni mindenhol jól utal -e
         chai teszting
         cypress?
+
+2024.09.03. 14:58
+        a chromiumba is install metamask - így műkszik
+                npm run cypress:open
+        ugyanazzal a ganache-kel az adatok miatt 
