@@ -72,13 +72,16 @@ class App extends Component {
       let ownedMinedGemCount = 0;
       for (var i = 1; i <= minedGemCount; i++) {
         const minedGems = await gemstroneExtraction.methods.minedGems(i).call();
-        if (minedGems.owner === accounts[0]) {
+        if (minedGems && minedGems.owner === accounts[0]) {
           ownedMinedGemCount++;
         }
-        this.setState({
-          minedGems: [...this.state.minedGems, minedGems]
-        });
+        if (minedGems) {
+          this.setState({
+            minedGems: [...this.state.minedGems, minedGems]
+          });
+        }
       }
+      
       this.setState({ ownedMinedGemCount, loading: false });
     } else {
       window.alert('Gemstone contract not deployed to detected network.');
