@@ -91,9 +91,9 @@ function MinedGemForm(props) {
           <input id="miningYear" name="miningYear" type="text" className="form-control" placeholder="Mining Year" required />
         </div>
         <div className="form-group mr-sm-2">
-          <input type="file" ref={fileInputRef} className="form-control" />
+          <input type="file" name="image" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" className="custom-button btn btn-primary">Add Mined Gem</button>
+        <button type="submit" name="addMinedGem" className="custom-button btn btn-primary">Add Mined Gem</button>
       </form>
     </div>
   );

@@ -26,10 +26,10 @@ const LoggedIn = () => {
       
       {role === 'Miner' && (
         <div>
-          <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
-          <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>
-          <a href="/profile"><div className='dashboardButton'><button>Profile</button></div></a><br/>
-          <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
+          <a href="/ownMinedGems"><div className='dashboardButton'><button name='myProducts'>My products</button></div></a><br/>
+          <a href="/addMinedGem"><div className='dashboardButton'><button name='gemMining'>Gem mining</button></div></a><br/>
+          <a href="/profile"><div className='dashboardButton'><button name='profile'>Profile</button></div></a><br/>
+          <a href='\'><div className='dashboardButton'><button name='logout'>Log out</button></div></a><br/>
         </div>
       )}
        {role === 'Gem Cutter' && (
