@@ -396,3 +396,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         a chromiumba is install metamask - így műkszik
                 npm run cypress:open
         ugyanazzal a ganache-kel az adatok miatt 
+
+2024.09.04. 8:26
+        reg + login test
