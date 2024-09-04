@@ -188,7 +188,7 @@ const LogIn = () => {
             <h1>Hi!</h1>
             <h1>Connect with MetaMask!</h1>
             <div className='dashboardButton'>
-              <button type="submit" onClick={onConnect}>
+              <button type="submit" name="login" onClick={onConnect}>
                 Login
               </button>
             </div>
@@ -203,19 +203,20 @@ const LogIn = () => {
                 <div>
                   <input 
                     type="password" 
+                    name= "password"
                     placeholder="Enter password" 
                     value={enteredPassword} 
                     onChange={(e) => setEnteredPassword(e.target.value)} 
                   />
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" onClick={onAuthenticate}>
+                  <button type="submit" name="dashboard" onClick={onAuthenticate}>
                     Dashboard
                   </button>
                 </div>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                 <div className='dashboardButton'>
-                  <button type="submit" onClick={onDisconnect}>
+                  <button type="submit" name="logout" onClick={onDisconnect}>
                     Logout
                   </button>
                 </div>
@@ -225,6 +226,7 @@ const LogIn = () => {
                 <div>
                   <input 
                     type="text" 
+                    name= "email"
                     placeholder="Enter email" 
                     ref={usernameRef} 
                   />
@@ -232,6 +234,7 @@ const LogIn = () => {
                 <div>
                   <input 
                     type="password" 
+                    name= "password"
                     placeholder="Enter password" 
                     ref={passwordRef} 
                   />
@@ -244,12 +247,12 @@ const LogIn = () => {
                   </select>
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" onClick={onRegister}>
+                  <button type="submit" name="register" onClick={onRegister}>
                     Register
                   </button>
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" onClick={onDisconnect}>
+                  <button type="submit" name="logout" onClick={onDisconnect}>
                     Logout
                   </button>
                 </div>
@@ -265,7 +268,7 @@ const LogIn = () => {
                   placeholder="Enter Jewelry ID" 
                 />
                 <div className='dashboardButton'>
-                  <button type="submit">Search</button>
+                  <button type="submit" name="search">Search</button>
                 </div>
               </form>
             </div>

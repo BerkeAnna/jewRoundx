@@ -33,7 +33,7 @@ class App extends Component {
     await this.loadBlockchainData();
     await this.loadBlockchainData2();
     await this.loadBlockchainData3();
-    await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
+    //await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
   }
 
   async loadWeb3() {
@@ -155,15 +155,23 @@ class App extends Component {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] });
-
+  
     const networkId = await web3.eth.net.getId();
     const networkData = UserRegistryABI.networks[networkId];
     if (networkData) {
       const userRegistry = new web3.eth.Contract(UserRegistryABI.abi, networkData.address);
       this.setState({ userRegistry });
-
+  
+      // Ellenőrizd, hogy a felhasználó regisztrálva van-e
+      const isRegistered = await userRegistry.methods.isUserRegistered(accounts[0]).call();
+      if (!isRegistered) {
+        console.error('User is not registered');
+        window.alert('User is not registered in the system');
+        return;
+      }
+  
+      // Ha regisztrálva van, kérjük le a felhasználói adatokat
       const userInfo = await userRegistry.methods.getUserInfo(accounts[0]).call();
-      console.log('User Info:', userInfo);
       this.setState({
         userInfo: {
           address: userInfo[0],
@@ -176,7 +184,7 @@ class App extends Component {
       window.alert('UserRegistry contract not deployed to detected network.');
     }
   }
-
+  
   constructor(props) {
     super(props);
     this.state = {
