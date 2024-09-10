@@ -127,7 +127,7 @@ contract GemstoneExtraction {
         MinedGem memory _minedGem = minedGems[_id];
         address _miner = _minedGem.owner;
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount);
-        require(msg.value >= _minedGem.price);
+        //require(msg.value >= _minedGem.price);
         require(_minedGem.purchased == false);
        // require(_miner != msg.sender);
         _minedGem.owner = msg.sender;

@@ -406,3 +406,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
         https://stackoverflow.com/questions/72461939/synpress-cannot-use-cy-acceptmetamaskaccess-is-not-a-function
         tesztelni
+
+2024.09.10. 16:44
+        Most a process gomb használatakor nem adja hozzá a procet a metamaskos utalós összeghez

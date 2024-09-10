@@ -270,7 +270,7 @@ class App extends Component {
     const gasLimit = 120000;
     const gasPrice = window.web3.utils.toWei('10000', 'gwei');
     this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
+    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account,/* value: price,*/ gasLimit: gasLimit, gasPrice: gasPrice })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       });
