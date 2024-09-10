@@ -1,6 +1,7 @@
 describe('DApp testing', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
+    cy.wait(2000000);
 
     cy.window().then((win) => {
       // MetaMask mockolás a before hookban
@@ -22,11 +23,13 @@ describe('DApp testing', () => {
   });
 
   it('should load the main page', () => {
+    cy.wait(300000);
     // Ellenőrizzük, hogy a főoldal betöltődött és megjelenik a címsor
     cy.get('h1').should('contain', 'Hi');
   });
 
   it('should click the login button', () => {
+    cy.wait(100000);
     // Várakozás arra, hogy a gomb megjelenjen, és utána kattintás
     cy.get('button').should('be.visible').click();
   });
@@ -36,7 +39,7 @@ describe('DApp testing', () => {
         it.skip('should complete the registration form', () => {
           // Gomb megjelenésének és kattinthatóságának ellenőrzése
           cy.get('button').should('be.visible').click();
-          cy.wait(1000);
+          cy.wait(10000);
 
           // Email mező megkeresése és kitöltése
           cy.get('input[name="email"]').should('be.visible').type('cytest2@gmail.com');
@@ -53,6 +56,7 @@ describe('DApp testing', () => {
         });
 
         it('login as miner', () => {
+          cy.wait(100000);
           cy.wait(8000)
           cy.get('button').should('be.visible').click();
           cy.get('input[name="password"]').should('be.visible').type('123456');
@@ -60,15 +64,18 @@ describe('DApp testing', () => {
           cy.get('button[name="dashboard"]').click();
         })
 
-        it('Mining a new gem', () => {
+        it.only('Mining a new gem', () => {
+          cy.wait(100000);
           cy.wait(8000);
           cy.get('button').should('be.visible').click();
+          cy.wait(10000);
           cy.get('input[name="password"]').should('be.visible').type('123456');
           cy.get('input[name="password"]').should('have.value', '123456');
           cy.wait(5000);
           cy.get('button[name="dashboard"]').should('be.visible').click();
           cy.wait(5000);
           cy.get('button[name="gemMining"]').should('be.visible').click();
+          cy.wait(10000);
           cy.get('input[name="gemType"]').should('be.visible').type('Amethyst');
           cy.get('input[name="gemType"]').should('have.value', 'Amethyst');
           cy.get('input[name="price"]').should('be.visible').type('0.000001');
@@ -93,8 +100,13 @@ describe('DApp testing', () => {
               mimeType: 'raw-amethyst.jpg'
             });
           });
-          //cy.get('button[name="addMinedGem"]').should('be.visible').click();
-        
+          cy.get('button[name="addMinedGem"]').should('be.visible').click();
+          cy.wait(80000);
+          //  CypressError: `cy.task('switchToMetamaskWindow')` failed with the following error:
+          cy.switchToMetamaskWindow();
+          cy.acceptMetamaskAccess().should("be.true");
+
+          cy.confirmMetamaskTransaction();
         })
         
  // })

@@ -399,3 +399,10 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.09.04. 8:26
         reg + login test
+
+2024.09.05. 14:46
+        npx synpress run --configFile "cypress.config.js"
+        ezzel elindul.....
+
+        https://stackoverflow.com/questions/72461939/synpress-cannot-use-cy-acceptmetamaskaccess-is-not-a-function
+        tesztelni
