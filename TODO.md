@@ -405,4 +405,4 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         ezzel elindul.....
 
         https://stackoverflow.com/questions/72461939/synpress-cannot-use-cy-acceptmetamaskaccess-is-not-a-function
-        tesztelni
+        tesztelni 
