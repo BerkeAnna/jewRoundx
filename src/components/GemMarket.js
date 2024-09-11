@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, transferGemOwnership }) {
+function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markNewOwner, markGemAsUsed, polishGem, transferGemOwnership }) {
   const navigate = useNavigate();
   const gemsForSale = selectedGems.filter(gem => gem.forSale);
 

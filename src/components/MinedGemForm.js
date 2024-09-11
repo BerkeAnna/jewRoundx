@@ -4,10 +4,10 @@ import axios from 'axios';
 
 function MinedGemForm(props) {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null); // Using ref for file input
+  const fileInputRef = useRef(null);
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
@@ -28,7 +28,7 @@ function MinedGemForm(props) {
         fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
       } catch (err) {
         console.error("Error uploading file: ", err);
-        return; // Exit if there's an error
+        return;
       }
     }
 
@@ -38,18 +38,18 @@ function MinedGemForm(props) {
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
+    const size = `${depth}x${height}x${width}`; // Méret string
+    const details = `Weight: ${weight}, Size: ${size}`; // details kombinált adat
+
     const miningLocation = formData.get('miningLocation').toString();
     const miningYear = formData.get('miningYear').toString();
 
     try {
-      // Wait for the MetaMask transaction to complete
-      await props.gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, false);
-
-      // After the transaction is confirmed, navigate to the desired page
+      await props.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, false);
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }
+
     navigate('/loggedIn');
   };
 
@@ -62,7 +62,7 @@ function MinedGemForm(props) {
       margin: 'auto', 
       textAlign: 'center', 
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-      marginTop: '60px' // Added marginTop for additional space
+      marginTop: '60px'
     }}>
       <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>

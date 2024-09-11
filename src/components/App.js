@@ -214,8 +214,9 @@ class App extends Component {
     this.purchaseGem = this.purchaseGem.bind(this);
     this.processingGem = this.processingGem.bind(this);
     this.gemSelecting = this.gemSelecting.bind(this);
-    this.markGemAsSelected = this.markGemAsSelected.bind(this);
+    this.markNewOwner = this.markNewOwner.bind(this);
     this.markGemAsUsed = this.markGemAsUsed.bind(this);
+    this.markGemAsSelected = this.markGemAsSelected.bind(this);
     this.polishGem = this.polishGem.bind(this);
     this.jewelryMaking = this.jewelryMaking.bind(this);
     this.buyJewelry = this.buyJewelry.bind(this);
@@ -233,13 +234,12 @@ class App extends Component {
     window.location.reload(false);
   }
 
-  gemMining(gemType, weight, size, price, miningLocation, miningYear, fileUrl, purchased) {
+  gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
     this.setState({ loading: true });
     if (this.state.gemstroneExtraction) {
       this.state.gemstroneExtraction.methods.gemMining(
         gemType,
-        weight,
-        size,
+        details,
         price,
         miningLocation,
         miningYear,
@@ -286,6 +286,20 @@ class App extends Component {
       });
   }
 
+  markNewOwner(id, price) {
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
+    this.setState({ loading: true });
+    this.state.gemstroneExtraction.methods.markNewOwner(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false });
+      })
+      .catch(error => {
+        console.error("Error in markNewOwner: ", error);
+        this.setState({ loading: false });
+      });
+  }
+
   markGemAsSelected(id, price) {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('8000', 'gwei');
@@ -299,6 +313,7 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
+
 
   markGemAsUsed(id) {
     const gasLimit = 90000;
@@ -466,7 +481,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   gemSelecting={this.gemSelecting}
                   purchaseGem={this.purchaseGem}
                   processingGem={this.processingGem}
-                  markGemAsSelected={this.markGemAsSelected}
+                  markNewOwner={this.markNewOwner}
                   markGemAsUsed={this.markGemAsUsed}
                   account={this.state.account}
                   sellGem={this.sellGem}
@@ -484,7 +499,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   gemSelecting={this.gemSelecting}
                   purchaseGem={this.purchaseGem}
                   processingGem={this.processingGem}
-                  markGemAsSelected={this.markGemAsSelected}
+                  markNewOwner={this.markNewOwner}
                   markGemAsUsed={this.markGemAsUsed}
                   account={this.state.account}
                   sellGem={this.sellGem}

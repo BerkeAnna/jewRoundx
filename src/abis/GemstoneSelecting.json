@@ -17796,12 +17796,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2244759Bf6d118Fe1504A7C0F03FFAC0036705E5",
-      "transactionHash": "0xef3cf0fabf0d477763504b02fd7e9c6e0caadee3d3f08593a50fc86c9a5d4847"
+      "address": "0x5E2dc05049717D03b725C53d87D1c44eEd04a3Ab",
+      "transactionHash": "0xe82ff597f84fc6fec83d52f4aa771c2cc30ce3c3c6bde96de6f0803051430abf"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-09-10T14:39:47.686Z",
+  "updatedAt": "2024-09-11T07:20:44.734Z",
   "devdoc": {
     "methods": {}
   },

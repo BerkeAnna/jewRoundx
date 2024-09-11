@@ -13299,12 +13299,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x260077711E5002444b0b4Ef1fFfC16177Dc4C0C9",
-      "transactionHash": "0x7b7519aa9dd79c7f8c259757ff48b039541b0dca886a6d51ca356d49b94654fd"
+      "address": "0x5b032745670BB6d7F573138Fc8c52CB7187F6611",
+      "transactionHash": "0xd98bbd803f1319a52a7c207613e13b0272bdbf07e98f5a96e2ea5363798782e7"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-09-10T14:39:47.680Z",
+  "updatedAt": "2024-09-11T07:20:44.727Z",
   "devdoc": {
     "methods": {}
   },

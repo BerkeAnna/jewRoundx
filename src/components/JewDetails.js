@@ -125,8 +125,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
             )}
             <p><strong>ID:</strong> {gem.id.toString()}</p>
             <p><strong>Type:</strong> {gem.gemType}</p>
-            <p><strong>Weight:</strong> {gem.weight.toString()} mm</p>
-            <p><strong>Size:</strong> {gem.size.toString()} mm</p>
+            <p><strong>Details:</strong> {gem.details.toString()}</p>
             <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
             <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
             <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>

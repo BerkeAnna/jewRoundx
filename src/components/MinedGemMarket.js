@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem }) {
+function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markNewOwner, markGemAsUsed, polishGem }) {
   const navigate = useNavigate();
   const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner !== account);
 
   const handleMarkAsSelected = (gemId, price) => {
-    markGemAsSelected(gemId, price);
-    navigate(`/gem-select/${gemId}`);
+    markNewOwner(gemId, price);
+    /*navigate(`/gem-select/${gemId}`);*/
   };
 
   const renderSelectedGems = () => {

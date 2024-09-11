@@ -61,17 +61,55 @@ function GemDetails({ selectedGems, minedGems, account }) {
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
         <p><strong>Type:</strong> {gem.gemType}</p>
-        <p><strong>Weight:</strong> {gem.weight.toString()}</p>
-        <p><strong>Size:</strong> {gem.size.toString()}</p>
+        <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
         <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Miner:</strong> {gem.owner}</p>
+        <p><strong>Miner:</strong> {gem.miner}</p>
+        <p><strong>Owner:</strong> {gem.owner}</p>
+
+        
       </div>
     ));
   };
+
+  
+const renderTransactionDetails = (events, gemId) => {
+  const gemEvents = events.filter(event => {
+      const eventId = parseInt(event.returnValues.id);  // Convert the BigNumber to a regular number
+      return eventId === parseInt(gemId);
+  });
+
+  //console.log("Filtered Events for ID:", gemId, gemEvents);  // Ellenőrizze a szűrt eseményeket
+
+  if (gemEvents.length === 0) {
+      return <p>No transaction events found for this item.</p>;
+  }
+
+  return (
+    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+          {gemEvents.map((event, index) => {
+              const { owner, gemCutter, jeweler, newOwner } = event.returnValues;  // Destructure the needed fields
+
+              return (
+                  <li key={index} style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
+                    <strong>Event:</strong> {event.event}<br />
+                      <strong>Transaction Hash:</strong> {event.transactionHash}<br />
+                      <strong>Block Number:</strong> {event.blockNumber}<br />
+                      {owner && <div><strong>Owner:</strong> {owner}</div>}
+                      {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
+                      {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
+                      {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+                      {/*<strong>Data:</strong> {JSON.stringify(event.returnValues)}<br />*/}
+                  </li>
+              );
+          })}
+      </ul>
+  );
+};
+
 
   return (
     <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>

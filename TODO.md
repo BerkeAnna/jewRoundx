@@ -408,4 +408,12 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         tesztelni
 
 2024.09.10. 16:44
-        Most a process gomb használatakor nem adja hozzá a procet a metamaskos utalós összeghez
+        Most a process gomb használatakor nem adja hozzá a procet a metamaskos utalós összeghez -ez jóóó, így jó 
+
+2024.09.10. 21:47
+        CSak minerként találja meg, mintha nem látná ownerként a minert --- mert neOwner a neve!! javítani ownerre a neOwnert!!!!
+        és megcsinálni, hogy vásálásnál csak kerüljön át az én listámba és utána legyen a select form
+
+2024.09.11. 9:32
+        Gem-details oldalon a tranzakciókat nem írja ki.
+        dátumot a tranzakcióhoz
