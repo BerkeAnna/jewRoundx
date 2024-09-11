@@ -53,6 +53,7 @@ contract Jewelry {
     event JewelryBought(uint id, address payable newOwner);
     event GemUpdated(uint jewelryId, uint newGemId);
     event JewelryFinished(uint id, address owner);
+    event JewelrySale(uint id, address owner);
 
     constructor(address _gemstoneSelectingAddress) public {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
@@ -182,4 +183,15 @@ contract Jewelry {
 
         emit JewelryFinished(_id, _jewelry.owner);
     }
+
+    function markedAsSale(uint _id) public payable {
+        JewelryData storage _jewelry = jewelry[_id];
+        require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
+        require(_jewelry.sale == false, "Jewelry is already on the market");
+
+        _jewelry.sale = !_jewelry.sale ;
+
+        emit JewelrySale(_id, _jewelry.owner);
+    }
+
 }

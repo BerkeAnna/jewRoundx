@@ -224,6 +224,7 @@ class App extends Component {
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
     this.updateGem = this.updateGem.bind(this);  // Bind the updateGem method
     this.markedAsFinished = this.markedAsFinished.bind(this);
+    this.markedAsSale = this.markedAsSale.bind(this);
     this.replaceGem = this.replaceGem.bind(this);
 
 }
@@ -341,7 +342,19 @@ class App extends Component {
             this.setState({ loading: false });
         });
 }
-
+markedAsSale(id) {
+    const gasLimit = 90000;
+    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
+    this.setState({ loading: true });
+    this.state.makeJew.methods.markedAsSale(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+        .once('receipt', (receipt) => {
+            this.setState({ loading: false });
+        })
+        .catch(error => {
+            console.error("Error in mark as sale: ", error);
+            this.setState({ loading: false });
+        });
+  }
 
 
   gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
@@ -531,6 +544,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   markGemAsSelected={this.markGemAsSelected}
                   markGemAsUsed={this.markGemAsUsed}
                   markedAsFinished={this.markedAsFinished}
+                  markedAsSale={this.markedAsSale}
                   account={this.state.account}
                   sellGem={this.sellGem}
                   polishGem={this.polishGem} 

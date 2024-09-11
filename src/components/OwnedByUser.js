@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished }) {
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished, markedAsSale }) {
   const navigate = useNavigate();
 
   const handleMarkAsSelected = (gemId) => {
@@ -18,6 +18,13 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     markedAsFinished(gemId);
     navigate(`/ownMinedGems`);
   };
+
+  const handleMarkedAsSale = (gemId) => {
+    markedAsSale(gemId);
+    navigate(`/ownMinedGems`);
+  };
+
+  
 
 
   // Filter gems based on the owner's account
@@ -134,6 +141,15 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn btn-primary">
             Repair
           </button>
+          {jewelry.sale ? (
+          <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn btn-primary">
+            Remove from market
+          </button>
+          ):(
+            <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn btn-primary">
+            Sale
+          </button>
+          )}
         </td>
          
       </tr>
