@@ -20,16 +20,16 @@ function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem
             <p className="card-text">Price: {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
             <p className="card-text">Owner: {minedGem.owner}</p>
             <button className="btn btn-primary" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>
-              Select Gem
+              Buy
             </button>
-            <button
+           {/* <button
               className="btn btn-secondary"
               name={minedGem.id}
               value={minedGem.price}
               onClick={(event) => sellGem(event.target.name)}
             >
               Sell
-            </button>
+            </button>*/}
             <button  className="btn btn-secondary" onClick={() => navigate(`/gem-details/${minedGem.id}`)}>
                 Details
               </button>

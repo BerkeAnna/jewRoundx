@@ -417,3 +417,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.09.11. 9:32
         Gem-details oldalon a tranzakciókat nem írja ki.
         dátumot a tranzakcióhoz
+
+        10:51
+        Ha készítek egy ékszert automatikusan a sale is true., De ha megveszem false. El kell dönteni, hogy hova legyen a gomb
+
+        Első körben, ha megveszem maradjon false. Ha csinálom true. Ha megvettem és úgy döntök eladfom legyen egy gomb.....

@@ -25,8 +25,8 @@ contract GemstoneSelecting {
         string fileURL;
         uint price;
         bool used;
-        address owner;
-        address gemCutter;
+        address payable owner;
+        address payable gemCutter;
     }
 
     event GemSelecting(
@@ -39,8 +39,8 @@ contract GemstoneSelecting {
         string fileURL,
         uint price,
         bool used,
-        address owner,
-        address gemCutter
+        address payable owner,
+        address payable gemCutter
     );
 
     event PolishGem(
@@ -53,8 +53,8 @@ contract GemstoneSelecting {
         string fileURL,
         uint price,
         bool used,
-        address owner,
-        address gemCutter
+        address payable owner,
+        address payable gemCutter
     );
     event MarkGemAsUsed(
         uint id,
@@ -66,8 +66,8 @@ contract GemstoneSelecting {
         string fileURL,
         uint price,
         bool used,
-        address owner,
-        address gemCutter
+        address payable owner,
+        address payable gemCutter
     );
     event TransferGemOwnership(
         uint id,
@@ -79,8 +79,8 @@ contract GemstoneSelecting {
         string fileURL,
         uint price,
         bool used,
-        address owner,
-        address gemCutter
+        address payable owner,
+        address payable gemCutter
     );
     constructor(address _gemstoneExtractionAddress) public {
         gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
@@ -181,10 +181,13 @@ contract GemstoneSelecting {
         return count;
     }
 
-    function transferGemOwnership(uint _id) public {
-        SelectedGem storage _selectedGem = selectedGems[_id];
-        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
-        require(_selectedGem.owner != msg.sender, "You already own this gem");
+    function transferGemOwnership(uint _id) public payable {
+         SelectedGem storage _selectedGem = selectedGems[_id];
+        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Érvénytelen drágakő azonosító");
+        require(_selectedGem.owner != msg.sender, "Már a tiéd ez a drágakő");
+        require(msg.value >= _selectedGem.price, "Nincs elegendő pénz");
+
+        _selectedGem.owner.transfer(msg.value);
 
         _selectedGem.owner = msg.sender;
         _selectedGem.forSale = false;
@@ -194,7 +197,7 @@ contract GemstoneSelecting {
             _selectedGem.minedGemId,
             _selectedGem.details.size,
             _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.details.colorGemType, 
             _selectedGem.forSale,
             _selectedGem.fileURL,
             _selectedGem.price,
@@ -202,7 +205,7 @@ contract GemstoneSelecting {
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
-    }
+}
 
     // Public getter for selectedGems
     function getSelectedGem(uint _id) public view returns (

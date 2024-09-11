@@ -369,11 +369,11 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
-  transferGemOwnership(id) {
+  transferGemOwnership(id, price) {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('8000', 'gwei');
     this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.transferGemOwnership(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
+    this.state.gemstroneSelecting.methods.transferGemOwnership(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
       .once('receipt', (receipt) => {
         this.setState({ loading: false });
       })
@@ -382,6 +382,7 @@ class App extends Component {
         this.setState({ loading: false });
       });
   }
+  
 
 
   jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL) {  // physicalDetails, a combined metal and size

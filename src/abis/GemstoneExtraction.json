@@ -17607,12 +17607,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x7771246EEA2d9090ADB12cd6dEb296570dC53C36",
-      "transactionHash": "0x4e8809d86b68997bd7f550b5ae546f0c64569a09a45dcb1916d2dd0ac76c46f8"
+      "address": "0x528432B48fF72A5B22c40102995dCCB5d0Db536d",
+      "transactionHash": "0xb0f27a5063e34ebb1e26556a67e2ae4768764ffa7fb150c5b03725cbe382442a"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-09-11T07:20:44.721Z",
+  "updatedAt": "2024-09-11T09:40:17.349Z",
   "devdoc": {
     "methods": {}
   },
