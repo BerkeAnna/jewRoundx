@@ -179,7 +179,7 @@ contract Jewelry {
         require(_jewelry.processing == true, "Jewelry already finished");
 
         _jewelry.processing = false;
-        _jewelry.sale = true;
+        _jewelry.sale = false;
 
         emit JewelryFinished(_id, _jewelry.owner);
     }
@@ -187,7 +187,6 @@ contract Jewelry {
     function markedAsSale(uint _id) public payable {
         JewelryData storage _jewelry = jewelry[_id];
         require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
-        require(_jewelry.sale == false, "Jewelry is already on the market");
 
         _jewelry.sale = !_jewelry.sale ;
 

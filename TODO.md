@@ -424,7 +424,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         Első körben, ha megveszem maradjon false. Ha csinálom true. Ha megvettem és úgy döntök eladfom legyen egy gomb.....
 
 2024.09.11. 13:14
-        a jewelrynél a sale gomb nem működik
+        a jewelrynél a sale gomb nem működik +
 
         14:23
-        megfordítani. A jewnél false legyen elsőnek. majd utána mehet a csere
+        megfordítani. A jewnél false legyen elsőnek. majd utána mehet a csere +

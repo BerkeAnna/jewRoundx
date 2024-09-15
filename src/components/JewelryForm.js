@@ -45,7 +45,7 @@ function JewelryForm(props) {
     const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
     const physicalDetails = `${metal} ${size}`; // Combine metal and size into one string
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
-    const sale = true;
+    const sale = false;
 
     if (!name) {
       console.error("Name is required.");
