@@ -11,16 +11,16 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
 
   const renderGemsForSale = () => {
     return gemsForSale.map((gem, key) => (
-      <div key={key} className="card" style={{ width: '30%', marginBottom: '20px', padding: '20px', backgroundColor: '#FFF7F3', margin: '10px', textAlign: 'center', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
-        <img src={gem.fileURL} className="card-img-top" alt={`${gem.gemType}`} style={{ width: '100%', height: '150px', objectFit: 'contain', marginTop: '20px' }} />
+      <div key={key} className="card market-card">
+        <img src={gem.fileURL} className="card-img-top card-img-top-market"  />
         <div className="card-body">
           <h5 className="card-title">{gem.gemType}</h5>
           <p className="card-text">Price: {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
           <p className="card-text">Owner: {gem.owner}</p>
-          <button className="btn btn-primary" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
+          <button className="btn" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
             Buy
           </button>
-          <button className="btn btn-secondary" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
             Details
           </button>
         </div>
@@ -32,7 +32,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
     <div className="gem-market">
       <p>&nbsp;</p>
       <h2>Gem market</h2>
-      <div className="gem-cards" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div className="gem-cards">
         {renderGemsForSale()}
       </div>
       <div className='homeButton'>

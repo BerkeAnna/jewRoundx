@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Market.css';
 
 function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markNewOwner, markGemAsUsed, polishGem }) {
   const navigate = useNavigate();
@@ -13,13 +14,13 @@ function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem
   const renderSelectedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
-        <div key={key} className="card" style={{ width: '30%', marginBottom: '20px', padding: '20px', backgroundColor: '#FFF7F3', margin: '10px', textAlign: 'center', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
-       <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} style={{ width: '100%', height: '150px', objectFit: 'contain', marginTop: '20px' }} />
+        <div key={key} className="card market-card" >
+       <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} />
           <div className="card-body">
             <h5 className="card-title">{minedGem.gemType}</h5>
             <p className="card-text">Price: {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
             <p className="card-text">Owner: {minedGem.owner}</p>
-            <button className="btn btn-primary" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>
+            <button className="btn" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>
               Buy
             </button>
            {/* <button
@@ -30,7 +31,7 @@ function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem
             >
               Sell
             </button>*/}
-            <button  className="btn btn-secondary" onClick={() => navigate(`/gem-details/${minedGem.id}`)}>
+            <button  className="btn" onClick={() => navigate(`/gem-details/${minedGem.id}`)}>
                 Details
               </button>
           </div>
@@ -43,7 +44,7 @@ function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem
     <div className="gem-market">
       <p>&nbsp;</p>
       <h2>Mined Gem market</h2>
-      <div className="gem-cards" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div className="gem-cards" >
         {renderSelectedGems()}
       </div>
       <div className='homeButton'>
