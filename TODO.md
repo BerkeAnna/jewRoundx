@@ -428,3 +428,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
         14:23
         megfordítani. A jewnél false legyen elsőnek. majd utána mehet a csere +
+
+2024.09.16. 11:19
+        megcsinálni, h oldalra lapozhatóak legyenek a used kövek, ne egymás alatt a detailsben

@@ -109,7 +109,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const renderMinedGems = () => {
     const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
     return filteredMinedGems.map((gem, key) => (
-      <div key={key} className="details-card">
+      <div key={key} className="card">
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>
@@ -138,7 +138,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const renderSelectedGems = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
     return filteredSelectedGems.map((gem, key) => (
-      <div key={key} className="details-card" >
+      <div key={key} className="card" >
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
@@ -167,7 +167,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
-      <div key={key} className="details-card">
+      <div key={key} className="card">
         <h2>Jewelry Details</h2>
         {jewelry.fileURL && (
           <div>

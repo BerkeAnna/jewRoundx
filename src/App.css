@@ -135,13 +135,18 @@ input[type='password'] {
 }
 
 .card {
-  background-color: #c0a698;
+  background-color: #FFF7F3;
   border-radius: 20px;
   overflow: hidden;
-  margin: 10px;
-  width: 30%; /* Ensure the cards are always the same size */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 60px; /* Added marginTop for additional space */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjusted shadow for consistency */
 }
+
 
 .card-img-top {
   width: 100%;

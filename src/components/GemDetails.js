@@ -12,7 +12,7 @@ function GemDetails({ selectedGems, minedGems, account }) {
 
   const renderSelectedGems = () => {
     return gemSelected.map((gem, key) => (
-      <div key={key} className="details-card" >
+      <div key={key} className="card" >
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
@@ -36,7 +36,7 @@ function GemDetails({ selectedGems, minedGems, account }) {
 
   const renderMinedGems = () => {
     return minedGem.map((gem, key) => (
-      <div key={key} className="details-card">
+      <div key={key} className="card">
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>

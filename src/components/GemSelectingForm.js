@@ -59,43 +59,34 @@ function GemSelectingForm(props) {
   };
 
   return (
-    <div className="card" style={{ 
-      marginBottom: '20px', 
-      padding: '20px', 
-      backgroundColor: '#FFF7F3', 
-      width: '90%', 
-      margin: 'auto', 
-      textAlign: 'center', 
-      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-      marginTop: '60px' // Added marginTop for additional space
-    }}>
+    <div className="card">
       <h1>Select Gem</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="height" name="height" type="text" className="form-control" placeholder="Height" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="width" name="width" type="text" className="form-control" placeholder="Width" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="carat" name="carat" type="text" className="form-control" placeholder="Carat" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="color" name="color" type="text" className="form-control" placeholder="Color" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Gem Type" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input type="file" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" className="custom-button btn btn-primary">Select Gem</button>
+        <button type="submit" className="button">Select Gem</button>
       </form>
     </div>
   );

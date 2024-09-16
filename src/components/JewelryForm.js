@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/Forms.css';
 
 function JewelryForm(props) {
   const navigate = useNavigate();
@@ -58,40 +59,31 @@ function JewelryForm(props) {
   };
 
   return (
-    <div className="card" style={{ 
-      marginBottom: '20px', 
-      padding: '20px', 
-      backgroundColor: '#FFF7F3', 
-      width: '90%', 
-      margin: 'auto', 
-      textAlign: 'center',
-      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-      marginTop: '60px' // Added marginTop for additional space
-    }}>
+    <div className="card">
       <h1>Add jewelry</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input type="file" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" className="custom-button btn btn-primary">Make jewelry</button>
+        <button type="submit" className="button">Make jewelry</button>
       </form>
     </div>
   );

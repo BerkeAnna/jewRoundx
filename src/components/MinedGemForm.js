@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/Forms.css';
 
 function MinedGemForm(props) {
   const navigate = useNavigate();
@@ -54,46 +55,37 @@ function MinedGemForm(props) {
   };
 
   return (
-    <div className="card" style={{ 
-      marginBottom: '20px', 
-      padding: '20px', 
-      backgroundColor: '#FFF7F3', 
-      width: '90%', 
-      margin: 'auto', 
-      textAlign: 'center', 
-      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-      marginTop: '60px'
-    }}>
+    <div className="card">
       <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Type" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="weight" name="weight" type="text" className="form-control" placeholder="Weight" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="height" name="height" type="text" className="form-control" placeholder="Height" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="width" name="width" type="text" className="form-control" placeholder="Width" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="miningLocation" name="miningLocation" type="text" className="form-control" placeholder="Mining Location" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input id="miningYear" name="miningYear" type="text" className="form-control" placeholder="Mining Year" required />
         </div>
-        <div className="form-group mr-sm-2">
+        <div className="form-group">
           <input type="file" name="image" ref={fileInputRef} className="form-control" />
         </div>
-        <button type="submit" name="addMinedGem" className="custom-button btn btn-primary">Add Mined Gem</button>
+        <button type="submit" name="addMinedGem" className="button">Add Mined Gem</button>
       </form>
     </div>
   );
