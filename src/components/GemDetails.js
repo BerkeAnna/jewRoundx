@@ -1,5 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/Details.css';
+
 
 function GemDetails({ selectedGems, minedGems, account }) {
   const { id } = useParams();
@@ -10,20 +12,12 @@ function GemDetails({ selectedGems, minedGems, account }) {
 
   const renderSelectedGems = () => {
     return gemSelected.map((gem, key) => (
-      <div key={key} className="card" style={{ 
-        marginBottom: '20px', 
-        padding: '10px', 
-        backgroundColor: '#FFF7F3', 
-        width: '80%', 
-        margin: 'auto', 
-        textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-      }}>
+      <div key={key} className="details-card" >
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />
+              <img src={gem.fileURL} alt="Picture" className='details-image' />
             </a>
           </div>
         )}
@@ -42,20 +36,12 @@ function GemDetails({ selectedGems, minedGems, account }) {
 
   const renderMinedGems = () => {
     return minedGem.map((gem, key) => (
-      <div key={key} className="card" style={{ 
-        marginBottom: '20px', 
-        padding: '10px', 
-        backgroundColor: '#FFF7F3', 
-        width: '80%', 
-        margin: 'auto', 
-        textAlign: 'center', 
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-      }}>
+      <div key={key} className="details-card">
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />
+              <img src={gem.fileURL} alt="Picture" className='details-image' />
             </a>
           </div>
         )}
@@ -89,12 +75,12 @@ const renderTransactionDetails = (events, gemId) => {
   }
 
   return (
-    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+    <ul className='no-bullet-list'>
           {gemEvents.map((event, index) => {
               const { owner, gemCutter, jeweler, newOwner } = event.returnValues;  // Destructure the needed fields
 
               return (
-                  <li key={index} style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
+                  <li key={index} className='details-list-item'>
                     <strong>Event:</strong> {event.event}<br />
                       <strong>Transaction Hash:</strong> {event.transactionHash}<br />
                       <strong>Block Number:</strong> {event.blockNumber}<br />
@@ -112,7 +98,7 @@ const renderTransactionDetails = (events, gemId) => {
 
 
   return (
-    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+    <div className="details-details-container pt-5">
       <h1>Gem Details</h1>
       <div className="pt-5">
         {renderMinedGems()}

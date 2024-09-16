@@ -2,30 +2,30 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import GemstoneExtraction from '../abis/GemstoneExtraction.json';
-import GemSelecting from '../abis/GemstoneSelecting.json';
-import Jewelry from '../abis/Jewelry.json';
-import UserRegistryABI from '../abis/UserRegistry.json'; // Importáld az ABI-t
-import Navbar from './Navbar';
-import Profile from './Profile';
-import GemDetails from './GemDetails';
-import JewDetails from './JewDetails';
-import Main from './Main';
-import Dashboard from './Dashboard';
-import MinedGemsList from './MinedGemList';
-import MinedGemForm from './MinedGemForm';
-import JewelryForm from './JewelryForm';
-import OwnedByUser from './OwnedByUser';
-import GemSelectingForm from './GemSelectingForm';
-import MinedGemMarket from './MinedGemMarket';
-import GemMarket from './GemMarket';
-import JewMarket from './JewMarket';
-import JewProcessing from './JewProcessing';
-import JewChangeGem from './JewChangeGem';
-import LoggedIn from './LoggedIn';
-import Repair from './Repair';
-import LogIn from './LogIn';
-import ProtectedRoute from '../ProtectedRoute'; // Helyes import útvonal
+import GemstoneExtraction from './abis/GemstoneExtraction.json';
+import GemSelecting from './abis/GemstoneSelecting.json';
+import Jewelry from './abis/Jewelry.json';
+import UserRegistryABI from './abis/UserRegistry.json'; // Importáld az ABI-t
+import Navbar from './components/Navbar';
+import Profile from './components/Profile';
+import GemDetails from './components/GemDetails';
+import JewDetails from './components/JewDetails';
+import Main from './components/Main';
+import Dashboard from './components/Dashboard';
+import MinedGemsList from './components/MinedGemList';
+import MinedGemForm from './components/MinedGemForm';
+import JewelryForm from './components/JewelryForm';
+import OwnedByUser from './components/OwnedByUser';
+import GemSelectingForm from './components/GemSelectingForm';
+import MinedGemMarket from './components/MinedGemMarket';
+import GemMarket from './components/GemMarket';
+import JewMarket from './components/JewMarket';
+import JewProcessing from './components/JewProcessing';
+import JewChangeGem from './components/JewChangeGem';
+import LoggedIn from './components/LoggedIn';
+import Repair from './components/Repair';
+import LogIn from './components/LogIn';
+import ProtectedRoute from './ProtectedRoute'; // Helyes import útvonal
 
 class App extends Component {
   async componentWillMount() {

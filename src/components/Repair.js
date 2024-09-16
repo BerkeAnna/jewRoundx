@@ -72,7 +72,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Picture" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
             </a>
           </div>
         )}

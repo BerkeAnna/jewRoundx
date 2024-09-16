@@ -70,17 +70,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
-  const cardStyle = {
-    marginBottom: '20px',
-    marginTop: '20px',
-    padding: '10px',
-    backgroundColor: '#FFF7F3',
-    width: '80%',
-    margin: 'auto',
-    textAlign: 'center',
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-  };
-
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
       const eventId = parseInt(event.returnValues.id);
@@ -92,7 +81,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
 
     return (
-      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+      <ul className='details-list'>
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
           const blockNumber = event.blockNumber;
@@ -101,7 +90,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
             : 'Loading...';
 
           return (
-            <li key={index} style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
+            <li key={index} className='details-list-item'>
               <strong>Event:</strong> {event.event}<br />
               <strong>Transaction Hash:</strong> {event.transactionHash}<br />
               <strong>Block Number:</strong> {blockNumber}<br />
@@ -120,12 +109,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const renderMinedGems = () => {
     const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
     return filteredMinedGems.map((gem, key) => (
-      <div key={key} className="card" style={cardStyle}>
+      <div key={key} className="details-card">
         <h2>Mined Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Picture" className='details-image' />
             </a>
           </div>
         )}
@@ -149,12 +138,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const renderSelectedGems = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
     return filteredSelectedGems.map((gem, key) => (
-      <div key={key} className="card" style={cardStyle}>
+      <div key={key} className="details-card" >
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Feltöltött kép" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Picture"className='details-image' />
             </a>
           </div>
         )}
@@ -178,12 +167,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
-      <div key={key} className="card" style={cardStyle}>
+      <div key={key} className="details-card">
         <h2>Jewelry Details</h2>
         {jewelry.fileURL && (
           <div>
             <a href={jewelry.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={jewelry.fileURL} alt="Jewelry" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={jewelry.fileURL} alt="Jewelry" className='details-image' />
             </a>
           </div>
         )}
@@ -205,7 +194,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   return (
-    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+    <div className="details-details-container pt-5">
       <h1>Gem Details</h1>
       <div className="pt-5">
         {renderMinedGems()}
