@@ -188,7 +188,7 @@ const LogIn = () => {
             <h1>Hi!</h1>
             <h1>Connect with MetaMask!</h1>
             <div className='dashboardButton'>
-              <button type="submit" name="login" onClick={onConnect}>
+              <button type="submit" name="login" onClick={onConnect} className="btn">
                 Login
               </button>
             </div>
@@ -210,13 +210,13 @@ const LogIn = () => {
                   />
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" name="dashboard" onClick={onAuthenticate}>
+                  <button type="submit" name="dashboard" onClick={onAuthenticate} className="btn"> 
                     Dashboard
                   </button>
                 </div>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                 <div className='dashboardButton'>
-                  <button type="submit" name="logout" onClick={onDisconnect}>
+                  <button type="submit" name="logout" onClick={onDisconnect} className="btn">
                     Logout
                   </button>
                 </div>
@@ -247,12 +247,12 @@ const LogIn = () => {
                   </select>
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" name="register" onClick={onRegister}>
+                  <button type="submit" name="register" onClick={onRegister} className="btn">
                     Register
                   </button>
                 </div>
                 <div className='dashboardButton'>
-                  <button type="submit" name="logout" onClick={onDisconnect}>
+                  <button type="submit" name="logout" onClick={onDisconnect} className="btn">
                     Logout
                   </button>
                 </div>
@@ -268,7 +268,7 @@ const LogIn = () => {
                   placeholder="Enter Jewelry ID" 
                 />
                 <div className='dashboardButton'>
-                  <button type="submit" name="search">Search</button>
+                  <button type="submit" name="search" className="btn">Search</button>
                 </div>
               </form>
             </div>

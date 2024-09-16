@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../styles/Details.css';
 
 function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract,replaceGem  }) {
   const { id } = useParams();
@@ -34,16 +35,6 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     fetchJewelryDetails();
   }, [id, jewelryContract]);
 
-  const cardStyle = {
-    marginBottom: '20px', // Növelt margó a kártyák között
-    marginTop: '20px',
-    padding: '10px',
-    backgroundColor: '#FFF7F3',
-    width: '80%',
-    margin: 'auto',
-    textAlign: 'center',
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
-  };
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => (
@@ -55,7 +46,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
+          <button onClick={() => handleRepair(gem.id)} className="btn">
             Select
           </button>
         </td>
@@ -67,12 +58,12 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredSelectedGems.map((gem, key) => (
-      <div key={key} className="card" style={cardStyle}>
+      <div key={key} className="card">
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '20px' }} />
+              <img src={gem.fileURL} alt="Picture" className='details-image' />
             </a>
           </div>
         )}
@@ -92,7 +83,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
 
 
   return (
-    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+    <div className="details-details-container pt-5">
       <h1>Processing Jewelry</h1>
       <h3>Choose the next gem</h3>
       

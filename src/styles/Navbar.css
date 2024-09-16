@@ -1,0 +1,61 @@
+.navbar-custom {
+    background-color: #343a40; /* Matches the bg-dark class */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for better separation */
+  }
+  
+  .navbar-brand {
+    color: white;
+    margin-right: 0;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-left: 15px;
+  }
+  
+  .text-white {
+    color: white;
+    text-decoration: none;
+  }
+  .text-white:hover {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .text-acc {
+    color: #511611;
+  }
+  
+  .text-acc:hover {
+    color: #FFF7F3;
+    text-decoration: none;
+  }
+  
+  #account {
+    font-weight: bold;
+  }
+  
+  @media (min-width: 576px) {
+    .d-sm-none {
+      display: none !important;
+    }
+  
+    .d-sm-block {
+      display: block !important;
+    }
+  }
+  
+  .px-3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .ml-2 {
+    margin-left: 0.5rem;
+  }
+  

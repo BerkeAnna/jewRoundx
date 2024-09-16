@@ -42,7 +42,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
           <td>{minedGem.owner}</td>
           <td>
-            <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())}>
+            <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())} className="btn">
               Process
             </button>
           </td>
@@ -61,13 +61,14 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
           <td>{minedGem.owner}</td>
           <td className="button-container">
-            <button onClick={() => handleMarkAsSelected(minedGem.id)}>
+            <button onClick={() => handleMarkAsSelected(minedGem.id)} className="btn">
               Select Gem
             </button>
             <button
               name={minedGem.id}
               value={minedGem.price}
               onClick={(event) => sellGem(event.target.name)}
+              className="btn"
             >
               Sell
             </button>
@@ -90,29 +91,31 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
          
             {!selectedGem.forSale && !selectedGem.used ? (
               <>
-                <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                   Details
                 </button>
-                <button onClick={() => handleMarkAsUsed(selectedGem.id)}>
+                <button onClick={() => handleMarkAsUsed(selectedGem.id)} className="btn">
                   Make jewelry
                 </button>
                 <button
                 id={selectedGem.id}
                 value={selectedGem.price}
                 onClick={() => polishGem(selectedGem.id)}
+                className="btn"
               >
                 ForSale
               </button>
               </>
             ) : (
               <div>
-                <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>
+                <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                 Details
                 </button>
                 <button
                   id={selectedGem.id}
                   value={selectedGem.price}
                   onClick={() => polishGem(selectedGem.id)}
+                  className="btn"
                 >
                   Remove from market
                 </button>
@@ -135,18 +138,18 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
         <td>{jewelry.owner}</td>
         <td className="button-container">
-          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
+          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
             Details
           </button>
-          <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn btn-primary">
+          <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
             Repair
           </button>
           {jewelry.sale ? (
-          <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn btn-primary">
+          <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
             Remove from market
           </button>
           ):(
-            <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn btn-primary">
+            <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
             Sale
           </button>
           )}
@@ -170,13 +173,13 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
         <td>{jewelry.owner}</td>
         <td className="button-container">
-          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)}>
+          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
             Details
           </button>
-          <button onClick={() => navigate(`/jew-processing/${jewelry.id}`)}>
+          <button onClick={() => navigate(`/jew-processing/${jewelry.id}`)} className="btn">
             Add gem
           </button>
-          <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn btn-primary">
+          <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn">
             Finish
           </button>
         </td>

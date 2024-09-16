@@ -19,6 +19,7 @@
   .details-details-container {
     max-width: 1200px;
     margin: auto;
+    text-align: center;
   }
   
   .no-bullet-list {

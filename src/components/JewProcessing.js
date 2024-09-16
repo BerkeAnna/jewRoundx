@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../styles/Details.css'
 
 function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
   const { id } = useParams();
@@ -21,7 +22,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
         <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
+          <button onClick={() => handleRepair(gem.id)} className="btn">
             Select
           </button>
         </td>
@@ -31,7 +32,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
   };
 
   return (
-    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
+    <div className="details-details-container pt-5" >
       <h1>Processing Jewelry</h1>
       <table className="table">
         <thead>
