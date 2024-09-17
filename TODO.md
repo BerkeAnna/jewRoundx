@@ -434,3 +434,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.09.17. 12:35
         a repairnál minden követ kilistáz, ami létezik
+
+2024.09.17. 16:16
+        ,most lépeget, de a teljes gem listát nézi, így több kattintás után jutunk el az ürestől azelejére
