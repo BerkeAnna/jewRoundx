@@ -209,7 +209,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           ←
         </span>
         <div className="card-container">
-        {renderSelectedGems()[currentGemIndex]}
+          {renderSelectedGems()[currentGemIndex]}
         </div>
         <span className="arrow" onClick={handleNextGem}>
           →
