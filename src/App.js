@@ -563,7 +563,6 @@ replaceGem(jewelryId, oldGemId, newGemId) {
               </ProtectedRoute>
             } />
             <Route path="/jew-details/:id" element={
-              <ProtectedRoute>
                 <JewDetails 
                   selectedGems={this.state.selectedGems}
                   minedGems={this.state.minedGems}
@@ -574,7 +573,6 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   gemstoneSelectingContract={this.state.gemstroneSelecting}
                   gemstoneExtractionContract={this.state.gemstroneExtraction}
                 />
-              </ProtectedRoute>
             } />
              <Route path="/jew-processing/:id" element={
               <ProtectedRoute>

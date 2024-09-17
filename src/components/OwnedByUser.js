@@ -141,9 +141,13 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
             Details
           </button>
+          {!jewelry.sale ? (
           <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
             Repair
           </button>
+          ):(
+            <div></div>
+          )}
           {jewelry.sale ? (
           <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
             Remove from market

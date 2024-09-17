@@ -258,7 +258,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         </span>
        
         </div>
-        <div className="pt-5">
+        <div className="card-container pt-5">
         {renderJewelry()}
         </div>
     </div>

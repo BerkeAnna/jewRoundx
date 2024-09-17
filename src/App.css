@@ -144,6 +144,7 @@ input[type='password'] {
 }
 
 
+
 .card-img-top {
   width: 100%;
   height: 150px;
@@ -154,6 +155,14 @@ input[type='password'] {
   padding: 15px;
   color: #343a40;
 }
+.profile-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 30vh; /* A teljes képernyő magassága */
+}
+
 
 .card-title {
   font-size: 1.25rem;

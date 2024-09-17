@@ -19,6 +19,7 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
 };
   
 
+const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -35,7 +36,7 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
   }, [id, jewelryContract]);
 
   const renderSelectedGems = () => {
-    return selectedGems.map((gem, key) => (
+    return ownedSelectedGems.map((gem, key) => (
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>

@@ -433,11 +433,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         megcsinálni, h oldalra lapozhatóak legyenek a used kövek, ne egymás alatt a detailsben
 
 2024.09.17. 12:35
-        a repairnál minden követ kilistáz, ami létezik
+        a repairnál minden követ kilistáz, ami létezik és a useré +
 
 2024.09.17. 16:16
-        ,most lépeget, de a teljes gem listát nézi, így több kattintás után jutunk el az ürestől azelejére
+        ,most lépeget, de a teljes gem listát nézi, így több kattintás után jutunk el az ürestől azelejére +
 
         16:23
-                a jewelry adatokat odatenni a JEW-DETAILS OLDALRA
+                a jewelry adatokat odatenni a JEW-DETAILS OLDALRA +
+
+        19:38 
+                csekkolni, hogy több add gemmel hogy néz ki a jew oldal
                 

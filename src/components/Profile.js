@@ -18,7 +18,7 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
   };
 
   return (
-    <div className='pt-5' style={{ textAlign: 'center' }}>
+    <div className='pt-5 profile-card-container' style={{ textAlign: 'center' }}>
       <h1>Hi {userInfo ? userInfo.username : 'xy'}!</h1>
      
       <div className="card " >
@@ -39,7 +39,9 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
         <p>Owned made jewelry: {ownedMadeJewelryCount}</p>
         <p>Currently owned jewelry: {ownedJewelryCount}</p>
       </div>
-     
+      <div className='homeButton'>
+        <button onClick={() => navigate(`/loggedIn`)}>HOME PAGE</button>
+      </div>
     
     </div>
   );
