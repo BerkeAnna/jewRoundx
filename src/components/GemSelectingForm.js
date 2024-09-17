@@ -59,6 +59,8 @@ function GemSelectingForm(props) {
   };
 
   return (
+    
+  <div className="card-container">
     <div className="card">
       <h1>Select Gem</h1>
       <form onSubmit={handleSubmit}>
@@ -89,6 +91,7 @@ function GemSelectingForm(props) {
         <button type="submit" className="button">Select Gem</button>
       </form>
     </div>
+  </div>
   );
 }
 

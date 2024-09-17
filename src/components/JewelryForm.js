@@ -59,32 +59,34 @@ function JewelryForm(props) {
   };
 
   return (
-    <div className="card">
-      <h1>Add jewelry</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
-        </div>
-        <div className="form-group">
-          <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
-        </div>
-        <div className="form-group">
-          <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
-        </div>
-        <div className="form-group">
-          <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
-        </div>
-        <div className="form-group">
-          <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
-        </div>
-        <div className="form-group">
-          <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
-        </div>
-        <div className="form-group">
-          <input type="file" ref={fileInputRef} className="form-control" />
-        </div>
-        <button type="submit" className="button">Make jewelry</button>
-      </form>
+    <div className="card-container">
+      <div className="card">
+        <h1>Add jewelry</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
+          </div>
+          <div className="form-group">
+            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
+          </div>
+          <div className="form-group">
+            <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
+          </div>
+          <div className="form-group">
+            <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
+          </div>
+          <div className="form-group">
+            <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
+          </div>
+          <div className="form-group">
+            <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
+          </div>
+          <div className="form-group">
+            <input type="file" ref={fileInputRef} className="form-control" />
+          </div>
+          <button type="submit" className="button">Make jewelry</button>
+        </form>
+      </div>
     </div>
   );
 }

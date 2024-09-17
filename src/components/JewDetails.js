@@ -231,10 +231,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   return (
-    <div className="details-details-container">
-      <h1>Gem Details</h1>
+    <div className="details-details-container pt-5">
+      <h1>Jewelry Details</h1>
 
-      <div className="details-row">
+      <div className="details-row pt-5">
         <span className="arrow" onClick={handlePrevGem}>
           ←
         </span>
@@ -250,7 +250,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <span className="arrow" onClick={handlePrevGem}>
           ←
         </span>
-        <div className="card-container">
+        <div className="card-container pt-5">
           {renderSelectedGems()[currentGemIndex]}
         </div>
         <span className="arrow" onClick={handleNextGem}>
