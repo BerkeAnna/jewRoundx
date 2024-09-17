@@ -178,7 +178,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-        <p><strong>previousGemId:</strong> {gem.previousGemId.toString()}</p>
+        <p><strong>Previous gem ID:</strong> {gem.previousGemId.toString()}</p>
 
         <hr />
         <h3>Transaction Details</h3>
@@ -216,7 +216,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
         <p><strong>Metal:</strong> {jewelry.metal}</p>
-        <p><strong>Details:</strong> {jewelry.physicalDetails.toString()} mm</p>
+        <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>

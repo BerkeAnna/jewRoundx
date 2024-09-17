@@ -40,7 +40,7 @@ function MinedGemForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; // Méret string
-    const details = `Weight: ${weight}, Size: ${size}`; // details kombinált adat
+    const details = `Carat: ${weight} ct, Size: ${size} mm`; // details kombinált adat
 
     const miningLocation = formData.get('miningLocation').toString();
     const miningYear = formData.get('miningYear').toString();
@@ -54,8 +54,9 @@ function MinedGemForm(props) {
     navigate('/loggedIn');
   };
 
-  return (
-    <div className="card">
+  return ( 
+  <div className="card-container">
+    <div className="card ">
       <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -88,6 +89,7 @@ function MinedGemForm(props) {
         <button type="submit" name="addMinedGem" className="button">Add Mined Gem</button>
       </form>
     </div>
+  </div>
   );
 }
 

@@ -35,12 +35,12 @@ function GemSelectingForm(props) {
 
     const color = formData.get('color').toString();
     const gemType = formData.get('gemType').toString();
-    const colorGemType = `${color} ${gemType}`; // Combine color and gem type
+    const colorGemType = `Color: ${color} Type: ${gemType}`; // Combine color and gem type
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width}`; // Combine dimensions into a size string
+    const size = `${depth}x${height}x${width} mm`; // Combine dimensions into a size string
     const carat = formData.get('carat').toString();
 
     if (!size) {
