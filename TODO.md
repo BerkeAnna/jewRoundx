@@ -431,3 +431,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.09.16. 11:19
         megcsinálni, h oldalra lapozhatóak legyenek a used kövek, ne egymás alatt a detailsben
+
+2024.09.17. 12:35
+        a repairnál minden követ kilistáz, ami létezik
