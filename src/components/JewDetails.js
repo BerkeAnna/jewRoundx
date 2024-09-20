@@ -120,7 +120,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       .filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)))
       .reverse();
     if (filteredMinedGems.length === 0) {
-      return [<p>No Mined Gems Available</p>];  // Return as an array to ensure it's iterable
+      return [<p>No Mined Gems Available</p>];
     }
   
     return filteredMinedGems.map((gem, key) => (
@@ -172,7 +172,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>ID:</strong> {gem.id.toString()}</p>
         <p><strong>Size:</strong> {gem.size.toString()} mm</p>
         <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
-        <p><strong>Color and Gem Type:</strong> {gem.colorGemType}</p>
+        <p><strong>Details:</strong> {gem.colorGemType}</p>
         <p><strong>For Sale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
@@ -215,7 +215,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
-        <p><strong>Metal:</strong> {jewelry.metal}</p>
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>

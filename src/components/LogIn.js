@@ -185,8 +185,21 @@ const LogIn = () => {
       <div>
         {!isConnected ? (
           <div>
-            <h1>Hi!</h1>
-            <h1>Connect with MetaMask!</h1>
+            
+            <div className='pt-5'>
+              <h3>Search jewelry with ID</h3>
+              <form onSubmit={handleSubmit}>
+                <input 
+                  type="text" 
+                  value={jewelryId} 
+                  onChange={handleChange} 
+                  placeholder="Enter Jewelry ID" 
+                />
+                <div className='dashboardButton'>
+                  <button type="submit" name="search" className="btn">Search</button>
+                </div>
+              </form>
+            </div>
             <div className='dashboardButton'>
               <button type="submit" name="login" onClick={onConnect} className="btn">
                 Login
@@ -258,20 +271,7 @@ const LogIn = () => {
                 </div>
               </div>
             )}
-            <div className='pt-5'>
-              <h3>Search jewelry with ID</h3>
-              <form onSubmit={handleSubmit}>
-                <input 
-                  type="text" 
-                  value={jewelryId} 
-                  onChange={handleChange} 
-                  placeholder="Enter Jewelry ID" 
-                />
-                <div className='dashboardButton'>
-                  <button type="submit" name="search" className="btn">Search</button>
-                </div>
-              </form>
-            </div>
+            
           </div>
         )}
       </div>

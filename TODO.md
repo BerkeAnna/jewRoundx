@@ -445,9 +445,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 csekkolni, hogy több add gemmel hogy néz ki a jew oldal +
 
         20:46
-                mined gemnél forsale kell????
-                ajewnél a detaILST JAVÍTANI, HOGY JÓL NÉZZEN KI
-                gem-detailsnál tranzakciók kiírása
+                mined gemnél forsale kell???? ---
+                ajewnél a detaILST JAVÍTANI, HOGY JÓL NÉZZEN KI 
+                gem-detailsnál tranzakciók kiírása + 
                 form kártyák középre +
                 a jewelry formnál valami nem jóóóó--- javítani- nincs középen +
                 
