@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/Details.css';
+import '../../styles/Details.css';
 
 function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract,replaceGem  }) {
   const { id } = useParams();
@@ -42,7 +42,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
       <tr key={key}>
         <td>{gem.id.toString()}</td>
         <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()}</td>
+        <td>{gem.carat.toString()} ct</td>
         <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>

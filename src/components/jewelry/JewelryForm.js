@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/Forms.css';
+import '../../styles/Forms.css';
 
 function JewelryForm(props) {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function JewelryForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; // Combine dimensions into a size string
-    const physicalDetails = `Metal: ${metal} ${size}`; // Combine metal and size into one string TODO size???
+    const physicalDetails = `Metal: ${metal} - ${size}`; // Combine metal and size into one string TODO size???
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = false;
 

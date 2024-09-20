@@ -451,3 +451,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 form kártyák középre +
                 a jewelry formnál valami nem jóóóó--- javítani- nincs középen +
                 
+
+2024.09.20. 13:29
+        Add gem gomb jön, utána a finish, és úgy tovább +
+
+        Repairhez, changegem, stb nem írja ki az emitteket.
+        Servicekbe szétszedni

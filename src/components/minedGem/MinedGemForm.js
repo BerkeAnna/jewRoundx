@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/Forms.css';
+import '../../styles/Forms.css';
 
 function MinedGemForm(props) {
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ function MinedGemForm(props) {
     const miningYear = formData.get('miningYear').toString();
 
     try {
+      // Ezen a ponton props.gemMining-et kell meghívni
       await props.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, false);
     } catch (error) {
       console.error("Error in gemMining: ", error);
@@ -53,6 +54,9 @@ function MinedGemForm(props) {
 
     navigate('/loggedIn');
   };
+
+
+
 
   return ( 
   <div className="card-container">

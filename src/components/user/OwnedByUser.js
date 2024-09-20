@@ -42,9 +42,9 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
           <td>{minedGem.owner}</td>
           <td>
-            <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())} className="btn">
-              Process
-            </button>
+          <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())} className="btn">
+            Process
+          </button>
           </td>
         </tr>
       )

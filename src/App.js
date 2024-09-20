@@ -6,26 +6,8 @@ import GemstoneExtraction from './abis/GemstoneExtraction.json';
 import GemSelecting from './abis/GemstoneSelecting.json';
 import Jewelry from './abis/Jewelry.json';
 import UserRegistryABI from './abis/UserRegistry.json'; // Importáld az ABI-t
-import Navbar from './components/Navbar';
-import Profile from './components/Profile';
-import GemDetails from './components/GemDetails';
-import JewDetails from './components/JewDetails';
-import Main from './components/Main';
-import Dashboard from './components/Dashboard';
-import MinedGemsList from './components/MinedGemList';
-import MinedGemForm from './components/MinedGemForm';
-import JewelryForm from './components/JewelryForm';
-import OwnedByUser from './components/OwnedByUser';
-import GemSelectingForm from './components/GemSelectingForm';
-import MinedGemMarket from './components/MinedGemMarket';
-import GemMarket from './components/GemMarket';
-import JewMarket from './components/JewMarket';
-import JewProcessing from './components/JewProcessing';
-import JewChangeGem from './components/JewChangeGem';
-import LoggedIn from './components/LoggedIn';
-import Repair from './components/Repair';
-import LogIn from './components/LogIn';
-import ProtectedRoute from './ProtectedRoute'; // Helyes import útvonal
+import Navbar from './components/common/Navbar';
+import AppRoutes from './routes/Routes';
 
 class App extends Component {
   async componentWillMount() {
@@ -291,15 +273,22 @@ class App extends Component {
     const gasLimit = 90000;
     const gasPrice = window.web3.utils.toWei('8000', 'gwei');
     this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.markNewOwner(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markNewOwner: ", error);
-        this.setState({ loading: false });
-      });
+  
+    this.state.gemstroneExtraction.methods.markNewOwner(id).send({ 
+      from: this.state.account, 
+      value: price, 
+      gasLimit: gasLimit, 
+      gasPrice: gasPrice 
+    })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false });
+    })
+    .catch(error => {
+      console.error("Error in markNewOwner: ", error);
+      this.setState({ loading: false });
+    });
   }
+  
 
   markGemAsSelected(id, price) {
     const gasLimit = 90000;
@@ -470,6 +459,36 @@ replaceGem(jewelryId, oldGemId, newGemId) {
   render() {
     return (
       <div className='col-12 wid pt-5'>
+        <Router>
+          {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
+          <AppRoutes 
+            state={this.state} 
+            gemMining={this.gemMining}
+            gemSelecting={this.gemSelecting} 
+            purchaseGem={this.purchaseGem}
+            markNewOwner={this.markNewOwner}
+            markGemAsSelected={this.markGemAsSelected}
+            processingGem = {this.processingGem}
+            markGemAsUsed = {this.markGemAsUsed}
+            polishGem = {this.polishGem}
+            jewelryMaking = {this.jewelryMaking}
+            buyJewelry = {this.buyJewelry}
+            refreshPage = {this.refreshPage}
+            transferGemOwnership = {this.transferGemOwnership}
+            updateGem = {this.updateGem}
+            markedAsFinished = {this.markedAsFinished}
+            markedAsSale = {this.markedAsSale}
+            replaceGem = {this.replaceGem}
+
+          />
+
+        </Router>
+      </div>
+    );
+  }
+  /*render() {
+    return (
+      <div className='col-12 wid pt-5'>
        
         <Router>
           {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
@@ -613,7 +632,7 @@ replaceGem(jewelryId, oldGemId, newGemId) {
         </Router>
       </div>
     );
-  }
+  }*/
 }
 
 export default App;

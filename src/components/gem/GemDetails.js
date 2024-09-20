@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/Details.css';
+import '../../styles/Details.css';
 
 function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams(); // current gem id from URL
@@ -74,8 +74,8 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Jeweler:</strong> {gem.owner}</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
+        <p><strong>Owner:</strong> {gem.owner}</p>
 
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, gem.id)}

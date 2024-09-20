@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/Details.css'
+import '../../styles/Details.css'
 
 function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
   const { id } = useParams();
@@ -18,7 +18,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
       <tr key={key}>
         <td>{gem.id.toString()}</td>
         <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()}</td>
+        <td>{gem.carat.toString()} ct</td>
         <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>

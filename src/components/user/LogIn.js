@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
-import { firestore, auth } from "../firebase";
+import { firestore, auth } from "../../firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { sha3 } from 'web3-utils';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
