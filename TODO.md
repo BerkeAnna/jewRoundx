@@ -447,7 +447,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         20:46
                 mined gemnél forsale kell????
                 ajewnél a detaILST JAVÍTANI, HOGY JÓL NÉZZEN KI
-                gem-detailsnál tranzakciók
+                gem-detailsnál tranzakciók kiírása
                 form kártyák középre +
                 a jewelry formnál valami nem jóóóó--- javítani- nincs középen +
                 

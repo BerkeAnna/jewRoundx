@@ -559,6 +559,8 @@ replaceGem(jewelryId, oldGemId, newGemId) {
                   minedGems={this.state.minedGems}
                   gemSelecting={this.gemSelecting}
                   account={this.state.account} 
+                  gemstoneSelectingContract={this.state.gemstroneSelecting}
+                  gemstoneExtractionContract={this.state.gemstroneExtraction}
                 />
               </ProtectedRoute>
             } />
