@@ -18,10 +18,10 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
   };
 
   return (
-    <div className='pt-5 profile-card-container' style={{ textAlign: 'center' }}>
+    <div className='pt-5 card-background profile-card-container' style={{ textAlign: 'center' }}>
       <h1>Hi {userInfo ? userInfo.username : 'xy'}!</h1>
      
-      <div className="card " >
+      <div className="card profile-card" >
       <h3>Your data:</h3>
         {userInfo && (
           <div>
@@ -32,7 +32,7 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
         )}
       </div>
 
-      <div className="card">
+      <div className="card profile-card">
         <h3>Gems summary data:</h3>
         <p>All the mined gem mined so far: {ownedMinedGemCount}</p>
         <p>Cutted Gem Count: {cuttedGemCount}</p>

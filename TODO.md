@@ -492,5 +492,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 a kicsrélt gemet ne llsitázzuk ki a repair oldalon.
                 jew-datail oldalon id sorrendebn írja ki őkeet, nem hozzáadás sorrendjében
                 gem processnél a pricet továbítja -> nem kell +
-                Amikor a select gemre kattintok először mindig a usedgemet teszi true-ra de ezt inkább a kész gombnála form végén csiélja??
+                Amikor a select gemre kattintok először mindig a usedgemet teszi true-ra de ezt inkább a kész gombnála form végén csinálja??
                 Profil javítás, kiegészítés
+                Event nevek javítása
+                Selectgem repaired változót befejezni

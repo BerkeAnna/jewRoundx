@@ -35,9 +35,9 @@ function JewMarket({ jewelry, account, buyJewelry }) {
   };
 
   return (
-    <div className="jew-market">
+    <div className="jew-market card-background">
       <p>&nbsp;</p>
-      <h2>Jew market :P</h2>
+      <h2>Jewelry market</h2>
       <div className="jew-cards" >
         {renderJewelryItems()}
       </div>

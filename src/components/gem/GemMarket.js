@@ -29,7 +29,7 @@ function GemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sel
   };
 
   return (
-    <div className="gem-market">
+    <div className="gem-market card-background">
       <p>&nbsp;</p>
       <h2>Gem market</h2>
       <div className="gem-cards">

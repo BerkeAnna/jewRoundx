@@ -1,6 +1,6 @@
 body {
-  background-color: #faede7;
-  color: #343a40;
+  background-color: rgb(103, 113, 122);
+  color: rgb(221, 199, 161);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@ body {
 }
 
 .navbar-custom {
-  background-color: #805c49 !important;
+  background-color: rgb(23, 25, 35) !important;
 }
 
 .wid {
@@ -46,54 +46,54 @@ body {
 }
 
 #tables .table th {
-  color: white;
-  background-color: #9d7b69;
+  color: rgb(221, 199, 161);
+  background-color:  rgb(23, 25, 35);
 }
 
 #tables .table thead th {
-  color: white;
-  background-color: #9d7b69;
+  color: rgb(221, 199, 161);
+  background-color: rgb(23, 25, 35);
 }
 
 #tables .table td {
-  color: white;
-  background-color: #c0a698;
+  color: rgb(221, 199, 161);
+  background-color:  rgb(29, 39, 66);
 }
 
 
 #tables button,
 .custom-button {
-  background-color: #805c49;
-  color: white;
-  border: none;
+  background-color: rgb(29, 39, 66);
+  color: rgb(221, 199, 161);
+  border: 3px solid rgb(221, 199, 161);
   border-radius: 20px;
 }
 
 #tables button:hover,
 .custom-button:hover {
-  background-color: #511611;
-  border: none;
+  background-color: rgb(29, 39, 66);
+  border: 3px solid rgb(29, 39, 66);
   border-radius: 20px;
 }
 
 .homeButton button {
-  background-color: #805c49;
-  color: white;
-  border: none;
+  background-color: rgb(29, 39, 66);
+  color:  rgb(221, 199, 161);
+  border: 3px solid rgb(221, 199, 161);
   border-radius: 20px;
 }
 
 .homeButton button:hover {
-  background-color: #511611;
-  color: white;
-  border: none;
+  background-color: rgb(221, 199, 161);
+  color: rgb(29, 39, 66);
+  border: 3px solid rgb(29, 39, 66);
   border-radius: 20px;
 }
 
 .dashboardButton button {
-  background-color: #805c49;
-  color: white;
-  border: none;
+  background-color: rgb(23, 25, 35);;
+  color:  rgb(221, 199, 161);
+  border: 3px solid rgb(221, 199, 161);
   border-radius: 20px;
   width: 450px;
   text-align: center;
@@ -101,9 +101,9 @@ body {
 }
 
 .dashboardButton button:hover {
-  background-color: #511611;
-  color: white;
-  border: none;
+  background-color:  rgb(221, 199, 161);
+  color: rgb(23, 25, 35);
+  border: 3px solid rgb(23, 25, 35);
   border-radius: 20px;
 }
 
@@ -130,8 +130,21 @@ input[type='password'] {
   justify-content: center;
 }
 
+.card-background{
+  background: rgb(23, 25, 35);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
 .card {
-  background-color: #FFF7F3;
+  background: linear-gradient(to bottom, rgb(89, 116, 140),rgb(23, 25, 35));
   border-radius: 20px;
   overflow: hidden;
   margin: 20px auto;
@@ -153,7 +166,7 @@ input[type='password'] {
 
 .card-body {
   padding: 15px;
-  color: #343a40;
+  color: rgb(221, 199, 161);
 }
 .profile-card-container {
   display: flex;
@@ -161,6 +174,19 @@ input[type='password'] {
   justify-content: center;
   align-items: center;
   height: 30vh; 
+}
+
+.profile-card{
+  background: linear-gradient(to bottom,  rgb(29, 39, 66), rgb(23, 25, 35));
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -174,17 +200,18 @@ input[type='password'] {
 }
 
 .btn {
-  background-color: #805c49;
-  color: white;
-  border: none;
+  background-color: rgb(29, 39, 66);
+  color:  rgb(221, 199, 161);
+  border: 3px solid  rgb(221, 199, 161);
   border-radius: 20px;
   margin-right: 5px;
   margin-bottom: 5px;
 }
 
 .btn:hover {
-  background-color: #511611;
-  border: none;
+  background-color:rgb(29, 39, 66);
+  color: rgb(221, 199, 161);
+  border: 3px solid rgb(29, 39, 66);
   border-radius: 20px;
 }
 
@@ -195,16 +222,16 @@ input[type='password'] {
 }
 
 button {
-  background-color: #805c49;
-  color: white;
-  border: none;
+  background-color: rgb(29, 39, 66);
+  color:  rgb(221, 199, 161);
+  border: 3px solid  rgb(221, 199, 161);
   border-radius: 20px;
   padding: 5px 10px;
 }
 
 button:hover {
-  background-color: #511611;
-  color: white;
-  border: none;
+  background-color:rgb(29, 39, 66);
+  color: rgb(221, 199, 161);
+  border: 3px solid rgb(29, 39, 66);
   border-radius: 20px;
 }

@@ -6,12 +6,12 @@ class Navbar extends Component {
     const { account, username } = this.props;
     return (
       <nav className="navbar navbar-custom fixed-top p-0 shadow">
-        <a className="navbar-brand col-sm-3 col-md-2 mr-0" href="/loggedIn">
+        <a className="navbar-brand text-nav col-sm-3 col-md-2 mr-0" href="/loggedIn">
           JewRx
         </a>
         <ul className="navbar-nav px-3 justify-content-center flex-row">
           <li className="nav-item">
-            <a href="/loggedIn" className="text-white">Home</a>
+            <a href="/loggedIn" className="text-nav">Home</a>
           </li>
         </ul>
         <ul className="navbar-nav px-3">

@@ -1,10 +1,10 @@
 .navbar-custom {
-    background-color: #343a40; /* Matches the bg-dark class */
+  background-color: rgb(23, 25, 35) !important;/* Matches the bg-dark class */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for better separation */
   }
   
   .navbar-brand {
-    color: white;
+    color:  rgb(221, 199, 161);
     margin-right: 0;
   }
   
@@ -18,21 +18,21 @@
     margin-left: 15px;
   }
   
-  .text-white {
-    color: white;
+  .text-nav {
+    color:  rgb(221, 199, 161);
     text-decoration: none;
   }
-  .text-white:hover {
-    color: white;
+  .text-nav:hover {
+    color:  rgb(102, 79, 61);
     text-decoration: none;
   }
   
   .text-acc {
-    color: #511611;
+    color:  rgb(221, 199, 161);
   }
   
   .text-acc:hover {
-    color: #FFF7F3;
+    color:  rgb(102, 79, 61);
     text-decoration: none;
   }
   

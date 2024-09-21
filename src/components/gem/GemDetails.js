@@ -149,7 +149,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   };
 
   return (
-    <div className="details-details-container pt-5">
+    <div className="details-details-container card-background pt-5">
       <h1>Gem Details</h1>
       <div className="card-container pt-5">{renderMinedGems()}</div>
       <div className=" card-container pt-5">{renderSelectedGems()}</div>
