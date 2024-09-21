@@ -39,14 +39,13 @@ function MinedGemForm(props) {
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width}`; // Méret string
-    const details = `Carat: ${weight} ct, Size: ${size} mm`; // details kombinált adat
+    const size = `${depth}x${height}x${width}`; 
+    const details = `Carat: ${weight} ct, Size: ${size} mm`; 
 
     const miningLocation = formData.get('miningLocation').toString();
     const miningYear = formData.get('miningYear').toString();
 
     try {
-      // Ezen a ponton props.gemMining-et kell meghívni
       await props.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, false);
     } catch (error) {
       console.error("Error in gemMining: ", error);

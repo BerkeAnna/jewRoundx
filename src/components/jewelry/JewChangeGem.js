@@ -8,12 +8,11 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
   
   
   const handleRepair = (newGemId) => {
-    //const oldGemId = parseInt(id); // Assuming this is the jewelryId from useParams
     
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsUsed(newGemId);
     replaceGem(id, oldGemId, newGemId);
-    updateGem(oldGemId, newGemId);
+   // updateGem(oldGemId, newGemId);
     navigate(`/jew-details/${id}`);
 
 };

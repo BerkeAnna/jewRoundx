@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importáld a useNavigate hookot
+import { useNavigate } from 'react-router-dom'; 
 
 
 const Dashboard = ({ account }) => {
-  const [jewelryId, setJewelryId] = useState(''); // Létrehozunk egy állapotot az ID tárolására
-  const navigate = useNavigate(); // Hook használata az átirányításhoz
+  const [jewelryId, setJewelryId] = useState(''); 
+  const navigate = useNavigate(); 
 
-  // Kezeljük az ID beviteli mező változásait
   const handleChange = (e) => {
     setJewelryId(e.target.value);
   };
 
-  // Kezeljük a keresés gombra kattintást
   const handleSubmit = (e) => {
-    e.preventDefault(); // Megakadályozzuk az alapértelmezett űrlap beküldési viselkedését
-    navigate(`/jew-details/${jewelryId}`); // Átirányítjuk a felhasználót a megfelelő oldalra
+    e.preventDefault(); 
+    navigate(`/jew-details/${jewelryId}`); 
   };
 
   return (

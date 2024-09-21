@@ -16,75 +16,55 @@ class GemSelectingService {
     }
   }
 
-  markGemAsSelected(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markGemAsSelected: ", error);
-        this.setState({ loading: false });
-      });
+
+async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account) {
+  if (!this.contract) {
+    await this.loadContract(); // betöltjük a szerződést
   }
-
-  markGemAsUsed(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.markGemAsUsed(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markas: ", error);
-        this.setState({ loading: false });
-      });
-  }
-
-  gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true });
-
-    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price).send({ from: this.state.account })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in gemSelecting: ", error);
-        this.setState({ loading: false });
-      });
+  return this.contract.methods.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price).send({ from: account })
+   
 }
 
-polishGem(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.polishGem(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
+async polishGem(id, account) {
+  if (!this.contract) {
+    await this.loadContract(); // betöltjük a szerződést
   }
+  return this.contract.methods.polishGem(id).send({
+    from: account
+  });
+  
+}
 
-  transferGemOwnership(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.transferGemOwnership(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in transferGemOwnership: ", error);
-        this.setState({ loading: false });
-      });
+  async markGemAsUsed(id, account) {
+    if (!this.contract) {
+      await this.loadContract(); // betöltjük a szerződést
+    }
+    return this.contract.methods.markGemAsUsed(id).send({
+      from: account
+    });
+    
   }
   
+async transferGemOwnership(id, price, account) {
+  if (!this.contract) {
+    await this.loadContract(); // betöltjük a szerződést
+  }
 
-  // További metódusok...
+  if (!account) {
+    throw new Error("No valid account address provided.");
+  }
+
+  const gasLimit = 300000;  
+  const gasPrice = await this.web3.eth.getGasPrice(); 
+
+  return this.contract.methods.transferGemOwnership(id).send({ 
+    from: account, 
+    value: price, 
+    gas: gasLimit, 
+    gasPrice: gasPrice 
+  });
+}
+
 }
 
 export default new GemSelectingService();

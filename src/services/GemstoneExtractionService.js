@@ -4,6 +4,7 @@ import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 class GemstoneExtractionService {
   constructor() {
     this.web3 = new Web3(window.ethereum);
+    this.contract = null; 
   }
 
   async loadContract() {
@@ -16,105 +17,68 @@ class GemstoneExtractionService {
     }
   }
 
-  async getMinedGems(account) {
-    const minedGemCount = await this.contract.methods.minedGemCount().call();
-    let minedGems = [];
-    for (let i = 1; i <= minedGemCount; i++) {
-      const gem = await this.contract.methods.minedGems(i).call();
-      if (gem.owner === account) {
-        minedGems.push(gem);
-      }
+  async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased, account) {
+    if (!this.contract) {
+      await this.loadContract(); // betöltjük a szerződést
     }
-    return minedGems;
-  }
-
-  async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
-    this.setState({ loading: true });
-    if (this.state.gemstroneExtraction) {
-      this.state.gemstroneExtraction.methods.gemMining(
-        gemType,
-        details,
-        price,
-        miningLocation,
-        miningYear,
-        fileUrl,
-        purchased
-      ).send({ from: this.state.account })
-        .once('receipt', (receipt) => {
-          console.log('Receipt:', receipt);
-          this.loadBlockchainData();
-          this.loadBlockchainData2();
-          this.loadBlockchainData3();
-          this.loadBlockchainData4();
-          this.setState({ loading: false });
-        })
-        .on('error', (error) => {
-          console.error("Error in gemMining: ", error);
-          this.setState({ loading: false });
-        });
-    } else {
-      console.error("gemstroneExtraction is not defined");
-      this.setState({ loading: false });
-    }
+    return this.contract.methods.gemMining(
+      gemType,
+      details,
+      price,
+      miningLocation,
+      miningYear,
+      fileUrl,
+      purchased
+    ).send({ from: account });
   }
 
   
-  purchaseGem(id, price) {
-    const gasLimit = 120000;
-    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
+  async purchaseGem(id,  account) {
+    if (!this.contract) {
+       await this.loadContract(); // betöltjük a szerződést
+    }
+ 
+    return this.contract.methods.purchaseGem(id).send({
+       from: account
+    });
+ }
+ 
+  async processingGem(id, price, account) {
+    if (!this.contract) {
+      await this.loadContract(); // betöltjük a szerződést
+   }
+   const priceInEther = window.web3.utils.fromWei(price.toString(), 'ether');
     this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account,/* value: price,*/ gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
+    return this.contract.methods.processingGem(id).send({
+      from: account,
+      value: priceInEther 
+   });
   }
 
-  processingGem(id, price) {
-    const gasLimit = 120000;
-    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
-  }
-  markNewOwner(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-  
-    this.state.gemstroneExtraction.methods.markNewOwner(id).send({ 
-      from: this.state.account, 
-      value: price, 
-      gasLimit: gasLimit, 
-      gasPrice: gasPrice 
-    })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false });
-    })
-    .catch(error => {
-      console.error("Error in markNewOwner: ", error);
-      this.setState({ loading: false });
+  async markNewOwner(id, price, account) {
+    if (!this.contract) {
+      await this.loadContract(); // betöltjük a szerződést
+    }
+    
+    const priceInEther = window.web3.utils.fromWei(price.toString(), 'ether');
+    console.log("priceInEther " + priceInEther);
+    
+    return this.contract.methods.markNewOwner(id).send({
+      from: account,
+      value: price
     });
   }
   
-
-  markGemAsSelected(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markGemAsSelected: ", error);
-        this.setState({ loading: false });
-      });
+  async markGemAsSelected(id, account) {
+    if (!this.contract) {
+      await this.loadContract(); // betöltjük a szerződést
+    }
+  
+    return this.contract.methods.markGemAsSelected(id).send({
+      from: account
+    });
   }
-
-
-  // További metódusok...
+  
 }
 
 export default new GemstoneExtractionService();

@@ -457,3 +457,40 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
         Repairhez, changegem, stb nem írja ki az emitteket.
         Servicekbe szétszedni
+
+        20:43:
+        http://localhost:3000/gem-select/10 -- csak usedra vagy mire van állítva form, tölthető
+        polish gem jön. a async polishGem(id) 
+
+2024.09.21. 8:38
+        //todo:
+  transferGemOwnership(id, price)  in select service + 
+
+        add gemnél elvileg hozzáadja, de utána nem listázza ki + 
+
+        buyjewelry, markNewOwner, transferGemOwnership,   nem jóóó +
+        
+        12:32 
+                kommentek kiszedése, javítása + 
+                processingGem megnézni működik e-mert nem volt jó a fv +
+                tesztelni a tranzakciókatokat +
+
+        18.56
+                profil adatok hiány +
+                List of processing gems nevet nem írja ki +
+                repairon belül a change 3. tranzakicójánés hiba: App.js:372 Error in updateGem:   + (nem kellett oda az update gem)
+                                {code: -32603, message: 'Internal JSON-RPC error.'}
+                                code
+                                : 
+                                -32603
+                                message
+                                : 
+                                "Internal JSON-RPC error."
+                                [[Prototype]]
+                                : 
+                                Object
+                a kicsrélt gemet ne llsitázzuk ki a repair oldalon.
+                jew-datail oldalon id sorrendebn írja ki őkeet, nem hozzáadás sorrendjében
+                gem processnél a pricet továbítja -> nem kell +
+                Amikor a select gemre kattintok először mindig a usedgemet teszi true-ra de ezt inkább a kész gombnála form végén csiélja??
+                Profil javítás, kiegészítés

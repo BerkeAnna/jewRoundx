@@ -15,7 +15,7 @@ body {
 }
 
 .wid {
-  width: 100vw; /* Ensure it takes full viewport width */
+  width: 100vw; 
 }
 
 .centered-content {
@@ -29,8 +29,8 @@ body {
 
 #tables {
   color: #343a40;
-  width: 70%; /* Set the table width to 70% of the screen */
-  margin: 0 auto; /* Center the table horizontally */
+  width: 70%; 
+  margin: 0 auto; 
 }
 
 #tables h2 {
@@ -42,7 +42,7 @@ body {
   border-collapse: separate;
   border-radius: 20px;
   overflow: hidden;
-  width: 100%; /* Ensure the table takes the full width of its container */
+  width: 100%; 
 }
 
 #tables .table th {
@@ -139,8 +139,8 @@ input[type='password'] {
   width: 90%;
   text-align: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-top: 60px; /* Added marginTop for additional space */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjusted shadow for consistency */
+  margin-top: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -160,7 +160,7 @@ input[type='password'] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 30vh; /* A teljes képernyő magassága */
+  height: 30vh; 
 }
 
 
@@ -191,7 +191,7 @@ input[type='password'] {
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 10px; 
 }
 
 button {

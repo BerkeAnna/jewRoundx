@@ -24,15 +24,10 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     navigate(`/ownMinedGems`);
   };
 
-  
-
-
-  // Filter gems based on the owner's account
   const ownedMinedGems = minedGems.filter((minedGem) => minedGem.owner === account);
   const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
   const ownedJewelry = jewelry.filter((jewelry) => jewelry.owner === account);
 
-  // Function to render rows for the 'List of mined gems'
   const renderMinedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === false && minedGem.selected === false && (
@@ -51,7 +46,6 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
     ));
   };
 
-  // Function to render rows for the 'List of selected gems'
   const renderSelectedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
@@ -64,27 +58,18 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
             <button onClick={() => handleMarkAsSelected(minedGem.id)} className="btn">
               Select Gem
             </button>
-            <button
-              name={minedGem.id}
-              value={minedGem.price}
-              onClick={(event) => sellGem(event.target.name)}
-              className="btn"
-            >
-              Sell
-            </button>
           </td>
         </tr>
       )
     ));
   };
 
-  // Function to render rows for the 'List of processing gems'
   const renderProcessingGems = () => {
     return ownedSelectedGems.map((selectedGem, key) => (
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.details}</td>
+          <td>{selectedGem.colorGemType}</td>
           <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
           <td>{selectedGem.owner}</td>
           <td className="button-container">
@@ -202,7 +187,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Type</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
             <th scope="col">*</th>
@@ -216,7 +201,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Type</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
             <th scope="col">*</th>
@@ -230,7 +215,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">Details</th>
             <th scope="col">Price</th>
             <th scope="col">Owner</th>
             <th scope="col">*</th>

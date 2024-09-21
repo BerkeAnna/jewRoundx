@@ -16,10 +16,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [blockDates, setBlockDates] = useState({});
   const [currentGemIndex, setCurrentGemIndex] = useState(0);
 
-  // Function to get transaction date from the block number
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000); // Convert Unix timestamp to a Date object
+    return new Date(block.timestamp * 1000); 
   };
 
   useEffect(() => {
@@ -56,7 +55,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Fetch transaction dates for all events' block numbers
         const allEvents = [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems];
         const blockNumbers = allEvents.map(event => event.blockNumber);
         const uniqueBlockNumbers = [...new Set(blockNumbers)];
@@ -156,7 +154,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       .filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)))
       .reverse();
     if (filteredSelectedGems.length === 0) {
-      return [<p>No Selected Gems Available</p>];  // Return as an array to ensure it's iterable
+      return [<p>No Selected Gems Available</p>]; 
     }
   
     return filteredSelectedGems.map((gem, key) => (
@@ -188,7 +186,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
  
 
-  // Circular navigation logic based on the filtered list of gems related to the current jewelry
   const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
   const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
 

@@ -5,7 +5,7 @@ import '../../styles/Forms.css';
 
 function JewelryForm(props) {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null); // Using ref for file input
+  const fileInputRef = useRef(null); 
   const { id } = useParams();
 
   const handleSubmit = async (event) => {
@@ -37,25 +37,24 @@ function JewelryForm(props) {
       }
     }
 
-    const gemId = parseInt(id, 10);  // Ensure gemId is an integer
+    const gemId = parseInt(id, 10);  
     const name = formData.get('name').toString();
     const metal = formData.get('metal').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; // Combine dimensions into a size string
-    const physicalDetails = `Metal: ${metal} - ${size}`; // Combine metal and size into one string TODO size???
+    const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
+    const physicalDetails = `Metal: ${metal} - ${size}`; 
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = false;
 
     if (!name) {
       console.error("Name is required.");
-      return; // Prevent further execution if the name is not provided
+      return; 
     }
 
     props.jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
 
-    // After submission logic, you might want to navigate the user to another route or show a success message.
   };
 
   return (

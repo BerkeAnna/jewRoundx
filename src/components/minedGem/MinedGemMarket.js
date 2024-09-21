@@ -8,7 +8,6 @@ function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem
 
   const handleMarkAsSelected = (gemId, price) => {
     markNewOwner(gemId, price);
-    /*navigate(`/gem-select/${gemId}`);*/
   };
 
   const renderSelectedGems = () => {

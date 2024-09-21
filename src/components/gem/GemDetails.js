@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import '../../styles/Details.css';
 
 function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContract, gemstoneExtractionContract }) {
-  const { id } = useParams(); // current gem id from URL
+  const { id } = useParams(); 
   const gemId = id;
 
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
@@ -15,13 +15,12 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000); // Convert Unix timestamp to a Date object
+    return new Date(block.timestamp * 1000); 
   };
 
   useEffect(() => {
     const fetchGemDetails = async () => {
       try {
-        // Selected Gem events
         const gemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest',
@@ -29,7 +28,6 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         const filteredSelectedGems = gemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredSelectedGemEvents(filteredSelectedGems);
 
-        // Mined Gem events
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest',
@@ -37,7 +35,6 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Fetch transaction dates for all events' block numbers
         const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
         const blockNumbers = allEvents.map(event => event.blockNumber);
         const uniqueBlockNumbers = [...new Set(blockNumbers)];
@@ -113,7 +110,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); // Convert the BigNumber to a regular number
+      const eventId = parseInt(event.returnValues.id); 
       return eventId === parseInt(gemId);
     });
 

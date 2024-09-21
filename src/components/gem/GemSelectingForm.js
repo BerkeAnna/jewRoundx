@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function GemSelectingForm(props) {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null); // Using ref for file input
+  const fileInputRef = useRef(null); 
   const { id } = useParams();
 
   const handleSubmit = async (event) => {
@@ -29,23 +29,23 @@ function GemSelectingForm(props) {
         fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
       } catch (err) {
         console.error("Error uploading file: ", err);
-        return; // Exit if there's an error
+        return;
       }
     }
 
     const color = formData.get('color').toString();
     const gemType = formData.get('gemType').toString();
-    const colorGemType = `Color: ${color} Type: ${gemType}`; // Combine color and gem type
+    const colorGemType = `Type: ${gemType} Color: ${color}`;
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width} mm`; // Combine dimensions into a size string
+    const size = `${depth}x${height}x${width} mm`; 
     const carat = formData.get('carat').toString();
 
     if (!size) {
       console.error("Size is required.");
-      return; // Prevent further execution if the size is not provided
+      return; 
     }
 
     const minedGemId = parseInt(id, 10);

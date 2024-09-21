@@ -5,9 +5,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GemstoneExtraction from './abis/GemstoneExtraction.json';
 import GemSelecting from './abis/GemstoneSelecting.json';
 import Jewelry from './abis/Jewelry.json';
-import UserRegistryABI from './abis/UserRegistry.json'; // Importáld az ABI-t
+import UserRegistryABI from './abis/UserRegistry.json'; 
 import Navbar from './components/common/Navbar';
 import AppRoutes from './routes/Routes';
+import GemstoneExtractionService from './services/GemstoneExtractionService';
+import GemSelectingService from './services/GemSelectingService';
+import JewelryService from './services/JewelryService';
+
 
 class App extends Component {
   async componentWillMount() {
@@ -147,7 +151,7 @@ class App extends Component {
       const userRegistry = new web3.eth.Contract(UserRegistryABI.abi, networkData.address);
       this.setState({ userRegistry });
   
-      // Ellenőrizd, hogy a felhasználó regisztrálva van-e
+      // Ell. a felhasználó regisztrálva van-e
       const isRegistered = await userRegistry.methods.isUserRegistered(accounts[0]).call();
       if (!isRegistered) {
         console.error('User is not registered');
@@ -155,7 +159,7 @@ class App extends Component {
         return;
       }
   
-      // Ha regisztrálva van, kérjük le a felhasználói adatokat
+      // Ha regisztrálva van, felhasználói adatokat lekérjük
       const userInfo = await userRegistry.methods.getUserInfo(accounts[0]).call();
       this.setState({
         userInfo: {
@@ -175,282 +179,307 @@ class App extends Component {
     this.state = {
       account: '',
       minedGemCount: 0,
-      minedGems: [],
       selectedGemCount: 0,
       ownedMinedGemCount: 0,
       ownedMadeJewelry: 0,
       cuttedGemCount: 0,
+      ownedJewelryCount: 0,
+      minedGems: [],
       selectedGems: [],
       jewelry: [],
-      userInfo: null,
-      ownedJewelryCount: 0,
       isLoggedIn: false,
       loading: true,
-      gemstroneExtraction: null, // Hozzáadva
-      gemstroneSelecting: null, // Hozzáadva
-      makeJew: null, // Hozzáadva
-      userRegistry: null // Hozzáadva
+      userInfo: null,
+      gemstroneExtraction: null, 
+      gemstroneSelecting: null, 
+      makeJew: null, 
+      userRegistry: null
     };
   
     this.gemMining = this.gemMining.bind(this);
     this.purchaseGem = this.purchaseGem.bind(this);
     this.processingGem = this.processingGem.bind(this);
-    this.gemSelecting = this.gemSelecting.bind(this);
-    this.markNewOwner = this.markNewOwner.bind(this);
-    this.markGemAsUsed = this.markGemAsUsed.bind(this);
     this.markGemAsSelected = this.markGemAsSelected.bind(this);
+    this.gemSelecting = this.gemSelecting.bind(this);
     this.polishGem = this.polishGem.bind(this);
+    this.markGemAsUsed = this.markGemAsUsed.bind(this);
     this.jewelryMaking = this.jewelryMaking.bind(this);
-    this.buyJewelry = this.buyJewelry.bind(this);
-    this.refreshPage = this.refreshPage.bind(this);
-    this.transferGemOwnership = this.transferGemOwnership.bind(this);
-    this.updateGem = this.updateGem.bind(this);  // Bind the updateGem method
+    this.updateGem = this.updateGem.bind(this);
     this.markedAsFinished = this.markedAsFinished.bind(this);
     this.markedAsSale = this.markedAsSale.bind(this);
     this.replaceGem = this.replaceGem.bind(this);
-
-}
-
-  
-
-  async refreshPage() {
-    window.location.reload(false);
-  }
-
-  gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
-    this.setState({ loading: true });
-    if (this.state.gemstroneExtraction) {
-      this.state.gemstroneExtraction.methods.gemMining(
-        gemType,
-        details,
-        price,
-        miningLocation,
-        miningYear,
-        fileUrl,
-        purchased
-      ).send({ from: this.state.account })
-        .once('receipt', (receipt) => {
-          console.log('Receipt:', receipt);
-          this.loadBlockchainData();
-          this.loadBlockchainData2();
-          this.loadBlockchainData3();
-          this.loadBlockchainData4();
-          this.setState({ loading: false });
-        })
-        .on('error', (error) => {
-          console.error("Error in gemMining: ", error);
-          this.setState({ loading: false });
-        });
-    } else {
-      console.error("gemstroneExtraction is not defined");
-      this.setState({ loading: false });
-    }
-  }
-  
-
-
-  purchaseGem(id, price) {
-    const gasLimit = 120000;
-    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.purchaseGem(id).send({ from: this.state.account,/* value: price,*/ gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
-  }
-
-  processingGem(id, price) {
-    const gasLimit = 120000;
-    const gasPrice = window.web3.utils.toWei('10000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.processingGem(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
-  }
-
-  markNewOwner(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-  
-    this.state.gemstroneExtraction.methods.markNewOwner(id).send({ 
-      from: this.state.account, 
-      value: price, 
-      gasLimit: gasLimit, 
-      gasPrice: gasPrice 
-    })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false });
-    })
-    .catch(error => {
-      console.error("Error in markNewOwner: ", error);
-      this.setState({ loading: false });
-    });
-  }
-  
-
-  markGemAsSelected(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneExtraction.methods.markGemAsSelected(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markGemAsSelected: ", error);
-        this.setState({ loading: false });
-      });
-  }
-
-
-  markGemAsUsed(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.markGemAsUsed(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in markas: ", error);
-        this.setState({ loading: false });
-      });
-  }
-  markedAsFinished(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true });
-    this.state.makeJew.methods.markedAsFinished(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-        .once('receipt', (receipt) => {
-            this.setState({ loading: false });
-        })
-        .catch(error => {
-            console.error("Error in mark as finished: ", error);
-            this.setState({ loading: false });
-        });
-}
-markedAsSale(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.makeJew.methods.markedAsSale(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-        .once('receipt', (receipt) => {
-            this.setState({ loading: false });
-        })
-        .catch(error => {
-            console.error("Error in mark as sale: ", error);
-            this.setState({ loading: false });
-        });
-  }
-
-
-  gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true });
-
-    this.state.gemstroneSelecting.methods.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price).send({ from: this.state.account })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in gemSelecting: ", error);
-        this.setState({ loading: false });
-      });
+    this.buyJewelry = this.buyJewelry.bind(this);
+    this.markNewOwner = this.markNewOwner.bind(this);
+    this.transferGemOwnership = this.transferGemOwnership.bind(this);
+    /* 
+    this.refreshPage = this.refreshPage.bind(this);
+    
+*/
 }
 
 
-  polishGem(id) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
+async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
+  try {
     this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.polishGem(id).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      });
+    const account = this.state.account; 
+
+    // GemstoneExtractionService-től hívjuk a gemMining fv-t
+    await GemstoneExtractionService.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased, account);
+      
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); // Betöltés vége
+  } catch (error) {
+    console.error("Error in gemMining: ", error);
+    this.setState({ loading: false }); 
   }
-  transferGemOwnership(id, price) {
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-    this.setState({ loading: true });
-    this.state.gemstroneSelecting.methods.transferGemOwnership(id).send({ from: this.state.account, value: price, gasLimit: gasLimit, gasPrice: gasPrice })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error in transferGemOwnership: ", error);
-        this.setState({ loading: false });
-      });
-  }
-  
-
-
-  jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL) {  // physicalDetails, a combined metal and size
-    const gasLimit = 90000;
-    const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-    this.setState({ loading: true });
-    this.state.makeJew.methods.jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL).send({ from: this.state.account })
-      .once('receipt', (receipt) => {
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.error("Error occurred in jewelryMaking function: ", error);
-        this.setState({ loading: false });
-      });
-  }
-
-  
-
-updateGem(jewelryId, newGemId) {
-  const gasLimit = 90000;
-  const gasPrice = window.web3.utils.toWei('8000', 'gwei');
-  this.setState({ loading: true });
-
-  this.state.makeJew.methods.updateGem(jewelryId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false });
-      this.loadBlockchainData3(); // Reload data to reflect the change
-    })
-    .catch(error => {
-      console.error("Error in updateGem: ", error);
-      this.setState({ loading: false });
-    });
 }
-replaceGem(jewelryId, oldGemId, newGemId) {
-  const gasLimit = 90000;
-  const gasPrice = window.web3.utils.toWei('7000', 'gwei');
-  this.setState({ loading: true });
 
-  this.state.makeJew.methods.replaceGem(jewelryId, oldGemId, newGemId).send({ from: this.state.account, gasLimit: gasLimit, gasPrice: gasPrice })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false });
-      this.loadBlockchainData2(); // Reload data to reflect the change
-    })
-    .catch(error => {
-      console.error("Error in replaceGem: ", error);
-      this.setState({ loading: false });
-    });
+async purchaseGem(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // GemstoneExtractionService-től hívjuk a purchaseGem fv-t
+    await GemstoneExtractionService.purchaseGem(id, account);
+      
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData();
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in purchaseGem :", error);
+    this.setState({ loading: false });
+  }
 }
 
 
-
-
-  async buyJewelry(id, price) {
-    const gasLimit = 100000;
-    this.setState({ loading: true });
+  async processingGem(id, price) {
     try {
-      const receipt = await this.state.makeJew.methods.buyJewelry(id).send({ from: this.state.account, value: price, gasLimit: gasLimit });
+      this.setState({ loading: true });
+      const account = this.state.account;
+
+      // GemstoneExtractionService-től hívjuk a processingGem fv-t
+      await GemstoneExtractionService.processingGem(id, price, account);
+      
+      // tranzakció után frissítjük a blokklánc adatokat
       this.setState({ loading: false });
-      this.loadBlockchainData3(); // Reload data to reflect the change
-      console.log('Transaction receipt:', receipt);
+
     } catch (error) {
-      console.error("Error in buyJewelry:", error);
+      console.error("Error in processingGem:", error);
       this.setState({ loading: false });
     }
+}
+
+async markGemAsSelected(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // GemstoneExtractionService-től hívjuk a markGemAsSelected fv-t
+    await GemstoneExtractionService.markGemAsSelected(id, account);
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData();
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in markGemAsSelected:", error);
+    this.setState({ loading: false });
   }
+}
+
+
+async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a gemSelecting fv-t
+    await GemSelectingService.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account);
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in gemSelecting: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async polishGem(id) {
+
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a polishGem fv-t
+    await GemSelectingService.polishGem(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in polishGem: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async markGemAsUsed(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a markGemAsUsed fv-t
+    GemSelectingService.markGemAsUsed(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markGemAsUsed: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL) {  
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a jewelryMaking fv-t
+    JewelryService.jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in jewelryMaking: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async updateGem(jewelryId, newGemId) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a updateGem fv-t
+    await JewelryService.updateGem(jewelryId, newGemId, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in updateGem: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async markedAsFinished(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a markedAsFinished fv-t
+    await JewelryService.markedAsFinished(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markedAsFinished: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async markedAsSale(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a markedAsSale fv-t
+    JewelryService.markedAsSale(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markedAsSale: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async replaceGem(jewelryId, oldGemId, newGemId) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a replaceGem fv-t
+    await JewelryService.replaceGem(jewelryId, oldGemId, newGemId, account)
+
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in replaceGem: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+
+async buyJewelry(id, price) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a buyJewelry fv-t
+    await JewelryService.buyJewelry(id, price, account);
+
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData3(); 
+    this.setState({ loading: false });
+
+  } catch (error) {
+    console.error("Error in buyJewelry:", error);
+    this.setState({ loading: false });
+  }
+}
   
+//todo: service
+async markNewOwner(id, price) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // GemSelectingService-től hívjuk a markNewOwner fv-t
+    await GemstoneExtractionService.markNewOwner(id, price, account);
+
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false });
+
+  } catch (error) {
+    console.error("Error in markNewOwner:", error);
+    this.setState({ loading: false });
+  }
+}
+
+
+async transferGemOwnership(id, price) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // GemSelectingService-től hívjuk a transferGemOwnership fv-t
+    await GemSelectingService.transferGemOwnership(id,  price , account);
+
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in transferGemOwnership:", error);
+    this.setState({ loading: false }); 
+  }
+}
 
   refreshPage = () => {
     window.location.reload();
@@ -479,160 +508,12 @@ replaceGem(jewelryId, oldGemId, newGemId) {
             markedAsFinished = {this.markedAsFinished}
             markedAsSale = {this.markedAsSale}
             replaceGem = {this.replaceGem}
-
           />
-
         </Router>
       </div>
     );
   }
-  /*render() {
-    return (
-      <div className='col-12 wid pt-5'>
-       
-        <Router>
-          {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
 
-          <Routes>
-            <Route path="/repair/:id" element={<ProtectedRoute><Repair selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
-                 jewelry={this.state.jewelry} 
-                 jewelryContract={this.state.makeJew}
-                 replaceGem={this.replaceGem}/></ProtectedRoute>} />
-            <Route path="/" element={<LogIn />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/loggedin" element={<ProtectedRoute><LoggedIn account={this.state.account} /></ProtectedRoute>} />
-            <Route path="/repair" element={<ProtectedRoute><Repair /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile userInfo={this.state.userInfo} ownedJewelryCount={this.state.ownedJewelryCount} cuttedGemCount={this.state.cuttedGemCount} ownedMinedGemCount={this.state.ownedMinedGemCount} ownedMadeJewelryCount={this.state.ownedMadeJewelryCount} /></ProtectedRoute>} />
-            <Route path="/addMinedGem" element={<ProtectedRoute><MinedGemForm gemMining={this.gemMining} /></ProtectedRoute>} />
-            <Route path="/minedGemMarket" element={
-              <ProtectedRoute>
-                <MinedGemMarket 
-                  minedGems={this.state.minedGems}
-                  selectedGems={this.state.selectedGems}
-                  jewelry={this.state.jewelry}
-                  gemMining={this.gemMining}
-                  gemSelecting={this.gemSelecting}
-                  purchaseGem={this.purchaseGem}
-                  processingGem={this.processingGem}
-                  markNewOwner={this.markNewOwner}
-                  markGemAsUsed={this.markGemAsUsed}
-                  account={this.state.account}
-                  sellGem={this.sellGem}
-                  polishGem={this.polishGem}
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/gemMarket" element={
-              <ProtectedRoute>
-                <GemMarket 
-                  minedGems={this.state.minedGems}
-                  selectedGems={this.state.selectedGems}
-                  jewelry={this.state.jewelry}
-                  gemMining={this.gemMining}
-                  gemSelecting={this.gemSelecting}
-                  purchaseGem={this.purchaseGem}
-                  processingGem={this.processingGem}
-                  markNewOwner={this.markNewOwner}
-                  markGemAsUsed={this.markGemAsUsed}
-                  account={this.state.account}
-                  sellGem={this.sellGem}
-                  polishGem={this.polishGem} 
-                  transferGemOwnership={this.transferGemOwnership}
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/jewMarket" element={
-              <ProtectedRoute>
-                <JewMarket 
-                  jewelry={this.state.jewelry}
-                  account={this.state.account}
-                  buyJewelry={(id, price) => this.buyJewelry(id, price)} 
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/ownMinedGems" element={
-              <ProtectedRoute>
-                <OwnedByUser 
-                  minedGems={this.state.minedGems}
-                  selectedGems={this.state.selectedGems}
-                  jewelry={this.state.jewelry}
-                  gemMining={this.gemMining}
-                  gemSelecting={this.gemSelecting}
-                  purchaseGem={this.purchaseGem}
-                  processingGem={this.processingGem}
-                  markGemAsSelected={this.markGemAsSelected}
-                  markGemAsUsed={this.markGemAsUsed}
-                  markedAsFinished={this.markedAsFinished}
-                  markedAsSale={this.markedAsSale}
-                  account={this.state.account}
-                  sellGem={this.sellGem}
-                  polishGem={this.polishGem} 
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/gem-select/:id" element={<ProtectedRoute><GemSelectingForm gemSelecting={this.gemSelecting} /></ProtectedRoute>} />
-            <Route path="/gem-details/:id" element={
-              <ProtectedRoute>
-                <GemDetails 
-                  selectedGems={this.state.selectedGems}
-                  minedGems={this.state.minedGems}
-                  gemSelecting={this.gemSelecting}
-                  account={this.state.account} 
-                  gemstoneSelectingContract={this.state.gemstroneSelecting}
-                  gemstoneExtractionContract={this.state.gemstroneExtraction}
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/jew-details/:id" element={
-                <JewDetails 
-                  selectedGems={this.state.selectedGems}
-                  minedGems={this.state.minedGems}
-                  jewelry={this.state.jewelry}
-                  gemSelecting={this.gemSelecting}
-                  account={this.state.account} 
-                  jewelryContract={this.state.makeJew}
-                  gemstoneSelectingContract={this.state.gemstroneSelecting}
-                  gemstoneExtractionContract={this.state.gemstroneExtraction}
-                />
-            } />
-             <Route path="/jew-processing/:id" element={
-              <ProtectedRoute>
-                <JewProcessing 
-                 selectedGems={this.state.selectedGems} updateGem={this.updateGem} markGemAsUsed={this.markGemAsUsed}  minedGems={this.state.minedGems}
-                 jewelry={this.state.jewelry} 
-                 jewelryContract={this.state.makeJew}
-                 
-                />
-              </ProtectedRoute>
-            } />
-             <Route path="/repair/:id/change-gem/:oldGemId" element={
-              <ProtectedRoute>
-               <JewChangeGem  
-                  selectedGems={this.state.selectedGems} 
-                  updateGem={this.updateGem} 
-                  markGemAsUsed={this.markGemAsUsed}  
-                  minedGems={this.state.minedGems}
-                  jewelry={this.state.jewelry} 
-                  jewelryContract={this.state.makeJew}
-                  account={this.state.account} 
-                  selectingContract={this.state.gemstroneSelecting}
-                  replaceGem={this.replaceGem}  // Ezt így kell átadni
-                />
-              </ProtectedRoute>
-            } />
-            <Route path="/jewelry-making/gem/:id" element={
-              <ProtectedRoute>
-                <JewelryForm 
-                  jewelryMaking={this.jewelryMaking}
-                  markGemAsUsed={this.markGemAsUsed} 
-                />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </Router>
-      </div>
-    );
-  }*/
 }
 
 export default App;

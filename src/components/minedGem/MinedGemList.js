@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class MinedGemsList extends Component {
 
   render() {
-    //console.table(this.props.minedGems);
 
     return (
             <div id="tables">
