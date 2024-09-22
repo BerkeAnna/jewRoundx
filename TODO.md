@@ -501,5 +501,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         2024.09.22.
         16:04
                 most elvileg megvannak a jewlery tranazkciók +
-                eventeknél a neveket javíttani
+                eventeknél a neveket javíttani +
                 eventeknél a GemReplaced, GemUpdated nem tartalmaz usert, azért nem írja ki. javítani
+        
+        17:34
+                Polygon 
+                Pl. IPFS és hash-ek
