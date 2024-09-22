@@ -23,7 +23,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   };
 
   // Function to fetch all transactions from all contracts
-  const fetchAllTransactions = async () => {
+  const fetchJewTransactions = async () => {
     try {
       const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
       const allEvents = [...allJewelryEvents];
@@ -79,7 +79,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         setFilteredMinedGemEvents(filteredMinedGems);
 
         // Fetch all transactions once
-        fetchAllTransactions();
+        fetchJewTransactions();
       } catch (error) {
         console.error('Error fetching details:', error);
       }
