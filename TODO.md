@@ -496,7 +496,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Profil javítás, kiegészítés +
                 Event nevek javítása +
                 Selectgem repaired változót befejezni -
-                Repair table javítás
+                Repair table javítás +
 
         2024.09.22.
         16:04
