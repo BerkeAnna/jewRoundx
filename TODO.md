@@ -495,4 +495,4 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Amikor a select gemre kattintok először mindig a usedgemet teszi true-ra de ezt inkább a kész gombnála form végén csinálja??
                 Profil javítás, kiegészítés
                 Event nevek javítása
-                Selectgem repaired változót befejezni
+                Selectgem repaired változót befejezni -C3c
