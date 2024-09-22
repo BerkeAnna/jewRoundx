@@ -7,6 +7,7 @@ import '../../styles/Details.css';
 const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCount, ownedMadeJewelryCount }) => {
   const [jewelryId, setJewelryId] = useState('');
   const navigate = useNavigate();
+  console.log("u" + userInfo)
 
   const handleChange = (e) => {
     setJewelryId(e.target.value);
@@ -18,7 +19,7 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
   };
 
   return (
-    <div className='pt-5 card-background profile-card-container' style={{ textAlign: 'center' }}>
+    <div className='pt-5 profile-card-container card-background ' style={{ textAlign: 'center' }}>
       <h1>Hi {userInfo ? userInfo.username : 'xy'}!</h1>
      
       <div className="card profile-card" >

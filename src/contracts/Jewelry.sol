@@ -52,6 +52,7 @@ contract Jewelry {
 
     event JewelryBought(uint id, address payable newOwner);
     event GemUpdated(uint jewelryId, uint newGemId);
+    event GemReplaced(uint jewelryId, uint newGemId);
     event JewelryFinished(uint id, address owner);
     event JewelrySale(uint id, address owner);
 
@@ -102,7 +103,7 @@ contract Jewelry {
         JewelryData storage jew = jewelry[jewelryId];
         jew.previousGemIds.push(newGemId);
 
-        emit GemUpdated(jewelryId, newGemId);
+        emit GemReplaced(jewelryId, newGemId);
     }
 
     function getJewelryDetails(uint _id) public view returns (

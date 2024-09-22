@@ -479,7 +479,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 profil adatok hiány +
                 List of processing gems nevet nem írja ki +
                 repairon belül a change 3. tranzakicójánés hiba: App.js:372 Error in updateGem:   + (nem kellett oda az update gem)
-                                {code: -32603, message: 'Internal JSON-RPC error.'}
+                                {code: -3  2603, message: 'Internal JSON-RPC error.'}
                                 code
                                 : 
                                 -32603
@@ -493,6 +493,13 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 jew-datail oldalon id sorrendebn írja ki őkeet, nem hozzáadás sorrendjében
                 gem processnél a pricet továbítja -> nem kell +
                 Amikor a select gemre kattintok először mindig a usedgemet teszi true-ra de ezt inkább a kész gombnála form végén csinálja??
-                Profil javítás, kiegészítés
-                Event nevek javítása
-                Selectgem repaired változót befejezni -C3c
+                Profil javítás, kiegészítés +
+                Event nevek javítása +
+                Selectgem repaired változót befejezni -
+                Repair table javítás
+
+        2024.09.22.
+        16:04
+                most elvileg megvannak a jewlery tranazkciók +
+                eventeknél a neveket javíttani
+                eventeknél a GemReplaced, GemUpdated nem tartalmaz usert, azért nem írja ki. javítani

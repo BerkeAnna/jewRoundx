@@ -13,6 +13,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
+  const [allTransactions, setAllTransactions] = useState([]); // New state for all transactions
   const [blockDates, setBlockDates] = useState({});
   const [currentGemIndex, setCurrentGemIndex] = useState(0);
 
@@ -20,6 +21,28 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     const block = await web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000); 
   };
+
+  // Function to fetch all transactions from all contracts
+  const fetchAllTransactions = async () => {
+    try {
+      const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
+      const allEvents = [...allJewelryEvents];
+      setAllTransactions(allEvents);
+      
+      // Ensure to fetch dates for each block of the events
+      const blockNumbers = allEvents.map(event => event.blockNumber);
+      const uniqueBlockNumbers = [...new Set(blockNumbers)];
+  
+      const blockDatesMap = {};
+      for (let blockNumber of uniqueBlockNumbers) {
+        blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
+      }
+      setBlockDates(blockDatesMap);
+    } catch (error) {
+      console.error('Error fetching all transactions:', error);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -55,16 +78,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        const allEvents = [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems];
-        const blockNumbers = allEvents.map(event => event.blockNumber);
-        const uniqueBlockNumbers = [...new Set(blockNumbers)];
-
-        const blockDatesMap = {};
-        for (let blockNumber of uniqueBlockNumbers) {
-          blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
-        }
-        setBlockDates(blockDatesMap);
-
+        // Fetch all transactions once
+        fetchAllTransactions();
       } catch (error) {
         console.error('Error fetching details:', error);
       }
@@ -73,25 +88,73 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
+  // Render all transactions in a card
+const renderAllTransactions = () => {
+  if (allTransactions.length === 0) {
+    return <p>No transactions found.</p>;
+  }
+
+  // Szűrjük az összes tranzakciót az adott ékszerhez (jewelryId vagy gemId)
+  const filteredTransactions = allTransactions.filter(event => {
+    const eventId = event.returnValues.id || event.returnValues.jewelryId;
+    return parseInt(eventId) === parseInt(gemId); // Szűrés az adott gemId alapján
+  });
+
+  if (filteredTransactions.length === 0) {
+    return <p>No transactions for this jewelry found.</p>;
+  }
+
+  return (
+    <div className="pt-5">
+      <ul className="details-list">
+        {filteredTransactions.map((event, index) => {
+          
+          const { owner, gemCutter, jeweler, newOwner, newGemId } = event.returnValues;
+          const { event: eventType, returnValues, transactionHash, blockNumber } = event;
+          const transactionDate = blockDates[blockNumber] ? blockDates[blockNumber].toLocaleString() : 'Loading...';
+          return (
+            <li key={index} className="details-list-item">
+              
+              <strong>Event:</strong> {eventType}
+              <br />
+              <strong>Transaction Hash:</strong> {transactionHash}
+              <br />
+              <strong>Block Number:</strong> {blockNumber}
+              <br />
+              <strong>Transaction Date:</strong> {transactionDate}
+              <br />
+              
+              {owner && <div><strong>Owner:</strong> {owner}</div>}
+              {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>} {/* Added for GemUpdated */}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
+
+
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id);
+      // Check if the event has an ID (for jewelry) or is a GemUpdated event related to the given gem
+      const eventId = parseInt(event.returnValues.id || event.returnValues.jewelryId); 
       return eventId === parseInt(gemId);
     });
-
+  
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-
+  
     return (
       <ul className="details-list">
         {gemEvents.map((event, index) => {
-          const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
+          const { owner, gemCutter, jeweler, newOwner, newGemId } = event.returnValues;
           const blockNumber = event.blockNumber;
           const transactionDate = blockDates[blockNumber]
             ? blockDates[blockNumber].toLocaleString()
             : 'Loading...';
-
+  
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -106,12 +169,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
               {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
               {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
               {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+              {newGemId && <div><strong>New Gem ID:</strong> {newGemId}</div>} {/* Added for GemUpdated */}
             </li>
           );
         })}
       </ul>
     );
   };
+  
 
   const renderMinedGems = () => {
     const filteredMinedGems = minedGems
@@ -147,7 +212,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       </div>
     ));
   };
-  
 
   const renderSelectedGems = () => {
     const filteredSelectedGems = selectedGems
@@ -218,13 +282,15 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
-
+  
         <hr />
         <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
+        {/* Itt jelenítjük meg a Transactions for this Jewelry-t */}
+        {renderAllTransactions()}
       </div>
     ));
   };
+  
 
   return (
     <div className="details-details-container card-background pt-5">
@@ -238,7 +304,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         {renderMinedGems()[currentGemIndex]} 
       </div>
         <span className="arrow" onClick={handleNextGem}>
-          →
+          → 
         </span>
       </div>
 
@@ -252,11 +318,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <span className="arrow" onClick={handleNextGem}>
           →
         </span>
-       
-        </div>
-        <div className="card-container pt-5">
+      </div>
+
+      <div className="card-container pt-5">
         {renderJewelry()}
-        </div>
+      </div>
+
+     {/*  
+      <div className="card-container pt-5">
+        {renderAllTransactions()}
+      </div>*/}
     </div>
   );
 }

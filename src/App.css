@@ -189,7 +189,6 @@ input[type='file'] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 30vh; 
 }
 
 .profile-card{

@@ -54,9 +54,9 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
   };
 
   return (
-    <div className="pt-5" style={{ maxWidth: '1200px', margin: 'auto' }}>
-      <h1>Change Gem</h1>
-      <h3>Choose the next gem</h3>
+    <div id="tables" className="pt-5">
+      <h2>Change Gem</h2>
+      <h2>Choose the next gem</h2>
       <table className="table">
         <thead>
           <tr>
