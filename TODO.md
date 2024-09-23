@@ -511,5 +511,5 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.09.23. 15:42
                 A minedgem adatok már jók. +
-                Megcsinálni a selected gemeket + 
+                Megcsinálni a selected gemeket +   VÁRNI KELL AMÍG BETÖLTI
                 Megcsinálni a jewelryt

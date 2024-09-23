@@ -104,19 +104,16 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         {pinataMetadataSelected && (
           <div>
             <p><strong>Gem Type:</strong> {pinataMetadataSelected.gemType}</p>
-            <p><strong>Weight/Carat:</strong> {pinataMetadataSelected.weight} ct</p>
-            <p><strong>Size:</strong> {pinataMetadataSelected.size} mm</p>
-            <p><strong>Mining Location:</strong> {pinataMetadataSelected.miningLocation}</p>
-            <p><strong>Mining Year:</strong> {pinataMetadataSelected.miningYear}</p>
+            <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
+            <p><strong>Carat:</strong> {pinataMetadataSelected.carat}</p>
+            <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
           </div>
         )}
-        <p><strong>forSale:</strong> {gem.forSale !== undefined ? gem.forSale.toString() : "N/A"}</p>
-        <p><strong>Used:</strong> {gem.used !== undefined ? gem.used.toString() : "N/A"}</p>
-        <p><strong>Price:</strong> {gem.price ? window.web3.utils.fromWei(gem.price.toString(), 'Ether') : "N/A"} Eth</p>
-        <p><strong>Gem cutter:</strong> {gem.gemCutter || "N/A"}</p>
-        <p><strong>Owner:</strong> {gem.owner || "N/A"}</p>
-
-        
+        <p><strong>forSale:</strong> { gem.forSale.toString() }</p>
+        <p><strong>Used:</strong> { gem.used.toString() }</p>
+        <p><strong>Price:</strong> { window.web3.utils.fromWei(gem.price.toString(), 'Ether') } Eth</p>
+        <p><strong>Gem cutter:</strong> {gem.gemCutter }</p>
+        <p><strong>Owner:</strong> {gem.owner }</p>
 
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, gem.id)}
@@ -137,21 +134,21 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
             )}
           </div>
         )}
-        <p><strong>ID:</strong> {gem.id ? gem.id.toString() : "N/A"}</p>
-        <p><strong>Type:</strong> {gem.gemType || "N/A"}</p>
+        <p><strong>ID:</strong> {gem.id.toString() }</p>
+        <p><strong>Type:</strong> {gem.gemType}</p>
         {pinataMetadata && (
           <div>
-            <p><strong>Gem Type:</strong> {pinataMetadata.gemType || "N/A"}</p>
-            <p><strong>Weight:</strong> {pinataMetadata.weight || "N/A"}</p>
-            <p><strong>Size:</strong> {pinataMetadata.size || "N/A"}</p>
-            <p><strong>Mining Location:</strong> {pinataMetadata.miningLocation || "N/A"}</p>
-            <p><strong>Mining Year:</strong> {pinataMetadata.miningYear || "N/A"}</p>
+            <p><strong>Gem Type:</strong> {pinataMetadata.gemType }</p>
+            <p><strong>Weight:</strong> {pinataMetadata.weight }</p>
+            <p><strong>Size:</strong> {pinataMetadata.size}</p>
+            <p><strong>Mining Location:</strong> {pinataMetadata.miningLocation }</p>
+            <p><strong>Mining Year:</strong> {pinataMetadata.miningYear }</p>
           </div>
         )}
-        <p><strong>Selected:</strong> {gem.selected !== undefined ? gem.selected.toString() : "N/A"}</p>
-        <p><strong>Price:</strong> {gem.price ? window.web3.utils.fromWei(gem.price.toString(), 'Ether') : "N/A"} Eth</p>
-        <p><strong>Miner:</strong> {gem.miner || "N/A"}</p>
-        <p><strong>Owner:</strong> {gem.owner || "N/A"}</p>
+        <p><strong>Selected:</strong> {gem.selected.toString() }</p>
+        <p><strong>Price:</strong> { window.web3.utils.fromWei(gem.price.toString(), 'Ether') } Eth</p>
+        <p><strong>Miner:</strong> {gem.miner }</p>
+        <p><strong>Owner:</strong> {gem.owner }</p>
 
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredMinedGemEvents, gem.id)}
