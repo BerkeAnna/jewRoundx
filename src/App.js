@@ -218,13 +218,13 @@ class App extends Component {
 }
 
 
-async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
+async gemMining(gemType, price, metadataUrl, purchased) {
   try {
     this.setState({ loading: true });
     const account = this.state.account; 
 
     // GemstoneExtractionService-től hívjuk a gemMining fv-t
-    await GemstoneExtractionService.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased, account);
+    await GemstoneExtractionService.gemMining(gemType, price, metadataUrl, purchased, account);
       
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 
@@ -288,13 +288,13 @@ async markGemAsSelected(id) {
 }
 
 
-async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
+async gemSelecting(minedGemId, metadataHash, price) {
   try {
     this.setState({ loading: true });
     const account = this.state.account;
     
     // GemSelectingService-től hívjuk a gemSelecting fv-t
-    await GemSelectingService.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account);
+    await GemSelectingService.gemSelecting(minedGemId, metadataHash, price, account);
     
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 

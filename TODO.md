@@ -508,3 +508,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Polygon 
                 Pl. IPFS és hash-ek
                 lehet egy dapp egyszerre off és onchain is?
+
+2024.09.23. 15:42
+                A minedgem adatok már jók. +
+                Megcsinálni a selected gemeket + 
+                Megcsinálni a jewelryt

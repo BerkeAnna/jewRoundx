@@ -6,23 +6,16 @@ interface IGemstoneExtraction {
 
 contract GemstoneSelecting {
     uint public selectedGemCount = 0;
-    mapping (uint => SelectedGem) private selectedGems;
+    mapping(uint => SelectedGem) private selectedGems;
     IGemstoneExtraction gemstoneExtraction;
     mapping(uint => bool) public selectedMinedGems;
-
-    struct GemDetails {
-        string size;
-        uint carat;
-        string colorGemType; // Combined color and gem type
-    }
 
     struct SelectedGem {
         uint id;
         uint minedGemId;
         uint previousGemId;
-        GemDetails details;
         bool forSale;
-        string fileURL;
+        string metadataHash; // Off-chain adatok hash (pl. IPFS hash)
         uint price;
         bool used;
         address payable owner;
@@ -32,11 +25,8 @@ contract GemstoneSelecting {
     event GemSelecting(
         uint id,
         uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
+        string metadataHash, // Off-chain adat hash
         bool forSale,
-        string fileURL,
         uint price,
         bool used,
         address payable owner,
@@ -46,42 +36,36 @@ contract GemstoneSelecting {
     event PolishGem(
         uint id,
         uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
+        string metadataHash, // Off-chain adat hash
         bool forSale,
-        string fileURL,
         uint price,
         bool used,
         address payable owner,
         address payable gemCutter
     );
+
     event MarkGemAsUsed(
         uint id,
         uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
+        string metadataHash, // Off-chain adat hash
         bool forSale,
-        string fileURL,
         uint price,
         bool used,
         address payable owner,
         address payable gemCutter
     );
+
     event TransferGemOwnership(
         uint id,
         uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
+        string metadataHash, // Off-chain adat hash
         bool forSale,
-        string fileURL,
         uint price,
         bool used,
         address payable owner,
         address payable gemCutter
     );
+
     constructor(address _gemstoneExtractionAddress) public {
         gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
     }
@@ -94,23 +78,15 @@ contract GemstoneSelecting {
 
     function gemSelecting(
         uint _minedGemId,
-        string memory _size,
-        uint _carat,
-        string memory _colorGemType, // Combined color and gem type
-        string memory _fileURL,
+        string memory _metadataHash, // Off-chain adat hash (pl. IPFS hash)
         uint _price
     ) public {
         selectedGemCount++;
         SelectedGem storage gem = selectedGems[_minedGemId];
         gem.id = _minedGemId;
         gem.minedGemId = _minedGemId;
-        gem.details = GemDetails({
-            size: _size,
-            carat: _carat,
-            colorGemType: _colorGemType // Combined color and gem type
-        });
+        gem.metadataHash = _metadataHash; // Off-chain adat hash
         gem.forSale = false;
-        gem.fileURL = _fileURL;
         gem.price = _price;
         gem.used = false;
         gem.owner = msg.sender;
@@ -119,11 +95,8 @@ contract GemstoneSelecting {
         emit GemSelecting(
             gem.id,
             gem.minedGemId,
-            gem.details.size,
-            gem.details.carat,
-            gem.details.colorGemType, // Combined color and gem type
+            gem.metadataHash, // Off-chain adat hash
             gem.forSale,
-            gem.fileURL,
             gem.price,
             gem.used,
             gem.owner,
@@ -131,18 +104,15 @@ contract GemstoneSelecting {
         );
     }
 
-    function polishGem(uint _id) public payable {
+    function polishGem(uint _id) public {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
 
         emit PolishGem(
             _selectedGem.id,
             _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.metadataHash, // Off-chain adat hash
             _selectedGem.forSale,
-            _selectedGem.fileURL,
             _selectedGem.price,
             _selectedGem.used,
             _selectedGem.owner,
@@ -159,11 +129,8 @@ contract GemstoneSelecting {
         emit MarkGemAsUsed(
             _id,
             _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, // Combined color and gem type
+            _selectedGem.metadataHash, // Off-chain adat hash
             _selectedGem.forSale,
-            _selectedGem.fileURL,
             _selectedGem.price,
             _selectedGem.used,
             _selectedGem.owner,
@@ -182,41 +149,34 @@ contract GemstoneSelecting {
     }
 
     function transferGemOwnership(uint _id) public payable {
-         SelectedGem storage _selectedGem = selectedGems[_id];
-        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Érvénytelen drágakő azonosító");
-        require(_selectedGem.owner != msg.sender, "Már a tiéd ez a drágakő");
-        require(msg.value >= _selectedGem.price, "Nincs elegendő pénz");
+        SelectedGem storage _selectedGem = selectedGems[_id];
+        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
+        require(_selectedGem.owner != msg.sender, "You already own this gem");
+        require(msg.value >= _selectedGem.price, "Insufficient funds");
 
         _selectedGem.owner.transfer(msg.value);
-
         _selectedGem.owner = msg.sender;
         _selectedGem.forSale = false;
 
         emit TransferGemOwnership(
             _selectedGem.id,
             _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, 
+            _selectedGem.metadataHash, // Off-chain adat hash
             _selectedGem.forSale,
-            _selectedGem.fileURL,
             _selectedGem.price,
             _selectedGem.used,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
-}
+    }
 
     // Public getter for selectedGems
     function getSelectedGem(uint _id) public view returns (
         uint id,
         uint minedGemId,
         uint previousGemId,
-        string memory size,
-        uint carat,
-        string memory colorGemType, // Combined color and gem type
+        string memory metadataHash, // Off-chain adat hash
         bool forSale,
-        string memory fileURL,
         uint price,
         bool used,
         address owner,
@@ -227,11 +187,8 @@ contract GemstoneSelecting {
             gem.id,
             gem.minedGemId,
             gem.previousGemId,
-            gem.details.size,
-            gem.details.carat,
-            gem.details.colorGemType, // Combined color and gem type
+            gem.metadataHash, // Off-chain adat hash
             gem.forSale,
-            gem.fileURL,
             gem.price,
             gem.used,
             gem.owner,
@@ -243,11 +200,8 @@ contract GemstoneSelecting {
         uint id,
         uint minedGemId,
         uint previousGemId,
-        string memory size,
-        uint carat,
-        string memory colorGemType,
+        string memory metadataHash, // Off-chain adat hash
         bool forSale,
-        string memory fileURL,
         uint price,
         bool used,
         address owner,

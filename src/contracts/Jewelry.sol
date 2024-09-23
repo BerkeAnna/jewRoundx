@@ -29,7 +29,7 @@ contract Jewelry {
         uint id;
         string name;
         uint[] previousGemIds;
-        string physicalDetails;
+        string metadataHash; // Off-chain tárolt fizikai részletek hash-e (pl. IPFS hash)
         bool sale;
         bool processing;
         uint price;
@@ -41,7 +41,7 @@ contract Jewelry {
     event JewelryMaking(
         uint id,
         string name,
-        string physicalDetails,
+        string metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool sale,
         bool processing,
         uint price,
@@ -63,7 +63,7 @@ contract Jewelry {
     function jewelryMaking(
         string memory _name,
         uint _gemId,
-        string memory _physicalDetails,
+        string memory _metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool _sale,
         uint _price,
         string memory _fileURL
@@ -73,8 +73,8 @@ contract Jewelry {
         jewelry[jewelryCount] = JewelryData(
             jewelryCount,
             _name,
-            new uint[](0), // Kezdetben üres gem ID-k tömbje
-            _physicalDetails,    // Tárolja a kombinált fizikai részleteket
+            new uint[](0), //Kezdetben üres gem ID-k tömbje
+            _metadataHash,    // Off-chain tárolt fizikai részletek hash-e
             _sale,
             true,
             _price,
@@ -87,7 +87,7 @@ contract Jewelry {
         emit JewelryMaking(
             jewelryCount,
             _name,
-            _physicalDetails,
+            _metadataHash, // Off-chain tárolt fizikai részletek hash-e
             _sale,
             true,
             _price,
@@ -110,7 +110,7 @@ contract Jewelry {
         uint id,
         string memory name,
         uint[] memory previousGemIds,
-        string memory physicalDetails,
+        string memory metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool processing,
         bool sale,
         uint price,
@@ -123,7 +123,7 @@ contract Jewelry {
             jew.id,
             jew.name,
             jew.previousGemIds,
-            jew.physicalDetails,
+            jew.metadataHash, // Off-chain tárolt fizikai részletek hash-e
             jew.processing,
             jew.sale,
             jew.price,
@@ -189,7 +189,7 @@ contract Jewelry {
         JewelryData storage _jewelry = jewelry[_id];
         require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
 
-        _jewelry.sale = !_jewelry.sale ;
+        _jewelry.sale = !_jewelry.sale;
 
         emit JewelrySale(_id, _jewelry.owner);
     }
