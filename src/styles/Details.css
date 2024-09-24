@@ -37,16 +37,17 @@
   }
   
   .card-container {
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
     width: 100%;
   }
   
   .card {
-    border: 1px solid  rgb(221, 199, 161);
+    border: 1px solid rgb(221, 199, 161);
     padding: 20px;
-    margin: 0 10px;
+    margin: 20px auto;
+    width: 80%;
   }
   
   .arrow {

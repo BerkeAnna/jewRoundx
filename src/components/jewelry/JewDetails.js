@@ -124,10 +124,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
-  const renderJewelryGems = () => {
+  const renderJewelrySelectedGems = () => {
     return prevGemsArray.map((gemId) => {
       const selectedGem = selectedGems.find(gem => gem.id == gemId);
-      const minedGem = minedGems.find(gem => gem.id == gemId);
 
       return (
         <div key={gemId} className="card">
@@ -158,7 +157,17 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
               {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
             </div>
           ) : null}
+        </div>
+      );
+    });
+  };
 
+  const renderJewelryMinedGems = () => {
+    return prevGemsArray.map((gemId) => {
+      const minedGem = minedGems.find(gem => gem.id == gemId);
+
+      return (
+        <div key={gemId} className="card">
           {minedGem ? (
             <div>
               <h2>Mined Gem Details</h2>
@@ -189,6 +198,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       );
     });
   };
+
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
@@ -269,7 +279,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         {renderJewelry()}
       </div>
       <div className="card-container pt-5">
-        {renderJewelryGems()}
+        {renderJewelrySelectedGems()}
+      </div>
+      <div className="card-container pt-5">
+        {renderJewelryMinedGems()}
       </div>
     </div>
   );
