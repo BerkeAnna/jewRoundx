@@ -11,7 +11,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [allTransactions, setAllTransactions] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [pinataMetadata, setPinataMetadata] = useState(null); // Metaadatok
+  const [pinataMetadata, setPinataMetadata] = useState(null); // Metaadatok az ékszerről
   
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
@@ -20,7 +20,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     return new Date(block.timestamp * 1000);
   };
 
-  // Pinata metaadatok lekérése 
+  // Pinata metaadatok lekérése az ékszerhez
   const fetchPinataMetadata = async (url) => {
     try {
       const response = await fetch(url); // Pinata metaadatok lekérése
@@ -63,7 +63,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Pinata metaadatok lekérése
+        // Pinata metaadatok lekérése, ha van metadataHash
         if (details.metadataHash) {
           fetchPinataMetadata(details.metadataHash);
         }
@@ -86,8 +86,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
             </a>
           </div>
         )}
-        <p><strong>ID:</strong> { jewelry.id.toString() }</p>
-        <p><strong>Name:</strong> { jewelry.name }</p>
+        <p><strong>ID:</strong> {jewelry.id ? jewelry.id.toString() : 'N/A'}</p>
+        <p><strong>Name:</strong> {jewelry.name ? jewelry.name : 'N/A'}</p>
 
         {/* Ha van Pinata metaadat */}
         {pinataMetadata && (
@@ -98,10 +98,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           </div>
         )}
 
-        <p><strong>Processing:</strong> { jewelry.processing.toString() }</p>
-        <p><strong>Price:</strong> { window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
-        <p><strong>Owner:</strong> { jewelry.owner}</p>
+        <p><strong>Processing:</strong> {jewelry.processing ? jewelry.processing.toString() : 'N/A'}</p>
+        <p><strong>Price:</strong> {jewelry.price ? window.web3.utils.fromWei(jewelry.price.toString(), 'Ether') : 'N/A'} Eth</p>
+        <p><strong>Jeweler:</strong> {jewelry.jeweler ? jewelry.jeweler : 'N/A'}</p>
+        <p><strong>Owner:</strong> {jewelry.owner ? jewelry.owner : 'N/A'}</p>
       </div>
     ));
   };

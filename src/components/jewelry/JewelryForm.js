@@ -44,7 +44,6 @@ function JewelryForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
-    const physicalDetails = `Metal: ${metal} - ${size}`; 
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = false;
 
@@ -53,37 +52,72 @@ function JewelryForm(props) {
       return; 
     }
 
-    props.jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
+    const metadata = {
+      name,
+      gemId,
+      metal,
+      size,
+      fileUrl 
+    };
 
+    let metadataUrl = "";
+    try {
+      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
+        headers: {
+          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
+          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
+        },
+      });
+
+      if (metadataResponse && metadataResponse.data && metadataResponse.data.IpfsHash) {
+        metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
+        console.log("Metadata uploaded successfully: ", metadataUrl);
+      } else {
+        console.error('Pinata metadata upload error: ', metadataResponse);
+        return;
+      }
+    } catch (err) {
+      console.error("Error uploading metadata: ", err);
+      return;
+    }
+
+    try {
+      console.log("Submitting jewelry creation...");
+      await props.jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl); 
+      console.log("Jewelry created successfully.");
+      navigate('/loggedIn');
+    } catch (error) {
+      console.error("Error in jewelry creation: ", error);
+    }
   };
 
   return (
     <div className="card-container card-background">
-      <div className=" form-card ">
-        <h1>Add jewelry</h1>
+      <div className="form-card">
+        <h1>Add Jewelry</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
+            <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />
           </div>
           <div className="form-group">
-            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
+            <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
           </div>
           <div className="form-group">
-            <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
+            <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth in mm" required />
           </div>
           <div className="form-group">
-            <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
+            <input id="height" name="height" type="text" className="form-control" placeholder="Height in mm" required />
           </div>
           <div className="form-group">
-            <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
+            <input id="width" name="width" type="text" className="form-control" placeholder="Width in mm" required />
           </div>
           <div className="form-group">
-            <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
+            <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
           </div>
-          <button type="submit" className="button">Make jewelry</button>
+          <button type="submit" className="button">Make Jewelry</button>
         </form>
       </div>
     </div>

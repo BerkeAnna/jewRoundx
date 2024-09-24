@@ -513,3 +513,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 A minedgem adatok már jók. +
                 Megcsinálni a selected gemeket +   VÁRNI KELL AMÍG BETÖLTI
                 Megcsinálni a jewelryt
+                Commenteket kiszedni
+                Jewelrynél csak a jewet listázza a gemeket nem. Javítani
+
+2024.09.24. 7:31
+                gem detailsnál a sleected gem pic nincs kirakva
+                marketeknél is a kép
