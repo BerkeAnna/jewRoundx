@@ -1,6 +1,7 @@
 .navbar-custom {
   background-color: rgb(23, 25, 35) !important;/* Matches the bg-dark class */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for better separation */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for better separation */
+  border-bottom: 3px solid rgba(221, 199, 161, 0.8); /* Arany színű vonal alul */
   }
   
   .navbar-brand {
