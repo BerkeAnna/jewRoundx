@@ -9,7 +9,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [pinataMetadata, setPinataMetadata] = useState(null); // Metaadatok a bányászott kövekhez
+  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
 
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
@@ -21,11 +21,11 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   };
 
   // Pinata adatok lekérése
-  const fetchPinataMetadata = async (url) => {
+  const fetchPinataMetadataMined = async (url) => {
     try {
       const response = await fetch(url); // Pinata metaadatok lekérése
       const data = await response.json();
-      setPinataMetadata(data); // Beállítjuk a lekért adatokat
+      setpinataMetadataMined(data); // Beállítjuk a lekért adatokat
     } catch (error) {
       console.error('Error fetching Pinata metadata:', error);
     }
@@ -71,7 +71,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
         // Metaadatok lekérése a bányászott kövekhez
         if (minedGem[0] && minedGem[0].metadataHash) {
-          fetchPinataMetadata(minedGem[0].metadataHash);
+          fetchPinataMetadataMined(minedGem[0].metadataHash);
         }
 
         // Metaadatok lekérése a kiválasztott kövekhez
@@ -125,24 +125,24 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
     return minedGem.map((gem, key) => (
       <div key={key} className="card">
         <h2>Mined Gem Details</h2>
-        {pinataMetadata && (
+        {pinataMetadataMined && (
           <div>
-            {pinataMetadata.fileUrl && (
-              <a href={pinataMetadata.fileUrl} target="_blank" rel="noopener noreferrer">
-                <img src={pinataMetadata.fileUrl} alt="Gem image" className="details-image" />
+            {pinataMetadataMined.fileUrl && (
+              <a href={pinataMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
+                <img src={pinataMetadataMined.fileUrl} alt="Gem image" className="details-image" />
               </a>
             )}
           </div>
         )}
         <p><strong>ID:</strong> {gem.id.toString() }</p>
         <p><strong>Type:</strong> {gem.gemType}</p>
-        {pinataMetadata && (
+        {pinataMetadataMined && (
           <div>
-            <p><strong>Gem Type:</strong> {pinataMetadata.gemType }</p>
-            <p><strong>Weight:</strong> {pinataMetadata.weight }</p>
-            <p><strong>Size:</strong> {pinataMetadata.size}</p>
-            <p><strong>Mining Location:</strong> {pinataMetadata.miningLocation }</p>
-            <p><strong>Mining Year:</strong> {pinataMetadata.miningYear }</p>
+            <p><strong>Gem Type:</strong> {pinataMetadataMined.gemType }</p>
+            <p><strong>Weight:</strong> {pinataMetadataMined.weight }</p>
+            <p><strong>Size:</strong> {pinataMetadataMined.size}</p>
+            <p><strong>Mining Location:</strong> {pinataMetadataMined.miningLocation }</p>
+            <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear }</p>
           </div>
         )}
         <p><strong>Selected:</strong> {gem.selected.toString() }</p>
