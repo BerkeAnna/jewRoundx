@@ -7,18 +7,16 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
-  const [blockDates, setBlockDates] = useState({}); // A blokkok időbélyegeit tárolja
+  const [blockDates, setBlockDates] = useState({});
   const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
 
   const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
 
-  
-  // Dátum lekérése blokkszám alapján
-  const getTransactionDate = async (blockNumber) => {
-    const block = await window.web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000); // Unix timestamp átalakítása dátummá
+  const getTransactionDate = async (web3, blockNumber) => {
+    const block = await web3.eth.getBlock(blockNumber);
+    return new Date(block.timestamp * 1000);
   };
 
   // Pinata metaadatok lekérése
@@ -81,20 +79,6 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         if (minedGem && minedGem.metadataHash) {
           await fetchPinataMetadataMined(minedGem.metadataHash);
         }
-
-        // Tranzakciók blokkjainak dátumainak lekérése
-        const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
-        const blockDatePromises = allEvents.map(async (event) => {
-          const date = await getTransactionDate(event.blockNumber);
-          return { blockNumber: event.blockNumber, date };
-        });
-        const blockDateResults = await Promise.all(blockDatePromises);
-
-        const blockDateMap = {};
-        blockDateResults.forEach(({ blockNumber, date }) => {
-          blockDateMap[blockNumber] = date;
-        });
-        setBlockDates(blockDateMap);
 
       } catch (error) {
         console.error('Error fetching details:', error);

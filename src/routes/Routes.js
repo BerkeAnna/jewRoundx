@@ -117,7 +117,7 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
             } 
           />
       <Route path="/gem-select/:id" element={<ProtectedRoute><GemSelectingForm gemSelecting={gemSelecting} /></ProtectedRoute>} />
-      <Route path="/gem-details/:id" element={<ProtectedRoute><GemDetails selectedGems={state.selectedGems} minedGems={state.minedGems} gemSelecting={state.gemSelecting} account={state.account} gemstoneSelectingContract={state.gemstroneSelecting} gemstoneExtractionContract={state.gemstroneExtraction} /></ProtectedRoute>} />
+      <Route path="/gem-details/:id" element={<ProtectedRoute><GemDetails selectedGems={state.selectedGems} minedGems={state.minedGems} gemSelecting={state.gemSelecting} account={state.account} jewelryContract={state.makeJew} gemstoneSelectingContract={state.gemstroneSelecting} gemstoneExtractionContract={state.gemstroneExtraction} /></ProtectedRoute>} />
       <Route path="/jew-details/:id" element={<JewDetails selectedGems={state.selectedGems} minedGems={state.minedGems} jewelry={state.jewelry} gemSelecting={state.gemSelecting} account={state.account} jewelryContract={state.makeJew} gemstoneSelectingContract={state.gemstroneSelecting} gemstoneExtractionContract={state.gemstroneExtraction} />} />
       <Route 
         path="/jew-processing/:id" 

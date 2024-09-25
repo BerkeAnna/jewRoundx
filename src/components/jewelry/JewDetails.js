@@ -10,9 +10,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [pinataMetadataJew, setPinataMetadataJew] = useState(null); // Metaadatok
-  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
-  const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
+  const [pinataMetadataJew, setPinataMetadataJew] = useState(null); 
+  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); 
+  const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); 
+  const [allTransactions, setAllTransactions] = useState([]); 
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
@@ -21,6 +22,24 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000);
+  };
+  const fetchJewTransactions = async () => {
+    try {
+      const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
+      const allEvents = [...allJewelryEvents];
+      setAllTransactions(allEvents);
+      
+      const blockNumbers = allEvents.map(event => event.blockNumber);
+      const uniqueBlockNumbers = [...new Set(blockNumbers)];
+  
+      const blockDatesMap = {};
+      for (let blockNumber of uniqueBlockNumbers) {
+        blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
+      }
+      setBlockDates(blockDatesMap);
+    } catch (error) {
+      console.error('Error fetching all transactions:', error);
+    }
   };
 
   const fetchPinataMetadataMined = async (hash) => {
@@ -102,7 +121,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Pinata metaadatok lekérése, ha létezik metadataHash
         if (details.metadataHash) {
           await fetchPinataMetadataJew(details.metadataHash);
         }
@@ -115,14 +133,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           await fetchPinataMetadataMined(filteredMinedGems[0].returnValues.metadataHash);
         }
         
+       
+        fetchJewTransactions();
 
-      } catch (error) {
+        } catch (error) {
         console.error('Error fetching details:', error);
-      }
+        }
     };
 
     fetchJewelryDetails();
-  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
+    }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
   const renderJewelrySelectedGems = () => {
     return prevGemsArray.map((gemId) => {
@@ -253,7 +273,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>ID:</strong> { jewelry.id.toString() }</p>
         <p><strong>Name:</strong> { jewelry.name }</p>
 
-        {/* Ha van Pinata metaadat */}
         {pinataMetadataJew && (
           <div>
             <p><strong>Metal:</strong> {pinataMetadataJew.metal}</p>

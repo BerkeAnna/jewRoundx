@@ -519,3 +519,10 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.09.24. 7:31
                 gem detailsnál a sleected gem pic nincs kirakva
                 marketeknél is a kép
+
+        11:45
+                most csak a sleecttedgemet írja ki, a minedgemet nem a gemdetailsnál +
+
+2024.09.25. 15:20
+                lassan töltiu bea date-ket, de no pr +
+                market képek
