@@ -36,6 +36,7 @@ contract Jewelry {
         string fileURL;
         address payable jeweler;
         address payable owner;
+        address payable jewOwner;  // Új mező hozzáadva
     }
 
     event JewelryMaking(
@@ -47,7 +48,8 @@ contract Jewelry {
         uint price,
         string fileURL,
         address payable jeweler,
-        address payable owner
+        address payable owner,
+        address payable jewOwner
     );
 
     event JewelryBought(uint id, address payable newOwner);
@@ -55,6 +57,8 @@ contract Jewelry {
     event GemReplaced(uint jewelryId, uint newGemId);
     event JewelryFinished(uint id, address owner);
     event JewelrySale(uint id, address owner);
+    event JewelryAddRepair(uint id, address jewOwner, address jeweler);
+    event ReturnToJewOwner(uint id, address jewOwner, address jeweler);
 
     constructor(address _gemstoneSelectingAddress) public {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
@@ -80,7 +84,8 @@ contract Jewelry {
             _price,
             _fileURL,
             msg.sender,
-            msg.sender
+            msg.sender,
+            msg.sender   // Új jewOwner mező beállítva
         );
         jewelry[jewelryCount].previousGemIds.push(_gemId);
 
@@ -93,7 +98,8 @@ contract Jewelry {
             _price,
             _fileURL,
             msg.sender,
-            msg.sender
+            msg.sender,
+            msg.sender  // Új jewOwner mező beállítva
         );
     }
 
@@ -116,7 +122,8 @@ contract Jewelry {
         uint price,
         string memory fileURL,
         address jeweler,
-        address owner
+        address owner,
+        address jewOwner   // Új mező hozzáadva
     ) {
         JewelryData storage jew = jewelry[_id];
         return (
@@ -129,7 +136,8 @@ contract Jewelry {
             jew.price,
             jew.fileURL,
             jew.jeweler,
-            jew.owner
+            jew.owner,
+            jew.jewOwner   // Új mező hozzáadva
         );
     }
 
@@ -140,6 +148,7 @@ contract Jewelry {
 
         jew.owner.transfer(msg.value);
         jew.owner = msg.sender;
+        jew.jewOwner = msg.sender;
         jew.sale = false;
 
         emit JewelryBought(_id, msg.sender);
@@ -147,7 +156,7 @@ contract Jewelry {
 
     function updateGem(uint _jewelryId, uint _newGemId) public {
         JewelryData storage jew = jewelry[_jewelryId];
-        require(msg.sender == jew.owner, "Only the owner can update the gem");
+        require(msg.sender == jew.jeweler, "Only the owner can update the gem");
 
         jew.previousGemIds.push(_newGemId);
 
@@ -192,6 +201,26 @@ contract Jewelry {
         _jewelry.sale = !_jewelry.sale;
 
         emit JewelrySale(_id, _jewelry.owner);
+    }
+
+    function addForRepair(uint _id) public{
+         JewelryData storage jew = jewelry[_id];
+
+        jew.owner = jew.jeweler;
+        jew.sale = false;
+
+        emit JewelryAddRepair(_id, jew.jewOwner, jew.jeweler);
+    
+    }
+
+     function returnToJewOwner(uint _id) public{
+         JewelryData storage jew = jewelry[_id];
+
+        jew.owner = jew.jewOwner;
+        jew.sale = false;
+
+        emit ReturnToJewOwner(_id, jew.jewOwner, jew.jeweler);
+    
     }
 
 }

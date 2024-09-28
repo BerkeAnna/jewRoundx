@@ -1,8 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished, markedAsSale }) {
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [jewelryId, setJewelryId] = useState('');
+  
+  // Load user data from localStorage
+  const username = localStorage.getItem('username') || '';
+  const role = localStorage.getItem('role') || '';
+
+  console.log(role)
 
   const handleMarkAsSelected = (gemId) => {
     markGemAsSelected(gemId);
@@ -21,6 +29,16 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
 
   const handleMarkedAsSale = (gemId) => {
     markedAsSale(gemId);
+    navigate(`/ownMinedGems`);
+  };
+
+  const handleAddRepair = (gemId) => {
+    addForRepair(gemId);
+    navigate(`/ownMinedGems`);
+  };
+
+  const handleReturnToOwner = (gemId) => {
+    returnToOwner(gemId);
     navigate(`/ownMinedGems`);
   };
 
@@ -126,12 +144,22 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
           <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
             Details
           </button>
-          {!jewelry.sale ? (
-          <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
-            Repair
-          </button>
-          ):(
-            <div></div>
+          {role === 'Jewelry Owner' ? (
+            //todo : owner módosítás jewelerre
+            <button onClick={() => handleAddRepair(jewelry.id)} className="btn">
+              Add to repair
+            </button>
+          ) : (
+            !jewelry.sale && (
+              <>
+              <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
+                Repair
+              </button>
+              <button onClick={() => handleReturnToOwner(jewelry.id)} className="btn">
+                Return To Owner
+              </button>
+              </>
+            )
           )}
           {jewelry.sale ? (
           <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">

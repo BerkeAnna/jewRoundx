@@ -82,8 +82,19 @@ async buyJewelry(id, price, account) {
 }
 
  
+async addForRepair(id, account) {
+  if (!this.contract) {
+    await this.loadContract(); // Szerződés betöltése
+  }
+  return this.contract.methods.addForRepair(id).send({ from: account });
+}
+async returnToOwner(id, account) {
+  if (!this.contract) {
+    await this.loadContract(); // Szerződés betöltése
+  }
+  return this.contract.methods.returnToJewOwner(id).send({ from: account });
+}
 
-  
 
 }
 

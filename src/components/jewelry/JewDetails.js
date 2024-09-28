@@ -14,6 +14,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [pinataMetadataMined, setpinataMetadataMined] = useState(null); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); 
   const [allTransactions, setAllTransactions] = useState([]); 
+  const [currentGemIndex, setCurrentGemIndex] = useState(0);
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
@@ -169,6 +170,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
               )}
 
               <p><strong>forSale:</strong> { selectedGem.forSale.toString() }</p>
+              <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
               <p><strong>Used:</strong> { selectedGem.used.toString() }</p>
               <p><strong>Price:</strong> { window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether') } Eth</p>
               <p><strong>Gem cutter:</strong> {selectedGem.gemCutter}</p>
@@ -285,12 +287,23 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> { window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> { jewelry.owner}</p>
+        <p><strong>Jewelry Owner:</strong> { jewelry.jewOwner}</p>
+        <p><strong>Sale:</strong> { jewelry.sale.toString()}</p>
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
       </div>
     ));
   };
 
+
+
+  const handlePrevGem = () => {
+    setCurrentGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
+  };
+
+  const handleNextGem = () => {
+    setCurrentGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
+  };
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>

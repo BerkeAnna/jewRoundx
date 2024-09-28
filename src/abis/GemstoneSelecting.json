@@ -15148,12 +15148,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x1d838e6fD8E2b5404eD6084166fD046F280dD7B6",
-      "transactionHash": "0xccf37c1232176f4162b2081d7c850906c1b02e11e3cd5e5c0e43988f6f8a3719"
+      "address": "0xcD43EC23439cee0038a6223Bc85721e248109565",
+      "transactionHash": "0xe996215d3cbe1731dedcdeec144169e7e22060bacea8cb078cf511f51cbe3046"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-09-23T13:22:38.354Z",
+  "updatedAt": "2024-09-28T19:19:08.060Z",
   "devdoc": {
     "methods": {}
   },

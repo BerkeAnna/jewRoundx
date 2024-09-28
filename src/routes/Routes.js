@@ -18,7 +18,7 @@ import JewelryForm from '../components/jewelry/JewelryForm';
 import LogIn from '../components/user/LogIn';
 import ProtectedRoute from '../ProtectedRoute';  // Használjuk az elérési utat
 
-const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, markGemAsSelected, processingGem, markGemAsUsed, polishGem, jewelryMaking, buyJewelry, refreshPage, transferGemOwnership, updateGem,markedAsFinished, markedAsSale, replaceGem }) => {
+const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, markGemAsSelected, processingGem, markGemAsUsed, polishGem, jewelryMaking, buyJewelry, refreshPage, transferGemOwnership, updateGem,markedAsFinished, markedAsSale, replaceGem, addForRepair, returnToOwner }) => {
   return (
     <Routes>
       <Route path="/" element={<LogIn />} />
@@ -112,6 +112,8 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
                   markedAsFinished={markedAsFinished} 
                   markedAsSale={markedAsSale} 
                   polishGem={polishGem} 
+                  addForRepair={addForRepair}
+                  returnToOwner={returnToOwner}
                 />
               </ProtectedRoute>
             } 

@@ -526,3 +526,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.09.25. 15:20
                 lassan töltiu bea date-ket, de no pr +
                 market képek
+
+2024.09.28 
+                Hozzáadni új szerepkört. Ékszertulajdonos. Aki csak meg tudja venni az ékszert. és el tudja adni. ÉS le tudja adni javításra. +
+                Nem éri meg a bool és address értékeket láncra rakni - mindig új hash jönne létre. +
+                Megcsinálni valahogy a repair leadást - vagy tegyük fel, hoyg annak az adatát tárolja, aki leadta javításra. és ugyanannak kell javítania is. És mondjuk cask az adott jeweller tudja reapirelni, aki készítette az éékszert. egyéb esetben nem. De az owner ugya változhat. És ha leadom javításra, akkor az owner épp a jeweler. De a tranz adatokban látszüódni fog ki adta le, és neki vissza. +
+
+        21:33
+                repair még nem jó +++
+                a mainen is megcsinálni a mainre is az előző bekezdéses jew ownert
+                a jewdetailsban nem mindenhol írja ki a date-t.
+
