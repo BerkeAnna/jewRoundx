@@ -13,12 +13,12 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
   console.log(role)
 
   const handleMarkAsSelected = (gemId) => {
-    markGemAsSelected(gemId);
+    //markGemAsSelected(gemId);
     navigate(`/gem-select/${gemId}`);
   };
 
-  const handleMarkAsUsed = (gemId) => {
-    markGemAsUsed(gemId);
+  const handleJewMaking = (gemId) => {
+    //markGemAsUsed(gemId);
     navigate(`/jewelry-making/gem/${gemId}`);
   };
 
@@ -97,7 +97,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                   Details
                 </button>
-                <button onClick={() => handleMarkAsUsed(selectedGem.id)} className="btn">
+                <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
                   Make jewelry
                 </button>
                 <button

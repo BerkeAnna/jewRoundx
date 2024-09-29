@@ -537,3 +537,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 a mainen is megcsinálni a mainre is az előző bekezdéses jew ownert
                 a jewdetailsban nem mindenhol írja ki a date-t.
 
+2024.09.29. 21:31
+                megcsinálni h a form gombokkal legyen az öszes metam tranzakció +
+

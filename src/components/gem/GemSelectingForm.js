@@ -7,9 +7,14 @@ function GemSelectingForm(props) {
   const fileInputRef = useRef(null);
   const { id } = useParams();
 
+  const handleMarkAsSelected = (gemId) => {
+    props.markGemAsSelected(gemId); 
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    handleMarkAsSelected(id);
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
 

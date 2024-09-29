@@ -3,14 +3,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/Forms.css';
 
-function JewelryForm(props) {
+function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elérhető függvények
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
 
+  const handleMarkAsUsed = (gemId) => {
+    markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    handleMarkAsUsed(id);  // Meghívjuk a markGemAsUsed-et
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
     
@@ -83,7 +88,7 @@ function JewelryForm(props) {
 
     try {
       console.log("Submitting jewelry creation...");
-      await props.jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl); 
+      await jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl);  // Helyes függvényhívás
       console.log("Jewelry created successfully.");
       navigate('/loggedIn');
     } catch (error) {
