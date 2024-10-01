@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem,markGemAsReplaced }) {
+function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced }) {
   const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
@@ -14,7 +14,7 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
     replaceGem(id, oldGemId, newGemId);
     markGemAsReplaced(oldGemId);
    // updateGem(oldGemId, newGemId);
-    navigate(`/jew-details/${id}`);
+    navigate(`/jewelry-details/${id}`);
 
 };
   

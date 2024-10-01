@@ -11,7 +11,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
   const handleRepair = (gemId) => {
     markGemAsUsed(gemId);
     updateGem(parseInt(id), gemId);
-    navigate(`/jew-details/${id}`);
+    navigate(`/jewelry-details/${id}`);
   };
 
   useEffect(() => {

@@ -555,23 +555,25 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 add gem táblázat helyett ugyanúgy cardok legyenek + nem lesznek cardok. jó a tábla +++
                 a jew detailsnál ha két kő van akkor csak az elsőt listázza ki 2x - de nyilván csak az adatoknál. A tranzadatok jók ++
                 ha kész a kő és mindhárom owner azonos, vagy owner-jewowner azonos  ne legyen ott a return to owner gomb ++
-                A repairnál is hozzáadtam pl egy emeraldot, de a ruby adatait írja ki. De a tranz jó 
+                A repairnál is hozzáadtam pl egy emeraldot, de a ruby adatait írja ki. De a tranz jó ++
                 a repair oldalon csak azokat a köveket listázza ki, amik nem lettek még cserélve, repairezve.
                 A tranzakciók jók +++
 
         11:08
                 
                 mined gem marketen a kép nem jelenik meg ++ de rohadtlassú
-                megcsinálni, hogy a jewelrynél cask azokat a köveket írja ki, ami jelenleg benne van. Szóval valahogy törölni is kellene a tömbből. De a prevgemnél legyen egy gomb, ahol meg lehet nyitni a prevgemet a gemdetails oldaon. Valszeg kell egy új tömb is.
+                megcsinálni, hogy a jewelrynél cask azokat a köveket írja ki, ami jelenleg benne van. Szóval valahogy törölni is kellene a tömbből. De a prevgemnél legyen egy gomb, ahol meg lehet nyitni a prevgemet a gemdetails oldaon. Valszeg kell egy új tömb is. ----
 
         15:30
-                a selectedbe rakni egy repaired változót. Végig false, ha kicseréltem , akkor true
+                a selectedbe rakni egy repaired változót. Végig false, ha kicseréltem , akkor true +++
 
         19:41
-                tudok-e itt olyat csinálni, hogy végigiterálok a sleectedgemeken. És ahol a prev gem id 0, és az seleczed gem id-ja egyik másik sleected id-nak sem a prevgemje, akkor kiírja az id alatti sorba, hogy jelenleg az ékszerben van. Ha pedig az adott id-jú kő egy másik kőnél prevgemid, akkor odaírja az id alá, hogy "cserélve, javítva"
+                tudok-e itt olyat csinálni, hogy végigiterálok a sleectedgemeken. És ahol a prev gem id 0, és az seleczed gem id-ja egyik másik sleected id-nak sem a prevgemje, akkor kiírja az id alatti sorba, hogy jelenleg az ékszerben van. Ha pedig az adott id-jú kő egy másik kőnél prevgemid, akkor odaírja az id alá, hogy "cserélve, javítva" ++++
 
 
         20:12
-                most van egy replaced fv
+                most van egy replaced fv +
+                minden jew rövidítést kiírni jewelry-re
+                szépíteni a kódot
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
+function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
   const gemId = id;
 
@@ -10,7 +10,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [pinataMetadataJew, setPinataMetadataJew] = useState(null); 
+  const [pinataMetadataJewelry, setPinataMetadataJewelry] = useState(null); 
   const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
   const [allTransactions, setAllTransactions] = useState([]); 
@@ -24,7 +24,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     return new Date(block.timestamp * 1000);
   };
   
-  const fetchJewTransactions = async () => {
+  const fetchJewelryTransactions = async () => {
     try {
       const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
       const allEvents = [...allJewelryEvents];
@@ -73,13 +73,13 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
   };
   
-  const fetchPinataMetadataJew = async (hash) => {
+  const fetchPinataMetadataJewelry = async (hash) => {
     try {
       const cleanedHash = cleanHash(hash);
       const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
       const response = await fetch(url);
       const data = await response.json();
-      setPinataMetadataJew(data);
+      setPinataMetadataJewelry(data);
     } catch (error) {
       console.error('Error fetching Pinata metadata:', error);
     }
@@ -141,10 +141,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         }
 
         if (details.metadataHash) {
-          await fetchPinataMetadataJew(details.metadataHash);
+          await fetchPinataMetadataJeweley(details.metadataHash);
         }
 
-        fetchJewTransactions();
+        fetchJewelryTransactions();
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -284,9 +284,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
         {pinataMetadataJew && (
           <div>
-            <p><strong>Metal:</strong> {pinataMetadataJew.metal}</p>
-            <p><strong>Size:</strong> {pinataMetadataJew.size}</p>
-            <p><strong>Gem ID:</strong> {pinataMetadataJew.gemId}</p>
+            <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
+            <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>
+            <p><strong>Gem ID:</strong> {pinataMetadataJewelry.gemId}</p>
           </div>
         )}
 

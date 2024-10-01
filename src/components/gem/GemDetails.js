@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContract, gemstoneExtractionContract }) {
+function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams(); // A kő azonosítója
   const gemId = id;
 

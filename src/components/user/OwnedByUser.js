@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markGemAsSelected, markGemAsUsed, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
+function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [jewelryId, setJewelryId] = useState('');
@@ -13,12 +13,10 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
   console.log(role)
 
   const handleMarkAsSelected = (gemId) => {
-    //markGemAsSelected(gemId);
     navigate(`/gem-select/${gemId}`);
   };
 
   const handleJewMaking = (gemId) => {
-    //markGemAsUsed(gemId);
     navigate(`/jewelry-making/gem/${gemId}`);
   };
 
@@ -141,7 +139,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
         <td>{jewelry.owner}</td>
         <td className="button-container">
-          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
+          <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
             Details
           </button>
           {role === 'Jewelry Owner' ? (
@@ -202,10 +200,10 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
         <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
         <td>{jewelry.owner}</td>
         <td className="button-container">
-          <button onClick={() => navigate(`/jew-details/${jewelry.id}`)} className="btn">
+          <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
             Details
           </button>
-          <button onClick={() => navigate(`/jew-processing/${jewelry.id}`)} className="btn">
+          <button onClick={() => navigate(`/jewelry-processing/${jewelry.id}`)} className="btn">
             Add gem
           </button>
           <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn">

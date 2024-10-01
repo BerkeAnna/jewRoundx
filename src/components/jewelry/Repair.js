@@ -15,7 +15,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     const oldGemId = parseInt(id);
     markGemAsUsed(newGemId);
     replaceGem(oldGemId, newGemId);
-    navigate(`/jew-details/${id}`);
+    navigate(`/jewelry-details/${id}`);
 };
 
 

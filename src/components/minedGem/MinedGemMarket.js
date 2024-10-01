@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Market.css';
 
-function MinedGemMarket({ minedGems, selectedGems, jewelry, account, purchaseGem, sellGem, markNewOwner, markGemAsUsed, polishGem }) {
+function MinedGemMarket({ minedGems, account, markNewOwner, }) {
   const navigate = useNavigate();
   const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner !== account);
   const [pinataMetadataMined, setPinataMetadataMined] = useState({}); // Minden gem metaadatait objektumban tároljuk
