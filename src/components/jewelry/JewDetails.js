@@ -14,13 +14,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
   const [allTransactions, setAllTransactions] = useState([]); 
-  const [currentGemIndex, setCurrentGemIndex] = useState(0);
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
-  const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
-  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
 
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
@@ -174,6 +171,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           </a>
         )}
         <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
+        
+        <p><strong> {selectedGem.replaced ? "Changed earlier" : "Currently in jewelry" }</strong></p>
+
         {metadata && (
           <div>
             <p><strong>Gem Type:</strong> {metadata.gemType}</p>
@@ -184,6 +184,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
             <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
         <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
+        <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
         
         <h3>Transaction Details</h3>
@@ -191,6 +192,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       </div>
     );
   };
+  
 
   const renderJewelryMinedGems = () => {
     const gemId = prevGemsArray[currentMinedGemIndex];

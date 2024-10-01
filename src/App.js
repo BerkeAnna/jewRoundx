@@ -213,6 +213,7 @@ class App extends Component {
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
     this.addForRepair = this.addForRepair.bind(this);
     this.returnToOwner = this.returnToOwner.bind(this);
+    this.markGemAsReplaced = this.markGemAsReplaced.bind(this);
     /* 
     this.refreshPage = this.refreshPage.bind(this);
     
@@ -338,6 +339,23 @@ async markGemAsUsed(id) {
     this.setState({ loading: false }); 
   } catch (error) {
     console.error("Error in markGemAsUsed: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async markGemAsReplaced(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a markGemAsUsed fv-t
+    GemSelectingService.markGemAsReplaced(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markGemAsReplaced: ", error);
     this.setState({ loading: false }); 
   }
 }
@@ -547,6 +565,7 @@ async returnToOwner(id) {
             replaceGem = {this.replaceGem}
             addForRepair = {this.addForRepair}
             returnToOwner = {this.returnToOwner}
+            markGemAsReplaced = {this.markGemAsReplaced}
           />
         </Router>
       </div>

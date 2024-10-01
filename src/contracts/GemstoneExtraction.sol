@@ -12,11 +12,11 @@ contract GemstoneExtraction {
         uint id;
         string gemType;
         uint price;
-        address payable miner; // A kibányászó személy
-        address payable owner; // Az új tulajdonos
-        string metadataHash; // Off-chain hash
-        bool purchased; // Jelzi, hogy a drágakövet megvásárolták-e
-        bool selected;  // Új mező: jelzi, hogy a drágakövet kiválasztották-e
+        address payable miner;
+        address payable owner;
+        string metadataHash; 
+        bool purchased; 
+        bool selected; 
     }
 
     event GemMining(

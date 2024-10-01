@@ -51,6 +51,15 @@ class GemSelectingService {
     });
   }
 
+  async markGemAsReplaced(id, account) {
+    if (!this.contract) {
+      await this.loadContract(); 
+    }
+    return this.contract.methods.markGemAsReplaced(id).send({
+      from: account
+    });
+  }
+
   // Drágakő tulajdonjogának átruházása (transferGemOwnership) - Ether értékkel
   async transferGemOwnership(id, price, account) {
     if (!this.contract) {

@@ -15,9 +15,10 @@ contract GemstoneSelecting {
         uint minedGemId;
         uint previousGemId;
         bool forSale;
-        string metadataHash; // Off-chain adatok hash (pl. IPFS hash)
+        string metadataHash; 
         uint price;
         bool used;
+        bool replaced; 
         address payable owner;
         address payable gemCutter;
     }
@@ -25,10 +26,11 @@ contract GemstoneSelecting {
     event GemSelecting(
         uint id,
         uint minedGemId,
-        string metadataHash, // Off-chain adat hash
+        string metadataHash,
         bool forSale,
         uint price,
         bool used,
+        bool replaced,
         address payable owner,
         address payable gemCutter
     );
@@ -36,10 +38,11 @@ contract GemstoneSelecting {
     event PolishGem(
         uint id,
         uint minedGemId,
-        string metadataHash, // Off-chain adat hash
+        string metadataHash, 
         bool forSale,
         uint price,
         bool used,
+        bool replaced, 
         address payable owner,
         address payable gemCutter
     );
@@ -47,10 +50,23 @@ contract GemstoneSelecting {
     event MarkGemAsUsed(
         uint id,
         uint minedGemId,
-        string metadataHash, // Off-chain adat hash
+        string metadataHash, 
         bool forSale,
         uint price,
         bool used,
+        bool replaced, 
+        address payable owner,
+        address payable gemCutter
+    );
+
+     event MarkGemAsReplaced(
+        uint id,
+        uint minedGemId,
+        string metadataHash, 
+        bool forSale,
+        uint price,
+        bool used,
+        bool replaced, 
         address payable owner,
         address payable gemCutter
     );
@@ -58,10 +74,11 @@ contract GemstoneSelecting {
     event TransferGemOwnership(
         uint id,
         uint minedGemId,
-        string metadataHash, // Off-chain adat hash
+        string metadataHash, 
         bool forSale,
         uint price,
         bool used,
+        bool replaced, 
         address payable owner,
         address payable gemCutter
     );
@@ -74,31 +91,38 @@ contract GemstoneSelecting {
         SelectedGem storage gem = selectedGems[gemId];
         require(gem.id > 0, "Gem does not exist.");
         gem.previousGemId = previousGemId;
+
+        if (previousGemId > 0) {
+            SelectedGem storage previousGem = selectedGems[previousGemId];
+            previousGem.replaced = true;
+        }
     }
 
     function gemSelecting(
         uint _minedGemId,
-        string memory _metadataHash, // Off-chain adat hash (pl. IPFS hash)
+        string memory _metadataHash, 
         uint _price
     ) public {
         selectedGemCount++;
         SelectedGem storage gem = selectedGems[_minedGemId];
         gem.id = _minedGemId;
         gem.minedGemId = _minedGemId;
-        gem.metadataHash = _metadataHash; // Off-chain adat hash
+        gem.metadataHash = _metadataHash; 
         gem.forSale = false;
         gem.price = _price;
         gem.used = false;
+        gem.replaced = false; 
         gem.owner = msg.sender;
         gem.gemCutter = msg.sender;
 
         emit GemSelecting(
             gem.id,
             gem.minedGemId,
-            gem.metadataHash, // Off-chain adat hash
+            gem.metadataHash, 
             gem.forSale,
             gem.price,
             gem.used,
+            gem.replaced,
             gem.owner,
             gem.gemCutter
         );
@@ -111,10 +135,11 @@ contract GemstoneSelecting {
         emit PolishGem(
             _selectedGem.id,
             _selectedGem.minedGemId,
-            _selectedGem.metadataHash, // Off-chain adat hash
+            _selectedGem.metadataHash, 
             _selectedGem.forSale,
             _selectedGem.price,
             _selectedGem.used,
+            _selectedGem.replaced, 
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -129,10 +154,11 @@ contract GemstoneSelecting {
         emit MarkGemAsUsed(
             _id,
             _selectedGem.minedGemId,
-            _selectedGem.metadataHash, // Off-chain adat hash
+            _selectedGem.metadataHash, 
             _selectedGem.forSale,
             _selectedGem.price,
             _selectedGem.used,
+            _selectedGem.replaced, 
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -161,10 +187,11 @@ contract GemstoneSelecting {
         emit TransferGemOwnership(
             _selectedGem.id,
             _selectedGem.minedGemId,
-            _selectedGem.metadataHash, // Off-chain adat hash
+            _selectedGem.metadataHash,
             _selectedGem.forSale,
             _selectedGem.price,
             _selectedGem.used,
+            _selectedGem.replaced, 
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -175,10 +202,11 @@ contract GemstoneSelecting {
         uint id,
         uint minedGemId,
         uint previousGemId,
-        string memory metadataHash, // Off-chain adat hash
+        string memory metadataHash,
         bool forSale,
         uint price,
         bool used,
+        bool replaced, 
         address owner,
         address gemCutter
     ) {
@@ -187,10 +215,11 @@ contract GemstoneSelecting {
             gem.id,
             gem.minedGemId,
             gem.previousGemId,
-            gem.metadataHash, // Off-chain adat hash
+            gem.metadataHash, 
             gem.forSale,
             gem.price,
             gem.used,
+            gem.replaced, 
             gem.owner,
             gem.gemCutter
         );
@@ -200,13 +229,33 @@ contract GemstoneSelecting {
         uint id,
         uint minedGemId,
         uint previousGemId,
-        string memory metadataHash, // Off-chain adat hash
+        string memory metadataHash, 
         bool forSale,
         uint price,
         bool used,
+        bool replaced, 
         address owner,
         address gemCutter
     ) {
         return getSelectedGem(_id);
+    }
+
+      function markGemAsReplaced(uint _id) public {
+        SelectedGem storage _selectedGem = selectedGems[_id];
+        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
+        require(_selectedGem.replaced == false, "Gem already used");
+        _selectedGem.replaced = true;
+
+        emit MarkGemAsReplaced(
+            _id,
+            _selectedGem.minedGemId,
+            _selectedGem.metadataHash, 
+            _selectedGem.forSale,
+            _selectedGem.price,
+            _selectedGem.used,
+            _selectedGem.replaced, 
+            _selectedGem.owner,
+            _selectedGem.gemCutter
+        );
     }
 }

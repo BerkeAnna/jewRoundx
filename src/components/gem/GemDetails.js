@@ -127,6 +127,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           </div>
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gemSelected.price.toString(), 'Ether')} Eth</p>
+        <p><strong>replaced:</strong> {gemSelected.replaced.toString()}</p>
         <p><strong>Gem cutter:</strong> {gemSelected.gemCutter}</p>
         <p><strong>Owner:</strong> {gemSelected.owner}</p>
         <h3>Transaction Details</h3>

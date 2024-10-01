@@ -18,6 +18,7 @@ interface IGemstoneSelecting {
     );
     function markGemAsUsed(uint _id) external;
     function setPreviousGemId(uint gemId, uint previousGemId) external;
+    function markGemAsReplaced(uint _id) external;
 }
 
 contract Jewelry {

@@ -564,5 +564,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 mined gem marketen a kép nem jelenik meg ++ de rohadtlassú
                 megcsinálni, hogy a jewelrynél cask azokat a köveket írja ki, ami jelenleg benne van. Szóval valahogy törölni is kellene a tömbből. De a prevgemnél legyen egy gomb, ahol meg lehet nyitni a prevgemet a gemdetails oldaon. Valszeg kell egy új tömb is.
 
+        15:30
+                a selectedbe rakni egy repaired változót. Végig false, ha kicseréltem , akkor true
+
+        19:41
+                tudok-e itt olyat csinálni, hogy végigiterálok a sleectedgemeken. És ahol a prev gem id 0, és az seleczed gem id-ja egyik másik sleected id-nak sem a prevgemje, akkor kiírja az id alatti sorba, hogy jelenleg az ékszerben van. Ha pedig az adott id-jú kő egy másik kőnél prevgemid, akkor odaírja az id alá, hogy "cserélve, javítva"
+
+
+        20:12
+                most van egy replaced fv
 
 
