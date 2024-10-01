@@ -122,7 +122,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           <div>
             <p><strong>Gem Type:</strong> {pinataMetadataSelected.gemType}</p>
             <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
-            <p><strong>Weight:</strong> {pinataMetadataSelected.weight}</p>
+            <p><strong>Carat:</strong> {pinataMetadataSelected.carat} ct</p>
             <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
           </div>
         )}

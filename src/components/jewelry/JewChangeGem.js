@@ -45,7 +45,10 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
           <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
-            Select-
+            Select
+          </button>
+          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+            Details
           </button>
         </td>
       </tr>

@@ -11,10 +11,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
   const [pinataMetadataJew, setPinataMetadataJew] = useState(null); 
-  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); 
-  const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); 
+  const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
+  const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
   const [allTransactions, setAllTransactions] = useState([]); 
   const [currentGemIndex, setCurrentGemIndex] = useState(0);
+  const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
+  const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
@@ -24,6 +26,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     const block = await web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000);
   };
+  
   const fetchJewTransactions = async () => {
     try {
       const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
@@ -43,25 +46,31 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
   };
 
-  const fetchPinataMetadataMined = async (hash) => {
+  const fetchPinataMetadataMined = async (hash, gemId) => {
     try {
       const cleanedHash = cleanHash(hash); // Hash tisztítás
       const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
       const response = await fetch(url);
       const data = await response.json();
-      setpinataMetadataMined(data);
+      setPinataMetadataMined(prevState => ({
+        ...prevState,
+        [gemId]: data
+      }));
     } catch (error) {
       console.error('Error fetching Pinata metadata:', error);
     }
   };
   
-  const fetchPinataMetadataForSelected = async (hash) => {
+  const fetchPinataMetadataForSelected = async (hash, gemId) => {
     try {
       const cleanedHash = cleanHash(hash);
       const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
       const response = await fetch(url);
       const data = await response.json();
-      setPinataMetadataSelected(data);
+      setPinataMetadataSelected(prevState => ({
+        ...prevState,
+        [gemId]: data
+      }));
     } catch (error) {
       console.error('Error fetching Pinata metadata for selected gems:', error);
     }
@@ -86,7 +95,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
     return hash;
   };
-  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -122,105 +130,101 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
+        // Metaadatok lekérése minden egyes kőhöz
+        for (const gemId of gemIdsAsInt) {
+          const selectedGem = selectedGems.find(gem => gem.id == gemId);
+          if (selectedGem && selectedGem.metadataHash) {
+            await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
+          }
+
+          const minedGem = minedGems.find(gem => gem.id == gemId);
+          if (minedGem && minedGem.metadataHash) {
+            await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
+          }
+        }
+
         if (details.metadataHash) {
           await fetchPinataMetadataJew(details.metadataHash);
         }
-        
-        if (filteredSelectedGems.length > 0 && filteredSelectedGems[0].returnValues.metadataHash) {
-          await fetchPinataMetadataForSelected(filteredSelectedGems[0].returnValues.metadataHash);
-        }
-        
-        if (filteredMinedGems.length > 0 && filteredMinedGems[0].returnValues.metadataHash) {
-          await fetchPinataMetadataMined(filteredMinedGems[0].returnValues.metadataHash);
-        }
-        
-       
+
         fetchJewTransactions();
 
-        } catch (error) {
+      } catch (error) {
         console.error('Error fetching details:', error);
-        }
+      }
     };
 
     fetchJewelryDetails();
-    }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
+  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
+
 
   const renderJewelrySelectedGems = () => {
-    return prevGemsArray.map((gemId) => {
-      const selectedGem = selectedGems.find(gem => gem.id == gemId);
+    const gemId = prevGemsArray[currentSelectedGemIndex];
+    const selectedGem = selectedGems.find(gem => gem.id == gemId);
+    const metadata = pinataMetadataSelected[gemId];
 
-      return (
-        <div key={gemId} className="card">
-          {selectedGem ? (
-            <div>
-              <h2>Selected Gem Details</h2>
-              {pinataMetadataSelected && pinataMetadataSelected.fileUrl && (
-                <a href={pinataMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
-                  <img src={pinataMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
-                </a>
-              )}
-              <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
-              {pinataMetadataSelected && pinataMetadataSelected.fileUrl && (
-                <div>
-                  <p><strong>Gem Type:</strong> {pinataMetadataSelected.gemType}</p>
-                  <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
-                  <p><strong>Carat:</strong> {pinataMetadataSelected.carat}</p>
-                  <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
-                </div>
-              )}
+    if (!selectedGem) return null;
 
-              <p><strong>forSale:</strong> { selectedGem.forSale.toString() }</p>
-              <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
-              <p><strong>Used:</strong> { selectedGem.used.toString() }</p>
-              <p><strong>Price:</strong> { window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether') } Eth</p>
-              <p><strong>Gem cutter:</strong> {selectedGem.gemCutter}</p>
-              <p><strong>Owner:</strong> {selectedGem.owner}</p>
-              <h3>Transaction Details</h3>
-              {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
-            </div>
-          ) : null}
-        </div>
-      );
-    });
+    return (
+      <div className="card">
+        <h2>Selected Gem Details</h2>
+        {metadata && metadata.fileUrl && (
+          <a href={metadata.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
+          </a>
+        )}
+        <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
+        {metadata && (
+          <div>
+            <p><strong>Gem Type:</strong> {metadata.gemType}</p>
+            <p><strong>Size:</strong> {metadata.size}</p>
+            <p><strong>Carat:</strong> {metadata.carat} ct</p>
+            <p><strong>Color:</strong> {metadata.color}</p>
+          </div>
+        )}
+            <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
+        <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
+        
+        <h3>Transaction Details</h3>
+        {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
+      </div>
+    );
   };
 
   const renderJewelryMinedGems = () => {
-    return prevGemsArray.map((gemId) => {
-      const minedGem = minedGems.find(gem => gem.id == gemId);
+    const gemId = prevGemsArray[currentMinedGemIndex];
+    const minedGem = minedGems.find(gem => gem.id == gemId);
+    const metadata = pinataMetadataMined[gemId];
 
-      return (
-        <div key={gemId} className="card">
-          {minedGem ? (
-            <div>
-              <h2>Mined Gem Details</h2>
-              {pinataMetadataMined && pinataMetadataMined.fileUrl && (
-                <a href={pinataMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
-                  <img src={pinataMetadataMined.fileUrl} alt="Gem image" className="details-image" />
-                </a>
-              )}
-              <p><strong>ID:</strong> {minedGem.id.toString() }</p>
-              {pinataMetadataMined && pinataMetadataMined.fileUrl && (
-                <div>
-                <p><strong>Gem Type:</strong> {pinataMetadataMined.gemType }</p>
-                <p><strong>Weight:</strong> {pinataMetadataMined.weight }</p>
-                <p><strong>Size:</strong> {pinataMetadataMined.size}</p>
-                <p><strong>Mining Location:</strong> {pinataMetadataMined.miningLocation }</p>
-                <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear }</p>
-              </div>
-              )}
-              <p><strong>Selected:</strong> {minedGem.selected.toString() }</p>
-              <p><strong>Price:</strong> { window.web3.utils.fromWei(minedGem.price.toString(), 'Ether') } Eth</p>
-              <p><strong>Miner:</strong> {minedGem.miner }</p>
-              <p><strong>Owner:</strong> {minedGem.owner }</p>
-              <h3>Transaction Details</h3>
-              {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
-            </div>
-          ) : null}
-        </div>
-      );
-    });
+    if (!minedGem) return null;
+
+    return (
+      <div className="card">
+        <h2>Mined Gem Details</h2>
+        {metadata && metadata.fileUrl && (
+          <a href={metadata.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
+          </a>
+        )}
+        <p><strong>ID:</strong> {minedGem.id.toString()}</p>
+        {metadata && (
+          <div>
+            <p><strong>Gem Type:</strong> {metadata.gemType}</p>
+            <p><strong>Weight:</strong> {metadata.weight}</p>
+            <p><strong>Size:</strong> {metadata.size}</p>
+            <p><strong>Mining Location:</strong> {metadata.miningLocation}</p>
+            <p><strong>Mining Year:</strong> {metadata.miningYear}</p>
+          </div>
+        )}
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Miner:</strong> {minedGem.miner}</p>
+        
+        <h3>Transaction Details</h3>
+        {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
+      </div>
+    );
   };
-
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
@@ -261,6 +265,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       </ul>
     );
   };
+
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
       <div key={key} className="card">
@@ -272,8 +277,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
             </a>
           </div>
         )}
-        <p><strong>ID:</strong> { jewelry.id.toString() }</p>
-        <p><strong>Name:</strong> { jewelry.name }</p>
+        <p><strong>ID:</strong> {jewelry.id.toString()}</p>
+        <p><strong>Name:</strong> {jewelry.name}</p>
 
         {pinataMetadataJew && (
           <div>
@@ -283,27 +288,34 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           </div>
         )}
 
-        <p><strong>Processing:</strong> { jewelry.processing.toString() }</p>
-        <p><strong>Price:</strong> { window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
-        <p><strong>Owner:</strong> { jewelry.owner}</p>
-        <p><strong>Jewelry Owner:</strong> { jewelry.jewOwner}</p>
-        <p><strong>Sale:</strong> { jewelry.sale.toString()}</p>
+        <p><strong>Owner:</strong> {jewelry.owner}</p>
+        <p><strong>Jewelry Owner:</strong> {jewelry.jewOwner}</p>
+        <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
       </div>
     ));
   };
 
-
-
-  const handlePrevGem = () => {
-    setCurrentGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
+  const handlePrevSelectedGem = () => {
+    setCurrentSelectedGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
   };
 
-  const handleNextGem = () => {
-    setCurrentGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
+  const handleNextSelectedGem = () => {
+    setCurrentSelectedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
   };
+
+  const handlePrevMinedGem = () => {
+    setCurrentMinedGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
+  };
+
+  const handleNextMinedGem = () => {
+    setCurrentMinedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
+  };
+
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
@@ -311,10 +323,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         {renderJewelry()}
       </div>
       <div className="card-container pt-5">
+        <button className="arrow left" onClick={handlePrevSelectedGem}>←</button>
         {renderJewelrySelectedGems()}
+        <button className="arrow right" onClick={handleNextSelectedGem}>→</button>
       </div>
       <div className="card-container pt-5">
+        <button className="arrow left" onClick={handlePrevMinedGem}>←</button>
         {renderJewelryMinedGems()}
+        <button className="arrow right" onClick={handleNextMinedGem}>→</button>
       </div>
     </div>
   );

@@ -537,6 +537,32 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 a mainen is megcsinálni a mainre is az előző bekezdéses jew ownert
                 a jewdetailsban nem mindenhol írja ki a date-t.
 
-2024.09.29. 21:31
+2024.09.29. 
+        21:31
                 megcsinálni h a form gombokkal legyen az öszes metam tranzakció +
+
+2024.10.01. 
+        9:12
+                tesztelni a tranzakciókat. +++
+                Az off-chainesnél több adatot megadni a kövekhez pl
+                Megcsinálni abuyer javításokat mainre is
+                A tranzakciós dátumok.
+                A hozzáféréseket javítani
+                mined gem marketen a kép nem jelenik meg ++
+                select gem market oldalon sincs kép  ++
+                gem-detailsnál nem írja ki a weight-et ++
+                add gem nem tölt be , javítani ++
+                add gem táblázat helyett ugyanúgy cardok legyenek + nem lesznek cardok. jó a tábla +++
+                a jew detailsnál ha két kő van akkor csak az elsőt listázza ki 2x - de nyilván csak az adatoknál. A tranzadatok jók ++
+                ha kész a kő és mindhárom owner azonos, vagy owner-jewowner azonos  ne legyen ott a return to owner gomb
+                A repairnál is hozzáadtam pl egy emeraldot, de a ruby adatait írja ki. De a tranz jó 
+                a repair oldalon csak azokat a köveket listázza ki, amik nem lettek még cserélve, repairezve.
+                A tranzakciók jók +++
+
+        11:08
+                
+                mined gem marketen a kép nem jelenik meg ++ de rohadtlassú
+                megcsinálni, hogy a jewelrynél cask azokat a köveket írja ki, ami jelenleg benne van. Szóval valahogy törölni is kellene a tömbből. De a prevgemnél legyen egy gomb, ahol meg lehet nyitni a prevgemet a gemdetails oldaon. Valszeg kell egy új tömb is.
+
+
 
