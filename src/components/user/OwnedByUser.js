@@ -155,9 +155,14 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
               <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
                 Repair
               </button>
+              {jewelry.jewOwner!==jewelry.jeweler ? (
               <button onClick={() => handleReturnToOwner(jewelry.id)} className="btn">
                 Return To Owner
               </button>
+              ):(
+                <>
+                </>
+              )}
               </>
             )
           )}
@@ -166,9 +171,16 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, s
             Remove from market
           </button>
           ):(
+            <>
+              {jewelry.jewOwner===jewelry.owner ? (
             <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
-            Sale
-          </button>
+              Sale
+            </button>
+              ):(
+                <>
+                </>
+              )}
+            </>
           )}
         </td>
          

@@ -554,7 +554,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 add gem nem tölt be , javítani ++
                 add gem táblázat helyett ugyanúgy cardok legyenek + nem lesznek cardok. jó a tábla +++
                 a jew detailsnál ha két kő van akkor csak az elsőt listázza ki 2x - de nyilván csak az adatoknál. A tranzadatok jók ++
-                ha kész a kő és mindhárom owner azonos, vagy owner-jewowner azonos  ne legyen ott a return to owner gomb
+                ha kész a kő és mindhárom owner azonos, vagy owner-jewowner azonos  ne legyen ott a return to owner gomb ++
                 A repairnál is hozzáadtam pl egy emeraldot, de a ruby adatait írja ki. De a tranz jó 
                 a repair oldalon csak azokat a köveket listázza ki, amik nem lettek még cserélve, repairezve.
                 A tranzakciók jók +++
