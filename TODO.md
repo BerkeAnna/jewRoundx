@@ -585,8 +585,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 A hozzáféréseket javítani
                 minden jew rövidítést kiírni jewelry-re ++
                 szépíteni a kódot
-                html - egyebet szétszedni
-                minedgem form középre
+                html - egyebet szétszedni - folytatni!!! ugy mint a gemdetails
+                minedgem form középre ++
                 jewelrynél a name-t typeként??? -- offchain megy fel metaba, de a másikon módosítani
 
 
