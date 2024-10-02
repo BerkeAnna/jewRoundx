@@ -13,7 +13,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const [pinataMetadataJewelry, setPinataMetadataJewelry] = useState(null); 
   const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
-  const [allTransactions, setAllTransactions] = useState([]); 
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
@@ -24,24 +23,20 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     return new Date(block.timestamp * 1000);
   };
   
-  const fetchJewelryTransactions = async () => {
-    try {
-      const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
-      const allEvents = [...allJewelryEvents];
-      setAllTransactions(allEvents);
-      
-      const blockNumbers = allEvents.map(event => event.blockNumber);
-      const uniqueBlockNumbers = [...new Set(blockNumbers)];
-  
-      const blockDatesMap = {};
-      for (let blockNumber of uniqueBlockNumbers) {
-        blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
-      }
-      setBlockDates(blockDatesMap);
-    } catch (error) {
-      console.error('Error fetching all transactions:', error);
-    }
+  const fetchAllTransactionDates = async (web3, events) => {
+    const blockDatePromises = events.map(async (event) => {
+      const date = await getTransactionDate(web3, event.blockNumber);
+      return { blockNumber: event.blockNumber, date };
+    });
+    const blockDateResults = await Promise.all(blockDatePromises);
+    
+    const blockDateMap = {};
+    blockDateResults.forEach(({ blockNumber, date }) => {
+      blockDateMap[blockNumber] = date;
+    });
+    setBlockDates(previousDates => ({ ...previousDates, ...blockDateMap }));
   };
+  
 
   const fetchPinataMetadataMined = async (hash, gemId) => {
     try {
@@ -99,15 +94,15 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-
+  
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
         const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
-
-        // Kiválasztott gem események lekérése
+  
+        // Selected gem események lekérése
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -116,8 +111,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
-
-        // Bányászott gem események lekérése
+  
+        // Mined gem események lekérése
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -126,35 +121,35 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredMinedGemEvents(filteredMinedGems);
-
-        // Metaadatok lekérése minden egyes kőhöz
+  
+        // Metaadatok lekérése minden  kőhöz
         for (const gemId of gemIdsAsInt) {
           const selectedGem = selectedGems.find(gem => gem.id == gemId);
           if (selectedGem && selectedGem.metadataHash) {
             await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
           }
-
+  
           const minedGem = minedGems.find(gem => gem.id == gemId);
           if (minedGem && minedGem.metadataHash) {
             await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
           }
         }
-
+  
         if (details.metadataHash) {
           await fetchPinataMetadataJewelry(details.metadataHash);
         }
-
-        fetchJewelryTransactions();
-
+  
+        // Tranzakciókhoz tartozó dátumok lekérése
+        await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+  
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
-
+  
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
-
-
+  
   const renderJewelrySelectedGems = () => {
     const gemId = prevGemsArray[currentSelectedGemIndex];
     const selectedGem = selectedGems.find(gem => gem.id == gemId);
@@ -233,16 +228,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       const eventId = parseInt(event.returnValues.id); 
       return eventId === parseInt(gemId);
     });
-
+  
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-
+  
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
-
+  
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -317,6 +312,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const handleNextMinedGem = () => {
     setCurrentMinedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
   };
+
+  
 
   return (
     <div className="details-details-container card-background pt-5">

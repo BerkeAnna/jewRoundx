@@ -581,7 +581,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 
                 Az off-chainesnél több adatot megadni a kövekhez pl
                 Megcsinálni abuyer javításokat mainre is
-                A tranzakciós dátumok.
+                A tranzakciós dátumok. ++++
                 A hozzáféréseket javítani
                 minden jew rövidítést kiírni jewelry-re
                 szépíteni a kódot
