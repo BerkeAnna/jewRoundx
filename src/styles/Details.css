@@ -63,3 +63,7 @@
     display: none;
   }
   
+  .changed {
+    color: rgb(23, 25, 35);
+    padding: 0px;
+  }

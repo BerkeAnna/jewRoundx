@@ -585,6 +585,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 A hozzáféréseket javítani
                 minden jew rövidítést kiírni jewelry-re
                 szépíteni a kódot
+                html - egyebet szétszedni
 
 
 

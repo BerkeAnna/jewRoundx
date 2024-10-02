@@ -141,7 +141,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         }
 
         if (details.metadataHash) {
-          await fetchPinataMetadataJeweley(details.metadataHash);
+          await fetchPinataMetadataJewelry(details.metadataHash);
         }
 
         fetchJewelryTransactions();
@@ -170,10 +170,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
             <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
           </a>
         )}
-        <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
-        
-        <p><strong> {selectedGem.replaced ? "Changed earlier" : "Currently in jewelry" }</strong></p>
 
+        <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
+        <p> {selectedGem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong> }</p>
+        
         {metadata && (
           <div>
             <p><strong>Gem Type:</strong> {metadata.gemType}</p>
@@ -282,7 +282,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
 
-        {pinataMetadataJew && (
+        {pinataMetadataJewelry && (
           <div>
             <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
             <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>

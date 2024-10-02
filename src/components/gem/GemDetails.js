@@ -212,6 +212,8 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
       <h1>Gem Details</h1>
       <div className="card-container pt-5">
         {renderSelectedGemDetails()}
+      </div>
+      <div className="card-container pt-5">
         {renderMinedGemDetails()}
       </div>
     </div>
