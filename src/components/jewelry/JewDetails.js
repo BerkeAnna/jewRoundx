@@ -175,6 +175,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
             <p><strong>Size:</strong> {metadata.size}</p>
             <p><strong>Carat:</strong> {metadata.carat} ct</p>
             <p><strong>Color:</strong> {metadata.color}</p>
+            <p><strong>Polishing:</strong> {metadata.polishing}</p>
+            <p><strong>Transparency:</strong> {metadata.transparency}</p>
+            <p><strong>Treatments:</strong> {metadata.treatments}</p>
           </div>
         )}
             <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
@@ -275,13 +278,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           </div>
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
-        <p><strong>Name:</strong> {jewelry.name}</p>
 
         {pinataMetadataJewelry && (
           <div>
+            <p><strong>Name:</strong> {pinataMetadataJewelry.name}</p>
+            <p><strong>Type:</strong> {pinataMetadataJewelry.type}</p>
             <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
             <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>
-            <p><strong>Gem ID:</strong> {pinataMetadataJewelry.gemId}</p>
+            <p><strong>Additional data:</strong> {pinataMetadataJewelry.additionalData}</p>
           </div>
         )}
 

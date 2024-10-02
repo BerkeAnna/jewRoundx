@@ -104,7 +104,7 @@ body {
   border-radius: 20px;
 }
 
-input[type='text'], input[type='password'] {
+input[type='text'], input[type='password'], input[type='textarea'] {
   background-color: rgb(23, 25, 35);
   color: rgb(221, 199, 161);
   width: 40%;
@@ -115,13 +115,13 @@ input[type='text'], input[type='password'] {
   display: inline-block;
 }
 
-input[type='text']::placeholder, input[type='password']::placeholder{
+input[type='text']::placeholder, input[type='password']::placeholder, input[type='textarea']::placeholder{
   background-color: rgb(23, 25, 35);
   color: rgb(221, 199, 161);
   text-align: center;
 }
 
-input[type='text']:focus, input[type='password']:focus {
+input[type='text']:focus, input[type='password']:focus, input[type='textarea']:focus {
   background-color: rgb(23, 25, 35);
   color: rgb(221, 199, 161);
   border: 2px solid rgb(23, 25, 35);

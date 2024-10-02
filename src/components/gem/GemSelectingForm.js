@@ -48,7 +48,9 @@ function GemSelectingForm(props) {
     // A form mezők beállítása
     const color = formData.get('color').toString();
     const gemType = formData.get('gemType').toString();
-    const colorGemType = `Type: ${gemType} Color: ${color}`;
+    const polishing = formData.get('polishing').toString();
+    const transparency = formData.get('transparency').toString();
+    const treatments = formData.get('treatments').toString();
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
@@ -59,6 +61,9 @@ function GemSelectingForm(props) {
     const metadata = {
       gemType,
       color,
+      polishing,
+      transparency,
+      treatments,
       size,
       carat,
       fileUrl
@@ -117,6 +122,15 @@ function GemSelectingForm(props) {
           </div>
           <div className="form-group">
             <input id="color" name="color" type="text" className="form-control" placeholder="Color" required />
+          </div>
+          <div className="form-group">
+            <input id="polishing" name="polishing" type="text" className="form-control" placeholder="Polishing" required />
+          </div>
+          <div className="form-group">
+            <input id="transparency" name="transparency" type="text" className="form-control" placeholder="Transparency" required />
+          </div>
+          <div className="form-group">
+            <input id="treatments" name="treatments" type="text" className="form-control" placeholder="Treatments" required />
           </div>
           <div className="form-group">
             <input id="gemType" name="gemType" type="text" className="form-control" placeholder="Gem Type" required />

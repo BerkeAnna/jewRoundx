@@ -124,6 +124,9 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
             <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
             <p><strong>Carat:</strong> {pinataMetadataSelected.carat} ct</p>
             <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
+            <p><strong>Polishing:</strong> {pinataMetadataSelected.polishing}</p>
+            <p><strong>Transparency:</strong> {pinataMetadataSelected.transparency}</p>
+            <p><strong>Treatments:</strong> {pinataMetadataSelected.treatments}</p>
           </div>
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gemSelected.price.toString(), 'Ether')} Eth</p>

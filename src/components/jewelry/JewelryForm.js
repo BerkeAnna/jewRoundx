@@ -44,11 +44,13 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
 
     const gemId = parseInt(id, 10);  
     const name = formData.get('name').toString();
+    const type = formData.get('type').toString();
     const metal = formData.get('metal').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
+    const additionalData = formData.get('additionalData').toString();
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = false;
 
@@ -59,9 +61,11 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
 
     const metadata = {
       name,
+      type,
       gemId,
       metal,
       size,
+      additionalData,
       fileUrl 
     };
 
@@ -105,6 +109,9 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
             <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />
           </div>
           <div className="form-group">
+            <input id="type" name="type" type="text" className="form-control" placeholder="Type" required />
+          </div>
+          <div className="form-group">
             <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
           </div>
           <div className="form-group">
@@ -118,6 +125,9 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
           </div>
           <div className="form-group">
             <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
+          </div>
+          <div className="form-group">
+            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" required />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
