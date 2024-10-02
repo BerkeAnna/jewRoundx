@@ -576,4 +576,15 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 minden jew rövidítést kiírni jewelry-re
                 szépíteni a kódot
 
+2024.10.02.
+        7:52
+                
+                Az off-chainesnél több adatot megadni a kövekhez pl
+                Megcsinálni abuyer javításokat mainre is
+                A tranzakciós dátumok.
+                A hozzáféréseket javítani
+                minden jew rövidítést kiírni jewelry-re
+                szépíteni a kódot
+
+
 

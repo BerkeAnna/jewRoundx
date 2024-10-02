@@ -25,7 +25,7 @@ const LogIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/jew-details/${jewelryId}`);
+    navigate(`/jewelry-details/${jewelryId}`);
   };
 
   const handleChange = (e) => {
