@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem }) {
+function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced }) {
   const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
@@ -12,8 +12,7 @@ function JewChangeGem({ selectedGems, updateGem, markGemAsUsed, minedGems, jewel
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsUsed(newGemId);
     replaceGem(id, oldGemId, newGemId);
-   // updateGem(oldGemId, newGemId);
-    navigate(`/jew-details/${id}`);
+    navigate(`/jewelry-details/${id}`);
 
 };
   
@@ -39,13 +38,16 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
-        <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()}</td>
-        <td>{gem.colorGemType}</td>
+        <td>size</td>
+        <td>carat</td>
+        <td>color and type</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
           <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
-            Select-
+            Select
+          </button>
+          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+            Details
           </button>
         </td>
       </tr>

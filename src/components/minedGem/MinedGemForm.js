@@ -54,12 +54,9 @@ function MinedGemForm(props) {
     navigate('/loggedIn');
   };
 
-
-
-
   return ( 
   <div className="card-container card-background">
-    <div className=" form-card ">
+    <div className="form-card">
       <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

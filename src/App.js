@@ -211,6 +211,9 @@ class App extends Component {
     this.buyJewelry = this.buyJewelry.bind(this);
     this.markNewOwner = this.markNewOwner.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
+    this.addForRepair = this.addForRepair.bind(this);
+    this.returnToOwner = this.returnToOwner.bind(this);
+    this.markGemAsReplaced = this.markGemAsReplaced.bind(this);
     /* 
     this.refreshPage = this.refreshPage.bind(this);
     
@@ -443,6 +446,23 @@ async buyJewelry(id, price) {
     this.setState({ loading: false });
   }
 }
+
+async markGemAsReplaced(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a markGemAsUsed fv-t
+    GemSelectingService.markGemAsReplaced(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markGemAsReplaced: ", error);
+    this.setState({ loading: false }); 
+  }
+}
   
 //todo: service
 async markNewOwner(id, price) {
@@ -481,6 +501,41 @@ async transferGemOwnership(id, price) {
   }
 }
 
+async addForRepair(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a addForRepair fv-t
+    await JewelryService.addForRepair(id, account);
+
+    // Tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in addForRepair: ", error);
+    this.setState({ loading: false });
+  }
+}
+
+async returnToOwner(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a addForRepair fv-t
+    await JewelryService.returnToOwner(id, account);
+
+    // Tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in returnToOwner: ", error);
+    this.setState({ loading: false });
+  }
+}
+
+
   refreshPage = () => {
     window.location.reload();
   }
@@ -508,6 +563,9 @@ async transferGemOwnership(id, price) {
             markedAsFinished = {this.markedAsFinished}
             markedAsSale = {this.markedAsSale}
             replaceGem = {this.replaceGem}
+            addForRepair = {this.addForRepair}
+            returnToOwner = {this.returnToOwner}
+            markGemAsReplaced = {this.markGemAsReplaced}
           />
         </Router>
       </div>

@@ -15,7 +15,7 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/jew-details/${jewelryId}`);
+    navigate(`/jewelry-details/${jewelryId}`);
   };
 
   return (

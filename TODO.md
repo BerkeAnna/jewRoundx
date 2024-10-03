@@ -508,3 +508,30 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Polygon 
                 Pl. IPFS és hash-ek
                 lehet egy dapp egyszerre off és onchain is?
+
+2024.10.02. 
+        19:42
+                mining, process, selecting gem jók, többi jön
+                add gem, jew, gem details todo
+                dátumok- trans dates
+
+
+2024.10.03.
+        20:56 on-chain
+                this.gemMining  +
+                this.purchaseGem +
+                this.processingGem +
+                this.markGemAsSelected +
+                this.gemSelecting +
+                this.polishGem +  ===? selectedgemsale???
+                this.markGemAsUsed +
+                this.jewelryMaking +
+                this.updateGem +
+                this.markedAsFinished +
+                this.markedAsSale +
+                this.replaceGem +
+                this.buyJewelry+
+                this.markNewOwner+
+                this.transferGemOwnership +
+                this.addForRepair 
+                this.returnToOwner 

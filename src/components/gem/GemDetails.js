@@ -110,7 +110,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); 
+      const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
 
@@ -120,31 +120,31 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
     return (
       <ul className="no-bullet-list">
-      {gemEvents.map((event, index) => {
+        {gemEvents.map((event, index) => {
         const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
 
-        return (
-          <li key={index} className="details-list-item">
-            <strong>Event:</strong> {event.event}
-            <br />
-            <strong>Transaction Hash:</strong> {event.transactionHash}
-            <br />
-            <strong>Block Number:</strong> {event.blockNumber}
-            <br />
-            {blockDates[event.blockNumber] && (
-              <>
-                <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
-              </>
-            )}
-            <br />
-            {owner && <div><strong>Owner:</strong> {owner}</div>}
-            {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
+          return (
+            <li key={index} className="details-list-item">
+              <strong>Event:</strong> {event.event}
+              <br />
+              <strong>Transaction Hash:</strong> {event.transactionHash}
+              <br />
+              <strong>Block Number:</strong> {event.blockNumber}
+              <br />
+              {blockDates[event.blockNumber] && (
+                <>
+                  <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {owner && <div><strong>Owner:</strong> {owner}</div>}
+              {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
             {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
-            {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
-          </li>
-        );
-      })}
-    </ul>
+              {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+            </li>
+          );
+        })}
+      </ul>
     );
   };
 
