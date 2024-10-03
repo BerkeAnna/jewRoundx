@@ -29,7 +29,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       const allEvents = [...allJewelryEvents];
       setAllTransactions(allEvents);
       
-      // Ensure to fetch dates for each block of the events
+      // Fetch the block dates
       const blockNumbers = allEvents.map(event => event.blockNumber);
       const uniqueBlockNumbers = [...new Set(blockNumbers)];
   
@@ -43,16 +43,23 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
   };
   
+  
+  // Hash tisztítás függvény
+  const cleanHash = (hash) => {
+    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
+      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
+    }
+    return hash;
+  };
+  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
-        // Jewelry részletek lekérése
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
   
-        // Fetch events
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -60,7 +67,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
   
-        // Selected gem események lekérése
+        // Fetch selected and mined gem events
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -70,7 +77,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
   
-        // Mined gem események lekérése
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -89,12 +95,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
-
+  
   // Render all transactions in a card
-const renderAllTransactions = () => {
-  if (allTransactions.length === 0) {
-    return <p>No transactions found.</p>;
-  }
+  const renderAllTransactions = () => {
+    if (allTransactions.length === 0) {
+      return <p>No transactions found.</p>;
+    }
 
   // Szűrjük az összes tranzakciót az adott ékszerhez (jewelryId vagy gemId)
   const filteredTransactions = allTransactions.filter(event => {
@@ -105,7 +111,7 @@ const renderAllTransactions = () => {
   if (filteredTransactions.length === 0) {
     return <p>No transactions for this jewelry found.</p>;
   }
-
+  
     return (
     <div className="pt-5">
       <ul className="details-list">
@@ -135,6 +141,7 @@ const renderAllTransactions = () => {
       </div>
     );
   };
+  
   
 
   const renderTransactionDetails = (events, gemId) => {
@@ -178,6 +185,7 @@ const renderAllTransactions = () => {
       </ul>
     );
   };
+  
   
 
   const renderMinedGems = () => {
@@ -293,6 +301,7 @@ const renderAllTransactions = () => {
       </div>
     ));
   };
+  
   
 
   return (

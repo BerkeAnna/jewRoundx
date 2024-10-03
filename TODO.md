@@ -535,3 +535,5 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 this.transferGemOwnership +
                 this.addForRepair 
                 this.returnToOwner 
+
+        22:45 dates hiányzik megint...
