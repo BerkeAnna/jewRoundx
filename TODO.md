@@ -508,3 +508,5 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Polygon 
                 Pl. IPFS és hash-ek
                 lehet egy dapp egyszerre off és onchain is?
+
+                
