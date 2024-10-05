@@ -1,49 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../../styles/Details.css';
 
-function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContract, gemstoneExtractionContract }) {
-  const { id } = useParams(); 
+function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemstoneExtractionContract }) {
+  const { id } = useParams(); // A kő azonosítója
   const gemId = id;
 
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
-  const [blockDates, setBlockDates] = useState({});
+  const [blockDates, setBlockDates] = useState({}); // A blokkok időbélyegeit tárolja
+  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
+  const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
 
-  const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
-  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
+  const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
+  const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
 
-  const getTransactionDate = async (web3, blockNumber) => {
-    const block = await web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000); 
+  
+  // Dátum lekérése blokkszám alapján
+  const getTransactionDate = async (blockNumber) => {
+    const block = await window.web3.eth.getBlock(blockNumber);
+    return new Date(block.timestamp * 1000); // Unix timestamp átalakítása dátummá
+  };
+
+  // Pinata metaadatok lekérése
+  const fetchPinataMetadataMined = async (hash) => {
+    try {
+      const cleanedHash = cleanHash(hash);
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setpinataMetadataMined(data);
+    } catch (error) {
+      console.error('Error fetching Pinata metadata:', error);
+    }
+  };
+
+  const fetchPinataMetadataForSelected = async (hash) => {
+    try {
+      const cleanedHash = cleanHash(hash);
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setPinataMetadataSelected(data);
+    } catch (error) {
+      console.error('Error fetching Pinata metadata for selected gems:', error);
+    }
+  };
+
+  // Hash tisztítás függvény
+  const cleanHash = (hash) => {
+    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
+      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
+    }
+    return hash;
   };
 
   useEffect(() => {
     const fetchGemDetails = async () => {
       try {
-        const gemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
+        // Kiválasztott gem események lekérése
+        const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
-          toBlock: 'latest',
+          toBlock: 'latest'
         });
-        const filteredSelectedGems = gemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
+        const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
         setFilteredSelectedGemEvents(filteredSelectedGems);
 
+        // Bányászott gem események lekérése
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
-          toBlock: 'latest',
+          toBlock: 'latest'
         });
-        const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
+        const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
-        const blockNumbers = allEvents.map(event => event.blockNumber);
-        const uniqueBlockNumbers = [...new Set(blockNumbers)];
-
-        const blockDatesMap = {};
-        for (let blockNumber of uniqueBlockNumbers) {
-          blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
+        // Pinata metaadatok lekérése, ha létezik metadataHash
+        if (gemSelected && gemSelected.metadataHash) {
+          await fetchPinataMetadataForSelected(gemSelected.metadataHash);
         }
-        setBlockDates(blockDatesMap);
+        
+        if (minedGem && minedGem.metadataHash) {
+          await fetchPinataMetadataMined(minedGem.metadataHash);
+        }
+
+        // Tranzakciók blokkjainak dátumainak lekérése
+        const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
+        const blockDatePromises = allEvents.map(async (event) => {
+          const date = await getTransactionDate(event.blockNumber);
+          return { blockNumber: event.blockNumber, date };
+        });
+        const blockDateResults = await Promise.all(blockDatePromises);
+
+        const blockDateMap = {};
+        blockDateResults.forEach(({ blockNumber, date }) => {
+          blockDateMap[blockNumber] = date;
+        });
+        setBlockDates(blockDateMap);
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -51,108 +102,123 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
     };
 
     fetchGemDetails();
-  }, [id, gemstoneSelectingContract, gemstoneExtractionContract]);
+  }, [gemId, gemstoneSelectingContract, gemstoneExtractionContract, gemSelected, minedGem]);
 
-  const renderSelectedGems = () => {
-    return gemSelected.map((gem, key) => (
-      <div key={key} className="card">
+  const renderSelectedGemDetails = () => {
+    if (!gemSelected) {
+      return <p>No selected gem details found.</p>;
+    }
+
+    return (
+      <div className="card">
         <h2>Selected Gem Details</h2>
-        {gem.fileURL && (
+        {pinataMetadataSelected && pinataMetadataSelected.fileUrl && (
+          <a href={pinataMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={pinataMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
+          </a>
+        )}
+        <p><strong>ID:</strong> {gemSelected.id.toString()}</p>
+        {pinataMetadataSelected && (
           <div>
-            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" className="details-image" />
-            </a>
+            <p><strong>Gem Type:</strong> {pinataMetadataSelected.gemType}</p>
+            <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
+            <p><strong>Carat:</strong> {pinataMetadataSelected.carat} ct</p>
+            <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
+            <p><strong>Polishing:</strong> {pinataMetadataSelected.polishing}</p>
+            <p><strong>Transparency:</strong> {pinataMetadataSelected.transparency}</p>
+            <p><strong>Treatments:</strong> {pinataMetadataSelected.treatments}</p>
           </div>
         )}
-        <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> {gem.size.toString()}</p>
-        <p><strong>Carat:</strong> {gem.carat.toString()}</p>
-        <p><strong>Details:</strong> {gem.colorGemType}</p>
-        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
-        <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
-        <p><strong>Owner:</strong> {gem.owner}</p>
-
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(gemSelected.price.toString(), 'Ether')} Eth</p>
+        <p><strong>replaced:</strong> {gemSelected.replaced.toString()}</p>
+        <p><strong>Gem cutter:</strong> {gemSelected.gemCutter}</p>
+        <p><strong>Owner:</strong> {gemSelected.owner}</p>
         <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredSelectedGemEvents, gem.id)}
+        {renderTransactionDetails(filteredSelectedGemEvents, gemSelected.id)}
       </div>
-    ));
+    );
   };
 
-  const renderMinedGems = () => {
-    return minedGem.map((gem, key) => (
-      <div key={key} className="card">
+  const renderMinedGemDetails = () => {
+    if (!minedGem) {
+      return <p>No mined gem details found.</p>;
+    }
+
+    return (
+      <div className="card">
         <h2>Mined Gem Details</h2>
-        {gem.fileURL && (
+        {pinataMetadataMined && pinataMetadataMined.fileUrl && (
+          <a href={pinataMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={pinataMetadataMined.fileUrl} alt="Gem image" className="details-image" />
+          </a>
+        )}
+        <p><strong>ID:</strong> {minedGem.id.toString()}</p>
+        {pinataMetadataMined && (
           <div>
-            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" className="details-image" />
-            </a>
+            <p><strong>Gem Type:</strong> {pinataMetadataMined.gemType}</p>
+            <p><strong>Weight:</strong> {pinataMetadataMined.weight}</p>
+            <p><strong>Size:</strong> {pinataMetadataMined.size}</p>
+            <p><strong>Mining Location:</strong> {pinataMetadataMined.miningLocation}</p>
+            <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear}</p>
           </div>
         )}
-        <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Type:</strong> {gem.gemType}</p>
-        <p><strong>Details:</strong> {gem.details.toString()}</p>
-        <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
-        <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
-        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
-        <p><strong>Selected:</strong> {gem.selected.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Miner:</strong> {gem.miner}</p>
-        <p><strong>Owner:</strong> {gem.owner}</p>
-
+        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Miner:</strong> {minedGem.miner}</p>
+        <p><strong>Owner:</strong> {minedGem.owner}</p>
         <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredMinedGemEvents, gem.id)}
+        {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
       </div>
-    ));
+    );
   };
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); 
+      const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
 
     if (gemEvents.length === 0) {
-      return <p>No transaction events found for this item.</p>;
+      return <p>No transaction events found for this gem.</p>;
     }
 
     return (
       <ul className="no-bullet-list">
-      {gemEvents.map((event, index) => {
-        const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
+        {gemEvents.map((event, index) => {
+          const { owner, gemCutter, newOwner } = event.returnValues;
 
-        return (
-          <li key={index} className="details-list-item">
-            <strong>Event:</strong> {event.event}
-            <br />
-            <strong>Transaction Hash:</strong> {event.transactionHash}
-            <br />
-            <strong>Block Number:</strong> {event.blockNumber}
-            <br />
-            {blockDates[event.blockNumber] && (
-              <>
-                <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
-              </>
-            )}
-            <br />
-            {owner && <div><strong>Owner:</strong> {owner}</div>}
-            {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
-            {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
-            {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
-          </li>
-        );
-      })}
-    </ul>
+          return (
+            <li key={index} className="details-list-item">
+              <strong>Event:</strong> {event.event}
+              <br />
+              <strong>Transaction Hash:</strong> {event.transactionHash}
+              <br />
+              <strong>Block Number:</strong> {event.blockNumber}
+              <br />
+              {blockDates[event.blockNumber] && (
+                <>
+                  <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {owner && <div><strong>Owner:</strong> {owner}</div>}
+              {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
+              {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+            </li>
+          );
+        })}
+      </ul>
     );
   };
 
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Gem Details</h1>
-      <div className="card-container pt-5">{renderMinedGems()}</div>
-      <div className=" card-container pt-5">{renderSelectedGems()}</div>
+      <div className="card-container pt-5">
+        {renderSelectedGemDetails()}
+      </div>
+      <div className="card-container pt-5">
+        {renderMinedGemDetails()}
+      </div>
     </div>
   );
 }

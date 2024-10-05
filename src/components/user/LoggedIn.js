@@ -17,7 +17,7 @@ const LoggedIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/jew-details/${jewelryId}`);
+    navigate(`/jewelry-details/${jewelryId}`);
   };
 
   return (
@@ -49,7 +49,15 @@ const LoggedIn = () => {
           <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
         </div>
       )}
-      {role !== 'Miner' && role !== 'Jeweler' && role !== 'Gem Cutter' &&  (
+       {role === 'Jewelry Owner' && (
+        <div>
+          <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
+          <a href="/jewMarket"><div className='dashboardButton'><button>Jew Market</button></div></a><br/>
+          <a href="/profile"><div className='dashboardButton'><button>Profile</button></div></a><br/>
+          <a href='\'><div className='dashboardButton'><button>Log out</button></div></a><br/>
+        </div>
+      )}
+      {role !== 'Miner' && role !== 'Jeweler' && role !== 'Gem Cutter' &&  role !== 'Jewelry Owner' && (
         <div>
           <a href="/ownMinedGems"><div className='dashboardButton'><button>My products</button></div></a><br/>
           <a href="/addMinedGem"><div className='dashboardButton'><button>Gem mining</button></div></a><br/>

@@ -211,6 +211,9 @@ class App extends Component {
     this.buyJewelry = this.buyJewelry.bind(this);
     this.markNewOwner = this.markNewOwner.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
+    this.addForRepair = this.addForRepair.bind(this);
+    this.returnToOwner = this.returnToOwner.bind(this);
+    this.markGemAsReplaced = this.markGemAsReplaced.bind(this);
     /* 
     this.refreshPage = this.refreshPage.bind(this);
     
@@ -218,13 +221,13 @@ class App extends Component {
 }
 
 
-async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased) {
+async gemMining(gemType, price, metadataUrl, purchased) {
   try {
     this.setState({ loading: true });
     const account = this.state.account; 
 
     // GemstoneExtractionService-től hívjuk a gemMining fv-t
-    await GemstoneExtractionService.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased, account);
+    await GemstoneExtractionService.gemMining(gemType, price, metadataUrl, purchased, account);
       
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 
@@ -288,13 +291,13 @@ async markGemAsSelected(id) {
 }
 
 
-async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
+async gemSelecting(minedGemId, metadataHash, price) {
   try {
     this.setState({ loading: true });
     const account = this.state.account;
     
     // GemSelectingService-től hívjuk a gemSelecting fv-t
-    await GemSelectingService.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account);
+    await GemSelectingService.gemSelecting(minedGemId, metadataHash, price, account);
     
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 
@@ -340,13 +343,30 @@ async markGemAsUsed(id) {
   }
 }
 
-async jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL) {  
+async markGemAsReplaced(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+    
+    // GemSelectingService-től hívjuk a markGemAsUsed fv-t
+    GemSelectingService.markGemAsReplaced(id, account)
+    
+    // tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false }); 
+  } catch (error) {
+    console.error("Error in markGemAsReplaced: ", error);
+    this.setState({ loading: false }); 
+  }
+}
+
+async jewelryMaking(name, gemId, metadataHash, sale, price, fileURL) {  
   try {
     this.setState({ loading: true });
     const account = this.state.account;
 
     // JewelryService-től hívjuk a jewelryMaking fv-t
-    JewelryService.jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL, account)
+    JewelryService.jewelryMaking(name, gemId, metadataHash, sale, price, fileURL, account)
     
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 
@@ -481,6 +501,41 @@ async transferGemOwnership(id, price) {
   }
 }
 
+async addForRepair(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a addForRepair fv-t
+    await JewelryService.addForRepair(id, account);
+
+    // Tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in addForRepair: ", error);
+    this.setState({ loading: false });
+  }
+}
+
+async returnToOwner(id) {
+  try {
+    this.setState({ loading: true });
+    const account = this.state.account;
+
+    // JewelryService-től hívjuk a addForRepair fv-t
+    await JewelryService.returnToOwner(id, account);
+
+    // Tranzakció után frissítjük a blokklánc adatokat
+    await this.loadBlockchainData(); 
+    this.setState({ loading: false });
+  } catch (error) {
+    console.error("Error in returnToOwner: ", error);
+    this.setState({ loading: false });
+  }
+}
+
+
   refreshPage = () => {
     window.location.reload();
   }
@@ -508,6 +563,9 @@ async transferGemOwnership(id, price) {
             markedAsFinished = {this.markedAsFinished}
             markedAsSale = {this.markedAsSale}
             replaceGem = {this.replaceGem}
+            addForRepair = {this.addForRepair}
+            returnToOwner = {this.returnToOwner}
+            markGemAsReplaced = {this.markGemAsReplaced}
           />
         </Router>
       </div>

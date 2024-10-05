@@ -16,11 +16,11 @@ class JewelryService {
     }
   }
 
-  async jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL, account) {  
+  async jewelryMaking(name, gemId, metadataHash, sale, price, fileURL, account) {  
     if (!this.contract) {
       await this.loadContract(); // betöltjük a szerződést
     }
-    return this.contract.methods.jewelryMaking(name, gemId, physicalDetails, sale, price, fileURL).send({ from: account })
+    return this.contract.methods.jewelryMaking(name, gemId, metadataHash, sale, price, fileURL).send({ from: account })
      
   }
 
@@ -82,8 +82,19 @@ async buyJewelry(id, price, account) {
 }
 
  
+async addForRepair(id, account) {
+  if (!this.contract) {
+    await this.loadContract(); // Szerződés betöltése
+  }
+  return this.contract.methods.addForRepair(id).send({ from: account });
+}
+async returnToOwner(id, account) {
+  if (!this.contract) {
+    await this.loadContract(); // Szerződés betöltése
+  }
+  return this.contract.methods.returnToJewOwner(id).send({ from: account });
+}
 
-  
 
 }
 

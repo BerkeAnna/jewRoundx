@@ -18,6 +18,7 @@ interface IGemstoneSelecting {
     );
     function markGemAsUsed(uint _id) external;
     function setPreviousGemId(uint gemId, uint previousGemId) external;
+    function markGemAsReplaced(uint _id) external;
 }
 
 contract Jewelry {
@@ -29,25 +30,27 @@ contract Jewelry {
         uint id;
         string name;
         uint[] previousGemIds;
-        string physicalDetails;
+        string metadataHash; // Off-chain tárolt fizikai részletek hash-e (pl. IPFS hash)
         bool sale;
         bool processing;
         uint price;
         string fileURL;
         address payable jeweler;
         address payable owner;
+        address payable jewOwner;  // Új mező hozzáadva
     }
 
     event JewelryMaking(
         uint id,
         string name,
-        string physicalDetails,
+        string metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool sale,
         bool processing,
         uint price,
         string fileURL,
         address payable jeweler,
-        address payable owner
+        address payable owner,
+        address payable jewOwner
     );
 
     event JewelryBought(uint id, address payable newOwner);
@@ -55,6 +58,8 @@ contract Jewelry {
     event GemReplaced(uint jewelryId, uint newGemId);
     event JewelryFinished(uint id, address owner);
     event JewelrySale(uint id, address owner);
+    event JewelryAddRepair(uint id, address jewOwner, address jeweler);
+    event ReturnToJewOwner(uint id, address jewOwner, address jeweler);
 
     constructor(address _gemstoneSelectingAddress) public {
         gemstoneSelecting = IGemstoneSelecting(_gemstoneSelectingAddress);
@@ -63,7 +68,7 @@ contract Jewelry {
     function jewelryMaking(
         string memory _name,
         uint _gemId,
-        string memory _physicalDetails,
+        string memory _metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool _sale,
         uint _price,
         string memory _fileURL
@@ -73,27 +78,29 @@ contract Jewelry {
         jewelry[jewelryCount] = JewelryData(
             jewelryCount,
             _name,
-            new uint[](0), // Kezdetben üres gem ID-k tömbje
-            _physicalDetails,    // Tárolja a kombinált fizikai részleteket
+            new uint[](0), //Kezdetben üres gem ID-k tömbje
+            _metadataHash,    // Off-chain tárolt fizikai részletek hash-e
             _sale,
             true,
             _price,
             _fileURL,
             msg.sender,
-            msg.sender
+            msg.sender,
+            msg.sender   // Új jewOwner mező beállítva
         );
         jewelry[jewelryCount].previousGemIds.push(_gemId);
 
         emit JewelryMaking(
             jewelryCount,
             _name,
-            _physicalDetails,
+            _metadataHash, // Off-chain tárolt fizikai részletek hash-e
             _sale,
             true,
             _price,
             _fileURL,
             msg.sender,
-            msg.sender
+            msg.sender,
+            msg.sender  // Új jewOwner mező beállítva
         );
     }
 
@@ -110,26 +117,28 @@ contract Jewelry {
         uint id,
         string memory name,
         uint[] memory previousGemIds,
-        string memory physicalDetails,
+        string memory metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool processing,
         bool sale,
         uint price,
         string memory fileURL,
         address jeweler,
-        address owner
+        address owner,
+        address jewOwner   // Új mező hozzáadva
     ) {
         JewelryData storage jew = jewelry[_id];
         return (
             jew.id,
             jew.name,
             jew.previousGemIds,
-            jew.physicalDetails,
+            jew.metadataHash, // Off-chain tárolt fizikai részletek hash-e
             jew.processing,
             jew.sale,
             jew.price,
             jew.fileURL,
             jew.jeweler,
-            jew.owner
+            jew.owner,
+            jew.jewOwner   // Új mező hozzáadva
         );
     }
 
@@ -140,6 +149,7 @@ contract Jewelry {
 
         jew.owner.transfer(msg.value);
         jew.owner = msg.sender;
+        jew.jewOwner = msg.sender;
         jew.sale = false;
 
         emit JewelryBought(_id, msg.sender);
@@ -147,7 +157,7 @@ contract Jewelry {
 
     function updateGem(uint _jewelryId, uint _newGemId) public {
         JewelryData storage jew = jewelry[_jewelryId];
-        require(msg.sender == jew.owner, "Only the owner can update the gem");
+        require(msg.sender == jew.jeweler, "Only the owner can update the gem");
 
         jew.previousGemIds.push(_newGemId);
 
@@ -189,9 +199,29 @@ contract Jewelry {
         JewelryData storage _jewelry = jewelry[_id];
         require(_jewelry.id > 0 && _jewelry.id <= jewelryCount, "Invalid jew ID");
 
-        _jewelry.sale = !_jewelry.sale ;
+        _jewelry.sale = !_jewelry.sale;
 
         emit JewelrySale(_id, _jewelry.owner);
+    }
+
+    function addForRepair(uint _id) public{
+         JewelryData storage jew = jewelry[_id];
+
+        jew.owner = jew.jeweler;
+        jew.sale = false;
+
+        emit JewelryAddRepair(_id, jew.jewOwner, jew.jeweler);
+    
+    }
+
+     function returnToJewOwner(uint _id) public{
+         JewelryData storage jew = jewelry[_id];
+
+        jew.owner = jew.jewOwner;
+        jew.sale = false;
+
+        emit ReturnToJewOwner(_id, jew.jewOwner, jew.jeweler);
+    
     }
 
 }

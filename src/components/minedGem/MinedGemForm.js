@@ -40,13 +40,34 @@ function MinedGemForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; 
-    const details = `Carat: ${weight} ct, Size: ${size} mm`; 
+    const details = `Carat: ${weight} ct, Size: ${size} mm, Image: ${fileUrl}`; // Részletek off-chain
 
-    const miningLocation = formData.get('miningLocation').toString();
-    const miningYear = formData.get('miningYear').toString();
+    const metadata = {
+      gemType,
+      weight,
+      size,
+      miningLocation: formData.get('miningLocation').toString(),
+      miningYear: formData.get('miningYear').toString(),
+      fileUrl,
+    };
+
+    // Off-chain adatok IPFS feltöltése
+    let metadataUrl = "";
+    try {
+      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
+        headers: {
+          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
+          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
+        },
+      });
+      metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
+    } catch (err) {
+      console.error("Error uploading metadata: ", err);
+      return;
+    }
 
     try {
-      await props.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, false);
+      await props.gemMining(gemType, price, metadataUrl, false); // On-chain csak az IPFS hash tárolása
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }
@@ -54,12 +75,9 @@ function MinedGemForm(props) {
     navigate('/loggedIn');
   };
 
-
-
-
   return ( 
   <div className="card-container card-background">
-    <div className=" form-card ">
+    <div className="form-card">
       <h1>Add Mined Gem</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
