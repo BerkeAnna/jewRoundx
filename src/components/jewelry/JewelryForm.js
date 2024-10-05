@@ -1,15 +1,17 @@
 import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { firestore, storage } from '../../firebase'; // Firebase konfiguráció importálása
+import { doc, setDoc } from 'firebase/firestore'; // Firestore for database operations
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase Storage
 import '../../styles/Forms.css';
 
-function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elérhető függvények
+function JewelryForm({ jewelryMaking, markGemAsUsed }) {
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
 
   const handleMarkAsUsed = (gemId) => {
-    markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
+    markGemAsUsed(gemId);  // Meghívjuk a drágakő használatba vételét
   };
 
   const handleSubmit = async (event) => {
@@ -20,24 +22,16 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
     const file = fileInputRef.current.files[0];
     
     let fileUrl = "";
+    let docRef; // Firestore dokumentum referencia
     if (file) {
       try {
-        const fileData = new FormData();
-        fileData.append("file", file);
-
-        const response = await axios.post(
-          'https://api.pinata.cloud/pinning/pinFileToIPFS',
-          fileData,
-          {
-            headers: {
-              'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-              'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-            },
-          }
-        );
-        fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        // Fájl feltöltése a Firebase Storage-be
+        const storageRef = ref(storage, `jewelry/${file.name}`);
+        await uploadBytes(storageRef, file);
+        fileUrl = await getDownloadURL(storageRef);
+        console.log("File uploaded successfully to Firebase: ", fileUrl);
       } catch (err) {
-        console.error("Error uploading file: ", err);
+        console.error("Error uploading file to Firebase: ", err);
         return;
       }
     }
@@ -66,33 +60,22 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
       metal,
       size,
       additionalData,
-      fileUrl 
+      fileUrl // A feltöltött fájl URL-je
     };
 
-    let metadataUrl = "";
+    // Metaadatok feltöltése Firestore-ba
     try {
-      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
-        headers: {
-          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-        },
-      });
-
-      if (metadataResponse && metadataResponse.data && metadataResponse.data.IpfsHash) {
-        metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
-        console.log("Metadata uploaded successfully: ", metadataUrl);
-      } else {
-        console.error('Pinata metadata upload error: ', metadataResponse);
-        return;
-      }
+      docRef = doc(firestore, 'jewelry', `${Date.now()}_${name}`); // Dinamikus dokumentum azonosító
+      await setDoc(docRef, metadata); // Metaadatok feltöltése a Firestore-ba
+      console.log("Metadata successfully uploaded to Firebase Firestore");
     } catch (err) {
-      console.error("Error uploading metadata: ", err);
+      console.error("Error uploading metadata to Firebase Firestore: ", err);
       return;
     }
 
     try {
       console.log("Submitting jewelry creation...");
-      await jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl);  // Helyes függvényhívás
+      await jewelryMaking(name, gemId, docRef.id, sale, price, fileUrl);  // Helyes függvényhívás
       console.log("Jewelry created successfully.");
       navigate('/loggedIn');
     } catch (error) {
@@ -127,7 +110,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
             <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
           </div>
           <div className="form-group">
-            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" required />
+            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />

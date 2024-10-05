@@ -1,6 +1,9 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { firestore, storage } from '../../firebase'; // Update the path based on your structure
+import { doc, setDoc } from 'firebase/firestore'; // Firestore for database operations
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // For handling image upload to Firebase Storage
+
 import '../../styles/Forms.css';
 
 function MinedGemForm(props) {
@@ -9,30 +12,24 @@ function MinedGemForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
-
+  
     let fileUrl = "";
+    let docRef; // Declare docRef here
     if (file) {
       try {
-        const fileData = new FormData();
-        fileData.append("file", file);
-
-        const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', fileData, {
-          headers: {
-            'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-            'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-          },
-        });
-
-        fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        // Upload file to Firebase Storage
+        const storageRef = ref(storage, `minedGems/${file.name}`);
+        await uploadBytes(storageRef, file);
+        fileUrl = await getDownloadURL(storageRef);
       } catch (err) {
-        console.error("Error uploading file: ", err);
+        console.error("Error uploading file to Firebase: ", err);
         return;
       }
     }
-
+  
     const gemType = formData.get('gemType').toString();
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const weight = formData.get('weight').toString();
@@ -40,40 +37,37 @@ function MinedGemForm(props) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; 
-    const details = `Carat: ${weight} ct, Size: ${size} mm, Image: ${fileUrl}`; // Részletek off-chain
-
+    const details = `Carat: ${weight} ct, Size: ${size} mm, Image: ${fileUrl}`;
+  
+    // Metaadatok létrehozása
     const metadata = {
       gemType,
       weight,
       size,
       miningLocation: formData.get('miningLocation').toString(),
       miningYear: formData.get('miningYear').toString(),
-      fileUrl,
+      fileUrl, // Az itt létrehozott URL az elmentett fájlhoz
     };
-
-    // Off-chain adatok IPFS feltöltése
-    let metadataUrl = "";
+  
+    // Metaadatok feltöltése Firestore-ba
     try {
-      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
-        headers: {
-          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-        },
-      });
-      metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
+      docRef = doc(firestore, 'minedGems', `${Date.now()}_${gemType}`); // Assign docRef here
+      await setDoc(docRef, metadata); // Metaadatok feltöltése a Firestore-ba
+      console.log("Metadata successfully uploaded to Firebase Firestore");
     } catch (err) {
-      console.error("Error uploading metadata: ", err);
+      console.error("Error uploading metadata to Firebase Firestore: ", err);
       return;
     }
-
+  
     try {
-      await props.gemMining(gemType, price, metadataUrl, false); // On-chain csak az IPFS hash tárolása
+      await props.gemMining(gemType, price, docRef.id, false); // On-chain csak az ID
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }
-
+  
     navigate('/loggedIn');
   };
+  
 
   return ( 
   <div className="card-container card-background">

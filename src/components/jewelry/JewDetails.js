@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { firestore } from '../../firebase'; // Firestore import
+import { doc, getDoc } from 'firebase/firestore'; // Firestore lekérdezéshez
 
 function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
@@ -10,9 +12,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [pinataMetadataJewelry, setPinataMetadataJewelry] = useState(null); 
-  const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
-  const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
+  const [firestoreMetadataJewelry, setFirestoreMetadataJewelry] = useState(null); 
+  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState({}); 
+  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState({}); 
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
@@ -36,56 +38,56 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     });
     setBlockDates(previousDates => ({ ...previousDates, ...blockDateMap }));
   };
-  
 
-  const fetchPinataMetadataMined = async (hash, gemId) => {
+  // Firestore metaadatok lekérése a bányászott kövekhez
+  const fetchFirestoreMetadataMined = async (docId, gemId) => {
     try {
-      const cleanedHash = cleanHash(hash); // Hash tisztítás
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataMined(prevState => ({
-        ...prevState,
-        [gemId]: data
-      }));
+      const docRef = doc(firestore, 'minedGems', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFirestoreMetadataMined(prevState => ({
+          ...prevState,
+          [gemId]: docSnap.data(),
+        }));
+      } else {
+        console.error('No such document for mined gem metadata');
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
+      console.error('Error fetching Firestore metadata for mined gems:', error);
     }
   };
   
-  const fetchPinataMetadataForSelected = async (hash, gemId) => {
+  // Firestore metaadatok lekérése a kiválasztott kövekhez
+  const fetchFirestoreMetadataForSelected = async (docId, gemId) => {
     try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataSelected(prevState => ({
-        ...prevState,
-        [gemId]: data
-      }));
+      const docRef = doc(firestore, 'gems', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFirestoreMetadataSelected(prevState => ({
+          ...prevState,
+          [gemId]: docSnap.data(),
+        }));
+      } else {
+        console.error('No such document for selected gem metadata');
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata for selected gems:', error);
+      console.error('Error fetching Firestore metadata for selected gems:', error);
     }
   };
   
-  const fetchPinataMetadataJewelry = async (hash) => {
+  // Firestore metaadatok lekérése ékszerekhez
+  const fetchFirestoreMetadataJewelry = async (docId) => {
     try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataJewelry(data);
+      const docRef = doc(firestore, 'jewelry', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFirestoreMetadataJewelry(docSnap.data());
+      } else {
+        console.error('No such document for jewelry metadata');
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
+      console.error('Error fetching Firestore metadata:', error);
     }
-  };
-  
-  // Hash tisztítás függvény
-  const cleanHash = (hash) => {
-    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
-      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
-    }
-    return hash;
   };
 
   useEffect(() => {
@@ -122,21 +124,21 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         );
         setFilteredMinedGemEvents(filteredMinedGems);
   
-        // Metaadatok lekérése minden  kőhöz
+        // Metaadatok lekérése minden  kőhöz Firestore-ból
         for (const gemId of gemIdsAsInt) {
           const selectedGem = selectedGems.find(gem => gem.id == gemId);
           if (selectedGem && selectedGem.metadataHash) {
-            await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
+            await fetchFirestoreMetadataForSelected(selectedGem.metadataHash, gemId);
           }
   
           const minedGem = minedGems.find(gem => gem.id == gemId);
           if (minedGem && minedGem.metadataHash) {
-            await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
+            await fetchFirestoreMetadataMined(minedGem.metadataHash, gemId);
           }
         }
   
         if (details.metadataHash) {
-          await fetchPinataMetadataJewelry(details.metadataHash);
+          await fetchFirestoreMetadataJewelry(details.metadataHash);
         }
   
         // Tranzakciókhoz tartozó dátumok lekérése
@@ -153,7 +155,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const renderJewelrySelectedGems = () => {
     const gemId = prevGemsArray[currentSelectedGemIndex];
     const selectedGem = selectedGems.find(gem => gem.id == gemId);
-    const metadata = pinataMetadataSelected[gemId];
+    const metadata = firestoreMetadataSelected[gemId];
 
     if (!selectedGem) return null;
 
@@ -190,12 +192,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       </div>
     );
   };
-  
 
   const renderJewelryMinedGems = () => {
     const gemId = prevGemsArray[currentMinedGemIndex];
     const minedGem = minedGems.find(gem => gem.id == gemId);
-    const metadata = pinataMetadataMined[gemId];
+    const metadata = firestoreMetadataMined[gemId];
 
     if (!minedGem) return null;
 
@@ -279,13 +280,13 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
 
-        {pinataMetadataJewelry && (
+        {firestoreMetadataJewelry && (
           <div>
-            <p><strong>Name:</strong> {pinataMetadataJewelry.name}</p>
-            <p><strong>Type:</strong> {pinataMetadataJewelry.type}</p>
-            <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
-            <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>
-            <p><strong>Additional data:</strong> {pinataMetadataJewelry.additionalData}</p>
+            <p><strong>Name:</strong> {firestoreMetadataJewelry.name}</p>
+            <p><strong>Type:</strong> {firestoreMetadataJewelry.type}</p>
+            <p><strong>Metal:</strong> {firestoreMetadataJewelry.metal}</p>
+            <p><strong>Size:</strong> {firestoreMetadataJewelry.size}</p>
+            <p><strong>Additional data:</strong> {firestoreMetadataJewelry.additionalData}</p>
           </div>
         )}
 

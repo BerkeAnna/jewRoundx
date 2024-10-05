@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../styles/Details.css'
+import { firestore } from '../../firebase'; // Firestore import
+import { doc, getDoc } from 'firebase/firestore'; // Firestore lekérdezéshez
+import '../../styles/Details.css';
 
-function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
+function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account, jewelryContract }) {
   const { id } = useParams();
-  const navigate = useNavigate();  
-  const [metadata, setMetadata] = useState({});// Metaadatok a kiválasztott kövekhez
-
+  const navigate = useNavigate();
+  const [metadata, setMetadata] = useState({}); // Metaadatok a kiválasztott kövekhez
+  const [prevGemsArray, setPrevGemsArray] = useState([]);
 
   const handleRepair = (gemId) => {
     markGemAsUsed(gemId);
@@ -14,61 +16,65 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
     navigate(`/jewelry-details/${id}`);
   };
 
-  useEffect(() => {
-    const fetchMetadata = async () => {
-      const metadataPromises = selectedGems.map(async (gem) => {
-        const cleanedHash = cleanHash(gem.metadataHash);
-        const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        return { id: gem.id, data }; // Gem ID-hez kapcsoljuk a lekért adatokat
-      });
-
-      const metadataResults = await Promise.all(metadataPromises);
-      const metadataMap = {};
-      metadataResults.forEach((item) => {
-        metadataMap[item.id] = item.data;
-      });
-      setMetadata(metadataMap); // Tároljuk az összes metaadatot egy objektumban
-    };
-
-    fetchMetadata();
-  }, [selectedGems]);
-
-  // Hash tisztítás függvény
-  const cleanHash = (hash) => {
-    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
-      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
+  // Firestore-ból metaadatok lekérése az egyes kövekhez
+  const fetchMetadataFromFirestore = async (gemId) => {
+    try {
+      const docRef = doc(firestore, 'gems', gemId.toString()); // Az azonosítót stringgé alakítjuk
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data(); // Ha létezik a dokumentum, visszaadjuk az adatokat
+      } else {
+        console.error('No such document in Firestore for gem:', gemId);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching metadata from Firestore:', error);
+      return null;
     }
-    return hash;
   };
 
-  const renderSelectedGems = () => {
-    return selectedGems.map((gem, key) => {
-      const gemMetadata = metadata[gem.id]; // Lekérjük a gem-hez tartozó metaadatokat
-      if (gem.used === false && gemMetadata) {
-        return (
-          <tr key={key}>
-            <td>{gem.id.toString()}</td>
-            <td>{gemMetadata.size}</td>
-            <td>{gemMetadata.carat} ct</td>
-            <td>{gemMetadata.color} - {gemMetadata.type}</td>
-            <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-            <td>
-              <button onClick={() => handleRepair(gem.id)} className="btn">
-                Select
-              </button>
-            </td>
-          </tr>
-        );
+  const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
+
+  useEffect(() => {
+    const fetchJewelryDetails = async () => {
+      try {
+        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
+        setPrevGemsArray(gemIdsAsInt);
+      } catch (error) {
+        console.error("Error fetching jewelry details: ", error);
       }
-      return null;
-    });
+    };
+
+    fetchJewelryDetails();
+  }, [id, jewelryContract]);
+
+  const renderSelectedGems = () => {
+    return ownedSelectedGems.map((gem, key) => (
+      gem.used === false && (
+      <tr key={key}>
+        <td>{gem.id.toString()}</td>
+        <td>size</td>
+        <td>carat</td>
+        <td>color and type</td>
+        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+        <td>
+          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+            Select
+          </button>
+          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+            Details
+          </button>
+        </td>
+      </tr>
+      )
+    ));
   };
 
   return (
-    <div className="details-details-container pt-5" >
-      <h1>Processing Jewelry</h1>
+    <div id="tables" className="pt-5">
+      <h2>Change Gem</h2>
+      <h2>Choose the next gem</h2>
       <table className="table">
         <thead>
           <tr>
@@ -80,7 +86,9 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>{renderSelectedGems()}</tbody>
+        <tbody>
+          {renderSelectedGems()}
+        </tbody>
       </table>
     </div>
   );

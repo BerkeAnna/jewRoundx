@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { firestore, storage } from '../../firebase'; // Update the path based on your structure
+import { doc, setDoc } from 'firebase/firestore'; // Firestore for database operations
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // For handling image upload to Firebase Storage
 
 function GemSelectingForm(props) {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const { id } = useParams();
+  const { id } = useParams(); // Gem ID, amit kiválasztottak
 
   const handleMarkAsSelected = (gemId) => {
     props.markGemAsSelected(gemId); 
@@ -19,28 +21,16 @@ function GemSelectingForm(props) {
     const file = fileInputRef.current.files[0];
 
     let fileUrl = "";
+    let docRef; // Firestore dokumentum referencia
     if (file) {
       try {
-        const fileData = new FormData();
-        fileData.append("file", file);
-
-        console.log("Uploading file to Pinata...");
-        const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', fileData, {
-          headers: {
-            'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-            'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-          },
-        });
-
-        if (response && response.data && response.data.IpfsHash) {
-          fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-          console.log("File uploaded successfully to Pinata: ", fileUrl);
-        } else {
-          console.error('Pinata response error: ', response);
-          return;
-        }
+        // Upload file to Firebase Storage
+        const storageRef = ref(storage, `gems/${file.name}`);
+        await uploadBytes(storageRef, file);
+        fileUrl = await getDownloadURL(storageRef);
+        console.log("File uploaded successfully to Firebase: ", fileUrl);
       } catch (err) {
-        console.error("Error uploading file: ", err);
+        console.error("Error uploading file to Firebase: ", err);
         return;
       }
     }
@@ -66,28 +56,16 @@ function GemSelectingForm(props) {
       treatments,
       size,
       carat,
-      fileUrl
+      fileUrl // A feltöltött fájl URL-je
     };
 
-    // Metaadatok feltöltése IPFS-re
-    let metadataUrl = "";
+    // Metaadatok feltöltése Firestore-ba
     try {
-      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
-        headers: {
-          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-        },
-      });
-
-      if (metadataResponse && metadataResponse.data && metadataResponse.data.IpfsHash) {
-        metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
-        console.log("Metadata uploaded successfully: ", metadataUrl);
-      } else {
-        console.error('Pinata metadata upload error: ', metadataResponse);
-        return;
-      }
+      docRef = doc(firestore, 'gems', `${Date.now()}_${gemType}`); // Dinamikus dokumentum azonosító
+      await setDoc(docRef, metadata); // Metaadatok feltöltése a Firestore-ba
+      console.log("Metadata successfully uploaded to Firebase Firestore");
     } catch (err) {
-      console.error("Error uploading metadata: ", err);
+      console.error("Error uploading metadata to Firebase Firestore: ", err);
       return;
     }
 
@@ -95,7 +73,7 @@ function GemSelectingForm(props) {
 
     try {
       console.log("Submitting gem selection...");
-      await props.gemSelecting(minedGemId, metadataUrl, price);
+      await props.gemSelecting(minedGemId, docRef.id, price); // Az ID alapján történik a kiválasztás
       console.log("Gem selected successfully.");
       navigate('/loggedIn');
     } catch (error) {

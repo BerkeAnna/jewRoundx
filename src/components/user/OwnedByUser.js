@@ -11,6 +11,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
   const role = localStorage.getItem('role') || '';
 
   console.log(role)
+  console.log(username)
 
   const handleMarkAsSelected = (gemId) => {
     navigate(`/gem-select/${gemId}`);

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { firestore } from '../../firebase'; // Firebase Firestore import
+import { doc, getDoc } from 'firebase/firestore'; // Firestore lekérdezéshez
 
 function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams(); // A kő azonosítója
@@ -8,50 +10,45 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({}); // A blokkok időbélyegeit tárolja
-  const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
-  const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
+  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
+  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
 
   const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
 
-  
   // Dátum lekérése blokkszám alapján
   const getTransactionDate = async (blockNumber) => {
     const block = await window.web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000); // Unix timestamp átalakítása dátummá
   };
 
-  // Pinata metaadatok lekérése
-  const fetchPinataMetadataMined = async (hash) => {
+  // Firestore metaadatok lekérése
+  const fetchFirestoreMetadataMined = async (docId) => {
     try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setpinataMetadataMined(data);
+      const docRef = doc(firestore, 'minedGems', docId); // Lekérjük a Firestore dokumentumot
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFirestoreMetadataMined(docSnap.data());
+      } else {
+        console.error('No such document for mined gem metadata');
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
+      console.error('Error fetching Firestore metadata for mined gems:', error);
     }
   };
 
-  const fetchPinataMetadataForSelected = async (hash) => {
+  const fetchFirestoreMetadataSelected = async (docId) => {
     try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataSelected(data);
+      const docRef = doc(firestore, 'gems', docId); // Lekérjük a Firestore dokumentumot
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFirestoreMetadataSelected(docSnap.data());
+      } else {
+        console.error('No such document for selected gem metadata');
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata for selected gems:', error);
+      console.error('Error fetching Firestore metadata for selected gems:', error);
     }
-  };
-
-  // Hash tisztítás függvény
-  const cleanHash = (hash) => {
-    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
-      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
-    }
-    return hash;
   };
 
   useEffect(() => {
@@ -73,13 +70,13 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
         const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Pinata metaadatok lekérése, ha létezik metadataHash
+        // Firestore metaadatok lekérése, ha létezik metadataHash
         if (gemSelected && gemSelected.metadataHash) {
-          await fetchPinataMetadataForSelected(gemSelected.metadataHash);
+          await fetchFirestoreMetadataSelected(gemSelected.metadataHash); // Firestore-ból kéri le
         }
-        
+
         if (minedGem && minedGem.metadataHash) {
-          await fetchPinataMetadataMined(minedGem.metadataHash);
+          await fetchFirestoreMetadataMined(minedGem.metadataHash); // Firestore-ból kéri le
         }
 
         // Tranzakciók blokkjainak dátumainak lekérése
@@ -112,21 +109,21 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return (
       <div className="card">
         <h2>Selected Gem Details</h2>
-        {pinataMetadataSelected && pinataMetadataSelected.fileUrl && (
-          <a href={pinataMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={pinataMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
+        {firestoreMetadataSelected && firestoreMetadataSelected.fileUrl && (
+          <a href={firestoreMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={firestoreMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
           </a>
         )}
         <p><strong>ID:</strong> {gemSelected.id.toString()}</p>
-        {pinataMetadataSelected && (
+        {firestoreMetadataSelected && (
           <div>
-            <p><strong>Gem Type:</strong> {pinataMetadataSelected.gemType}</p>
-            <p><strong>Size:</strong> {pinataMetadataSelected.size}</p>
-            <p><strong>Carat:</strong> {pinataMetadataSelected.carat} ct</p>
-            <p><strong>Color:</strong> {pinataMetadataSelected.color}</p>
-            <p><strong>Polishing:</strong> {pinataMetadataSelected.polishing}</p>
-            <p><strong>Transparency:</strong> {pinataMetadataSelected.transparency}</p>
-            <p><strong>Treatments:</strong> {pinataMetadataSelected.treatments}</p>
+            <p><strong>Gem Type:</strong> {firestoreMetadataSelected.gemType}</p>
+            <p><strong>Size:</strong> {firestoreMetadataSelected.size}</p>
+            <p><strong>Carat:</strong> {firestoreMetadataSelected.carat} ct</p>
+            <p><strong>Color:</strong> {firestoreMetadataSelected.color}</p>
+            <p><strong>Polishing:</strong> {firestoreMetadataSelected.polishing}</p>
+            <p><strong>Transparency:</strong> {firestoreMetadataSelected.transparency}</p>
+            <p><strong>Treatments:</strong> {firestoreMetadataSelected.treatments}</p>
           </div>
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gemSelected.price.toString(), 'Ether')} Eth</p>
@@ -147,19 +144,19 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return (
       <div className="card">
         <h2>Mined Gem Details</h2>
-        {pinataMetadataMined && pinataMetadataMined.fileUrl && (
-          <a href={pinataMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={pinataMetadataMined.fileUrl} alt="Gem image" className="details-image" />
+        {firestoreMetadataMined && firestoreMetadataMined.fileUrl && (
+          <a href={firestoreMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
+            <img src={firestoreMetadataMined.fileUrl} alt="Gem image" className="details-image" />
           </a>
         )}
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        {pinataMetadataMined && (
+        {firestoreMetadataMined && (
           <div>
-            <p><strong>Gem Type:</strong> {pinataMetadataMined.gemType}</p>
-            <p><strong>Weight:</strong> {pinataMetadataMined.weight}</p>
-            <p><strong>Size:</strong> {pinataMetadataMined.size}</p>
-            <p><strong>Mining Location:</strong> {pinataMetadataMined.miningLocation}</p>
-            <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear}</p>
+            <p><strong>Gem Type:</strong> {firestoreMetadataMined.gemType}</p>
+            <p><strong>Weight:</strong> {firestoreMetadataMined.weight}</p>
+            <p><strong>Size:</strong> {firestoreMetadataMined.size}</p>
+            <p><strong>Mining Location:</strong> {firestoreMetadataMined.miningLocation}</p>
+            <p><strong>Mining Year:</strong> {firestoreMetadataMined.miningYear}</p>
           </div>
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>

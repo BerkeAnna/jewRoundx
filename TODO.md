@@ -510,3 +510,14 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 lehet egy dapp egyszerre off és onchain is?
 
                 
+
+2024.10.05. 
+        10:44
+                gemek form oké, details kell, és jewelry +
+
+        12:25 
+                formok, details ok + 
+                markets +
+                profile +
+                type select list
+                kategória szűrés

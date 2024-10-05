@@ -17401,12 +17401,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x25754D4e01feB727F62F3d1639b7743F07375cC9",
-      "transactionHash": "0xd4c449bd54585c6c97e5e0e2817c216a55e6a82ce533843a34dc6a57d6ffbab5"
+      "address": "0xbd1dE87894b4b5C1FD0Bc6722D9Bc74e6e1cD84E",
+      "transactionHash": "0x2cacf3918e47348a0294680b1bf3e3d5b7bcbed8d41093a491dc52a1bf5f96b2"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-10-05T06:54:29.663Z",
+  "updatedAt": "2024-10-05T09:52:40.226Z",
   "devdoc": {
     "methods": {}
   },
