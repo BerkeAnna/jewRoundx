@@ -25,8 +25,6 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
       <h1>Hi { username }!</h1>
      
       <div className="card profile-card" >
-      <h3>Your data:</h3>
-       
           <div>
             <p>Address: {username}</p>
             <p>Role: {role}</p>
