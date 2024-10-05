@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { firestore, storage } from '../../firebase'; // Firebase konfiguráció importálása
 import { doc, setDoc } from 'firebase/firestore'; // Firestore for database operations
@@ -9,6 +9,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
+  const [type, setType] = useState("Ring"); // Kezdőérték beállítása
 
   const handleMarkAsUsed = (gemId) => {
     markGemAsUsed(gemId);  // Meghívjuk a drágakő használatba vételét
@@ -38,13 +39,12 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
 
     const gemId = parseInt(id, 10);  
     const name = formData.get('name').toString();
-    const type = formData.get('type').toString();
     const metal = formData.get('metal').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
-    const additionalData = formData.get('additionalData').toString();
+    const additionalData = formData.get('additionalData') ? formData.get('additionalData').toString() : ''; // Módosítás itt
     const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
     const sale = false;
 
@@ -55,7 +55,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
 
     const metadata = {
       name,
-      type,
+      type,  // A select mező értéke itt kerül hozzáadásra
       gemId,
       metal,
       size,
@@ -83,6 +83,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
     }
   };
 
+
   return (
     <div className="card-container card-background">
       <div className="form-card">
@@ -92,7 +93,12 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
             <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />
           </div>
           <div className="form-group">
-            <input id="type" name="type" type="text" className="form-control" placeholder="Type" required />
+            <select name="type" value={type} onChange={(e) => setType(e.target.value)} required>
+              <option value="Ring">Ring</option>
+              <option value="Bracelet">Bracelet</option>
+              <option value="Earrings">Earrings</option>
+              <option value="Necklace">Necklace</option>
+            </select>
           </div>
           <div className="form-group">
             <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />

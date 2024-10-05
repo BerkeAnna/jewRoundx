@@ -519,5 +519,5 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 formok, details ok + 
                 markets +
                 profile +
-                type select list
-                kategória szűrés
+                type select list +
+                kategória szűrés -- metadatasként van fent, még nem zdtem le. de aból kellene 

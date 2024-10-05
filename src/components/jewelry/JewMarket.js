@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 function JewMarket({ jewelry, account, buyJewelry }) {
   const navigate = useNavigate();
 
-  const navigateToJewDetails = (id) => {
-    navigate(`/jewelry-details/${id}`);
+  const navigateToJewDetails = (jewId) => {
+    navigate(`/jewelry-details/${jewId}`);
   };
 
   const renderJewelryItems = () => {
