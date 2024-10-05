@@ -8,6 +8,8 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
   const [jewelryId, setJewelryId] = useState('');
   const navigate = useNavigate();
   console.log("u" + userInfo)
+  const username = localStorage.getItem('username') || '';
+  const role = localStorage.getItem('role') || '';
 
   const handleChange = (e) => {
     setJewelryId(e.target.value);
@@ -20,17 +22,13 @@ const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCou
 
   return (
     <div className='pt-5 profile-card-container card-background ' style={{ textAlign: 'center' }}>
-      <h1>Hi {userInfo ? userInfo.username : 'xy'}!</h1>
+      <h1>Hi { username }!</h1>
      
       <div className="card profile-card" >
-      <h3>Your data:</h3>
-        {userInfo && (
           <div>
-            <p>Address: {userInfo.address}</p>
-            <p>Username: {userInfo.username}</p>
-            <p>Role: {userInfo.role}</p>
+            <p>Address: {username}</p>
+            <p>Role: {role}</p>
           </div>
-        )}
       </div>
 
       <div className="card profile-card">
