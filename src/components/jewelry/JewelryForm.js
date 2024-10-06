@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/Forms.css';
@@ -7,6 +7,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
+  const [type, setType] = useState("Ring");
 
   const handleMarkAsUsed = (gemId) => {
     markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
@@ -109,7 +110,12 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
             <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />
           </div>
           <div className="form-group">
-            <input id="type" name="type" type="text" className="form-control" placeholder="Type" required />
+            <select name="type" value={type} onChange={(e) => setType(e.target.value)} required>
+              <option value="Ring">Ring</option>
+              <option value="Bracelet">Bracelet</option>
+              <option value="Earrings">Earrings</option>
+              <option value="Necklace">Necklace</option>
+            </select>
           </div>
           <div className="form-group">
             <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
@@ -127,7 +133,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
             <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
           </div>
           <div className="form-group">
-            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" required />
+            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
