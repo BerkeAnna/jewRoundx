@@ -104,7 +104,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
   return (
     <div className="card-container card-background">
       <div className="form-card">
-        <h1>Add Jewelry</h1>
+        <h1>Make Jewelry</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />

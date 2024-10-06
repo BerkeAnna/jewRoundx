@@ -67,7 +67,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
   };
 
   return (
-    <div className="details-details-container pt-5" >
+    <div id="tables" className="pt-5" >
       <h1>Processing Jewelry</h1>
       <table className="table">
         <thead>
