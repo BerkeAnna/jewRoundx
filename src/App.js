@@ -544,7 +544,7 @@ async returnToOwner(id) {
     return (
       <div className='col-12 wid pt-5'>
         <Router>
-          {this.state.isLoggedIn && window.location.pathname !== "/" && <Navbar account={this.state.account} />}
+          {this.state.isLoggedIn && window.location.pathname !== "/" && window.location.pathname !== "/loggedIn" && <Navbar account={this.state.account} />}
           <AppRoutes 
             state={this.state} 
             gemMining={this.gemMining}

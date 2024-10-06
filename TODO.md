@@ -537,3 +537,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 this.returnToOwner 
 
         22:45 dates hiányzik megint...
+
+2024.10.06.
+
+        16:29
+                Dátum hiányzik

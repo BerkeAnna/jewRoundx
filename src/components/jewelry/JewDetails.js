@@ -19,9 +19,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000);
+    return new Date(block.timestamp * 1000); 
   };
-  
+
   // Function to fetch all transactions from all contracts
   const fetchJewTransactions = async () => {
     try {
@@ -29,7 +29,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       const allEvents = [...allJewelryEvents];
       setAllTransactions(allEvents);
       
-      // Fetch the block dates
+      // Ensure to fetch dates for each block of the events
       const blockNumbers = allEvents.map(event => event.blockNumber);
       const uniqueBlockNumbers = [...new Set(blockNumbers)];
   
@@ -43,31 +43,23 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     }
   };
   
-  
-  // Hash tisztítás függvény
-  const cleanHash = (hash) => {
-    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
-      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
-    }
-    return hash;
-  };
-  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
+        // Jewelry részletek lekérése
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-  
+
+        // Fetch events
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
         const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
-  
-        // Fetch selected and mined gem events
+
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -76,7 +68,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
-  
+
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -85,22 +77,22 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredMinedGemEvents(filteredMinedGems);
-  
+
         // Fetch all transactions once
         fetchJewTransactions();
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
-  
+
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
-  
+
   // Render all transactions in a card
-  const renderAllTransactions = () => {
-    if (allTransactions.length === 0) {
-      return <p>No transactions found.</p>;
-    }
+const renderAllTransactions = () => {
+  if (allTransactions.length === 0) {
+    return <p>No transactions found.</p>;
+  }
 
   // Szűrjük az összes tranzakciót az adott ékszerhez (jewelryId vagy gemId)
   const filteredTransactions = allTransactions.filter(event => {
@@ -111,8 +103,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   if (filteredTransactions.length === 0) {
     return <p>No transactions for this jewelry found.</p>;
   }
-  
-    return (
+
+  return (
     <div className="pt-5">
       <ul className="details-list">
         {filteredTransactions.map((event, index) => {
@@ -138,11 +130,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
           );
         })}
       </ul>
-      </div>
-    );
-  };
-  
-  
+    </div>
+  );
+};
+
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
@@ -186,7 +177,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     );
   };
   
-  
 
   const renderMinedGems = () => {
     const filteredMinedGems = minedGems
@@ -211,6 +201,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
+        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.owner}</p>
@@ -291,7 +282,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
-        <p><strong>Jewelry Owner:</strong> {jewelry.jewOwner}</p>
   
         <hr />
         <h3>Transaction Details</h3>
@@ -301,34 +291,33 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     ));
   };
   
-  
 
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
 
       <div className="details-row pt-5">
-        <button className="arrow" onClick={handlePrevGem}>
+        <span className="arrow" onClick={handlePrevGem}>
           ←
-        </button>
+        </span>
         <div className="card-container">
         {renderMinedGems()[currentGemIndex]} 
       </div>
-        <button className="arrow" onClick={handleNextGem}>
+        <span className="arrow" onClick={handleNextGem}>
           → 
-        </button>
+        </span>
       </div>
 
       <div className="details-row">
-        <button className="arrow" onClick={handlePrevGem}>
+        <span className="arrow" onClick={handlePrevGem}>
           ←
-        </button>
+        </span>
         <div className="card-container pt-5">
           {renderSelectedGems()[currentGemIndex]}
         </div>
-        <button className="arrow" onClick={handleNextGem}>
+        <span className="arrow" onClick={handleNextGem}>
           →
-        </button>
+        </span>
       </div>
 
       <div className="card-container pt-5">

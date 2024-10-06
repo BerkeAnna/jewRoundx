@@ -45,14 +45,13 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
 
     const gemId = parseInt(id, 10);  
     const name = formData.get('name').toString();
-    const type = formData.get('type').toString();
     const metal = formData.get('metal').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
-    const additionalData = formData.get('additionalData').toString();
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const physicalDetails = `Metal: ${metal} - ${size}`; 
+    const price = window.web3.utils.toWei(formData.get('price').toString(), 'Ether');
     const sale = false;
 
     if (!name) {
@@ -60,54 +59,17 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
       return; 
     }
 
-    const metadata = {
-      name,
-      type,
-      gemId,
-      metal,
-      size,
-      additionalData,
-      fileUrl 
-    };
+    jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
 
-    let metadataUrl = "";
-    try {
-      const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
-        headers: {
-          'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-          'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
-        },
-      });
-
-      if (metadataResponse && metadataResponse.data && metadataResponse.data.IpfsHash) {
-        metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
-        console.log("Metadata uploaded successfully: ", metadataUrl);
-      } else {
-        console.error('Pinata metadata upload error: ', metadataResponse);
-        return;
-      }
-    } catch (err) {
-      console.error("Error uploading metadata: ", err);
-      return;
-    }
-
-    try {
-      console.log("Submitting jewelry creation...");
-      await jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl);  // Helyes függvényhívás
-      console.log("Jewelry created successfully.");
-      navigate('/loggedIn');
-    } catch (error) {
-      console.error("Error in jewelry creation: ", error);
-    }
   };
 
   return (
     <div className="card-container card-background">
-      <div className="form-card">
-        <h1>Make Jewelry</h1>
+      <div className=" form-card ">
+        <h1>Add jewelry</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <input id="name" name="name" type="text" className="form-control" placeholder="Name" required />
+            <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
           </div>
           <div className="form-group">
             <select name="type" value={type} onChange={(e) => setType(e.target.value)} required>
@@ -118,27 +80,24 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
             </select>
           </div>
           <div className="form-group">
-            <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
+            <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
           </div>
           <div className="form-group">
-            <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth in mm" required />
+            <input id="height" name="height" type="text" className="form-control" placeholder="height" required />
           </div>
           <div className="form-group">
-            <input id="height" name="height" type="text" className="form-control" placeholder="Height in mm" required />
+            <input id="width" name="width" type="text" className="form-control" placeholder="width" required />
           </div>
           <div className="form-group">
-            <input id="width" name="width" type="text" className="form-control" placeholder="Width in mm" required />
+            <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
           </div>
           <div className="form-group">
-            <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
-          </div>
-          <div className="form-group">
-            <input id="additionalData" name="additionalData" type="textarea" className="form-control" placeholder="Additional data" />
+            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
           </div>
-          <button type="submit" className="button">Make Jewelry</button>
+          <button type="submit" className="button">Make jewelry</button>
         </form>
       </div>
     </div>
