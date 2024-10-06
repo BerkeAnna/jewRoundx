@@ -594,3 +594,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         13:14
                 user kontrol
                 privateroutes.
+
+        21:43
+                jew-processing nem jó a tábla
+                change-gemes tábla is rossz
+                nem a metaadatból kéri le, az lesz a gond
