@@ -95,9 +95,11 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                   Details
                 </button>
-                <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
-                  Make jewelry
-                </button>
+                {role === 'Jeweler' && (
+                  <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
+                    Make jewelry
+                  </button>
+                )}
                 <button
                 id={selectedGem.id}
                 value={selectedGem.price}
@@ -220,75 +222,96 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
   return (
     <div id="tables" className="pt-5">
-      <h2>List of mined gems</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Type</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">*</th>
-          </tr>
-        </thead>
-        <tbody>{renderMinedGems()}</tbody>
-      </table>
+      
+      {role === 'Miner' && (
+      <div>
+        <h2>List of mined gems</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Type</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody>{renderMinedGems()}</tbody>
+        </table>
+      </div>
+      )}
 
-      <h2>List of selected gems</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Type</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">*</th>
-          </tr>
-        </thead>
-        <tbody>{renderSelectedGems()}</tbody>
-      </table>
+      {role === 'Gem Cutter' && (
+      <div>
+        <h2>List of selected gems</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Type</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody>{renderSelectedGems()}</tbody>
+        </table>
+      </div>
+      )}
 
-      <h2>List of processing gems</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Details</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">*</th>
-          </tr>
-        </thead>
-        <tbody>{renderProcessingGems()}</tbody>
-      </table>
+      {(role === 'Gem Cutter' || role === 'Jeweler') && (
+      <div>
+        <h2>List of processing gems</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Details</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody>{renderProcessingGems()}</tbody>
+        </table>
+      </div>
+      )}
 
-      <h2>List of processing jewelry</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">*</th>
-          </tr>
-        </thead>
-        <tbody>{renderProcessingJewelry()}</tbody>
-      </table>
+      { role === 'Jeweler' &&(
+      <div>
+        <h2>List of processing jewelry</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody>{renderProcessingJewelry()}</tbody>
+        </table>
+      </div>
+      )}
 
-      <h2>List of jewelry</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Owner</th>
-            <th scope="col">*</th>
-          </tr>
-        </thead>
-        <tbody>{renderJewelry()}</tbody>
-      </table>
+      {(role === 'Jeweler' || role === 'Jewelry Owner') &&(
+      <div>
+        <h2>List of jewelry</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Owner</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody>{renderJewelry()}</tbody>
+        </table>
+      </div>
+      )}
     </div>
   );
 }

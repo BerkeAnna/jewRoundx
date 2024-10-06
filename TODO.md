@@ -590,4 +590,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 jewelrynél a name-t typeként??? -- offchain megy fel metaba, de a másikon módosítani
 
 
-
+2024.10.06. 
+        13:14
+                user kontrol
+                privateroutes.
