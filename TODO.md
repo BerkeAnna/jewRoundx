@@ -521,3 +521,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 profile +
                 type select list +
                 kategória szűrés -- metadatasként van fent, még nem zdtem le. de aból kellene 
+
+2024.10.07. 10:08
+                minedgmmarketen nem jelenik meg a kép
+                de a sima gem market jóó +

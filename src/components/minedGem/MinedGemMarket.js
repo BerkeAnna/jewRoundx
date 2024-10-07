@@ -2,56 +2,64 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Market.css';
+import { firestore } from '../../firebase';
+import { doc, getDoc } from 'firebase/firestore'; 
 
-function MinedGemMarket({ minedGems, account, markNewOwner, }) {
+
+function MinedGemMarket({ minedGems, account, markNewOwner }) {
   const navigate = useNavigate();
-  const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner !== account);
-  const [pinataMetadataMined, setPinataMetadataMined] = useState({}); // Minden gem metaadatait objektumban tároljuk
+  const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner !== account); 
+  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState({}); // Metaadatok tárolása objektumban, gem ID szerint
 
   const handleMarkAsSelected = (gemId, price) => {
     markNewOwner(gemId, price);
   };
 
-  // Pinata metaadatok lekérése egy adott gem ID alapján
-  const fetchPinataMetadataMined = async (hash, gemId) => {
+  // Firestore metaadatok lekérése gem ID alapján
+  const fetchFirestoreMetadataMined = async (docId, gemId) => {
     try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataMined(prevState => ({
-        ...prevState,
-        [gemId]: data // Metaadatok mentése gem ID szerint
-      }));
+      const docRef = doc(firestore, 'minedGems', docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        
+        // Csak a fileUrl-t mentjük el
+        if (data.fileUrl) {
+          setFirestoreMetadataMined(prevState => ({
+            ...prevState,
+            [gemId]: data.fileUrl // Csak a fileUrl mentése az állapotba
+          }));
+        } else {
+          console.error(`Nem található fileUrl a dokumentumban: ${gemId}`);
+        }
+      } else {
+        console.error(`Nincs ilyen dokumentum a Firestore-ban: ${gemId}`);
+      }
     } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
+      console.error('Hiba a Firestore lekérdezés során:', error);
     }
   };
-
-  const cleanHash = (hash) => {
-    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
-      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
-    }
-    return hash;
-  };
+  
 
   // useEffect a metaadatok lekérésére minden bányászott gem-hez
   useEffect(() => {
     ownedMinedGems.forEach((gem) => {
       if (gem.metadataHash) {
-        fetchPinataMetadataMined(gem.metadataHash, gem.id); // Lekérés gem ID szerint
-      }
-    });
+      fetchFirestoreMetadataMined(gem.metadataHash, gem.id); // Lekérjük a gem metaadatait Firestore-ból
+   
+    }});
   }, [ownedMinedGems]);
 
   const renderMinedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
       <div key={key} className="card market-card">
-        {pinataMetadataMined[minedGem.id] && pinataMetadataMined[minedGem.id].fileUrl && (
-          <a href={pinataMetadataMined[minedGem.id].fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={pinataMetadataMined[minedGem.id].fileUrl} alt="Gem image" className="details-image" />
+        {firestoreMetadataMined[minedGem.id] ? (
+          <a href={firestoreMetadataMined[minedGem.id]} target="_blank" rel="noopener noreferrer">
+            <img src={firestoreMetadataMined[minedGem.id]} alt="Gem image" className="details-image" />
           </a>
+        ) : (
+          <p>No image available</p> // Alternatív szöveg, ha nincs kép
         )}
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
@@ -66,9 +74,9 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
       </div>
     )));
   };
-
+  
   return (
-    <div className="gem-market">
+    <div className="gem-market card-background">
       <p>&nbsp;</p>
       <h2>Mined Gem market</h2>
       <div className="gem-cards">
