@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Details.css';
 
-function JewProcessing({ selectedGems, updateGem, markGemAsUsed }) {
+function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract, account }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [prevGemsArray, setPrevGemsArray] = useState([]);
 
   const handleRepair = (gemId) => {
     markGemAsUsed(gemId);
@@ -12,14 +13,28 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed }) {
     navigate(`/jewelry-details/${id}`);
   };
 
+  const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
+
+  useEffect(() => {
+    const fetchJewelryDetails = async () => {
+      try {
+        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
+        setPrevGemsArray(gemIdsAsInt);
+      } catch (error) {
+        console.error("Error fetching jewelry details: ", error);
+      }
+    };
+
+    fetchJewelryDetails();
+  }, [id, jewelryContract]);
+
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => {
       if (gem.used === false) {
         return (
           <tr key={key}>
             <td>{gem.id.toString()}</td>
-            <td>{gem.gemType}</td>
-            <td>{gem.carat} ct</td>
             <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
@@ -43,8 +58,6 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed }) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Size</th>
-            <th>Carat</th>
             <th>Price</th>
             <th>Action</th>
           </tr>
