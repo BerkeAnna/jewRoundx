@@ -210,6 +210,52 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     );
   };
 
+  /* az összes adatot kiírja a tranzakciós adatokból
+const renderTransactionDetails = (events, gemId) => {
+  const gemEvents = events.filter(event => {
+    const eventId = parseInt(event.returnValues.id);
+    return eventId === parseInt(gemId);
+  });
+
+  if (gemEvents.length === 0) {
+    return <p>No transaction events found for this gem.</p>;
+  }
+
+  return (
+    <ul className="no-bullet-list">
+      {gemEvents.map((event, index) => {
+        const { returnValues } = event;  // Az összes returnValues adatot lekérjük
+        const eventDetails = Object.entries(returnValues); // Az összes returnValue pár formában
+
+        return (
+          <li key={index} className="details-list-item">
+            <strong>Event:</strong> {event.event}
+            <br />
+            <strong>Transaction Hash:</strong> {event.transactionHash}
+            <br />
+            <strong>Block Number:</strong> {event.blockNumber}
+            <br />
+            {blockDates[event.blockNumber] && (
+              <>
+                <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                <br />
+              </>
+            )}
+
+            {eventDetails.map(([key, value]) => (
+              <div key={key}>
+                <strong>{key}:</strong> {value.toString()}
+              </div>
+            ))}
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+  */
+
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Gem Details</h1>

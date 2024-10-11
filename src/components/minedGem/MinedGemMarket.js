@@ -24,7 +24,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
         [gemId]: data // Metaadatok mentése gem ID szerint
       }));
     } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
+      //console.error('Error fetching Pinata metadata:', error);
     }
   };
 
@@ -39,7 +39,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
   useEffect(() => {
     ownedMinedGems.forEach((gem) => {
       if (gem.metadataHash) {
-        fetchPinataMetadataMined(gem.metadataHash, gem.id); // Lekérés gem ID szerint
+      //  fetchPinataMetadataMined(gem.metadataHash, gem.id); // Lekérés gem ID szerint
       }
     });
   }, [ownedMinedGems]);
@@ -48,11 +48,12 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
       <div key={key} className="card market-card">
-        {pinataMetadataMined[minedGem.id] && pinataMetadataMined[minedGem.id].fileUrl && (
+       {/* {pinataMetadataMined[minedGem.id] && pinataMetadataMined[minedGem.id].fileUrl && (
           <a href={pinataMetadataMined[minedGem.id].fileUrl} target="_blank" rel="noopener noreferrer">
             <img src={pinataMetadataMined[minedGem.id].fileUrl} alt="Gem image" className="details-image" />
           </a>
         )}
+          */}
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>

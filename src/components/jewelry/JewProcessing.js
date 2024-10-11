@@ -30,7 +30,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
   }, [id, jewelryContract]);
 
   const renderSelectedGems = () => {
-    return selectedGems.map((gem, key) => {
+    return ownedSelectedGems.map((gem, key) => {
       if (gem.used === false) {
         return (
           <tr key={key}>
@@ -50,6 +50,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
       return null;
     });
   };
+  
 
   return (
     <div id="tables" className="pt-5">

@@ -599,3 +599,13 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 jew-processing nem jó a tábla
                 change-gemes tábla is rossz
                 nem a metaadatból kéri le, az lesz a gond
+
+2024.10.07.
+        15:32 
+                lassú, kifagy...
+                most kikommenteztem 2 részt a marketből, valammiért a pinata pörög túl
+
+2024.10.11.
+        22:53
+                a gemmarketben 2 tranzdetails... a második mindent kijelez. Megírni az on-chaint úgy hogy csak ezekből az eventekből szerezzen adatot.
+                Ha a tranzakciós időnek, mérésnek az adott tranzakcióra menve jelenne meg?
