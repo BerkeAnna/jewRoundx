@@ -542,3 +542,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
         16:29
                 Dátum hiányzik
+
+2024.10.12. 
+
+        19:28
+                Gázárakat mindenhol kiírja
+                dátumot is
