@@ -13,6 +13,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const [pinataMetadataJewelry, setPinataMetadataJewelry] = useState(null); 
   const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
+  const [transactionGasDetails, setTransactionGasDetails] = useState({});
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
@@ -36,11 +37,29 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     });
     setBlockDates(previousDates => ({ ...previousDates, ...blockDateMap }));
   };
-  
+
+  // Gáz adatok lekérése a tranzakciókból
+  const fetchGasDetails = async (events) => {
+    const gasDetailsPromises = events.map(async (event) => {
+      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed;
+      const gasPrice = transaction.gasPrice;
+      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+    });
+
+    const gasDetailsResults = await Promise.all(gasDetailsPromises);
+    const gasDetailsMap = {};
+    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
+      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+    });
+    setTransactionGasDetails(gasDetailsMap);
+  };
 
   const fetchPinataMetadataMined = async (hash, gemId) => {
     try {
-      const cleanedHash = cleanHash(hash); // Hash tisztítás
+      const cleanedHash = cleanHash(hash);
       const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -52,7 +71,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       console.error('Error fetching Pinata metadata:', error);
     }
   };
-  
+
   const fetchPinataMetadataForSelected = async (hash, gemId) => {
     try {
       const cleanedHash = cleanHash(hash);
@@ -67,7 +86,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       console.error('Error fetching Pinata metadata for selected gems:', error);
     }
   };
-  
+
   const fetchPinataMetadataJewelry = async (hash) => {
     try {
       const cleanedHash = cleanHash(hash);
@@ -79,8 +98,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       console.error('Error fetching Pinata metadata:', error);
     }
   };
-  
-  // Hash tisztítás függvény
+
   const cleanHash = (hash) => {
     if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
       return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
@@ -94,15 +112,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-  
+
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
         const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
-  
-        // Selected gem események lekérése
+
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -111,8 +128,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
-  
-        // Mined gem események lekérése
+
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
@@ -121,35 +137,34 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredMinedGemEvents(filteredMinedGems);
-  
-        // Metaadatok lekérése minden  kőhöz
+
         for (const gemId of gemIdsAsInt) {
           const selectedGem = selectedGems.find(gem => gem.id == gemId);
           if (selectedGem && selectedGem.metadataHash) {
             await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
           }
-  
+
           const minedGem = minedGems.find(gem => gem.id == gemId);
           if (minedGem && minedGem.metadataHash) {
             await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
           }
         }
-  
+
         if (details.metadataHash) {
           await fetchPinataMetadataJewelry(details.metadataHash);
         }
-  
-        // Tranzakciókhoz tartozó dátumok lekérése
+
         await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
-  
+        await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
-  
+
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
-  
+
   const renderJewelrySelectedGems = () => {
     const gemId = prevGemsArray[currentSelectedGemIndex];
     const selectedGem = selectedGems.find(gem => gem.id == gemId);
@@ -168,7 +183,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
 
         <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
         <p> {selectedGem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong> }</p>
-        
+
         {metadata && (
           <div>
             <p><strong>Gem Type:</strong> {metadata.gemType}</p>
@@ -184,13 +199,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
         <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
-        
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
       </div>
     );
   };
-  
 
   const renderJewelryMinedGems = () => {
     const gemId = prevGemsArray[currentMinedGemIndex];
@@ -219,28 +233,31 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
-        
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
       </div>
     );
   };
+ 
+  
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); 
+      const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
-  
+
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-  
+
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
-  
+          const gasDetails = transactionGasDetails[event.transactionHash];
+
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -252,6 +269,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
               {blockDates[event.blockNumber] && (
                 <>
                   <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <br />
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
                 </>
               )}
               <br />
@@ -278,7 +305,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           </div>
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
-
+  
         {pinataMetadataJewelry && (
           <div>
             <p><strong>Name:</strong> {pinataMetadataJewelry.name}</p>
@@ -288,7 +315,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
             <p><strong>Additional data:</strong> {pinataMetadataJewelry.additionalData}</p>
           </div>
         )}
-
+  
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
