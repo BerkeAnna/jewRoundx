@@ -16,6 +16,8 @@ function MinedGemForm(props) {
     let fileUrl = "";
     if (file) {
       try {
+        // *** IPFS fájlfeltöltés időmérése ***
+        const startFileUploadTime = performance.now();  // Kezdés
         const fileData = new FormData();
         fileData.append("file", file);
 
@@ -27,6 +29,10 @@ function MinedGemForm(props) {
         });
 
         fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        const endFileUploadTime = performance.now();  // Befejezés
+        const fileUploadDuration = endFileUploadTime - startFileUploadTime;
+        console.log(`IPFS fájlfeltöltés időtartama: ${fileUploadDuration} ms`);
+        
       } catch (err) {
         console.error("Error uploading file: ", err);
         return;
@@ -51,9 +57,10 @@ function MinedGemForm(props) {
       fileUrl,
     };
 
-    // Off-chain adatok IPFS feltöltése
+    // *** IPFS metadata feltöltés időmérése ***
     let metadataUrl = "";
     try {
+      const startMetadataUploadTime = performance.now();  // Kezdés
       const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
         headers: {
           'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
@@ -61,6 +68,10 @@ function MinedGemForm(props) {
         },
       });
       metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
+      const endMetadataUploadTime = performance.now();  // Befejezés
+      const metadataUploadDuration = endMetadataUploadTime - startMetadataUploadTime;
+      console.log(`IPFS metadata feltöltés időtartama: ${metadataUploadDuration} ms`);
+
     } catch (err) {
       console.error("Error uploading metadata: ", err);
       return;
