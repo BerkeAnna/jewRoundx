@@ -12,9 +12,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
-  const [firestoreMetadataJewelry, setFirestoreMetadataJewelry] = useState(null); 
-  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState({}); 
-  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState({}); 
+  const [firestoreMetadataJewelry, setFirestoreMetadataJewelry] = useState(null);
+  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState({});
+  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState({});
+  const [transactionGasDetails, setTransactionGasDetails] = useState({});
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
@@ -24,14 +25,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     const block = await web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000);
   };
-  
+
   const fetchAllTransactionDates = async (web3, events) => {
     const blockDatePromises = events.map(async (event) => {
       const date = await getTransactionDate(web3, event.blockNumber);
       return { blockNumber: event.blockNumber, date };
     });
     const blockDateResults = await Promise.all(blockDatePromises);
-    
+
     const blockDateMap = {};
     blockDateResults.forEach(({ blockNumber, date }) => {
       blockDateMap[blockNumber] = date;
@@ -56,7 +57,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       console.error('Error fetching Firestore metadata for mined gems:', error);
     }
   };
-  
+
   // Firestore metaadatok lekérése a kiválasztott kövekhez
   const fetchFirestoreMetadataForSelected = async (docId, gemId) => {
     try {
@@ -74,7 +75,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       console.error('Error fetching Firestore metadata for selected gems:', error);
     }
   };
-  
+
   // Firestore metaadatok lekérése ékszerekhez
   const fetchFirestoreMetadataJewelry = async (docId) => {
     try {
@@ -90,20 +91,39 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     }
   };
 
+  // Gáz részletek lekérése a tranzakciókból
+  const fetchGasDetails = async (events) => {
+    const gasDetailsPromises = events.map(async (event) => {
+      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed;
+      const gasPrice = transaction.gasPrice;
+      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+    });
+
+    const gasDetailsResults = await Promise.all(gasDetailsPromises);
+    const gasDetailsMap = {};
+    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
+      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+    });
+    setTransactionGasDetails(gasDetailsMap);
+  };
+
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
-  
+
         const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
           fromBlock: 0,
           toBlock: 'latest'
         });
         const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
-  
+
         // Selected gem események lekérése
         const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
           fromBlock: 0,
@@ -113,7 +133,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
-  
+
         // Mined gem események lekérése
         const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
           fromBlock: 0,
@@ -123,35 +143,36 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredMinedGemEvents(filteredMinedGems);
-  
-        // Metaadatok lekérése minden  kőhöz Firestore-ból
+
+        // Metaadatok lekérése minden kőhöz Firestore-ból
         for (const gemId of gemIdsAsInt) {
           const selectedGem = selectedGems.find(gem => gem.id == gemId);
           if (selectedGem && selectedGem.metadataHash) {
             await fetchFirestoreMetadataForSelected(selectedGem.metadataHash, gemId);
           }
-  
+
           const minedGem = minedGems.find(gem => gem.id == gemId);
           if (minedGem && minedGem.metadataHash) {
             await fetchFirestoreMetadataMined(minedGem.metadataHash, gemId);
           }
         }
-  
+
         if (details.metadataHash) {
           await fetchFirestoreMetadataJewelry(details.metadataHash);
         }
-  
-        // Tranzakciókhoz tartozó dátumok lekérése
+
+        // Tranzakciókhoz tartozó dátumok és gáz részletek lekérése
         await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
-  
+        await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
-  
+
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
-  
+
   const renderJewelrySelectedGems = () => {
     const gemId = prevGemsArray[currentSelectedGemIndex];
     const selectedGem = selectedGems.find(gem => gem.id == gemId);
@@ -170,7 +191,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
 
         <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
         <p> {selectedGem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong> }</p>
-        
+
         {metadata && (
           <div>
             <p><strong>Gem Type:</strong> {metadata.gemType}</p>
@@ -182,11 +203,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
             <p><strong>Treatments:</strong> {metadata.treatments}</p>
           </div>
         )}
-            <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
+        <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
         <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
         <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
-        
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
       </div>
@@ -220,7 +241,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         )}
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
-        
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
       </div>
@@ -229,19 +250,20 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); 
+      const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
-  
+
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-  
+
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
-  
+          const gasDetails = transactionGasDetails[event.transactionHash];
+
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -253,6 +275,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
               {blockDates[event.blockNumber] && (
                 <>
                   <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <br />
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
                 </>
               )}
               <br />
@@ -317,8 +349,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const handleNextMinedGem = () => {
     setCurrentMinedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
   };
-
-  
 
   return (
     <div className="details-details-container card-background pt-5">
