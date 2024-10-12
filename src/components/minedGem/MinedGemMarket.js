@@ -64,7 +64,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
   };
 
   return (
-    <div className="gem-market">
+    <div className="gem-market card-background">
       <p>&nbsp;</p>
       <h2>Mined Gem market</h2>
       <div className="gem-cards">
