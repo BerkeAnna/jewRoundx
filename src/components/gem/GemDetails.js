@@ -9,9 +9,10 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
 
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
-  const [blockDates, setBlockDates] = useState({}); // A blokkok időbélyegeit tárolja
-  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
-  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
+  const [blockDates, setBlockDates] = useState({});
+  const [firestoreMetadataMined, setFirestoreMetadataMined] = useState(null);
+  const [firestoreMetadataSelected, setFirestoreMetadataSelected] = useState(null);
+  const [transactionGasDetails, setTransactionGasDetails] = useState({}); // Gáz adatok tárolása
 
   const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
@@ -51,6 +52,24 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     }
   };
 
+  // Gáz adatok lekérése a tranzakciókból
+  const fetchGasDetails = async (events) => {
+    const gasDetailsPromises = events.map(async (event) => {
+      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed;
+      const gasPrice = transaction.gasPrice;
+      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+    });
+    const gasDetailsResults = await Promise.all(gasDetailsPromises);
+    const gasDetailsMap = {};
+    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
+      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+    });
+    setTransactionGasDetails(gasDetailsMap);
+  };
+
   useEffect(() => {
     const fetchGemDetails = async () => {
       try {
@@ -72,14 +91,14 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
 
         // Firestore metaadatok lekérése, ha létezik metadataHash
         if (gemSelected && gemSelected.metadataHash) {
-          await fetchFirestoreMetadataSelected(gemSelected.metadataHash); // Firestore-ból kéri le
+          await fetchFirestoreMetadataSelected(gemSelected.metadataHash); 
         }
 
         if (minedGem && minedGem.metadataHash) {
-          await fetchFirestoreMetadataMined(minedGem.metadataHash); // Firestore-ból kéri le
+          await fetchFirestoreMetadataMined(minedGem.metadataHash); 
         }
 
-        // Tranzakciók blokkjainak dátumainak lekérése
+        // Tranzakciók blokkjainak dátumainak és gáz adatainak lekérése
         const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
         const blockDatePromises = allEvents.map(async (event) => {
           const date = await getTransactionDate(event.blockNumber);
@@ -92,6 +111,8 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
           blockDateMap[blockNumber] = date;
         });
         setBlockDates(blockDateMap);
+
+        await fetchGasDetails(allEvents);
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -182,6 +203,7 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, newOwner } = event.returnValues;
+          const gasDetails = transactionGasDetails[event.transactionHash];
 
           return (
             <li key={index} className="details-list-item">
@@ -194,6 +216,16 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
               {blockDates[event.blockNumber] && (
                 <>
                   <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <br />
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
                 </>
               )}
               <br />
