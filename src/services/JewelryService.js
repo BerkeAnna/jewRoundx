@@ -70,14 +70,14 @@ async buyJewelry(id, price, account) {
     throw new Error("No valid account address provided.");
   }
 
-  const gasLimit = 300000;  
+  /*const gasLimit = 300000;  
   const gasPrice = await this.web3.eth.getGasPrice();
-
+*/
   return this.contract.methods.buyJewelry(id).send({
     from: account,
-    value: price,  
+    value: price/*,  
     gas: gasLimit,
-    gasPrice: gasPrice
+    gasPrice: gasPrice*/
   });
 }
 

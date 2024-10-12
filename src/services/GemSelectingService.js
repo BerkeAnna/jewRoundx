@@ -71,15 +71,15 @@ class GemSelectingService {
     }
 
     // Gas limit és gas price hozzáadása a tranzakcióhoz
-    const gasLimit = 300000;  
+   /* const gasLimit = 300000;  
     const gasPrice = await this.web3.eth.getGasPrice(); 
-
+*/
     // Drágakő tulajdonjogának átruházása a megadott Ether értékkel
     return this.contract.methods.transferGemOwnership(id).send({ 
       from: account, 
-      value: price, 
+      value: price/*, 
       gas: gasLimit, 
-      gasPrice: gasPrice 
+      gasPrice: gasPrice */
     });
   }
 }

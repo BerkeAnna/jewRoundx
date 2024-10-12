@@ -10,6 +10,8 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
   const [blockDates, setBlockDates] = useState({}); // A blokkok időbélyegeit tárolja
   const [pinataMetadataMined, setpinataMetadataMined] = useState(null); // Metaadatok a bányászott kövekhez
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
+  const [transactionGasDetails, setTransactionGasDetails] = useState({});
+
 
   const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
@@ -54,55 +56,65 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return hash;
   };
 
-  useEffect(() => {
-    const fetchGemDetails = async () => {
-      try {
-        // Kiválasztott gem események lekérése
-        const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-        const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
-        setFilteredSelectedGemEvents(filteredSelectedGems);
+useEffect(() => {
+  const fetchGemDetails = async () => {
+    try {
+      // Kiválasztott gem események lekérése
+      const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
+        fromBlock: 0,
+        toBlock: 'latest'
+      });
+      const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
+      setFilteredSelectedGemEvents(filteredSelectedGems);
 
-        // Bányászott gem események lekérése
-        const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-        const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
-        setFilteredMinedGemEvents(filteredMinedGems);
+      // Bányászott gem események lekérése
+      const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
+        fromBlock: 0,
+        toBlock: 'latest'
+      });
+      const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
+      setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Pinata metaadatok lekérése, ha létezik metadataHash
-        if (gemSelected && gemSelected.metadataHash) {
-          await fetchPinataMetadataForSelected(gemSelected.metadataHash);
-        }
-        
-        if (minedGem && minedGem.metadataHash) {
-          await fetchPinataMetadataMined(minedGem.metadataHash);
-        }
-
-        // Tranzakciók blokkjainak dátumainak lekérése
-        const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
-        const blockDatePromises = allEvents.map(async (event) => {
-          const date = await getTransactionDate(event.blockNumber);
-          return { blockNumber: event.blockNumber, date };
-        });
-        const blockDateResults = await Promise.all(blockDatePromises);
-
-        const blockDateMap = {};
-        blockDateResults.forEach(({ blockNumber, date }) => {
-          blockDateMap[blockNumber] = date;
-        });
-        setBlockDates(blockDateMap);
-
-      } catch (error) {
-        console.error('Error fetching details:', error);
+      // Pinata metaadatok lekérése, ha létezik metadataHash
+      if (gemSelected && gemSelected.metadataHash) {
+        await fetchPinataMetadataForSelected(gemSelected.metadataHash);
       }
-    };
 
-    fetchGemDetails();
-  }, [gemId, gemstoneSelectingContract, gemstoneExtractionContract, gemSelected, minedGem]);
+      if (minedGem && minedGem.metadataHash) {
+        await fetchPinataMetadataMined(minedGem.metadataHash);
+      }
+
+      // Tranzakciók blokkjainak dátumainak és gázadatainak lekérése
+      const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
+      const gasDetailsPromises = allEvents.map(async (event) => {
+        const date = await getTransactionDate(event.blockNumber);
+        const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+        const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+        const gasUsed = receipt.gasUsed;
+        const gasPrice = transaction.gasPrice;
+        const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+        return { blockNumber: event.blockNumber, date, transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+      });
+
+      const gasDetailsResults = await Promise.all(gasDetailsPromises);
+
+      const blockDateMap = {};
+      const gasDetailsMap = {};
+      gasDetailsResults.forEach(({ blockNumber, date, transactionHash, gasUsed, gasPrice, gasCost }) => {
+        blockDateMap[blockNumber] = date;
+        gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+      });
+
+      setBlockDates(blockDateMap);
+      setTransactionGasDetails(gasDetailsMap);
+
+    } catch (error) {
+      console.error('Error fetching details:', error);
+    }
+  };
+
+  fetchGemDetails();
+}, [gemId, gemstoneSelectingContract, gemstoneExtractionContract, gemSelected, minedGem]);
 
   const renderSelectedGemDetails = () => {
     if (!gemSelected) {
@@ -176,16 +188,17 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
       const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
-
+  
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this gem.</p>;
     }
-
+  
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, newOwner } = event.returnValues;
-
+          const gasDetails = transactionGasDetails[event.transactionHash];
+  
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -200,6 +213,16 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
                 </>
               )}
               <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed} {/* a t.-hez felhasznál gáz mennyisége*/}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether {/*A felhasznált gáz egységenkénti ára ether*/}
+                  <br />
+                  <strong>Total Gas Cost/ used gas*gas price:</strong> {gasDetails.gasCost} Ether {/*teljes költség a t végrehajtásához etherben */}
+                </>
+              )}
+              <br />
               {owner && <div><strong>Owner:</strong> {owner}</div>}
               {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
               {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
@@ -209,6 +232,7 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
       </ul>
     );
   };
+  
 
   /* az összes adatot kiírja a tranzakciós adatokból
 const renderTransactionDetails = (events, gemId) => {
