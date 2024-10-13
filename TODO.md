@@ -609,3 +609,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         22:53
                 a gemmarketben 2 tranzdetails... a második mindent kijelez. Megírni az on-chaint úgy hogy csak ezekből az eventekből szerezzen adatot.
                 Ha a tranzakciós időnek, mérésnek az adott tranzakcióra menve jelenne meg?
+
+2024.10.13.
+
+        19:04
+                gemmarket képek hiányoznak
+                
