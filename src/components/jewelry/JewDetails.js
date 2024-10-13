@@ -257,6 +257,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
+      <div className="card-container pt-5">
+        {renderJewelry()}
+      </div>
 
       <div className="details-row pt-5">
         <span className="arrow" onClick={handlePrevGem}>
@@ -282,9 +285,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         </span>
       </div>
 
-      <div className="card-container pt-5">
-        {renderJewelry()}
-      </div>
+      
     </div>
   );
 }

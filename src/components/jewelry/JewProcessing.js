@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Details.css';
 
-function JewProcessing({ selectedGems, updateGem, markGemAsUsed }) {
+function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed }) {
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => {
-      if (gem.used === false) {
+      if (gem.used === false && gem.owner == account) {
         return (
           <tr key={key}>
             <td>{gem.id.toString()}</td>

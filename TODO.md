@@ -548,3 +548,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         19:28
                 Gázárakat mindenhol kiírja
                 dátumot is
+
+2024.10.13. 
+        17:10
+                túl sok a gem az add gemnél ++
