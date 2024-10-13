@@ -525,3 +525,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.10.07. 10:08
                 minedgmmarketen nem jelenik meg a kép
                 de a sima gem market jóó +
+
+2024.10.13.
+        18:26
+                ppolishgem event === forsale...
+                repairnál a 3. tranz hibára fut
