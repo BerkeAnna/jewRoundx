@@ -612,6 +612,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.10.13.
 
-        19:04
+        19:04y9
                 gemmarket képek hiányoznak
                 
