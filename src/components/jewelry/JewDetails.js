@@ -169,7 +169,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
-        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.owner}</p>
