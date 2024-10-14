@@ -29,6 +29,7 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
       const docRef = doc(firestore, 'minedGems', docId); // Lekérjük a Firestore dokumentumot
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
+        console.log('Mined Gem Metadata:', docSnap.data());
         setFirestoreMetadataMined(docSnap.data());
       } else {
         console.error('No such document for mined gem metadata');
@@ -130,10 +131,12 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return (
       <div className="card">
         <h2>Selected Gem Details</h2>
-        {firestoreMetadataSelected && firestoreMetadataSelected.fileUrl && (
+        {firestoreMetadataSelected && firestoreMetadataSelected.fileUrl ? (
           <a href={firestoreMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
             <img src={firestoreMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
           </a>
+        ) : (
+          <img src="/default-image.jpg" alt="Default Gem image" className="details-image" /> // Fallback kép
         )}
         <p><strong>ID:</strong> {gemSelected.id.toString()}</p>
         {firestoreMetadataSelected && (
@@ -165,10 +168,12 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return (
       <div className="card">
         <h2>Mined Gem Details</h2>
-        {firestoreMetadataMined && firestoreMetadataMined.fileUrl && (
+        {firestoreMetadataMined && firestoreMetadataMined.fileUrl ? (
           <a href={firestoreMetadataMined.fileUrl} target="_blank" rel="noopener noreferrer">
             <img src={firestoreMetadataMined.fileUrl} alt="Gem image" className="details-image" />
           </a>
+        ) : (
+          <img src="/default-image.jpg" alt="Default Gem image" className="details-image" /> // Fallback kép
         )}
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
         {firestoreMetadataMined && (
