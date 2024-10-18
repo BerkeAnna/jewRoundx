@@ -1,11 +1,9 @@
 pragma solidity >=0.4.21 <0.6.0;
 pragma experimental ABIEncoderV2;  // Új ABI kódoló engedélyezése
 
-
 interface IGemstoneExtraction {
     function minedGems(uint) external view returns (uint id, string memory gemType, uint weight, uint height, uint width, uint price, string memory miningLocation, uint miningYear, bool selected, string memory extractionMethod, address payable owner, bool purchased);
 }
-
 
 contract GemstoneSelecting {
     uint public selectedGemCount = 0;
@@ -13,13 +11,12 @@ contract GemstoneSelecting {
     IGemstoneExtraction gemstoneExtraction;
     mapping(uint => bool) public selectedMinedGems;
 
-
     struct GemDetails {
         string size;
         uint carat;
-        string colorGemType; // Combined color and gem type
+        string gemType; // Gem type separated from color
+        string color;   // Color of the gem
     }
-
 
     struct SelectedGem {
         uint id;
@@ -35,7 +32,6 @@ contract GemstoneSelecting {
         address payable gemCutter;
     }
 
-
     event GemSelecting(
         uint id,
         uint minedGemId,
@@ -48,7 +44,6 @@ contract GemstoneSelecting {
         address payable owner,
         address payable gemCutter
     );
-
 
     event PolishGem(
         uint id,
@@ -63,7 +58,6 @@ contract GemstoneSelecting {
         address payable gemCutter
     );
 
-
     event MarkGemAsUsed(
         uint id,
         uint minedGemId,
@@ -76,7 +70,6 @@ contract GemstoneSelecting {
         address payable owner,
         address payable gemCutter
     );
-
 
     event TransferGemOwnership(
         uint id,
@@ -91,18 +84,15 @@ contract GemstoneSelecting {
         address payable gemCutter
     );
 
-
     constructor(address _gemstoneExtractionAddress) public {
         gemstoneExtraction = IGemstoneExtraction(_gemstoneExtractionAddress);
     }
-
 
     function setPreviousGemId(uint gemId, uint previousGemId) public {
         SelectedGem storage gem = selectedGems[gemId];
         require(gem.id > 0, "Gem does not exist.");
         gem.previousGemId = previousGemId;
     }
-
 
     function gemSelecting(
         uint _minedGemId,
@@ -123,7 +113,6 @@ contract GemstoneSelecting {
         gem.owner = msg.sender;
         gem.gemCutter = msg.sender;
 
-
         emit GemSelecting(
             gem.id,
             gem.minedGemId,
@@ -138,11 +127,9 @@ contract GemstoneSelecting {
         );
     }
 
-
     function polishGem(uint _id) public payable {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
-
 
         emit PolishGem(
             _selectedGem.id,
@@ -158,13 +145,11 @@ contract GemstoneSelecting {
         );
     }
 
-
     function markGemAsUsed(uint _id) public {
         SelectedGem storage _selectedGem = selectedGems[_id];
         require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
         require(_selectedGem.used == false, "Gem already used");
         _selectedGem.used = true;
-
 
         emit MarkGemAsUsed(
             _id,
@@ -179,7 +164,6 @@ contract GemstoneSelecting {
             _selectedGem.gemCutter
         );
     }
-
 
     function markGemAsReplaced(uint _id) public {
         SelectedGem storage _selectedGem = selectedGems[_id];
@@ -187,7 +171,6 @@ contract GemstoneSelecting {
         require(_selectedGem.replaced == false, "Gem already replaced");
         _selectedGem.replaced = true;
 
-
         emit MarkGemAsUsed(
             _id,
             _selectedGem.minedGemId,
@@ -201,7 +184,6 @@ contract GemstoneSelecting {
             _selectedGem.gemCutter
         );
     }
-
 
     function getSelectedGemsCountByOwner(address _owner) public view returns (uint) {
         uint count = 0;
@@ -213,20 +195,15 @@ contract GemstoneSelecting {
         return count;
     }
 
-
     function transferGemOwnership(uint _id) public payable {
         SelectedGem storage _selectedGem = selectedGems[_id];
-        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Érvénytelen drágakő azonosító");
-        require(_selectedGem.owner != msg.sender, "Már a tiéd ez a drágakő");
-        require(msg.value >= _selectedGem.price, "Nincs elegendő pénz");
-
+        require(_selectedGem.id > 0 && _selectedGem.id <= selectedGemCount, "Invalid gem ID");
+        require(_selectedGem.owner != msg.sender, "You already own this gem");
+        require(msg.value >= _selectedGem.price, "Insufficient funds");
 
         _selectedGem.owner.transfer(msg.value);
-
-
         _selectedGem.owner = msg.sender;
         _selectedGem.forSale = false;
-
 
         emit TransferGemOwnership(
             _selectedGem.id,
@@ -241,7 +218,6 @@ contract GemstoneSelecting {
             _selectedGem.gemCutter
         );
     }
-
 
     function getSelectedGem(uint _id) public view returns (
         uint id,
@@ -271,23 +247,4 @@ contract GemstoneSelecting {
             gem.gemCutter
         );
     }
-
-
-    function getGemDetails(uint _id) public view returns (
-        uint id,
-        uint minedGemId,
-        uint previousGemId,
-        GemDetails memory details,
-        bool forSale,
-        string memory fileURL,
-        uint price,
-        bool used,
-        bool replaced,
-        address owner,
-        address gemCutter
-    ) {
-        return getSelectedGem(_id);
-    }
 }
-
-

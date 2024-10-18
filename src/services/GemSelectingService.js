@@ -20,19 +20,21 @@ class GemSelectingService {
 
   async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account) {
     if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
+      await this.loadContract(); // Betöltjük a szerződést
     }
-  
-    // Az ABI alapján a szerződés vár egy objektumot a GemDetails mezők alapján.
+
     const gemDetails = {
-      size,         // Stringként várja a size értéket
-      carat,        // Egész szám
-      colorGemType  // Stringként várja a colorGemType értéket
+      size,
+      carat,
+      gemType: colorGemType.split(',')[0].split(': ')[1],  // GemType
+      color: colorGemType.split(',')[1].split(': ')[1]      // Color
     };
-  
+
     return this.contract.methods.gemSelecting(minedGemId, gemDetails, fileUrl, price).send({ from: account });
   }
-  
+
+
+
 
   // Drágakő polírozása (polishGem)
   async polishGem(id, account) {
