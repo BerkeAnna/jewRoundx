@@ -1,16 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/Forms.css';
 
-function JewelryForm(props) {
+function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elérhető függvények
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
+  const [type, setType] = useState("Ring");
+
+  const handleMarkAsUsed = (gemId) => {
+    markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    handleMarkAsUsed(id);  // Meghívjuk a markGemAsUsed-et
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
     
@@ -45,7 +51,7 @@ function JewelryForm(props) {
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
     const physicalDetails = `Metal: ${metal} - ${size}`; 
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const price = window.web3.utils.toWei(formData.get('price').toString(), 'Ether');
     const sale = false;
 
     if (!name) {
@@ -53,7 +59,7 @@ function JewelryForm(props) {
       return; 
     }
 
-    props.jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
+    jewelryMaking(name, gemId, physicalDetails, sale, price, fileUrl);
 
   };
 
@@ -66,7 +72,12 @@ function JewelryForm(props) {
             <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
           </div>
           <div className="form-group">
-            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
+            <select name="type" value={type} onChange={(e) => setType(e.target.value)} required>
+              <option value="Ring">Ring</option>
+              <option value="Bracelet">Bracelet</option>
+              <option value="Earrings">Earrings</option>
+              <option value="Necklace">Necklace</option>
+            </select>
           </div>
           <div className="form-group">
             <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
@@ -79,6 +90,9 @@ function JewelryForm(props) {
           </div>
           <div className="form-group">
             <input id="metal" name="metal" type="text" className="form-control" placeholder="metal" required />
+          </div>
+          <div className="form-group">
+            <input id="price" name="price" type="text" className="form-control" placeholder="price" required />
           </div>
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />

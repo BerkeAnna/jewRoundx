@@ -19,7 +19,7 @@ class GemstoneExtractionService {
 
   async gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, purchased, account) {
     if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
+      await this.loadContract(); // Betöltjük a szerződést
     }
     return this.contract.methods.gemMining(
       gemType,
@@ -31,6 +31,7 @@ class GemstoneExtractionService {
       purchased
     ).send({ from: account });
   }
+  
 
   
   async purchaseGem(id,  account) {

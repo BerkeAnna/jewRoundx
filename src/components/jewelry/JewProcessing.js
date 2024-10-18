@@ -1,38 +1,41 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../styles/Details.css'
+import '../../styles/Details.css';
 
-function JewProcessing({ selectedGems, updateGem, markGemAsUsed  }) {
+function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const handleRepair = (gemId) => {
     markGemAsUsed(gemId);
     updateGem(parseInt(id), gemId);
-    navigate(`/jew-details/${id}`);
+    navigate(`/jewelry-details/${id}`);
   };
 
   const renderSelectedGems = () => {
-    return selectedGems.map((gem, key) => (
-      gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()} ct</td>
-        <td>{gem.colorGemType}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn">
-            Select
-          </button>
-        </td>
-      </tr>
-      )
-    ));
+    return selectedGems.map((gem, key) => {
+      if (gem.used === false && gem.owner == account) {
+        return (
+          <tr key={key}>
+            <td>{gem.id.toString()}</td>
+            <td>{gem.size}</td>
+            <td>{gem.carat.toString()} ct</td>
+            <td>{gem.colorGemType}</td>
+            <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+            <td>
+              <button onClick={() => handleRepair(gem.id)} className="btn">
+                Select
+              </button>
+            </td>
+          </tr>
+        );
+      }
+      return null;
+    });
   };
 
   return (
-    <div className="details-details-container pt-5" >
+    <div id="tables" className="pt-5">
       <h1>Processing Jewelry</h1>
       <table className="table">
         <thead>

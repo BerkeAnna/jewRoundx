@@ -9,6 +9,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
+  const [transactionGasDetails, setTransactionGasDetails] = useState({});
 
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
@@ -16,6 +17,23 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   const getTransactionDate = async (web3, blockNumber) => {
     const block = await web3.eth.getBlock(blockNumber);
     return new Date(block.timestamp * 1000); 
+  };
+
+  const fetchGasDetails = async (events) => {
+    const gasDetailsPromises = events.map(async (event) => {
+      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed;
+      const gasPrice = transaction.gasPrice;
+      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+    });
+    const gasDetailsResults = await Promise.all(gasDetailsPromises);
+    const gasDetailsMap = {};
+    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
+      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+    });
+    setTransactionGasDetails(gasDetailsMap);
   };
 
   useEffect(() => {
@@ -44,6 +62,8 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
         }
         setBlockDates(blockDatesMap);
+
+        await fetchGasDetails(allEvents);
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -96,7 +116,6 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
-        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.miner}</p>
@@ -110,7 +129,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id); 
+      const eventId = parseInt(event.returnValues.id);
       return eventId === parseInt(gemId);
     });
 
@@ -120,31 +139,42 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
 
     return (
       <ul className="no-bullet-list">
-      {gemEvents.map((event, index) => {
-        const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
+        {gemEvents.map((event, index) => {
+          const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
+          const gasDetails = transactionGasDetails[event.transactionHash];
 
-        return (
-          <li key={index} className="details-list-item">
-            <strong>Event:</strong> {event.event}
-            <br />
-            <strong>Transaction Hash:</strong> {event.transactionHash}
-            <br />
-            <strong>Block Number:</strong> {event.blockNumber}
-            <br />
-            {blockDates[event.blockNumber] && (
-              <>
-                <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
-              </>
-            )}
-            <br />
-            {owner && <div><strong>Owner:</strong> {owner}</div>}
-            {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
-            {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
-            {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
-          </li>
-        );
-      })}
-    </ul>
+          return (
+            <li key={index} className="details-list-item">
+              <strong>Event:</strong> {event.event}
+              <br />
+              <strong>Transaction Hash:</strong> {event.transactionHash}
+              <br />
+              <strong>Block Number:</strong> {event.blockNumber}
+              <br />
+              {blockDates[event.blockNumber] && (
+                <>
+                  <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
+                </>
+              )}
+              <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <br />
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
+                </>
+              )}
+              <br />
+              {owner && <div><strong>Owner:</strong> {owner}</div>}
+              {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
+              {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
+              {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
+            </li>
+          );
+        })}
+      </ul>
     );
   };
 

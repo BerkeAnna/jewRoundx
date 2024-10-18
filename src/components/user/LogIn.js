@@ -25,7 +25,7 @@ const LogIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/jew-details/${jewelryId}`);
+    navigate(`/jewelry-details/${jewelryId}`);
   };
 
   const handleChange = (e) => {
@@ -257,6 +257,7 @@ const LogIn = () => {
                     <option value="Miner">Miner</option>
                     <option value="Gem Cutter">Gem Cutter</option>
                     <option value="Jeweler">Jeweler</option>
+                    <option value="Jewelry Owner">Jewelry owner</option>
                   </select>
                 </div>
                 <div className='dashboardButton'>

@@ -13,8 +13,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
   const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
-  const [allTransactions, setAllTransactions] = useState([]); // New state for all transactions
+  const [allTransactions, setAllTransactions] = useState([]);
   const [blockDates, setBlockDates] = useState({});
+  const [transactionGasDetails, setTransactionGasDetails] = useState({});
   const [currentGemIndex, setCurrentGemIndex] = useState(0);
 
   const getTransactionDate = async (web3, blockNumber) => {
@@ -22,27 +23,22 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     return new Date(block.timestamp * 1000); 
   };
 
-  // Function to fetch all transactions from all contracts
-  const fetchJewTransactions = async () => {
-    try {
-      const allJewelryEvents = await jewelryContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
-      const allEvents = [...allJewelryEvents];
-      setAllTransactions(allEvents);
-      
-      // Ensure to fetch dates for each block of the events
-      const blockNumbers = allEvents.map(event => event.blockNumber);
-      const uniqueBlockNumbers = [...new Set(blockNumbers)];
-  
-      const blockDatesMap = {};
-      for (let blockNumber of uniqueBlockNumbers) {
-        blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
-      }
-      setBlockDates(blockDatesMap);
-    } catch (error) {
-      console.error('Error fetching all transactions:', error);
-    }
+  const fetchGasDetails = async (events) => {
+    const gasDetailsPromises = events.map(async (event) => {
+      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
+      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed;
+      const gasPrice = transaction.gasPrice;
+      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+    });
+    const gasDetailsResults = await Promise.all(gasDetailsPromises);
+    const gasDetailsMap = {};
+    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
+      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+    });
+    setTransactionGasDetails(gasDetailsMap);
   };
-  
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -78,8 +74,19 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
-        // Fetch all transactions once
-        fetchJewTransactions();
+        const allEvents = [...jewelryEvents, ...selectedGemEvents, ...minedGemEvents];
+
+        // Fetch block dates and gas details
+        const blockNumbers = allEvents.map(event => event.blockNumber);
+        const uniqueBlockNumbers = [...new Set(blockNumbers)];
+
+        const blockDatesMap = {};
+        for (let blockNumber of uniqueBlockNumbers) {
+          blockDatesMap[blockNumber] = await getTransactionDate(window.web3, blockNumber);
+        }
+        setBlockDates(blockDatesMap);
+
+        await fetchGasDetails(allEvents);
       } catch (error) {
         console.error('Error fetching details:', error);
       }
@@ -88,95 +95,56 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     fetchJewelryDetails();
   }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract]);
 
-  // Render all transactions in a card
-const renderAllTransactions = () => {
-  if (allTransactions.length === 0) {
-    return <p>No transactions found.</p>;
-  }
-
-  // Szűrjük az összes tranzakciót az adott ékszerhez (jewelryId vagy gemId)
-  const filteredTransactions = allTransactions.filter(event => {
-    const eventId = event.returnValues.id || event.returnValues.jewelryId;
-    return parseInt(eventId) === parseInt(gemId); // Szűrés az adott gemId alapján
-  });
-
-  if (filteredTransactions.length === 0) {
-    return <p>No transactions for this jewelry found.</p>;
-  }
-
-  return (
-    <div className="pt-5">
-      <ul className="details-list">
-        {filteredTransactions.map((event, index) => {
-          
-          const { owner, gemCutter, jeweler, newOwner, newGemId } = event.returnValues;
-          const { event: eventType, returnValues, transactionHash, blockNumber } = event;
-          const transactionDate = blockDates[blockNumber] ? blockDates[blockNumber].toLocaleString() : 'Loading...';
-          return (
-            <li key={index} className="details-list-item">
-              
-              <strong>Event:</strong> {eventType}
-              <br />
-              <strong>Transaction Hash:</strong> {transactionHash}
-              <br />
-              <strong>Block Number:</strong> {blockNumber}
-              <br />
-              <strong>Transaction Date:</strong> {transactionDate}
-              <br />
-              
-              {owner && <div><strong>Owner:</strong> {owner}</div>}
-              {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>} {/* Added for GemUpdated */}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
-
-
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      // Check if the event has an ID (for jewelry) or is a GemUpdated event related to the given gem
-      const eventId = parseInt(event.returnValues.id || event.returnValues.jewelryId); 
+      const eventId = parseInt(event.returnValues.id || event.returnValues.jewelryId);
       return eventId === parseInt(gemId);
     });
-  
+
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-  
+
     return (
       <ul className="details-list">
         {gemEvents.map((event, index) => {
           const { owner, gemCutter, jeweler, newOwner, newGemId } = event.returnValues;
-          const blockNumber = event.blockNumber;
-          const transactionDate = blockDates[blockNumber]
-            ? blockDates[blockNumber].toLocaleString()
+          const gasDetails = transactionGasDetails[event.transactionHash];
+          const transactionDate = blockDates[event.blockNumber]
+            ? blockDates[event.blockNumber].toLocaleString()
             : 'Loading...';
-  
+
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
               <br />
               <strong>Transaction Hash:</strong> {event.transactionHash}
               <br />
-              <strong>Block Number:</strong> {blockNumber}
+              <strong>Block Number:</strong> {event.blockNumber}
               <br />
               <strong>Transaction Date:</strong> {transactionDate}
               <br />
+              {gasDetails && (
+                <>
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                  <br />
+                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <br />
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
+                  <br />
+                </>
+              )}
               {owner && <div><strong>Owner:</strong> {owner}</div>}
               {gemCutter && <div><strong>Gem Cutter:</strong> {gemCutter}</div>}
               {jeweler && <div><strong>Jeweler:</strong> {jeweler}</div>}
               {newOwner && <div><strong>New Owner:</strong> {newOwner}</div>}
-              {newGemId && <div><strong>New Gem ID:</strong> {newGemId}</div>} {/* Added for GemUpdated */}
+              {newGemId && <div><strong>New Gem ID:</strong> {newGemId}</div>}
             </li>
           );
         })}
       </ul>
     );
   };
-  
 
   const renderMinedGems = () => {
     const filteredMinedGems = minedGems
@@ -201,7 +169,6 @@ const renderAllTransactions = () => {
         <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
-        <p><strong>Extraction Method:</strong> {gem.extractionMethod}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.owner}</p>
@@ -248,20 +215,16 @@ const renderAllTransactions = () => {
       </div>
     ));
   };
- 
-
-  const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
-  const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
 
   const handlePrevGem = () => {
-    const maxIndex = Math.min(filteredMinedGems.length, filteredSelectedGems.length) - 1;
+    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
     setCurrentGemIndex(prev => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const handleNextGem = () => {
-    const maxIndex = Math.min(filteredMinedGems.length, filteredSelectedGems.length) - 1;
+    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
     setCurrentGemIndex(prev => (prev === maxIndex ? 0 : prev + 1));
-  }
+  };
 
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
@@ -282,27 +245,28 @@ const renderAllTransactions = () => {
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
-  
+
         <hr />
         <h3>Transaction Details</h3>
-        {/* Itt jelenítjük meg a Transactions for this Jewelry-t */}
-        {renderAllTransactions()}
+        {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
       </div>
     ));
   };
-  
 
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
+      <div className="card-container pt-5">
+        {renderJewelry()}
+      </div>
 
       <div className="details-row pt-5">
         <span className="arrow" onClick={handlePrevGem}>
           ←
         </span>
         <div className="card-container">
-        {renderMinedGems()[currentGemIndex]} 
-      </div>
+          {renderMinedGems()[currentGemIndex]} 
+        </div>
         <span className="arrow" onClick={handleNextGem}>
           → 
         </span>
@@ -320,14 +284,7 @@ const renderAllTransactions = () => {
         </span>
       </div>
 
-      <div className="card-container pt-5">
-        {renderJewelry()}
-      </div>
-
-     {/*  
-      <div className="card-container pt-5">
-        {renderAllTransactions()}
-      </div>*/}
+      
     </div>
   );
 }
