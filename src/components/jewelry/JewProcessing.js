@@ -18,9 +18,10 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
         return (
           <tr key={key}>
             <td>{gem.id.toString()}</td>
-            <td>{gem.size}</td>
-            <td>{gem.carat.toString()} ct</td>
-            <td>{gem.colorGemType}</td>
+            <td>{gem.details.gemType}</td>
+            <td>{gem.details.size.toString()}</td>
+            <td>{gem.details.carat.toString()} ct</td>
+            <td>{gem.details.color.toString()}</td>
             <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
@@ -41,6 +42,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Type</th>
             <th>Size</th>
             <th>Carat</th>
             <th>Color and type</th>

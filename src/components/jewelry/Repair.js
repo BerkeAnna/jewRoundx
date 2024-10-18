@@ -38,7 +38,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => (
-      gem.used === false && (
+      gem.used === false && gem.replaced === false && ( // Ellenőrzi, hogy a replaced is false legyen
       <tr key={key}>
         <td>{gem.id.toString()}</td>
         <td>{gem.size.toString()}</td>
@@ -54,10 +54,12 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
       )
     ));
   };
+  
   const renderSelectedOwnedGem = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredSelectedGems.map((gem, key) => (
+      gem.replaced === false && ( 
       <div key={key} className="card">
         <h2>Selected Gem Details</h2>
         {gem.fileURL && (
@@ -78,6 +80,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <p><strong>Owner:</strong> {gem.owner}</p>
         <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
       </div>
+      )
     ));
 };
 

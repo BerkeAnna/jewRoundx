@@ -12,6 +12,7 @@ function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, 
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsUsed(newGemId);
     replaceGem(id, oldGemId, newGemId);
+    markGemAsReplaced(oldGemId);
     navigate(`/jewelry-details/${id}`);
 
 };
