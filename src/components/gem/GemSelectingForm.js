@@ -14,30 +14,30 @@ function GemSelectingForm(props, markGemAsSelected) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     handleMarkAsSelected(id);
-
+  
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
-
+  
     let fileUrl = "";
     if (file) {
       try {
         const fileData = new FormData();
         fileData.append("file", file);
-
+  
         const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', fileData, {
           headers: {
             'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
             'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
           },
         });
-
-          fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+  
+        fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
       } catch (err) {
         console.error("Error uploading file: ", err);
         return;
       }
     }
-
+  
     // A form mezők beállítása
     const color = formData.get('color').toString();
     const gemType = formData.get('gemType').toString();
@@ -47,23 +47,24 @@ function GemSelectingForm(props, markGemAsSelected) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width} mm`;
-    const carat = formData.get('carat').toString();
-
+    const carat = parseInt(formData.get('carat'), 10);  // carat konvertálása egész számmá
+  
     if (!size) {
       console.error("Size is required.");
       return;
     }
-
+  
     const minedGemId = parseInt(id, 10);
-
+  
     try {
+      // GemSelectingService hívása megfelelő paraméterekkel
       await props.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price);
       navigate('/loggedIn');
     } catch (error) {
       console.error("Error in gemSelecting: ", error);
     }
   };
-
+  
   return (
     <div className="card-container card-background">
       <div className="form-card">

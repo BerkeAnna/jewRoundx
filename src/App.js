@@ -294,19 +294,24 @@ async markGemAsSelected(id) {
 async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price) {
   try {
     this.setState({ loading: true });
-    const account = this.state.account;
+    const account = this.state.account;  // Ellenőrizd, hogy az `account` megfelelően van beállítva
     
-    // GemSelectingService-től hívjuk a gemSelecting fv-t
+    if (!account) {
+      throw new Error("Account is not available.");
+    }
+
+    // GemSelectingService-től hívjuk a gemSelecting függvényt
     await GemSelectingService.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account);
     
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 
-    this.setState({ loading: false }); 
+    this.setState({ loading: false });
   } catch (error) {
     console.error("Error in gemSelecting: ", error);
-    this.setState({ loading: false }); 
+    this.setState({ loading: false });
   }
 }
+
 
 async polishGem(id) {
 

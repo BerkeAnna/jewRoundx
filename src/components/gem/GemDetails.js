@@ -85,9 +85,9 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           </div>
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> {gem.size.toString()}</p>
-        <p><strong>Carat:</strong> {gem.carat.toString()}</p>
-        <p><strong>Details:</strong> {gem.colorGemType}</p>
+        <p><strong>Size:</strong> {gem.details.size.toString()}</p>
+        <p><strong>Carat:</strong> {gem.details.carat.toString()}</p>
+        <p><strong>Color and Type:</strong> {gem.details.colorGemType.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
