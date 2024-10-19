@@ -508,3 +508,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 Polygon 
                 Pl. IPFS és hash-ek
                 lehet egy dapp egyszerre off és onchain is?
+
+2024.10.19.
+        14:20
+                a gemhez kell aaz a maradék ptt értékek? változók?
+                
