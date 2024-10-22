@@ -18744,10 +18744,16 @@
       "links": {},
       "address": "0xD2E379a771a98208d6785F613A163813823Cc508",
       "transactionHash": "0x502dd54f45d63b17b05c334928681703e29006a3b41b087ee23d4f5168f9e03e"
+    },
+    "1729541587718": {
+      "events": {},
+      "links": {},
+      "address": "0x3A9ce3f366f8d083e4945DB802bcDE9229926dB5",
+      "transactionHash": "0x0759559ef8841a0397e0b90be208c6ca44ebf2956048af0fe38813ebe440d014"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-10-13T16:55:47.497Z",
+  "updatedAt": "2024-10-21T20:14:19.635Z",
   "devdoc": {
     "methods": {}
   },
