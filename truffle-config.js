@@ -7,7 +7,7 @@ module.exports = {
       //port: 7545,
       port: 7545,
       network_id: "*",
-      from: "0x919cDDD1BAadEA2CC16d3986D49a63C2a518B4F1"
+      from: "0x919cDDD1BAadEA2CC16d3986D49a63C2a518B4F1" //eredetileg az elsot választja a listából, de mivel nincs elég ethere, ezért másikat rögzítettem
     },
     loc_development_development: {
       network_id: "*",
