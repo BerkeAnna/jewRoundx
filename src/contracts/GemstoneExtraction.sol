@@ -16,7 +16,8 @@ contract GemstoneExtraction {
         address payable owner;
         string metadataHash; 
         bool purchased; 
-        bool selected; 
+        bool selected;
+        string fileURL;
     }
 
     event GemMining(
@@ -26,7 +27,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event GemProcessing(
@@ -36,7 +38,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event GemPurchased(
@@ -46,7 +49,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event GemSelected(
@@ -56,7 +60,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event MarkNewOwner(
@@ -66,7 +71,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event MarkGemAsSelected(
@@ -76,7 +82,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     event TransferGemOwnership(
@@ -86,7 +93,8 @@ contract GemstoneExtraction {
         address payable miner,
         address payable owner,
         string metadataHash,
-        bool purchased
+        bool purchased,
+        string fileURL
     );
 
     constructor() public {
@@ -97,7 +105,8 @@ contract GemstoneExtraction {
         string memory _gemType,
         uint _price,
         string memory _metadataHash, 
-        bool _purchased
+        bool _purchased,
+        string memory _fileURL
     ) public {
         require(bytes(_gemType).length > 0, "Gem type cannot be empty");
         require(_price > 0, "Price must be greater than 0");
@@ -112,10 +121,11 @@ contract GemstoneExtraction {
             msg.sender, 
             _metadataHash, 
             _purchased,
-            false // kezdetben nem választották ki
+            false, // kezdetben nem választották ki
+            _fileURL
         );
 
-        emit GemMining(minedGemCount, _gemType, _price, msg.sender, msg.sender, _metadataHash, _purchased);
+        emit GemMining(minedGemCount, _gemType, _price, msg.sender, msg.sender, _metadataHash, _purchased, _fileURL);
     }
 
     function purchaseGem(uint _id) public payable {
@@ -126,7 +136,7 @@ contract GemstoneExtraction {
         _minedGem.owner = msg.sender; 
         _minedGem.purchased = true;
 
-        emit GemPurchased(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, msg.sender, _minedGem.metadataHash, _minedGem.purchased);
+        emit GemPurchased(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, msg.sender, _minedGem.metadataHash, _minedGem.purchased, _minedGem.fileURL);
     }
 
     function processingGem(uint _id) public {
@@ -134,7 +144,7 @@ contract GemstoneExtraction {
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
         require(_minedGem.purchased == true, "Gem must be purchased before processing");
 
-        emit GemProcessing(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, _minedGem.owner, _minedGem.metadataHash, _minedGem.purchased);
+        emit GemProcessing(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, _minedGem.owner, _minedGem.metadataHash, _minedGem.purchased, _minedGem.fileURL);
     }
 
     function markNewOwner(uint _id) public payable {
@@ -156,7 +166,8 @@ contract GemstoneExtraction {
             _minedGem.miner, 
             _minedGem.owner, 
             _minedGem.metadataHash, 
-            _minedGem.purchased
+            _minedGem.purchased,
+            _minedGem.fileURL
         );
     }
 
@@ -176,7 +187,8 @@ contract GemstoneExtraction {
             _minedGem.miner, 
             _minedGem.owner, 
             _minedGem.metadataHash, 
-            _minedGem.purchased
+            _minedGem.purchased,
+            _minedGem.fileURL
         );
     }
 

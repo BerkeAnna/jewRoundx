@@ -95,7 +95,7 @@ function GemSelectingForm(props) {
 
     try {
       console.log("Submitting gem selection...");
-      await props.gemSelecting(minedGemId, metadataUrl, price);
+      await props.gemSelecting(minedGemId, metadataUrl, price, fileUrl);
       console.log("Gem selected successfully.");
       navigate('/loggedIn');
     } catch (error) {

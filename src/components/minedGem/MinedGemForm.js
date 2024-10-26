@@ -78,7 +78,7 @@ function MinedGemForm(props) {
     }
 
     try {
-      await props.gemMining(gemType, price, metadataUrl, false); // On-chain csak az IPFS hash tárolása
+      await props.gemMining(gemType, price, metadataUrl, false, fileUrl); // On-chain csak az IPFS hash tárolása
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }

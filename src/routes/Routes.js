@@ -94,6 +94,7 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
               minedGems={state.minedGems} 
               account={state.account} 
               markNewOwner={markNewOwner} 
+              gemstoneExtractionContract={state.gemstroneExtraction}
             />
           </ProtectedRoute>
         }

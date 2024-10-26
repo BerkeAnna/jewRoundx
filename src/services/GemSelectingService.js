@@ -19,12 +19,12 @@ class GemSelectingService {
   }
 
   // Drágakő kiválasztása (gemSelecting) - Az off-chain hash, minedGemId és az ár elküldése
-  async gemSelecting(minedGemId, metadataHash, price, account) {
+  async gemSelecting(minedGemId, metadataHash, price, account, fileUrl) {
     if (!this.contract) {
       await this.loadContract(); // betöltjük a szerződést
     }
     
-    return this.contract.methods.gemSelecting(minedGemId, metadataHash, price).send({
+    return this.contract.methods.gemSelecting(minedGemId, metadataHash, price, fileUrl).send({
       from: account
     });
   }

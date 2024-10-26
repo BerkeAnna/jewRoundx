@@ -17,7 +17,7 @@ class GemstoneExtractionService {
     }
   }
 
-  async gemMining(gemType, price, metadataUrl, purchased, account) {
+  async gemMining(gemType, price, metadataUrl, purchased, account, fileUrl) {
     if (!this.contract) {
       await this.loadContract(); // Betöltjük a szerződést
     }
@@ -25,7 +25,8 @@ class GemstoneExtractionService {
       gemType,
       price,
       metadataUrl,
-      purchased
+      purchased,
+      fileUrl
     ).send({ from: account });
   }
   

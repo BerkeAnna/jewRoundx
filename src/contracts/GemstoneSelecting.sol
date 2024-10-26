@@ -21,6 +21,7 @@ contract GemstoneSelecting {
         bool replaced; 
         address payable owner;
         address payable gemCutter;
+        string fileURL;
     }
 
     event GemSelecting(
@@ -32,10 +33,11 @@ contract GemstoneSelecting {
         bool used,
         bool replaced,
         address payable owner,
-        address payable gemCutter
+        address payable gemCutter,
+        string fileURL
     );
 
-    event PolishGem(
+    event GemToMarket(
         uint id,
         uint minedGemId,
         string metadataHash, 
@@ -44,7 +46,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address payable owner,
-        address payable gemCutter
+        address payable gemCutter,
+        string fileURL
     );
 
     event MarkGemAsUsed(
@@ -56,7 +59,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address payable owner,
-        address payable gemCutter
+        address payable gemCutter,
+        string fileURL
     );
 
      event MarkGemAsReplaced(
@@ -68,7 +72,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address payable owner,
-        address payable gemCutter
+        address payable gemCutter,
+        string fileURL
     );
 
     event TransferGemOwnership(
@@ -80,7 +85,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address payable owner,
-        address payable gemCutter
+        address payable gemCutter,
+        string fileURL
     );
 
     constructor(address _gemstoneExtractionAddress) public {
@@ -101,7 +107,8 @@ contract GemstoneSelecting {
     function gemSelecting(
         uint _minedGemId,
         string memory _metadataHash, 
-        uint _price
+        uint _price,
+        string memory _fileURL
     ) public {
         selectedGemCount++;
         SelectedGem storage gem = selectedGems[_minedGemId];
@@ -114,6 +121,7 @@ contract GemstoneSelecting {
         gem.replaced = false; 
         gem.owner = msg.sender;
         gem.gemCutter = msg.sender;
+        gem.fileURL = _fileURL;
 
         emit GemSelecting(
             gem.id,
@@ -124,7 +132,8 @@ contract GemstoneSelecting {
             gem.used,
             gem.replaced,
             gem.owner,
-            gem.gemCutter
+            gem.gemCutter,
+            gem.fileURL
         );
     }
 
@@ -132,7 +141,7 @@ contract GemstoneSelecting {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
 
-        emit PolishGem(
+        emit GemToMarket(
             _selectedGem.id,
             _selectedGem.minedGemId,
             _selectedGem.metadataHash, 
@@ -141,7 +150,8 @@ contract GemstoneSelecting {
             _selectedGem.used,
             _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter
+            _selectedGem.gemCutter,
+            _selectedGem.fileURL
         );
     }
 
@@ -160,7 +170,8 @@ contract GemstoneSelecting {
             _selectedGem.used,
             _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter
+            _selectedGem.gemCutter,
+            _selectedGem.fileURL
         );
     }
 
@@ -193,7 +204,8 @@ contract GemstoneSelecting {
             _selectedGem.used,
             _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter
+            _selectedGem.gemCutter,
+            _selectedGem.fileURL
         );
     }
 
@@ -208,7 +220,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address owner,
-        address gemCutter
+        address gemCutter,
+        string memory fileURL
     ) {
         SelectedGem storage gem = selectedGems[_id];
         return (
@@ -221,7 +234,8 @@ contract GemstoneSelecting {
             gem.used,
             gem.replaced, 
             gem.owner,
-            gem.gemCutter
+            gem.gemCutter,
+            gem.fileURL
         );
     }
 
@@ -235,7 +249,8 @@ contract GemstoneSelecting {
         bool used,
         bool replaced, 
         address owner,
-        address gemCutter
+        address gemCutter,
+        string memory fileURL
     ) {
         return getSelectedGem(_id);
     }
@@ -255,7 +270,8 @@ contract GemstoneSelecting {
             _selectedGem.used,
             _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter
+            _selectedGem.gemCutter,
+            _selectedGem.fileURL
         );
     }
 }
