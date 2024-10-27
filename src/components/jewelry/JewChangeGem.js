@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers'; // ethers.js importálása
 
-function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced }) {
+function JewChangeGem({ selectedGems, markGemAsUsed, jewelryContract, account, replaceGem, markGemAsReplaced }) {
   const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-  
-  
-  const handleRepair = (newGemId) => {
-    
+
+  const handleRepair = async (newGemId) => {
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
-    markGemAsUsed(newGemId);
-    replaceGem(id, oldGemId, newGemId);
-    markGemAsReplaced(oldGemId);
-   // updateGem(oldGemId, newGemId);
+    await markGemAsUsed(newGemId);
+    await replaceGem(id, oldGemId, newGemId);
+    await markGemAsReplaced(oldGemId);
     navigate(`/jewelry-details/${id}`);
+  };
 
-};
-  
-
-const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
+  const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
-        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const details = await jewelryContract.getJewelryDetails(id);
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
         setPrevGemsArray(gemIdsAsInt);
       } catch (error) {
@@ -38,18 +34,18 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
   const renderSelectedGems = () => {
     return ownedSelectedGems.map((gem, key) => (
       gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
-            Select
-          </button>
-          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
-            Details
-          </button>
-        </td>
-      </tr>
+        <tr key={key}>
+          <td>{gem.id.toString()}</td>
+          <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td> {/* ethers.js konverzió */}
+          <td>
+            <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+              Select
+            </button>
+            <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+              Details
+            </button>
+          </td>
+        </tr>
       )
     ));
   };

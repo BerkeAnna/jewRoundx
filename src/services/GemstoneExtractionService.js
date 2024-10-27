@@ -1,83 +1,55 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
 import GemstoneExtraction from '../abis/GemstoneExtraction.json';
 
 class GemstoneExtractionService {
   constructor() {
-    this.web3 = new Web3(window.ethereum);
-    this.contract = null; 
+    this.provider = new ethers.providers.Web3Provider(window.ethereum);
+    this.signer = this.provider.getSigner();
+    this.contract = null;
   }
 
   async loadContract() {
-    const networkId = await this.web3.eth.net.getId();
+    const networkId = (await this.provider.getNetwork()).chainId;
     const networkData = GemstoneExtraction.networks[networkId];
     if (networkData) {
-      this.contract = new this.web3.eth.Contract(GemstoneExtraction.abi, networkData.address);
+      this.contract = new ethers.Contract(networkData.address, GemstoneExtraction.abi, this.signer);
     } else {
       throw new Error('Gemstone contract not deployed to detected network.');
     }
   }
 
-  async gemMining(gemType, price, metadataUrl, purchased, account, fileUrl) {
-    if (!this.contract) {
-      await this.loadContract(); // Betöltjük a szerződést
-    }
-    return this.contract.methods.gemMining(
+  async gemMining(gemType, price, metadataUrl, purchased, fileUrl) {
+    if (!this.contract) await this.loadContract();
+    return this.contract.gemMining(
       gemType,
-      price,
+      ethers.utils.parseEther(price.toString()),
       metadataUrl,
       purchased,
       fileUrl
-    ).send({ from: account });
-  }
-  
-
-  
-  async purchaseGem(id,  account) {
-    if (!this.contract) {
-       await this.loadContract(); // betöltjük a szerződést
-    }
- 
-    return this.contract.methods.purchaseGem(id).send({
-       from: account
-    });
- }
- 
-  async processingGem(id, price, account) {
-    if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
-   }
-   const priceInEther = window.web3.utils.fromWei(price.toString(), 'ether');
-    this.setState({ loading: true });
-    return this.contract.methods.processingGem(id).send({
-      from: account,
-      value: priceInEther 
-   });
+    );
   }
 
-  async markNewOwner(id, price, account) {
-    if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
-    }
-    
-    const priceInEther = window.web3.utils.fromWei(price.toString(), 'ether');
-    console.log("priceInEther " + priceInEther);
-    
-    return this.contract.methods.markNewOwner(id).send({
-      from: account,
-      value: price
-    });
+  async purchaseGem(id) {
+    if (!this.contract) await this.loadContract();
+    return this.contract.purchaseGem(id);
   }
-  
-  async markGemAsSelected(id, account) {
-    if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
-    }
-  
-    return this.contract.methods.markGemAsSelected(id).send({
-      from: account
-    });
+
+  async processingGem(id, price) {
+    if (!this.contract) await this.loadContract();
+    const priceInEther = ethers.utils.parseEther(price.toString());
+    return this.contract.processingGem(id, { value: priceInEther });
   }
-  
+
+  async markNewOwner(id, price) {
+    if (!this.contract) await this.loadContract();
+    const priceInEther = ethers.utils.parseEther(price.toString());
+    return this.contract.markNewOwner(id, { value: priceInEther });
+  }
+
+  async markGemAsSelected(id) {
+    if (!this.contract) await this.loadContract();
+    return this.contract.markGemAsSelected(id);
+  }
 }
 
 export default new GemstoneExtractionService();

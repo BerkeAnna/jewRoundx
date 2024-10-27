@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ethers } from 'ethers'; 
 
 class Main extends Component {
 
@@ -35,7 +36,7 @@ class Main extends Component {
                     <td>{gem.weight.toString()}</td>
                     <td>{gem.height.toString()}</td>
                     <td>{gem.width.toString()}</td>
-                    <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')}</td>
+                    <td>{ethers.utils.formatEther(gem.price.toString())}</td>
 
                     <td>{gem.miningLocation}</td>
                     <td>{gem.miningYear.toString()}</td>

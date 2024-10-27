@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
+import { ethers } from 'ethers'; // Hozzáadjuk ethers.js-t
 import { useNavigate } from 'react-router-dom';
 
-function GemMarket({  selectedGems, transferGemOwnership }) {
+function GemMarket({ selectedGems, transferGemOwnership }) {
   const navigate = useNavigate();
   const gemsForSale = selectedGems.filter(gem => gem.forSale);
 
-  const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); // Metaadatok a kiválasztott kövekhez
-  
+  const [pinataMetadataSelected, setPinataMetadataSelected] = useState({});
+
   // Pinata metaadatok lekérése
   const fetchPinataMetadataForSelected = async (hash, gemId) => {
     try {
       const cleanedHash = cleanHash(hash);
-      const url = cleanedHash;
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
       const response = await fetch(url);
       const data = await response.json();
       setPinataMetadataSelected(prevState => ({
@@ -53,7 +54,7 @@ function GemMarket({  selectedGems, transferGemOwnership }) {
         )}
         <div className="card-body">
           <h5 className="card-title">{gem.gemType}</h5>
-          <p className="card-text">Price: {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+          <p className="card-text">Price: {ethers.utils.formatEther(gem.price.toString())} Eth</p> {/* `ethers.js` konverzió */}
           <p className="card-text">Owner: {gem.owner}</p>
           <button className="btn" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
             Buy

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Web3 from 'web3';
 import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 import { firestore, auth } from "../../firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { sha3 } from 'web3-utils';
@@ -16,12 +16,11 @@ const LogIn = () => {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
   const [jewelryId, setJewelryId] = useState('');
-
+  const navigate = useNavigate();
+  const ref = collection(firestore, "users");
   const usernameRef = useRef();
   const passwordRef = useRef();
-  const ref = collection(firestore, "users");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,8 +35,6 @@ const LogIn = () => {
     let provider;
     if (window.ethereum) {
       provider = window.ethereum;
-    } else if (window.web3) {
-      provider = window.web3.currentProvider;
     } else {
       console.log("Non-ethereum browser detected. You should install Metamask!");
     }
@@ -49,12 +46,13 @@ const LogIn = () => {
       const currentProvider = detectCurrentProvider();
       if (currentProvider) {
         await currentProvider.request({ method: 'eth_requestAccounts' });
-        const web3 = new Web3(currentProvider);
-        const userAccounts = await web3.eth.getAccounts();
-        setAccountAddress(userAccounts[0]);
+        const provider = new ethers.providers.Web3Provider(currentProvider);
+        const signer = provider.getSigner();
+        const account = await signer.getAddress();
+        setAccountAddress(account);
 
-        // Check if account exists in Firestore
-        const q = query(ref, where("address", "==", userAccounts[0]));
+        // Firestore fiók létezésének ellenőrzése
+        const q = query(ref, where("address", "==", account));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -104,29 +102,29 @@ const LogIn = () => {
       setErrorMessage("Invalid password. Please try again.");
       return;
     }
-  
+
     try {
       const email = username;
       const userCredential = await signInWithEmailAndPassword(auth, email, enteredPassword);
       const user = userCredential.user;
-  
-      // Generálj egy ID tokent a Firebase Authentication-től
+
+      // Generate ID token from Firebase Authentication
       const token = await user.getIdToken();
-  
+
       // Retrieve user data from Firestore
       const q = query(ref, where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
-  
+
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
         setIsAuthenticated(true);
-  
+
         // Store user data and token in localStorage
         localStorage.setItem('username', username);
         localStorage.setItem('account', accountAddress);
         localStorage.setItem('role', role);
         localStorage.setItem('token', token);
-  
+
         navigate('/loggedIn', { state: { username: username, account: accountAddress, role: role } });
       } else {
         setErrorMessage("User not found. Please register.");
@@ -136,31 +134,6 @@ const LogIn = () => {
       setErrorMessage("Authentication error. Please try again.");
     }
   };
-  useEffect(() => {
-    const checkToken = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        // Ellenőrizd a token érvényességét a szerveren (ha van ilyen végpontod)
-        const response = await fetch('/api/validateToken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-  
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-          localStorage.removeItem('token');
-        }
-      }
-    };
-  
-    checkToken();
-  }, []);
-  
 
   const onDisconnect = async () => {
     setIsConnected(false);
@@ -172,20 +145,17 @@ const LogIn = () => {
     setEnteredPassword('');
     setIsAuthenticated(false);
     setErrorMessage('');
-    // Clear user data from localStorage
     localStorage.removeItem('username');
     localStorage.removeItem('account');
     localStorage.removeItem('role');
     localStorage.removeItem('token');
   };
-  
 
   return (
     <div className='centered-content pt-5'>
       <div>
         {!isConnected ? (
           <div>
-            
             <div className='pt-5'>
               <h3>Search jewelry with ID</h3>
               <form onSubmit={handleSubmit}>

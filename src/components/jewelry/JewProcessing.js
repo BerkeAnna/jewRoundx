@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers'; // Importáljuk az ethers.js-t
 import '../../styles/Details.css';
 
 function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract, account }) {
@@ -35,7 +36,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
         return (
           <tr key={key}>
             <td>{gem.id.toString()}</td>
-            <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+            <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td> {/* Ether konverzió ethers.js-sel */}
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
                 Select
@@ -50,7 +51,6 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
       return null;
     });
   };
-  
 
   return (
     <div id="tables" className="pt-5">

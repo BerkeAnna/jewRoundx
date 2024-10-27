@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers'; // Importáljuk az ethers.js-t
 import '../../styles/Details.css';
 
-function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract,replaceGem  }) {
+function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem }) {
   const { id } = useParams();
   const gemId = id;
   const navigate = useNavigate();
@@ -16,8 +17,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     markGemAsUsed(newGemId);
     replaceGem(oldGemId, newGemId);
     navigate(`/jewelry-details/${id}`);
-};
-
+  };
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -35,25 +35,25 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     fetchJewelryDetails();
   }, [id, jewelryContract]);
 
-
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => (
       gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()} ct</td>
-        <td>{gem.colorGemType}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn">
-            Select
-          </button>
-        </td>
-      </tr>
+        <tr key={key}>
+          <td>{gem.id.toString()}</td>
+          <td>{gem.size.toString()}</td>
+          <td>{gem.carat.toString()} ct</td>
+          <td>{gem.colorGemType}</td>
+          <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td> {/* Ether konverzió ethers.js-sel */}
+          <td>
+            <button onClick={() => handleRepair(gem.id)} className="btn">
+              Select
+            </button>
+          </td>
+        </tr>
       )
     ));
   };
+
   const renderSelectedOwnedGem = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
@@ -73,20 +73,18 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <p><strong>Color and gem type:</strong> color and type</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price:</strong> {ethers.utils.formatEther(gem.price.toString())} Eth</p> {/* Ether konverzió ethers.js-sel */}
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
         <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
       </div>
     ));
-};
-
+  };
 
   return (
     <div className="details-details-container pt-5">
       <h1>Processing Jewelry</h1>
       <h3>Choose the next gem</h3>
-      
       <div>{renderSelectedOwnedGem()}</div>
     </div>
   );

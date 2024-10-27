@@ -1,179 +1,127 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
+import { ethers } from 'ethers';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import GemstoneExtraction from './abis/GemstoneExtraction.json';
 import GemSelecting from './abis/GemstoneSelecting.json';
 import Jewelry from './abis/Jewelry.json';
-import UserRegistryABI from './abis/UserRegistry.json'; 
 import Navbar from './components/common/Navbar';
 import AppRoutes from './routes/Routes';
 import GemstoneExtractionService from './services/GemstoneExtractionService';
 import GemSelectingService from './services/GemSelectingService';
 import JewelryService from './services/JewelryService';
 
-
 class App extends Component {
-  async componentWillMount() {
-    await this.loadWeb3();
+  async componentDidMount() {
+    await this.loadProviderAndSigner();
     await this.loadBlockchainData();
     await this.loadBlockchainData2();
     await this.loadBlockchainData3();
-    //await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
   }
 
-  async loadWeb3() {
+  async loadProviderAndSigner() {
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        this.setState({ account: (await window.web3.eth.getAccounts())[0], isLoggedIn: true });
-      } catch (error) {
-        console.error("Error in loadWeb3: ", error);
-        window.alert('Error in accessing MetaMask account.');
-      }
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-      this.setState({ account: (await window.web3.eth.getAccounts())[0], isLoggedIn: true });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const account = await signer.getAddress();
+      this.setState({ account, provider, signer, isLoggedIn: true });
     } else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+      window.alert('Non-Ethereum browser detected. Please install MetaMask!');
     }
   }
-  
 
   async loadBlockchainData() {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-  
-    const networkId = await web3.eth.net.getId();
-    console.log('Network ID:', networkId);
-    const networkData = GemstoneExtraction.networks[networkId];
+    const { provider, signer, account } = this.state;
+
+    const network = await provider.getNetwork();
+    const networkData = GemstoneExtraction.networks[network.chainId];
+    
     if (networkData) {
-      const gemstroneExtraction = new web3.eth.Contract(GemstoneExtraction.abi, networkData.address);
-      this.setState({ gemstroneExtraction });
-      const minedGemCount = await gemstroneExtraction.methods.minedGemCount().call();
-      this.setState({ minedGemCount });
-  
+      const gemstoneExtraction = new ethers.Contract(
+        networkData.address,
+        GemstoneExtraction.abi,
+        signer
+      );
+
+      const minedGemCount = await gemstoneExtraction.minedGemCount();
+      this.setState({ gemstoneExtraction, minedGemCount: minedGemCount.toNumber(), loading: false });
+
       let ownedMinedGemCount = 0;
-      for (var i = 1; i <= minedGemCount; i++) {
-        const minedGems = await gemstroneExtraction.methods.minedGems(i).call();
-        if (minedGems && minedGems.owner === accounts[0]) {
+      for (let i = 1; i <= minedGemCount; i++) {
+        const minedGem = await gemstoneExtraction.minedGems(i);
+        if (minedGem && minedGem.owner === account) {
           ownedMinedGemCount++;
         }
-        if (minedGems) {
-          this.setState({
-            minedGems: [...this.state.minedGems, minedGems]
-          });
+        if (minedGem) {
+          this.setState({ minedGems: [...this.state.minedGems, minedGem] });
         }
       }
-      
       this.setState({ ownedMinedGemCount, loading: false });
     } else {
       window.alert('Gemstone contract not deployed to detected network.');
     }
   }
-  
 
   async loadBlockchainData2() {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-
-    const networkId = await web3.eth.net.getId();
-    const networkData = GemSelecting.networks[networkId];
+    const { provider, signer, account } = this.state;
+    const network = await provider.getNetwork();
+    const networkData = GemSelecting.networks[network.chainId];
+    
     if (networkData) {
-      const gemstroneSelecting = new web3.eth.Contract(GemSelecting.abi, networkData.address);
-      this.setState({ gemstroneSelecting });
-      const selectedGemCount = await gemstroneSelecting.methods.selectedGemCount().call();
-      this.setState({ selectedGemCount });
+      const gemstoneSelecting = new ethers.Contract(
+        networkData.address,
+        GemSelecting.abi,
+        signer
+      );
+
+      const selectedGemCount = await gemstoneSelecting.selectedGemCount();
+      this.setState({ gemstoneSelecting, selectedGemCount: selectedGemCount.toNumber() });
 
       let cuttedGemCount = 0;
-
-      for (var i = 1; i <= selectedGemCount; i++) {
-        const selectedGem = await gemstroneSelecting.methods.getSelectedGem(i).call();
-        if (selectedGem.owner === accounts[0]) {
+      for (let i = 1; i <= selectedGemCount; i++) {
+        const selectedGem = await gemstoneSelecting.getSelectedGem(i);
+        if (selectedGem.owner === account) {
           cuttedGemCount++;
         }
-        this.setState({
-          selectedGems: [...this.state.selectedGems, selectedGem]
-        });
+        this.setState({ selectedGems: [...this.state.selectedGems, selectedGem] });
       }
       this.setState({ cuttedGemCount, loading: false });
     } else {
-      window.alert('Gemstone selecting contract not deployed to detected network. - own error');
+      window.alert('Gemstone selecting contract not deployed to detected network.');
     }
-}
-
+  }
 
   async loadBlockchainData3() {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-    const networkId = await web3.eth.net.getId();
-    const networkData = Jewelry.networks[networkId];
+    const { provider, signer, account } = this.state;
+    const network = await provider.getNetwork();
+    const networkData = Jewelry.networks[network.chainId];
+
     if (networkData) {
-      const makeJew = new web3.eth.Contract(Jewelry.abi, networkData.address);
+      const makeJew = new ethers.Contract(networkData.address, Jewelry.abi, signer);
       this.setState({ makeJew });
-      const jewelryCount = await makeJew.methods.jewelryCount().call();
-      this.setState({ jewelryCount });
-  
+
+      const jewelryCount = await makeJew.jewelryCount();
+      this.setState({ jewelryCount: jewelryCount.toNumber() });
+
       let ownedJewelryCount = 0;
       let ownedMadeJewelryCount = 0;
-      for (var i = 1; i <= jewelryCount; i++) {
-        const jewelry = await makeJew.methods.jewelry(i).call();
-        if (jewelry.owner === accounts[0]) {
+      for (let i = 1; i <= jewelryCount; i++) {
+        const jewelry = await makeJew.jewelry(i);
+        if (jewelry.owner === account) {
           ownedJewelryCount++;
         }
-        if (jewelry.jeweler === accounts[0]) {
+        if (jewelry.jeweler === account) {
           ownedMadeJewelryCount++;
         }
-        this.setState({
-          jewelry: [...this.state.jewelry, jewelry]
-        });
+        this.setState({ jewelry: [...this.state.jewelry, jewelry] });
       }
-  
       this.setState({ ownedJewelryCount, ownedMadeJewelryCount, loading: false });
     } else {
-      window.alert('Jewelry contract not deployed to detected network. - own error');
+      window.alert('Jewelry contract not deployed to detected network.');
     }
   }
-  
 
-  async loadBlockchainData4() {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-  
-    const networkId = await web3.eth.net.getId();
-    const networkData = UserRegistryABI.networks[networkId];
-    if (networkData) {
-      const userRegistry = new web3.eth.Contract(UserRegistryABI.abi, networkData.address);
-      this.setState({ userRegistry });
-  
-      // Ell. a felhasználó regisztrálva van-e
-      const isRegistered = await userRegistry.methods.isUserRegistered(accounts[0]).call();
-      if (!isRegistered) {
-        console.error('User is not registered');
-        window.alert('User is not registered in the system');
-        return;
-      }
-  
-      // Ha regisztrálva van, felhasználói adatokat lekérjük
-      const userInfo = await userRegistry.methods.getUserInfo(accounts[0]).call();
-      this.setState({
-        userInfo: {
-          address: userInfo[0],
-          username: userInfo[1],
-          role: userInfo[2]
-        }
-      });
-      this.setState({ loading: false });
-    } else {
-      window.alert('UserRegistry contract not deployed to detected network.');
-    }
-  }
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -181,7 +129,6 @@ class App extends Component {
       minedGemCount: 0,
       selectedGemCount: 0,
       ownedMinedGemCount: 0,
-      ownedMadeJewelry: 0,
       cuttedGemCount: 0,
       ownedJewelryCount: 0,
       minedGems: [],
@@ -189,36 +136,9 @@ class App extends Component {
       jewelry: [],
       isLoggedIn: false,
       loading: true,
-      userInfo: null,
-      gemstroneExtraction: null, 
-      gemstroneSelecting: null, 
-      makeJew: null, 
-      userRegistry: null
     };
-  
-    this.gemMining = this.gemMining.bind(this);
-    this.purchaseGem = this.purchaseGem.bind(this);
-    this.processingGem = this.processingGem.bind(this);
-    this.markGemAsSelected = this.markGemAsSelected.bind(this);
-    this.gemSelecting = this.gemSelecting.bind(this);
-    this.polishGem = this.polishGem.bind(this);
-    this.markGemAsUsed = this.markGemAsUsed.bind(this);
-    this.jewelryMaking = this.jewelryMaking.bind(this);
-    this.updateGem = this.updateGem.bind(this);
-    this.markedAsFinished = this.markedAsFinished.bind(this);
-    this.markedAsSale = this.markedAsSale.bind(this);
-    this.replaceGem = this.replaceGem.bind(this);
-    this.buyJewelry = this.buyJewelry.bind(this);
-    this.markNewOwner = this.markNewOwner.bind(this);
-    this.transferGemOwnership = this.transferGemOwnership.bind(this);
-    this.addForRepair = this.addForRepair.bind(this);
-    this.returnToOwner = this.returnToOwner.bind(this);
-    this.markGemAsReplaced = this.markGemAsReplaced.bind(this);
-    /* 
-    this.refreshPage = this.refreshPage.bind(this);
-    
-*/
-}
+  }
+
 
 
 async gemMining(gemType, price, metadataUrl, purchased, fileUrl) {

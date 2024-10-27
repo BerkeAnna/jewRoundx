@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams(); // A kő azonosítója
@@ -12,14 +13,12 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState(null); // Metaadatok a kiválasztott kövekhez
   const [transactionGasDetails, setTransactionGasDetails] = useState({});
 
-
   const gemSelected = selectedGems.find(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.find(gem => gem.owner && gem.id == gemId);
 
-  
   // Dátum lekérése blokkszám alapján
   const getTransactionDate = async (blockNumber) => {
-    const block = await window.web3.eth.getBlock(blockNumber);
+    const block = await gemstoneExtractionContract.provider.getBlock(blockNumber);
     return new Date(block.timestamp * 1000); // Unix timestamp átalakítása dátummá
   };
 
@@ -56,65 +55,59 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     return hash;
   };
 
-useEffect(() => {
-  const fetchGemDetails = async () => {
-    try {
-      // Kiválasztott gem események lekérése
-      const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
-        fromBlock: 0,
-        toBlock: 'latest'
-      });
-      const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
-      setFilteredSelectedGemEvents(filteredSelectedGems);
+  useEffect(() => {
+    const fetchGemDetails = async () => {
+      try {
+        // Kiválasztott gem események lekérése
+        const selectedGemEvents = await gemstoneSelectingContract.queryFilter(gemstoneSelectingContract.filters.allEvents(), 0, "latest");
+        const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.args.id) === parseInt(gemId));
+        setFilteredSelectedGemEvents(filteredSelectedGems);
 
-      // Bányászott gem események lekérése
-      const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
-        fromBlock: 0,
-        toBlock: 'latest'
-      });
-      const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.returnValues.id) === parseInt(gemId));
-      setFilteredMinedGemEvents(filteredMinedGems);
+        // Bányászott gem események lekérése
+        const minedGemEvents = await gemstoneExtractionContract.queryFilter(gemstoneExtractionContract.filters.allEvents(), 0, "latest");
+        const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.args.id) === parseInt(gemId));
+        setFilteredMinedGemEvents(filteredMinedGems);
 
-      // Pinata metaadatok lekérése, ha létezik metadataHash
-      if (gemSelected && gemSelected.metadataHash) {
-        await fetchPinataMetadataForSelected(gemSelected.metadataHash);
+        // Pinata metaadatok lekérése, ha létezik metadataHash
+        if (gemSelected && gemSelected.metadataHash) {
+          await fetchPinataMetadataForSelected(gemSelected.metadataHash);
+        }
+
+        if (minedGem && minedGem.metadataHash) {
+          await fetchPinataMetadataMined(minedGem.metadataHash);
+        }
+
+        // Tranzakciók blokkjainak dátumainak és gázadatainak lekérése
+        const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
+        const gasDetailsPromises = allEvents.map(async (event) => {
+          const date = await getTransactionDate(event.blockNumber);
+          const receipt = await gemstoneExtractionContract.provider.getTransactionReceipt(event.transactionHash);
+          const transaction = await gemstoneExtractionContract.provider.getTransaction(event.transactionHash);
+          const gasUsed = receipt.gasUsed.toString();
+          const gasPrice = transaction.gasPrice.toString();
+          const gasCost = ethers.utils.formatEther(gasUsed * gasPrice);
+          return { blockNumber: event.blockNumber, date, transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+        });
+
+        const gasDetailsResults = await Promise.all(gasDetailsPromises);
+
+        const blockDateMap = {};
+        const gasDetailsMap = {};
+        gasDetailsResults.forEach(({ blockNumber, date, transactionHash, gasUsed, gasPrice, gasCost }) => {
+          blockDateMap[blockNumber] = date;
+          gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
+        });
+
+        setBlockDates(blockDateMap);
+        setTransactionGasDetails(gasDetailsMap);
+
+      } catch (error) {
+        console.error('Error fetching details:', error);
       }
+    };
 
-      if (minedGem && minedGem.metadataHash) {
-        await fetchPinataMetadataMined(minedGem.metadataHash);
-      }
-
-      // Tranzakciók blokkjainak dátumainak és gázadatainak lekérése
-      const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
-      const gasDetailsPromises = allEvents.map(async (event) => {
-        const date = await getTransactionDate(event.blockNumber);
-        const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
-        const transaction = await window.web3.eth.getTransaction(event.transactionHash);
-        const gasUsed = receipt.gasUsed;
-        const gasPrice = transaction.gasPrice;
-        const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
-        return { blockNumber: event.blockNumber, date, transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
-      });
-
-      const gasDetailsResults = await Promise.all(gasDetailsPromises);
-
-      const blockDateMap = {};
-      const gasDetailsMap = {};
-      gasDetailsResults.forEach(({ blockNumber, date, transactionHash, gasUsed, gasPrice, gasCost }) => {
-        blockDateMap[blockNumber] = date;
-        gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
-      });
-
-      setBlockDates(blockDateMap);
-      setTransactionGasDetails(gasDetailsMap);
-
-    } catch (error) {
-      console.error('Error fetching details:', error);
-    }
-  };
-
-  fetchGemDetails();
-}, [gemId, gemstoneSelectingContract, gemstoneExtractionContract, gemSelected, minedGem]);
+    fetchGemDetails();
+  }, [gemId, gemstoneSelectingContract, gemstoneExtractionContract, gemSelected, minedGem]);
 
   const renderSelectedGemDetails = () => {
     if (!gemSelected) {
@@ -141,7 +134,7 @@ useEffect(() => {
             <p><strong>Treatments:</strong> {pinataMetadataSelected.treatments}</p>
           </div>
         )}
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gemSelected.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price:</strong> {ethers.utils.formatEther(gemSelected.price.toString())} Eth</p>
         <p><strong>replaced:</strong> {gemSelected.replaced.toString()}</p>
         <p><strong>Gem cutter:</strong> {gemSelected.gemCutter}</p>
         <p><strong>Owner:</strong> {gemSelected.owner}</p>
@@ -174,7 +167,7 @@ useEffect(() => {
             <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear}</p>
           </div>
         )}
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price:</strong> {ethers.utils.formatEther(minedGem.price.toString())} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
         <h3>Transaction Details</h3>
@@ -185,20 +178,20 @@ useEffect(() => {
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id);
+      const eventId = parseInt(event.args.id);
       return eventId === parseInt(gemId);
     });
-  
+
     if (gemEvents.length === 0) {
       return <p>No transaction events found for this gem.</p>;
     }
-  
+
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
-          const { owner, gemCutter, newOwner } = event.returnValues;
+          const { owner, gemCutter, newOwner } = event.args;
           const gasDetails = transactionGasDetails[event.transactionHash];
-  
+
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -215,11 +208,11 @@ useEffect(() => {
               <br />
               {gasDetails && (
                 <>
-                  <strong>Gas Used:</strong> {gasDetails.gasUsed} {/* a t.-hez felhasznál gáz mennyisége*/}
+                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
                   <br />
-                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether {/*A felhasznált gáz egységenkénti ára ether*/}
+                  <strong>Gas Price:</strong> {ethers.utils.formatEther(gasDetails.gasPrice)} Ether
                   <br />
-                  <strong>Total Gas Cost/ used gas*gas price:</strong> {gasDetails.gasCost} Ether {/*teljes költség a t végrehajtásához etherben */}
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
                 </>
               )}
               <br />
@@ -232,53 +225,6 @@ useEffect(() => {
       </ul>
     );
   };
-  
-
-  /* az összes adatot kiírja a tranzakciós adatokból
-const renderTransactionDetails = (events, gemId) => {
-  const gemEvents = events.filter(event => {
-    const eventId = parseInt(event.returnValues.id);
-    return eventId === parseInt(gemId);
-  });
-
-  if (gemEvents.length === 0) {
-    return <p>No transaction events found for this gem.</p>;
-  }
-
-  return (
-    <ul className="no-bullet-list">
-      {gemEvents.map((event, index) => {
-        const { returnValues } = event;  // Az összes returnValues adatot lekérjük
-        const eventDetails = Object.entries(returnValues); // Az összes returnValue pár formában
-
-        return (
-          <li key={index} className="details-list-item">
-            <strong>Event:</strong> {event.event}
-            <br />
-            <strong>Transaction Hash:</strong> {event.transactionHash}
-            <br />
-            <strong>Block Number:</strong> {event.blockNumber}
-            <br />
-            {blockDates[event.blockNumber] && (
-              <>
-                <strong>Date:</strong> {blockDates[event.blockNumber].toLocaleString()}
-                <br />
-              </>
-            )}
-
-            {eventDetails.map(([key, value]) => (
-              <div key={key}>
-                <strong>{key}:</strong> {value.toString()}
-              </div>
-            ))}
-          </li>
-        );
-      })}
-    </ul>
-  );
-};
-
-  */
 
   return (
     <div className="details-details-container card-background pt-5">

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ethers } from 'ethers'; // ethers.js importálása
 import '../../styles/Forms.css';
 
 function MinedGemForm(props) {
@@ -16,8 +17,7 @@ function MinedGemForm(props) {
     let fileUrl = "";
     if (file) {
       try {
-        // *** IPFS fájlfeltöltés időmérése ***
-        const startFileUploadTime = performance.now();  // Kezdés
+        const startFileUploadTime = performance.now();
         const fileData = new FormData();
         fileData.append("file", file);
 
@@ -29,7 +29,7 @@ function MinedGemForm(props) {
         });
 
         fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-        const endFileUploadTime = performance.now();  // Befejezés
+        const endFileUploadTime = performance.now();
         const fileUploadDuration = endFileUploadTime - startFileUploadTime;
         console.log(`IPFS fájlfeltöltés időtartama: ${fileUploadDuration} ms`);
         
@@ -40,13 +40,13 @@ function MinedGemForm(props) {
     }
 
     const gemType = formData.get('gemType').toString();
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const price = ethers.utils.parseEther(formData.get('price')); // Ether átváltás ethers.js-sel
     const weight = formData.get('weight').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; 
-    const details = `Carat: ${weight} ct, Size: ${size} mm, Image: ${fileUrl}`; // Részletek off-chain
+    const details = `Carat: ${weight} ct, Size: ${size} mm, Image: ${fileUrl}`;
 
     const metadata = {
       gemType,
@@ -57,10 +57,9 @@ function MinedGemForm(props) {
       fileUrl,
     };
 
-    // *** IPFS metadata feltöltés időmérése ***
     let metadataUrl = "";
     try {
-      const startMetadataUploadTime = performance.now();  // Kezdés
+      const startMetadataUploadTime = performance.now();
       const metadataResponse = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
         headers: {
           'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
@@ -68,7 +67,7 @@ function MinedGemForm(props) {
         },
       });
       metadataUrl = `https://gateway.pinata.cloud/ipfs/${metadataResponse.data.IpfsHash}`;
-      const endMetadataUploadTime = performance.now();  // Befejezés
+      const endMetadataUploadTime = performance.now();
       const metadataUploadDuration = endMetadataUploadTime - startMetadataUploadTime;
       console.log(`IPFS metadata feltöltés időtartama: ${metadataUploadDuration} ms`);
 
@@ -78,7 +77,7 @@ function MinedGemForm(props) {
     }
 
     try {
-      await props.gemMining(gemType, price, metadataUrl, false, fileUrl); // On-chain csak az IPFS hash tárolása
+      await props.gemMining(gemType, price, metadataUrl, false, fileUrl);
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }

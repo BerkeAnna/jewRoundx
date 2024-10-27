@@ -1,22 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ethers } from 'ethers';
 import '../../styles/Forms.css';
 
-function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elérhető függvények
+function JewelryForm({ jewelryMaking, markGemAsUsed }) {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null); 
+  const fileInputRef = useRef(null);
   const { id } = useParams();
   const [type, setType] = useState("Ring");
 
   const handleMarkAsUsed = (gemId) => {
-    markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
+    markGemAsUsed(gemId);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    handleMarkAsUsed(id);  // Meghívjuk a markGemAsUsed-et
+    handleMarkAsUsed(id);
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
     
@@ -52,7 +53,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
     const additionalData = formData.get('additionalData').toString();
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const price = ethers.utils.parseEther(formData.get('price')).toString();
     const sale = false;
 
     if (!name) {
@@ -93,7 +94,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
 
     try {
       console.log("Submitting jewelry creation...");
-      await jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl);  // Helyes függvényhívás
+      await jewelryMaking(name, gemId, metadataUrl, sale, price, fileUrl);
       console.log("Jewelry created successfully.");
       navigate('/loggedIn');
     } catch (error) {

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 import '../../styles/Market.css';
 
-function MinedGemMarket({ minedGems, account, markNewOwner, }) {
+function MinedGemMarket({ minedGems, account, markNewOwner }) {
   const navigate = useNavigate();
   const ownedMinedGems = minedGems.filter(minedGem => minedGem.owner !== account);
-  const [pinataMetadataMined, setPinataMetadataMined] = useState({}); // Minden gem metaadatait objektumban tároljuk
+  const [pinataMetadataMined, setPinataMetadataMined] = useState({});
 
   const handleMarkAsSelected = (gemId, price) => {
     markNewOwner(gemId, price);
@@ -24,7 +25,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
         [gemId]: data // Metaadatok mentése gem ID szerint
       }));
     } catch (error) {
-      //console.error('Error fetching Pinata metadata:', error);
+      console.error('Error fetching Pinata metadata:', error);
     }
   };
 
@@ -39,7 +40,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
   useEffect(() => {
     ownedMinedGems.forEach((gem) => {
       if (gem.metadataHash) {
-        fetchPinataMetadataMined(gem.metadataHash, gem.id); // Lekérés gem ID szerint
+        fetchPinataMetadataMined(gem.metadataHash, gem.id);
       }
     });
   }, [ownedMinedGems]);
@@ -55,7 +56,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
         )}
           
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price:</strong> {ethers.utils.formatEther(minedGem.price.toString())} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
         <button className="btn" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>

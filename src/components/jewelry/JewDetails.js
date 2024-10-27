@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
@@ -19,14 +20,14 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
-  const getTransactionDate = async (web3, blockNumber) => {
-    const block = await web3.eth.getBlock(blockNumber);
+  const getTransactionDate = async (blockNumber) => {
+    const block = await ethersProvider.getBlock(blockNumber);
     return new Date(block.timestamp * 1000);
   };
   
-  const fetchAllTransactionDates = async (web3, events) => {
+  const fetchAllTransactionDates = async (events) => {
     const blockDatePromises = events.map(async (event) => {
-      const date = await getTransactionDate(web3, event.blockNumber);
+      const date = await getTransactionDate(event.blockNumber);
       return { blockNumber: event.blockNumber, date };
     });
     const blockDateResults = await Promise.all(blockDatePromises);
@@ -41,12 +42,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   // Gáz adatok lekérése a tranzakciókból
   const fetchGasDetails = async (events) => {
     const gasDetailsPromises = events.map(async (event) => {
-      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
-      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
-      const gasUsed = receipt.gasUsed;
+      const receipt = await ethersProvider.getTransactionReceipt(event.transactionHash);
+      const transaction = await ethersProvider.getTransaction(event.transactionHash);
+      const gasUsed = receipt.gasUsed.toNumber();
       const gasPrice = transaction.gasPrice;
-      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
-      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
+      const gasCost = ethers.utils.formatEther(gasUsed * gasPrice);
+      return { transactionHash: event.transactionHash, gasUsed, gasPrice: ethers.utils.formatEther(gasPrice), gasCost };
     });
 
     const gasDetailsResults = await Promise.all(gasDetailsPromises);
@@ -109,32 +110,23 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
-        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const details = await jewelryContract.getJewelryDetails(id);
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
         setPrevGemsArray(gemIdsAsInt);
 
-        const jewelryEvents = await jewelryContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-        const filteredJewelry = jewelryEvents.filter(event => parseInt(event.returnValues.id) === parseInt(id));
+        const jewelryEvents = await jewelryContract.queryFilter('allEvents', 0, 'latest');
+        const filteredJewelry = jewelryEvents.filter(event => parseInt(event.args.id) === parseInt(id));
         setFilteredJewelryEvents(filteredJewelry);
 
-        const selectedGemEvents = await gemstoneSelectingContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
+        const selectedGemEvents = await gemstoneSelectingContract.queryFilter('allEvents', 0, 'latest');
         const filteredSelectedGems = selectedGemEvents.filter(event =>
-          gemIdsAsInt.includes(parseInt(event.returnValues.id))
+          gemIdsAsInt.includes(parseInt(event.args.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
 
-        const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
+        const minedGemEvents = await gemstoneExtractionContract.queryFilter('allEvents', 0, 'latest');
         const filteredMinedGems = minedGemEvents.filter(event =>
-          gemIdsAsInt.includes(parseInt(event.returnValues.id))
+          gemIdsAsInt.includes(parseInt(event.args.id))
         );
         setFilteredMinedGemEvents(filteredMinedGems);
 
@@ -154,7 +146,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           await fetchPinataMetadataJewelry(details.metadataHash);
         }
 
-        await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+        await fetchAllTransactionDates([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
         await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
 
       } catch (error) {
@@ -180,71 +172,18 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
             <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
           </a>
         )}
-
         <p><strong>ID:</strong> {selectedGem.id.toString()}</p>
-        <p> {selectedGem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong> }</p>
-
-        {metadata && (
-          <div>
-            <p><strong>Gem Type:</strong> {metadata.gemType}</p>
-            <p><strong>Size:</strong> {metadata.size}</p>
-            <p><strong>Carat:</strong> {metadata.carat} ct</p>
-            <p><strong>Color:</strong> {metadata.color}</p>
-            <p><strong>Polishing:</strong> {metadata.polishing}</p>
-            <p><strong>Transparency:</strong> {metadata.transparency}</p>
-            <p><strong>Treatments:</strong> {metadata.treatments}</p>
-          </div>
-        )}
-            <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
-        <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
-        <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
-
+        <p>{selectedGem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong>}</p>
+        <p><strong>Price:</strong> {ethers.utils.formatEther(selectedGem.price.toString())} Eth</p>
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
       </div>
     );
   };
 
-  const renderJewelryMinedGems = () => {
-    const gemId = prevGemsArray[currentMinedGemIndex];
-    const minedGem = minedGems.find(gem => gem.id == gemId);
-    const metadata = pinataMetadataMined[gemId];
-
-    if (!minedGem) return null;
-
-    return (
-      <div className="card">
-        <h2>Mined Gem Details</h2>
-        {metadata && metadata.fileUrl && (
-          <a href={metadata.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
-          </a>
-        )}
-        <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        {metadata && (
-          <div>
-            <p><strong>Gem Type:</strong> {metadata.gemType}</p>
-            <p><strong>Weight:</strong> {metadata.weight}</p>
-            <p><strong>Size:</strong> {metadata.size}</p>
-            <p><strong>Mining Location:</strong> {metadata.miningLocation}</p>
-            <p><strong>Mining Year:</strong> {metadata.miningYear}</p>
-          </div>
-        )}
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Miner:</strong> {minedGem.miner}</p>
-
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
-      </div>
-    );
-  };
- 
-  
-
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
-      const eventId = parseInt(event.returnValues.id);
+      const eventId = parseInt(event.args.id);
       return eventId === parseInt(gemId);
     });
 
@@ -255,7 +194,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     return (
       <ul className="no-bullet-list">
         {gemEvents.map((event, index) => {
-          const { owner, gemCutter, jeweler, newOwner } = event.returnValues;
+          const { owner, gemCutter, jeweler, newOwner } = event.args;
           const gasDetails = transactionGasDetails[event.transactionHash];
 
           return (
@@ -276,7 +215,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
                 <>
                   <strong>Gas Used:</strong> {gasDetails.gasUsed}
                   <br />
-                  <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether
+                  <strong>Gas Price:</strong> {gasDetails.gasPrice} Ether
                   <br />
                   <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether
                 </>
@@ -293,74 +232,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     );
   };
 
-  const renderJewelry = () => {
-    return jewelryDetails.map((jewelry, key) => (
-      <div key={key} className="card">
-        <h2>Jewelry Details</h2>
-        {jewelry.fileURL && (
-          <div>
-            <a href={jewelry.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={jewelry.fileURL} alt="Jewelry" className='details-image' />
-            </a>
-          </div>
-        )}
-        <p><strong>ID:</strong> {jewelry.id.toString()}</p>
-  
-        {pinataMetadataJewelry && (
-          <div>
-            <p><strong>Name:</strong> {pinataMetadataJewelry.name}</p>
-            <p><strong>Type:</strong> {pinataMetadataJewelry.type}</p>
-            <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
-            <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>
-            <p><strong>Additional data:</strong> {pinataMetadataJewelry.additionalData}</p>
-          </div>
-        )}
-  
-        <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
-        <p><strong>Owner:</strong> {jewelry.owner}</p>
-        <p><strong>Jewelry Owner:</strong> {jewelry.jewOwner}</p>
-        <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
-      </div>
-    ));
-  };
-
-  const handlePrevSelectedGem = () => {
-    setCurrentSelectedGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
-  };
-
-  const handleNextSelectedGem = () => {
-    setCurrentSelectedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  const handlePrevMinedGem = () => {
-    setCurrentMinedGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
-  };
-
-  const handleNextMinedGem = () => {
-    setCurrentMinedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  
-
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
       <div className="card-container pt-5">
-        {renderJewelry()}
-      </div>
-      <div className="card-container pt-5">
-        <button className="arrow left" onClick={handlePrevSelectedGem}>←</button>
         {renderJewelrySelectedGems()}
-        <button className="arrow right" onClick={handleNextSelectedGem}>→</button>
-      </div>
-      <div className="card-container pt-5">
-        <button className="arrow left" onClick={handlePrevMinedGem}>←</button>
-        {renderJewelryMinedGems()}
-        <button className="arrow right" onClick={handleNextMinedGem}>→</button>
       </div>
     </div>
   );

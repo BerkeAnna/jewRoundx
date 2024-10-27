@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ethers } from 'ethers';
 
 function GemSelectingForm(props) {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ function GemSelectingForm(props) {
     const polishing = formData.get('polishing').toString();
     const transparency = formData.get('transparency').toString();
     const treatments = formData.get('treatments').toString();
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const price = ethers.utils.parseEther(formData.get('price')).toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
