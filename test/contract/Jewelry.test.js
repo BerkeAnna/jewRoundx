@@ -1,118 +1,208 @@
-/*const { expect } = require("chai");
+const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Jewelry", function () {
-    let jewelryInstance, gemstoneSelectingInstance, gemstoneExtractionInstance;
-    let owner, addr1;
+  let jewelry, gemstoneSelecting, owner, addr1, addr2;
+  beforeEach(async function () {
+    [owner, addr1, addr2] = await ethers.getSigners();
+  
+    // Deploy the GemstoneExtraction contract
+    const GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
+    gemstoneExtraction = await GemstoneExtraction.deploy();
+    await gemstoneExtraction.deployed();
+  
+    // Deploy the GemstoneSelecting contract with the address of GemstoneExtraction
+    const GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
+    gemstoneSelecting = await GemstoneSelecting.deploy(gemstoneExtraction.address); // Átadjuk a címet
+    await gemstoneSelecting.deployed();
+  
+    // Ellenőrizzük, hogy a gemstoneSelecting.address megfelelően van-e megadva
+    if (!gemstoneSelecting.address) {
+      throw new Error("Failed to deploy GemstoneSelecting contract.");
+    }
+  
+    // Deploy the Jewelry contract with the address of the deployed GemstoneSelecting contract
+    const Jewelry = await ethers.getContractFactory("Jewelry");
+    jewelry = await Jewelry.deploy(gemstoneSelecting.address); // Átadjuk a címet
+    await jewelry.deployed();
+  });
+  
+  
 
-    beforeEach(async function () {
-        [owner, addr1] = await ethers.getSigners();
+  it("should create a new jewelry item", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        // Deployáljuk a GemstoneExtraction szerződést
-        const GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
-        gemstoneExtractionInstance = await GemstoneExtraction.deploy();
-        await gemstoneExtractionInstance.deployed();
+    const jew = await jewelry.getJewelryDetails(1);
+    expect(jew.name).to.equal("Diamond Ring");
+    expect(jew.metadataHash).to.equal("hash");
+    expect(jew.sale).to.equal(true);
+    expect(jew.price).to.equal(ethers.utils.parseEther("1"));
+    expect(jew.jeweler).to.equal(owner.address);
+    expect(jew.owner).to.equal(owner.address);
+  });
 
-        // Deployáljuk a GemstoneSelecting szerződést a GemstoneExtraction címével
-        const GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
-        gemstoneSelectingInstance = await GemstoneSelecting.deploy(gemstoneExtractionInstance.address);
-        await gemstoneSelectingInstance.deployed();
+  it("should allow buying a jewelry item", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        // Deployáljuk a Jewelry szerződést a GemstoneSelecting szerződés címével
-        const Jewelry = await ethers.getContractFactory("Jewelry");
-        jewelryInstance = await Jewelry.deploy(gemstoneSelectingInstance.address);
-        await jewelryInstance.deployed();
+    await jewelry.connect(addr1).buyJewelry(1, { value: ethers.utils.parseEther("1") });
+    const jew = await jewelry.getJewelryDetails(1);
+    expect(jew.owner).to.equal(addr1.address);
+    expect(jew.jewOwner).to.equal(addr1.address);
+    expect(jew.sale).to.equal(false);
+  });
 
-        // Két drágakő kiválasztása a tesztekhez
-        const metadataHash = "sampleMetadataHash";
-        const price = ethers.utils.parseEther("1");
-        await gemstoneSelectingInstance.connect(owner).gemSelecting(1, metadataHash, price);
-        await gemstoneSelectingInstance.connect(owner).gemSelecting(2, metadataHash, price);
-    });
+  it("should replace a gem in the jewelry item", async function () {
+    await gemstoneSelecting.connect(owner).gemSelecting(
+      1, "hash", ethers.utils.parseEther("1"), "https://example.com/gem.jpg"
+    );
 
-    it("should create a new jewelry item", async function () {
-        const gemId = 1;
-        const name = "Ruby Ring";
-        const metadataHash = "sampleMetadataHash";
-        const price = ethers.utils.parseEther("1");
-        const fileURL = "https://example.com/jewelry1";
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring", 1, "hash", true, ethers.utils.parseEther("1"), "https://example.com/jewelry.jpg"
+    );
 
-        await jewelryInstance.connect(owner).jewelryMaking(name, gemId, metadataHash, true, price, fileURL);
+    await jewelry.connect(owner).replaceGem(1, 1, 2);
 
-        const jewelry = await jewelryInstance.getJewelryDetails(1);
-        expect(jewelry.name).to.equal(name);
-        expect(jewelry.metadataHash).to.equal(metadataHash);
-        expect(jewelry.price).to.equal(price);
-        expect(jewelry.owner).to.equal(owner.address);
-        expect(jewelry.jewOwner).to.equal(owner.address);
-    });
+    const jew = await jewelry.getJewelryDetails(1);
 
-    it("should allow the purchase of a jewelry item", async function () {
-        const jewelryId = 1;
-        const price = ethers.utils.parseEther("1");
+    // Convert BigNumbers in previousGemIds to strings before comparison
+    const previousGemIdsAsStrings = jew.previousGemIds.map(id => id.toString());
+    expect(previousGemIdsAsStrings).to.include("2");
+  });
 
-        await jewelryInstance.connect(addr1).buyJewelry(jewelryId, { value: price });
+  
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.owner).to.equal(addr1.address);
-        expect(jewelry.jewOwner).to.equal(addr1.address);
-    });
+  it("should mark jewelry as finished", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-    it("should replace a gem in the jewelry item", async function () {
-        const jewelryId = 1;
-        const oldGemId = 1;
-        const newGemId = 2;
+    await jewelry.connect(owner).markedAsFinished(1);
+    const jew = await jewelry.getJewelryDetails(1);
+    expect(jew.processing).to.equal(false);
+    expect(jew.sale).to.equal(false);
+  });
 
-        await jewelryInstance.connect(owner).replaceGem(jewelryId, oldGemId, newGemId);
+  it("should toggle jewelry sale state", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      false,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.previousGemIds.map(id => id.toNumber())).to.include(newGemId);
-    });
+    await jewelry.connect(owner).markedAsSale(1);
+    let jew = await jewelry.getJewelryDetails(1);
+    expect(jew.sale).to.equal(true);
 
-    it("should mark the jewelry as finished", async function () {
-        const jewelryId = 1;
+    await jewelry.connect(owner).markedAsSale(1);
+    jew = await jewelry.getJewelryDetails(1);
+    expect(jew.sale).to.equal(false);
+  });
 
-        await jewelryInstance.connect(owner).markedAsFinished(jewelryId);
+  it("should add jewelry for repair", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.processing).to.equal(false);
-    });
+    await jewelry.connect(owner).addForRepair(1);
+    const jew = await jewelry.getJewelryDetails(1);
+    expect(jew.owner).to.equal(jew.jeweler);
+    expect(jew.sale).to.equal(false);
+  });
 
-    it("should toggle jewelry sale state", async function () {
-        const jewelryId = 1;
+  it("should return jewelry to the original owner", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        await jewelryInstance.connect(owner).markedAsSale(jewelryId);
+    await jewelry.connect(owner).addForRepair(1);
+    await jewelry.connect(owner).returnToJewOwner(1);
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.sale).to.equal(true);
-    });
+    const jew = await jewelry.getJewelryDetails(1);
+    expect(jew.owner).to.equal(jew.jewOwner);
+    expect(jew.sale).to.equal(false);
+  });
 
-    it("should add jewelry for repair", async function () {
-        const jewelryId = 1;
+  it("should return the correct jewelry count for an owner", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        await jewelryInstance.connect(owner).addForRepair(jewelryId);
+    await jewelry.connect(owner).jewelryMaking(
+      "Emerald Necklace",
+      2,
+      "hash2",
+      false,
+      ethers.utils.parseEther("2"),
+      "https://example.com/jewelry2.jpg"
+    );
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.owner).to.equal(jewelry.jeweler);
-    });
+    const count = await jewelry.getJewelryCountByOwner(owner.address);
+    expect(count.toNumber()).to.equal(2);
+  });
 
-    it("should return jewelry to the original owner", async function () {
-        const jewelryId = 1;
+  it("should return the correct jewelry count for a jeweler", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring",
+      1,
+      "hash",
+      true,
+      ethers.utils.parseEther("1"),
+      "https://example.com/jewelry.jpg"
+    );
 
-        await jewelryInstance.connect(owner).returnToJewOwner(jewelryId);
+    const count = await jewelry.getJewelryCountByJeweler(owner.address);
+    expect(count.toNumber()).to.equal(1);
+  });
 
-        const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        expect(jewelry.owner).to.equal(jewelry.jewOwner);
-    });
+  it("should update a gem in the jewelry", async function () {
+    await jewelry.connect(owner).jewelryMaking(
+      "Diamond Ring", 1, "hash", true, ethers.utils.parseEther("1"), "https://example.com/jewelry.jpg"
+    );
 
-    it("should return the correct jewelry count for an owner", async function () {
-        const jewelryCount = await jewelryInstance.getJewelryCountByOwner(addr1.address);
-        expect(jewelryCount.toNumber()).to.equal(1);
-    });
+    await jewelry.connect(owner).updateGem(1, 3);
 
-    it("should return the correct jewelry count for a jeweler", async function () {
-        const jewelryCount = await jewelryInstance.getJewelryCountByJeweler(owner.address);
-        expect(jewelryCount.toNumber()).to.equal(1);
-    });
+    const jew = await jewelry.getJewelryDetails(1);
+
+    // Convert BigNumbers in previousGemIds to strings before comparison
+    const previousGemIdsAsStrings = jew.previousGemIds.map(id => id.toString());
+    expect(previousGemIdsAsStrings).to.include("3");
+  });
+
 });
-*/

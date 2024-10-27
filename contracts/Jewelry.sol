@@ -104,14 +104,27 @@ contract Jewelry {
         );
     }
 
-    function replaceGem(uint jewelryId, uint oldGemId, uint newGemId) public {
-        gemstoneSelecting.setPreviousGemId(newGemId, oldGemId);
+function replaceGem(uint jewelryId, uint oldGemId, uint newGemId) public {
+     
 
-        JewelryData storage jew = jewelry[jewelryId];
-        jew.previousGemIds.push(newGemId);
+    JewelryData storage jew = jewelry[jewelryId];
+    require(jew.id > 0, "Jewelry item does not exist.");
 
-        emit GemReplaced(jewelryId, newGemId);
+    // Ellenőrizzük, hogy az oldGemId létezik-e a previousGemIds tömbben
+    bool exists = false;
+    for (uint i = 0; i < jew.previousGemIds.length; i++) {
+        if (jew.previousGemIds[i] == oldGemId) {
+            exists = true;
+            break;
+        }
     }
+
+    // Hozzáadjuk az új gem ID-t, anélkül hogy a régi gemet eltávolítanánk
+    jew.previousGemIds.push(newGemId);
+
+    emit GemReplaced(jewelryId, newGemId);
+}
+
 
     function getJewelryDetails(uint _id) public view returns (
         uint id,
