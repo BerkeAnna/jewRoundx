@@ -6,6 +6,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const { id } = useParams();
   const gemId = id;
 
+  const [provider, setProvider] = useState(null);
   const [prevGemsArray, setPrevGemsArray] = useState([]);
   const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
@@ -18,13 +19,66 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
   const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
-  const jewelryDetails = jewelry.filter(item => item.id == gemId);
+  useEffect(() => {
+    // ethersProvider beállítása Web3Provider-ként
+    const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(ethersProvider);
+
+    const fetchJewelryDetails = async () => {
+      try {
+        const details = await jewelryContract.getJewelryDetails(id);
+        const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
+        setPrevGemsArray(gemIdsAsInt);
+
+        const jewelryEvents = await jewelryContract.queryFilter('allEvents', 0, 'latest');
+        const filteredJewelry = jewelryEvents.filter(event => parseInt(event.args.id) === parseInt(id));
+        setFilteredJewelryEvents(filteredJewelry);
+
+        const selectedGemEvents = await gemstoneSelectingContract.queryFilter('allEvents', 0, 'latest');
+        const filteredSelectedGems = selectedGemEvents.filter(event =>
+          gemIdsAsInt.includes(parseInt(event.args.id))
+        );
+        setFilteredSelectedGemEvents(filteredSelectedGems);
+
+        const minedGemEvents = await gemstoneExtractionContract.queryFilter('allEvents', 0, 'latest');
+        const filteredMinedGems = minedGemEvents.filter(event =>
+          gemIdsAsInt.includes(parseInt(event.args.id))
+        );
+        setFilteredMinedGemEvents(filteredMinedGems);
+
+        // Hívások az IPFS metaadatok lekérésére
+        for (const gemId of gemIdsAsInt) {
+          const selectedGem = selectedGems.find(gem => gem.id == gemId);
+          if (selectedGem && selectedGem.metadataHash) {
+            await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
+          }
+
+          const minedGem = minedGems.find(gem => gem.id == gemId);
+          if (minedGem && minedGem.metadataHash) {
+            await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
+          }
+        }
+
+        if (details.metadataHash) {
+          await fetchPinataMetadataJewelry(details.metadataHash);
+        }
+
+        await fetchAllTransactionDates([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+        await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+
+      } catch (error) {
+        console.error('Error fetching details:', error);
+      }
+    };
+
+    fetchJewelryDetails();
+  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
 
   const getTransactionDate = async (blockNumber) => {
-    const block = await ethersProvider.getBlock(blockNumber);
+    const block = await provider.getBlock(blockNumber);
     return new Date(block.timestamp * 1000);
   };
-  
+
   const fetchAllTransactionDates = async (events) => {
     const blockDatePromises = events.map(async (event) => {
       const date = await getTransactionDate(event.blockNumber);
@@ -39,11 +93,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     setBlockDates(previousDates => ({ ...previousDates, ...blockDateMap }));
   };
 
-  // Gáz adatok lekérése a tranzakciókból
   const fetchGasDetails = async (events) => {
     const gasDetailsPromises = events.map(async (event) => {
-      const receipt = await ethersProvider.getTransactionReceipt(event.transactionHash);
-      const transaction = await ethersProvider.getTransaction(event.transactionHash);
+      const receipt = await provider.getTransactionReceipt(event.transactionHash);
+      const transaction = await provider.getTransaction(event.transactionHash);
       const gasUsed = receipt.gasUsed.toNumber();
       const gasPrice = transaction.gasPrice;
       const gasCost = ethers.utils.formatEther(gasUsed * gasPrice);

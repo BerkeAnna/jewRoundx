@@ -49,21 +49,24 @@ function OwnedByUser({
   const ownedSelectedGems = selectedGems.filter((gem) => gem.owner === account);
   const ownedJewelry = jewelry.filter((jewelry) => jewelry.owner === account);
 
-  const renderMinedGems = () => (
-    ownedMinedGems.map((gem, key) => (
-      !gem.purchased && !gem.selected && (
-        <tr key={key}>
-          <td>{gem.id}</td>
-          <td>{gem.gemType}</td>
-          <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td>
-          <td>{gem.owner}</td>
-          <td>
-            <button onClick={() => purchaseGem(gem.id, gem.price)} className="btn">Process</button>
-          </td>
-        </tr>
-      )
-    ))
-  );
+// Konvertáljuk a gem.price-t BigNumber típusra, ha szükséges
+    const renderMinedGems = () => (
+      ownedMinedGems.map((gem, key) => (
+          !gem.purchased && !gem.selected && (
+              <tr key={key}>
+                  <td>{gem.id.toString()}</td>
+                  <td>{gem.gemType}</td>
+                  <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(gem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
+                  <td>{gem.owner}</td>
+                  <td>
+                      <button onClick={() => purchaseGem(gem.id, gem.price)} className="btn">Process</button>
+                  </td>
+              </tr>
+          )
+      ))
+    );
+
+
 
   const renderSelectedGems = () => (
     ownedMinedGems.map((gem, key) => (
@@ -71,7 +74,7 @@ function OwnedByUser({
         <tr key={key}>
           <td>{gem.id}</td>
           <td>{gem.gemType}</td>
-          <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(gem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{gem.owner}</td>
           <td>
             <button onClick={() => handleMarkAsSelected(gem.id)} className="btn">Select Gem</button>
@@ -87,7 +90,7 @@ function OwnedByUser({
         <tr key={key}>
           <td>{gem.id}</td>
           <td>{gem.colorGemType}</td>
-          <td>{ethers.utils.formatEther(gem.price.toString())} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(gem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{gem.owner}</td>
           <td>
             <button onClick={() => navigate(`/gem-details/${gem.id}`)} className="btn">Details</button>
@@ -107,7 +110,7 @@ function OwnedByUser({
         <tr key={key}>
           <td>{jewelry.id}</td>
           <td>{jewelry.name}</td>
-          <td>{ethers.utils.formatEther(jewelry.price.toString())} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(jewelry.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{jewelry.owner}</td>
           <td>
             <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">Details</button>
@@ -138,7 +141,7 @@ function OwnedByUser({
         <tr key={key}>
           <td>{jewelry.id}</td>
           <td>{jewelry.name}</td>
-          <td>{ethers.utils.formatEther(jewelry.price.toString())} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(jewelry.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{jewelry.owner}</td>
           <td>
             <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">Details</button>

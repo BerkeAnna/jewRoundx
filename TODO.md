@@ -623,3 +623,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.10.27.
         npx hardhat compile
         npx hardhat run scripts/deploy.js --network development
+
+        15:33
+                npx hardhat node
+                npx hardhat run --network development scripts/deploy.js
+                npm run start

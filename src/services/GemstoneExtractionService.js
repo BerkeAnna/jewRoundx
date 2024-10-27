@@ -9,14 +9,14 @@ class GemstoneExtractionService {
   }
 
   async loadContract() {
-    const networkId = (await this.provider.getNetwork()).chainId;
-    const networkData = GemstoneExtraction.networks[networkId];
-    if (networkData) {
-      this.contract = new ethers.Contract(networkData.address, GemstoneExtraction.abi, this.signer);
+    const contractAddress = process.env.REACT_APP_GEMSTONE_EXTRACTION_ADDRESS;
+    if (contractAddress) {
+      this.contract = new ethers.Contract(contractAddress, GemstoneExtraction.abi, this.signer);
     } else {
       throw new Error('Gemstone contract not deployed to detected network.');
     }
   }
+  
 
   async gemMining(gemType, price, metadataUrl, purchased, fileUrl) {
     if (!this.contract) await this.loadContract();
@@ -36,15 +36,16 @@ class GemstoneExtractionService {
 
   async processingGem(id, price) {
     if (!this.contract) await this.loadContract();
-    const priceInEther = ethers.utils.parseEther(price.toString());
+    const priceInEther = ethers.utils.parseUnits(price.toString(), "ether"); // Konverzió Ether formátumba
     return this.contract.processingGem(id, { value: priceInEther });
   }
-
+  
   async markNewOwner(id, price) {
     if (!this.contract) await this.loadContract();
-    const priceInEther = ethers.utils.parseEther(price.toString());
+    const priceInEther = ethers.utils.parseUnits(price.toString(), "ether"); // Konverzió Ether formátumba
     return this.contract.markNewOwner(id, { value: priceInEther });
   }
+  
 
   async markGemAsSelected(id) {
     if (!this.contract) await this.loadContract();

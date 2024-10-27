@@ -32,95 +32,130 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const { provider, signer, account } = this.state;
-
-    const network = await provider.getNetwork();
-    const networkData = GemstoneExtraction.networks[network.chainId];
+    const { provider, signer } = this.state;
+    const account = await signer.getAddress();
+    this.setState({ account });
     
-    if (networkData) {
-      const gemstoneExtraction = new ethers.Contract(
-        networkData.address,
-        GemstoneExtraction.abi,
-        signer
-      );
+    const gemstoneExtractionAddress = process.env.REACT_APP_GEMSTONE_EXTRACTION_ADDRESS;
+    console.log("Gemstone Extraction Contract Address:", gemstoneExtractionAddress); // Ellenőrzés
 
-      const minedGemCount = await gemstoneExtraction.minedGemCount();
-      this.setState({ gemstoneExtraction, minedGemCount: minedGemCount.toNumber(), loading: false });
-
-      let ownedMinedGemCount = 0;
-      for (let i = 1; i <= minedGemCount; i++) {
-        const minedGem = await gemstoneExtraction.minedGems(i);
-        if (minedGem && minedGem.owner === account) {
-          ownedMinedGemCount++;
-        }
-        if (minedGem) {
-          this.setState({ minedGems: [...this.state.minedGems, minedGem] });
-        }
-      }
-      this.setState({ ownedMinedGemCount, loading: false });
-    } else {
-      window.alert('Gemstone contract not deployed to detected network.');
+    if (!gemstoneExtractionAddress) {
+        window.alert("Gemstone Extraction contract address not found in environment.");
+        return;
     }
-  }
+
+    try {
+        const gemstoneExtraction = new ethers.Contract(
+            gemstoneExtractionAddress,
+            GemstoneExtraction.abi,
+            signer
+        );
+
+        // Lekérjük a bányászott gemek számát
+        const minedGemCount = await gemstoneExtraction.minedGemCount();
+        this.setState({ gemstoneExtraction, minedGemCount: minedGemCount.toNumber(), loading: false });
+
+        // Frissítjük a `minedGems` tömböt
+       // Frissítjük a `minedGems` tömböt
+          let minedGems = [];
+          for (let i = 1; i <= minedGemCount; i++) {
+              const gem = await gemstoneExtraction.minedGems(i);
+              
+              // Alakítsd át a BigNumber mezőket egyszerű számokra
+              const formattedGem = {
+                  ...gem,
+                  price: ethers.utils.formatEther(gem.price), // átalakítás ETH stringre
+                  id: gem.id.toNumber() // átalakítás sima számra, ha szükséges
+              };
+              
+              minedGems.push(formattedGem);
+          }
+
+          // Beállítjuk az állapotot
+          this.setState({ minedGems, loading: false });
+
+        console.log("Mined Gems:", this.state.minedGems);
+
+    } catch (error) {
+        console.error("Error in loadBlockchainData:", error); // Logold a hibát
+        window.alert("Error loading blockchain data. Please check the console for details.");
+    }
+}
+
+
+  
+  
+  
 
   async loadBlockchainData2() {
     const { provider, signer, account } = this.state;
-    const network = await provider.getNetwork();
-    const networkData = GemSelecting.networks[network.chainId];
     
-    if (networkData) {
-      const gemstoneSelecting = new ethers.Contract(
-        networkData.address,
-        GemSelecting.abi,
-        signer
-      );
-
-      const selectedGemCount = await gemstoneSelecting.selectedGemCount();
-      this.setState({ gemstoneSelecting, selectedGemCount: selectedGemCount.toNumber() });
-
-      let cuttedGemCount = 0;
-      for (let i = 1; i <= selectedGemCount; i++) {
-        const selectedGem = await gemstoneSelecting.getSelectedGem(i);
-        if (selectedGem.owner === account) {
-          cuttedGemCount++;
-        }
-        this.setState({ selectedGems: [...this.state.selectedGems, selectedGem] });
-      }
-      this.setState({ cuttedGemCount, loading: false });
-    } else {
-      window.alert('Gemstone selecting contract not deployed to detected network.');
+    // Használjuk az .env változót a GemstoneSelecting címhez
+    const gemSelectingAddress = process.env.REACT_APP_GEMSTONE_SELECTING_ADDRESS;
+    
+    if (!gemSelectingAddress) {
+      window.alert("Gemstone Selecting contract address not found in environment.");
+      return;
     }
+  
+    const gemstoneSelecting = new ethers.Contract(
+      gemSelectingAddress,
+      GemSelecting.abi,
+      signer
+    );
+  
+    const selectedGemCount = await gemstoneSelecting.selectedGemCount();
+    this.setState({ gemstoneSelecting, selectedGemCount: selectedGemCount.toNumber() });
+  
+    let cuttedGemCount = 0;
+    for (let i = 1; i <= selectedGemCount; i++) {
+      const selectedGem = await gemstoneSelecting.getSelectedGem(i);
+      if (selectedGem.owner === account) {
+        cuttedGemCount++;
+      }
+      this.setState({ selectedGems: [...this.state.selectedGems, selectedGem] });
+    }
+    this.setState({ cuttedGemCount, loading: false });
   }
+  
+  
 
   async loadBlockchainData3() {
     const { provider, signer, account } = this.state;
-    const network = await provider.getNetwork();
-    const networkData = Jewelry.networks[network.chainId];
-
-    if (networkData) {
-      const makeJew = new ethers.Contract(networkData.address, Jewelry.abi, signer);
-      this.setState({ makeJew });
-
-      const jewelryCount = await makeJew.jewelryCount();
-      this.setState({ jewelryCount: jewelryCount.toNumber() });
-
-      let ownedJewelryCount = 0;
-      let ownedMadeJewelryCount = 0;
-      for (let i = 1; i <= jewelryCount; i++) {
-        const jewelry = await makeJew.jewelry(i);
-        if (jewelry.owner === account) {
-          ownedJewelryCount++;
-        }
-        if (jewelry.jeweler === account) {
-          ownedMadeJewelryCount++;
-        }
-        this.setState({ jewelry: [...this.state.jewelry, jewelry] });
-      }
-      this.setState({ ownedJewelryCount, ownedMadeJewelryCount, loading: false });
-    } else {
-      window.alert('Jewelry contract not deployed to detected network.');
+    const jewelryAddress = process.env.REACT_APP_JEWELRY_ADDRESS;
+  
+    // Ellenőrizd, hogy a szerződés cím elérhető-e
+    if (!jewelryAddress) {
+      window.alert("Jewelry contract address not found in environment.");
+      return;
     }
+  
+    const makeJew = new ethers.Contract(jewelryAddress, Jewelry.abi, signer);
+    this.setState({ makeJew });
+  
+    const jewelryCount = await makeJew.jewelryCount();
+    this.setState({ jewelryCount: jewelryCount.toNumber() });
+  
+    let ownedJewelryCount = 0;
+    let ownedMadeJewelryCount = 0;
+    let jewelryList = []; // Ideiglenes tömb a jewelry elemek tárolásához
+  
+    for (let i = 1; i <= jewelryCount; i++) {
+      const jewelry = await makeJew.jewelry(i);
+      if (jewelry.owner === account) {
+        ownedJewelryCount++;
+      }
+      if (jewelry.jeweler === account) {
+        ownedMadeJewelryCount++;
+      }
+      jewelryList.push(jewelry); // Adjuk hozzá a jewelry elemet a listához
+    }
+  
+    // Egyszerre frissítjük a state-et a jewelryList tömbbel
+    this.setState({ jewelry: jewelryList, ownedJewelryCount, ownedMadeJewelryCount, loading: false });
   }
+  
+  
 
   constructor(props) {
     super(props);
@@ -137,26 +172,44 @@ class App extends Component {
       isLoggedIn: false,
       loading: true,
     };
+
+    this.gemMining = this.gemMining.bind(this);
+    this.purchaseGem = this.purchaseGem.bind(this);
+    this.processingGem = this.processingGem.bind(this);
+    this.markGemAsSelected = this.markGemAsSelected.bind(this);
+    this.gemSelecting = this.gemSelecting.bind(this);
+    this.polishGem = this.polishGem.bind(this);
+    this.markGemAsUsed = this.markGemAsUsed.bind(this);
+    this.markGemAsReplaced = this.markGemAsReplaced.bind(this);
+    this.jewelryMaking = this.jewelryMaking.bind(this);
+    this.updateGem = this.updateGem.bind(this);
+    this.markedAsFinished = this.markedAsFinished.bind(this);
+    this.markedAsSale = this.markedAsSale.bind(this);
+    this.replaceGem = this.replaceGem.bind(this);
+    this.addForRepair = this.addForRepair.bind(this);
+    this.returnToOwner = this.returnToOwner.bind(this);
   }
+  
 
 
 
-async gemMining(gemType, price, metadataUrl, purchased, fileUrl) {
-  try {
-    this.setState({ loading: true });
-    const account = this.state.account; 
+  async gemMining(gemType, price, metadataUrl, purchased, fileUrl) {
+    try {
+        this.setState({ loading: true });
+        const account = this.state.account; 
 
-    // GemstoneExtractionService-től hívjuk a gemMining fv-t
-    await GemstoneExtractionService.gemMining(gemType, price, metadataUrl, purchased, account, fileUrl);
-      
-    // tranzakció után frissítjük a blokklánc adatokat
-    await this.loadBlockchainData(); 
-    this.setState({ loading: false }); // Betöltés vége
-  } catch (error) {
-    console.error("Error in gemMining: ", error);
-    this.setState({ loading: false }); 
-  }
+        // GemstoneExtractionService-től hívjuk a gemMining fv-t
+        await GemstoneExtractionService.gemMining(gemType, price, metadataUrl, purchased, account, fileUrl);
+          
+        // Tranzakció után frissítjük a blokklánc adatokat
+        await this.loadBlockchainData(); // Frissítés hívása itt
+        this.setState({ loading: false }); // Betöltés vége
+    } catch (error) {
+        console.error("Error in gemMining: ", error);
+        this.setState({ loading: false }); 
+    }
 }
+
 
 async purchaseGem(id) {
   try {
