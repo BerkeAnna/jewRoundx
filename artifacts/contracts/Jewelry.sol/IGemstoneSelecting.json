@@ -1,0 +1,142 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IGemstoneSelecting",
+  "sourceName": "contracts/Jewelry.sol",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "markGemAsReplaced",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "markGemAsUsed",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "selectedGems",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minedGemId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "weight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "height",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "width",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "diameter",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "carat",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "color",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "gemType",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "forSale",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "used",
+          "type": "bool"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "gemId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "previousGemId",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPreviousGemId",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

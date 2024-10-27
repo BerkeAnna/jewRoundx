@@ -1,0 +1,87 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IGemstoneExtraction",
+  "sourceName": "contracts/GemstoneSelecting.sol",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "minedGems",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "gemType",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "weight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "height",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "width",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "miningLocation",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "miningYear",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "selected",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "extractionMethod",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "purchased",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,219 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\berke\\jewRoundx\\contracts\\Migrations.sol": {
+      "lastModificationDate": 1729693588470,
+      "contentHash": "69a6754fa35f6cf8bdf632c289b1d20b",
+      "sourceName": "contracts/Migrations.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\GemstoneExtraction.sol": {
+      "lastModificationDate": 1730022177860,
+      "contentHash": "c9995bd56c72be5a6bf14c936325db35",
+      "sourceName": "contracts/GemstoneExtraction.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "GemstoneExtraction"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\GemstoneSelecting.sol": {
+      "lastModificationDate": 1729974952402,
+      "contentHash": "fb31a1470779e5b65e9582e17c7dc1b2",
+      "sourceName": "contracts/GemstoneSelecting.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "GemstoneSelecting",
+        "IGemstoneExtraction"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\Jewelry.sol": {
+      "lastModificationDate": 1729974952405,
+      "contentHash": "d9249547c350ca34ca02f2515432fac6",
+      "sourceName": "contracts/Jewelry.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "IGemstoneSelecting",
+        "Jewelry"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\UserRegistry.sol": {
+      "lastModificationDate": 1729693588470,
+      "contentHash": "632df5ecb389477874b79b5ce71545ce",
+      "sourceName": "contracts/UserRegistry.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "UserRegistry"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1729975123529,
+      "contentHash": "681c532e816169606d13a5fe8b475074",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    }
+  }
+}

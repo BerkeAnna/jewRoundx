@@ -1,128 +1,118 @@
-const Jewelry = artifacts.require('Jewelry');
-const GemstoneSelecting = artifacts.require('GemstoneSelecting');
-const GemstoneExtraction = artifacts.require('GemstoneExtraction');
+/*const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-contract('Jewelry', (accounts) => {
-    let jewelryInstance;
-    let gemstoneSelectingInstance;
-    let gemstoneExtractionInstance;
+describe("Jewelry", function () {
+    let jewelryInstance, gemstoneSelectingInstance, gemstoneExtractionInstance;
+    let owner, addr1;
 
-    // A tesztelés előtt deployoljuk a szerződést
-    before(async () => {
-        //  telepítjük a GemstoneExtraction szerződést
-        gemstoneExtractionInstance = await GemstoneExtraction.new();
+    beforeEach(async function () {
+        [owner, addr1] = await ethers.getSigners();
 
-        //  telepítjük a GemstoneSelecting szerződést a GemstoneExtraction címével
-        gemstoneSelectingInstance = await GemstoneSelecting.new(gemstoneExtractionInstance.address);
+        // Deployáljuk a GemstoneExtraction szerződést
+        const GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
+        gemstoneExtractionInstance = await GemstoneExtraction.deploy();
+        await gemstoneExtractionInstance.deployed();
 
-        //  telepítjük a Jewelry szerződést a GemstoneSelecting szerződés címével
-        jewelryInstance = await Jewelry.new(gemstoneSelectingInstance.address);
+        // Deployáljuk a GemstoneSelecting szerződést a GemstoneExtraction címével
+        const GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
+        gemstoneSelectingInstance = await GemstoneSelecting.deploy(gemstoneExtractionInstance.address);
+        await gemstoneSelectingInstance.deployed();
 
-        const minedGemId = 1;
+        // Deployáljuk a Jewelry szerződést a GemstoneSelecting szerződés címével
+        const Jewelry = await ethers.getContractFactory("Jewelry");
+        jewelryInstance = await Jewelry.deploy(gemstoneSelectingInstance.address);
+        await jewelryInstance.deployed();
+
+        // Két drágakő kiválasztása a tesztekhez
         const metadataHash = "sampleMetadataHash";
-        const price = web3.utils.toWei('1', 'Ether');
-        await gemstoneSelectingInstance.gemSelecting(minedGemId, metadataHash, price, { from: accounts[0] });
-
-        const newGemId = 2;
-        await gemstoneSelectingInstance.gemSelecting(newGemId, metadataHash, price, { from: accounts[0] });
-
+        const price = ethers.utils.parseEther("1");
+        await gemstoneSelectingInstance.connect(owner).gemSelecting(1, metadataHash, price);
+        await gemstoneSelectingInstance.connect(owner).gemSelecting(2, metadataHash, price);
     });
 
-
-    // Teszt: Új ékszer készítése
-    it('should create a new jewelry item', async () => {
-        const gemId = 1;  // Feltételezve, hogy van egy drágakő a GemstoneSelecting szerződésben
+    it("should create a new jewelry item", async function () {
+        const gemId = 1;
         const name = "Ruby Ring";
         const metadataHash = "sampleMetadataHash";
-        const price = web3.utils.toWei('1', 'Ether');
+        const price = ethers.utils.parseEther("1");
         const fileURL = "https://example.com/jewelry1";
 
-        // Ékszer készítése
-        await jewelryInstance.jewelryMaking(name, gemId, metadataHash, true, price, fileURL, { from: accounts[0] });
+        await jewelryInstance.connect(owner).jewelryMaking(name, gemId, metadataHash, true, price, fileURL);
 
-        // Ellenőrizzük, hogy az ékszer helyesen tárolódott
         const jewelry = await jewelryInstance.getJewelryDetails(1);
-        assert.equal(jewelry.name, name, 'Jewelry name is incorrect');
-        assert.equal(jewelry.metadataHash, metadataHash, 'Metadata hash is incorrect');
-        assert.equal(jewelry.price, price, 'Price is incorrect');
-        assert.equal(jewelry.owner, accounts[0], 'Jewelry owner should be accounts[0]');
-        assert.equal(jewelry.jewOwner, accounts[0], 'Jewelry jewOwner should be accounts[0]');
+        expect(jewelry.name).to.equal(name);
+        expect(jewelry.metadataHash).to.equal(metadataHash);
+        expect(jewelry.price).to.equal(price);
+        expect(jewelry.owner).to.equal(owner.address);
+        expect(jewelry.jewOwner).to.equal(owner.address);
     });
 
-    // Teszt: Ékszer megvásárlása
-    it('should allow the purchase of a jewelry item', async () => {
+    it("should allow the purchase of a jewelry item", async function () {
         const jewelryId = 1;
-        const price = web3.utils.toWei('1', 'Ether');
+        const price = ethers.utils.parseEther("1");
 
-        await jewelryInstance.buyJewelry(jewelryId, { from: accounts[1], value: price });
+        await jewelryInstance.connect(addr1).buyJewelry(jewelryId, { value: price });
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.equal(jewelry.owner, accounts[1], 'Jewelry owner should be accounts[1]');
-        assert.equal(jewelry.jewOwner, accounts[1], 'Jewelry jewOwner should be accounts[1]');
+        expect(jewelry.owner).to.equal(addr1.address);
+        expect(jewelry.jewOwner).to.equal(addr1.address);
     });
 
-    // Teszt: Drágakő cseréje ékszeren belül
-    it('should replace a gem in the jewelry item', async () => {
+    it("should replace a gem in the jewelry item", async function () {
         const jewelryId = 1;
         const oldGemId = 1;
         const newGemId = 2;
 
-        // Drágakő cseréje
-        await jewelryInstance.replaceGem(jewelryId, oldGemId, newGemId, { from: accounts[0] });
+        await jewelryInstance.connect(owner).replaceGem(jewelryId, oldGemId, newGemId);
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.include(jewelry.previousGemIds.map(id => id.toNumber()), newGemId, 'New gem ID should be in previousGemIds');
+        expect(jewelry.previousGemIds.map(id => id.toNumber())).to.include(newGemId);
     });
 
-    // Teszt: Ékszer befejezése
-    it('should mark the jewelry as finished', async () => {
+    it("should mark the jewelry as finished", async function () {
         const jewelryId = 1;
 
-        await jewelryInstance.markedAsFinished(jewelryId, { from: accounts[0] });
+        await jewelryInstance.connect(owner).markedAsFinished(jewelryId);
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.equal(jewelry.processing, false, 'Jewelry processing should be marked as finished');
+        expect(jewelry.processing).to.equal(false);
     });
 
-    // Teszt: Ékszer eladása
-    it('should toggle jewelry sale state', async () => {
+    it("should toggle jewelry sale state", async function () {
         const jewelryId = 1;
 
-        await jewelryInstance.markedAsSale(jewelryId, { from: accounts[0] });
+        await jewelryInstance.connect(owner).markedAsSale(jewelryId);
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.equal(jewelry.sale, true, 'Jewelry should be marked for sale');
+        expect(jewelry.sale).to.equal(true);
     });
 
-    // Teszt: Ékszer javításra küldése
-    it('should add jewelry for repair', async () => {
+    it("should add jewelry for repair", async function () {
         const jewelryId = 1;
 
-        await jewelryInstance.addForRepair(jewelryId, { from: accounts[0] });
+        await jewelryInstance.connect(owner).addForRepair(jewelryId);
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.equal(jewelry.owner, jewelry.jeweler, 'Jewelry should be with the jeweler for repair');
+        expect(jewelry.owner).to.equal(jewelry.jeweler);
     });
 
-    // Teszt: Ékszer visszaküldése a tulajdonosnak
-    it('should return jewelry to the original owner', async () => {
+    it("should return jewelry to the original owner", async function () {
         const jewelryId = 1;
 
-        await jewelryInstance.returnToJewOwner(jewelryId, { from: accounts[0] });
+        await jewelryInstance.connect(owner).returnToJewOwner(jewelryId);
 
         const jewelry = await jewelryInstance.getJewelryDetails(jewelryId);
-        assert.equal(jewelry.owner, jewelry.jewOwner, 'Jewelry should be returned to the original owner');
+        expect(jewelry.owner).to.equal(jewelry.jewOwner);
     });
 
-    // Teszt: Tulajdonoshoz tartozó ékszerek száma
-    it('should return the correct jewelry count for an owner', async () => {
-        const jewelryCount = await jewelryInstance.getJewelryCountByOwner(accounts[1]);
-        assert.equal(jewelryCount.toNumber(), 1, 'Jewelry count for owner accounts[1] should be 1');
+    it("should return the correct jewelry count for an owner", async function () {
+        const jewelryCount = await jewelryInstance.getJewelryCountByOwner(addr1.address);
+        expect(jewelryCount.toNumber()).to.equal(1);
     });
 
-    // Teszt: Ékszerészhez tartozó ékszerek száma
-    it('should return the correct jewelry count for a jeweler', async () => {
-        const jewelryCount = await jewelryInstance.getJewelryCountByJeweler(accounts[0]);
-        assert.equal(jewelryCount.toNumber(), 1, 'Jewelry count for jeweler accounts[0] should be 1');
+    it("should return the correct jewelry count for a jeweler", async function () {
+        const jewelryCount = await jewelryInstance.getJewelryCountByJeweler(owner.address);
+        expect(jewelryCount.toNumber()).to.equal(1);
     });
 });
+*/

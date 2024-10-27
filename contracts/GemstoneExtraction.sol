@@ -1,4 +1,5 @@
 pragma solidity >=0.4.21 <0.6.0;
+import "hardhat/console.sol";
 
 contract GemstoneExtraction {
     string public name;
@@ -132,6 +133,7 @@ contract GemstoneExtraction {
         MinedGem storage _minedGem = minedGems[_id];
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
         require(_minedGem.purchased == false, "Gem already purchased");
+        require(msg.value >= _minedGem.price, "Insufficient funds");
 
         _minedGem.owner = msg.sender; 
         _minedGem.purchased = true;
@@ -158,6 +160,13 @@ contract GemstoneExtraction {
         _minedGem.miner.transfer(msg.value);
 
         _minedGem.owner = msg.sender;
+           
+           console.log(
+            "Transferring from %s to %s %s tokens",
+            msg.sender,
+            _minedGem.miner,
+            _minedGem.price
+        );
 
         emit MarkNewOwner(
             _id, 

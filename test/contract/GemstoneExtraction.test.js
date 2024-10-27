@@ -1,109 +1,103 @@
-const GemstoneExtraction = artifacts.require('GemstoneExtraction');
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-contract('GemstoneExtraction', (accounts) => {
-  let contractInstance;
+describe("GemstoneExtraction", function () {
+  let gemstoneExtraction, owner, addr1, addr2, addr3;
 
-  // A tesztelés előtt deployoljuk a szerződést
-  before(async () => {
-    contractInstance = await GemstoneExtraction.deployed();
+  beforeEach(async function () {
+    [owner, addr1, addr2, addr3] = await ethers.getSigners();
+    const GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
+    gemstoneExtraction = await GemstoneExtraction.deploy();
+    await gemstoneExtraction.deployed();
   });
 
-  // Teszt: Új drágakő bányászása
-  it('should mine a new gem', async () => {
-    const result = await contractInstance.gemMining('Ruby', web3.utils.toWei('1', 'Ether'), 'Hash', false, { from: accounts[0] });
-    assert(result, 'Gem mining transaction failed');
+  it("should mine a new gem", async function () {
+    const tx = await gemstoneExtraction.connect(owner).gemMining(
+      "Ruby", 
+      ethers.utils.parseEther("1"), 
+      "Hash", 
+      false,
+      "https://example.com/gem.jpg"
+    );
+    await tx.wait();
 
-    // ell gem helyesen tárolódott
-    const gem = await contractInstance.minedGems(1);
-    assert.equal(gem.gemType, 'Ruby', 'Gem type is incorrect');
-    assert.equal(gem.price, web3.utils.toWei('1', 'Ether'), 'Gem price is incorrect');
-    assert.equal(gem.miner, accounts[0], 'Gem miner address is incorrect');
-    assert.equal(gem.owner, accounts[0], 'Gem owner should initially be the miner');
+    const gem = await gemstoneExtraction.minedGems(1);
+    expect(gem.gemType).to.equal("Ruby");
+    expect(gem.price).to.equal(ethers.utils.parseEther("1"));
+    expect(gem.miner).to.equal(owner.address);
+    expect(gem.owner).to.equal(owner.address);
   });
 
-  // Teszt: Drágakő vásárlása
-  it('should allow purchase of a gem', async () => {
-    await contractInstance.purchaseGem(1, { from: accounts[1], value: web3.utils.toWei('1', 'Ether') });
+  it("should allow purchase of a gem", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
 
-    // Ellenőrizd, hogy a tulajdonos változott
-    const gem = await contractInstance.minedGems(1);
-    assert.equal(gem.owner, accounts[1], 'Gem owner should be accounts[1] after purchase');
-    assert.equal(gem.purchased, true, 'Gem should be marked as purchased');
+    const gem = await gemstoneExtraction.minedGems(1);
+    expect(gem.owner).to.equal(addr1.address);
+    expect(gem.purchased).to.equal(true);
   });
 
-  // Teszt: Drágakő feldolgozása
-  it('should allow processing of a purchased gem', async () => {
-    await contractInstance.processingGem(1, { from: accounts[1] });
+  it("should allow processing of a purchased gem", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
 
-    const gem = await contractInstance.minedGems(1);
-    assert.equal(gem.purchased, true, 'Gem should remain purchased after processing');
+    await gemstoneExtraction.connect(addr1).processingGem(1);
+    const gem = await gemstoneExtraction.minedGems(1);
+    expect(gem.purchased).to.equal(true);
   });
 
-  // Teszt:Drágakővásárlás owner csere
-  it('should allow a new owner to be marked', async () => {
-    await contractInstance.markNewOwner(1, { from: accounts[2], value: web3.utils.toWei('1', 'Ether') });
+  it("should allow a new owner to be marked", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
 
-    const gem = await contractInstance.minedGems(1);
-    assert.equal(gem.owner, accounts[2], 'The gem owner should be accounts[2] after marking a new owner');
+    await gemstoneExtraction.connect(addr2).markNewOwner(1, { value: ethers.utils.parseEther("1") });
+    const gem = await gemstoneExtraction.minedGems(1);
+    expect(gem.owner).to.equal(addr2.address);
   });
 
-  // Teszt: Hibakezelés, ha nincs elég pénz a vásárlásra
-  it('should revert if insufficient funds are sent to mark a new owner', async () => {
-    try {
-      await contractInstance.markNewOwner(1, { from: accounts[3], value: web3.utils.toWei('0.5', 'Ether') });
-      assert.fail('Transaction should have reverted due to insufficient funds');
-    } catch (error) {
-      assert(error.message.includes('Insufficient funds'), 'Expected "Insufficient funds" revert message');
-    }
+  it("should revert if insufficient funds are sent to mark a new owner", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
+
+    await expect(
+      gemstoneExtraction.connect(addr3).markNewOwner(1, { value: ethers.utils.parseEther("0.5") })
+    ).to.be.revertedWith("Insufficient funds");
   });
 
-  // Teszt: Hibakezelés, ha a drágakövet már kiválasztották
-  it('should revert if the gem has already been selected', async () => {
-    // Megjelöljük a gemet kiválasztottnak
-    await contractInstance.markGemAsSelected(1, { from: accounts[2] });
+  it("should revert if the gem has already been selected", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
+    await gemstoneExtraction.connect(addr1).markGemAsSelected(1);
 
-    try {
-      // Megpróbáljuk kijelölni egy új tulajdonost
-      await contractInstance.markNewOwner(1, { from: accounts[3], value: web3.utils.toWei('1', 'Ether') });
-      assert.fail('Transaction should have reverted because the gem is already selected');
-    } catch (error) {
-      assert(error.message.includes('Gem already selected'), 'Expected "Gem already selected" revert message');
-    }
+    await expect(
+      gemstoneExtraction.connect(addr3).markNewOwner(1, { value: ethers.utils.parseEther("1") })
+    ).to.be.revertedWith("Gem already selected");
   });
 
-  // Teszt: Drágakő kiválasztása
-  it('should mark the gem as selected', async () => {
-    // Bányászunk egy új drágakövet
-    await contractInstance.gemMining('Ruby', web3.utils.toWei('2', 'Ether'), 'newHash', false, { from: accounts[0] });
+  it("should mark the gem as selected", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("2"), "newHash", false, "https://example.com/gem.jpg");
+    const newGemId = await gemstoneExtraction.minedGemCount();
 
-    // Az új drágakő ID-ja
-    const newGemId = await contractInstance.minedGemCount();
+    await gemstoneExtraction.connect(addr1).purchaseGem(newGemId, { value: ethers.utils.parseEther("2") });
+    await gemstoneExtraction.connect(addr1).markGemAsSelected(newGemId);
 
-    await contractInstance.purchaseGem(newGemId, { from: accounts[1], value: web3.utils.toWei('2', 'Ether') });
-
-    await contractInstance.markGemAsSelected(newGemId, { from: accounts[1] });
-
-    const gem = await contractInstance.minedGems(newGemId);
-    assert.equal(gem.selected, true, 'Gem should be marked as selected');
+    const gem = await gemstoneExtraction.minedGems(newGemId);
+    expect(gem.selected).to.equal(true);
   });
 
+  it("should return the correct gemstone count for an owner", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+    await gemstoneExtraction.connect(addr1).purchaseGem(1, { value: ethers.utils.parseEther("1") });
 
-  // Teszt: Tulajdonos drágaköveinek száma
-  it('should return the correct gemstone count for an owner', async () => {
-    const gemCount = await contractInstance.getGemstoneCountByOwner(accounts[1]);
-    assert.equal(gemCount.toNumber(), 1, 'Gem count for owner accounts[1] should be 1');
+    const gemCount = await gemstoneExtraction.getGemstoneCountByOwner(addr1.address);
+    expect(gemCount.toNumber()).to.equal(1);
   });
 
-  // Teszt: Hibás vásárlás - kevesebb ether
-  it('should revert if insufficient funds are sent for gem purchase', async () => {
-    try {
-      await contractInstance.purchaseGem(1, { from: accounts[2], value: web3.utils.toWei('0.5', 'Ether') });
-      assert.fail('Transaction should have reverted due to insufficient funds');
-    } catch (error) {
-      assert(error.message.includes('revert'), 'Expected revert due to insufficient funds');
-    }
+  it("should revert if insufficient funds are sent for gem purchase", async function () {
+    await gemstoneExtraction.connect(owner).gemMining("Ruby", ethers.utils.parseEther("1"), "Hash", false, "https://example.com/gem.jpg");
+
+    await expect(
+      gemstoneExtraction.connect(addr2).purchaseGem(1, { value: ethers.utils.parseEther("0.5") })
+    ).to.be.revertedWith("Insufficient funds");
   });
-
-
-
 });

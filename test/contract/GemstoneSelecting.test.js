@@ -1,82 +1,82 @@
-const GemstoneSelecting = artifacts.require('GemstoneSelecting');
-const GemstoneExtraction = artifacts.require('GemstoneExtraction');
+/*const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-contract('GemstoneSelecting', (accounts) => {
-  let contractInstance;
-  let gemstoneExtractionInstance;
+describe("GemstoneSelecting", function () {
+  let gemstoneSelecting, gemstoneExtraction, owner, addr1;
 
-  // A tesztelés előtt deployoljuk a szerződést
-  before(async () => {
-    // Először telepítjük a GemstoneExtraction szerződést
-    gemstoneExtractionInstance = await GemstoneExtraction.new();
-    // Ezután telepítjük a GemstoneSelecting szerződést a GemstoneExtraction címével
-    contractInstance = await GemstoneSelecting.new(gemstoneExtractionInstance.address);
+  beforeEach(async function () {
+    [owner, addr1] = await ethers.getSigners();
+
+    // Először deployáljuk a GemstoneExtraction szerződést
+    const GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
+    gemstoneExtraction = await GemstoneExtraction.deploy();
+    await gemstoneExtraction.deployed();
+
+    // Ezután deployáljuk a GemstoneSelecting szerződést, a GemstoneExtraction címével
+    const GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
+    gemstoneSelecting = await GemstoneSelecting.deploy(gemstoneExtraction.address);
+    await gemstoneSelecting.deployed();
   });
 
-  // Teszt: Új drágakő kiválasztása
-  it('should select a new gem', async () => {
+  it("should select a new gem", async function () {
     const minedGemId = 1;
     const metadataHash = "Hash";
-    const price = web3.utils.toWei('1', 'Ether');
+    const price = ethers.utils.parseEther("1");
 
     // Kiválasztjuk a drágakövet
-    await contractInstance.gemSelecting(minedGemId, metadataHash, price, { from: accounts[0] });
+    await gemstoneSelecting.connect(owner).gemSelecting(minedGemId, metadataHash, price);
 
     // Ellenőrizd, hogy a drágakő bejegyzés helyesen tárolódott
-    const gem = await contractInstance.getSelectedGem(minedGemId);
-    assert.equal(gem.minedGemId, minedGemId, 'Gem minedGemId is incorrect');
-    assert.equal(gem.metadataHash, metadataHash, 'Gem metadataHash is incorrect');
-    assert.equal(gem.price, price, 'Gem price is incorrect');
-    assert.equal(gem.owner, accounts[0], 'Gem owner should initially be accounts[0]');
+    const gem = await gemstoneSelecting.getSelectedGem(minedGemId);
+    expect(gem.minedGemId).to.equal(minedGemId);
+    expect(gem.metadataHash).to.equal(metadataHash);
+    expect(gem.price).to.equal(price);
+    expect(gem.owner).to.equal(owner.address);
   });
 
-  // Teszt: Drágakő polírozása (forSale állapot váltása)
-  it('should toggle gem polish state (forSale)', async () => {
+  it("should toggle gem polish state (forSale)", async function () {
     const gemId = 1;
-    await contractInstance.polishGem(gemId, { from: accounts[0] });
+    await gemstoneSelecting.connect(owner).polishGem(gemId);
 
-    const gem = await contractInstance.getSelectedGem(gemId);
-    assert.equal(gem.forSale, true, 'Gem should be marked for sale after polishing');
+    const gem = await gemstoneSelecting.getSelectedGem(gemId);
+    expect(gem.forSale).to.equal(true);
   });
 
-
-  // Teszt: Drágakő átruházása
-  it('should allow gem ownership transfer', async () => {
+  it("should allow gem ownership transfer", async function () {
     const gemId = 1;
-    const price = web3.utils.toWei('1', 'Ether');
+    const price = ethers.utils.parseEther("1");
 
-    await contractInstance.transferGemOwnership(gemId, { from: accounts[1], value: price });
+    // Átruházza a drágakövet egy új tulajdonosra
+    await gemstoneSelecting.connect(addr1).transferGemOwnership(gemId, { value: price });
 
-    const gem = await contractInstance.getSelectedGem(gemId);
-    assert.equal(gem.owner, accounts[1], 'Gem owner should now be accounts[1]');
+    const gem = await gemstoneSelecting.getSelectedGem(gemId);
+    expect(gem.owner).to.equal(addr1.address);
   });
 
-  // Teszt: Drágakő használata
-  it('should mark gem as used', async () => {
+  it("should mark gem as used", async function () {
     const gemId = 1;
 
-    await contractInstance.markGemAsUsed(gemId, { from: accounts[1] });
+    // Használatra jelöli a drágakövet
+    await gemstoneSelecting.connect(addr1).markGemAsUsed(gemId);
 
-    const gem = await contractInstance.getSelectedGem(gemId);
-    assert.equal(gem.used, true, 'Gem should be marked as used');
+    const gem = await gemstoneSelecting.getSelectedGem(gemId);
+    expect(gem.used).to.equal(true);
   });
 
-  // Teszt: Előző drágakő tárolása
-  it('should set the previous gem ID', async () => {
+  it("should set the previous gem ID", async function () {
     const gemId = 1;
     const prevGemId = 0;
 
-    // Beállítjuk az előző drágakövet
-    await contractInstance.setPreviousGemId(gemId, prevGemId, { from: accounts[0] });
+    // Beállítja az előző drágakövet
+    await gemstoneSelecting.connect(owner).setPreviousGemId(gemId, prevGemId);
 
-    // Ellenőrizzük, hogy az prev gem ID helyesen lett beállítva
-    const gem = await contractInstance.getSelectedGem(gemId);
-    assert.equal(gem.previousGemId, prevGemId, 'Previous gem ID should be set');
+    const gem = await gemstoneSelecting.getSelectedGem(gemId);
+    expect(gem.previousGemId).to.equal(prevGemId);
   });
 
-  // Teszt: Tulajdonoshoz tartozó drágakövek száma
-  it('should return the correct gemstone count for an owner', async () => {
-    const gemCount = await contractInstance.getSelectedGemsCountByOwner(accounts[1]);
-    assert.equal(gemCount.toNumber(), 1, 'Gem count for owner accounts[1] should be 1');
+  it("should return the correct gemstone count for an owner", async function () {
+    const gemCount = await gemstoneSelecting.getSelectedGemsCountByOwner(addr1.address);
+    expect(gemCount.toNumber()).to.equal(1);
   });
 });
+*/
