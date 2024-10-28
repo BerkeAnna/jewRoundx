@@ -56,7 +56,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner }) {
         )}
           
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        <p><strong>Price:</strong> {ethers.utils.formatEther(minedGem.price.toString())} Eth</p>
+        {/*<p><strong>Price:</strong> {ethers.utils.formatEther(minedGem.price.toString())} Eth</p>*/}
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
         <button className="btn" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>

@@ -51,10 +51,13 @@ class GemstoneExtractionService {
   }
   
 
-  async purchaseGem(id) {
-    if (!this.contract) await this.loadContract();
-    return this.contract.purchaseGem(id);
-  }
+  async purchaseGem(id,  account) {
+    if (!this.contract) {
+       await this.loadContract(); // betöltjük a szerződést
+    }
+ 
+    return this.contract.purchaseGem(id, { from: account });
+ }
 
   async processingGem(id, price) {
     if (!this.contract) await this.loadContract();

@@ -635,4 +635,26 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 1 óra 22 percbe telt rájönni.....
                 https://medium.com/@thelasthash/solved-nonce-too-high-error-with-metamask-and-hardhat-adc66f092cd
                 https://ethereum.stackexchange.com/questions/109625/received-invalid-block-tag-87-latest-block-number-is-0
-                
+                szóval tényléeg bármit módosítok frissíteni/ újra hozzá kell adni a hálózatot metamaskban
+
+                ![ metamaskban is data clean](image-13.png)
+                metamdataban is clean...
+                npx hardhat clean
+                npx hardhat compile
+                npx hardhat node
+
+Go to MetaMask > Settings > Advanced > Reset Account. This will clear the MetaMask cache in your browser and reload data from the Hardhat instance.
+
+Next:
+
+Stop your local Hardhat network by stopping the terminal running Hardhat.
+Clean the cache in your root directory:
+npx hardhat clean
+Recompile your contract:
+npx hardhat compile
+Restart your Hardhat node by running:
+npx hardhat node
+
+                16:27
+                        a pricet kiírja de a pinataból nem szedi le az adatokat.
+                        nem kéri le a metaadatokat a pinataból...............

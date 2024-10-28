@@ -27,14 +27,19 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     try {
       const cleanedHash = cleanHash(hash);
       const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      console.log("Pinata URL:", url); // Ellenőrizheted az URL helyességét
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       const data = await response.json();
-      setpinataMetadataMined(data);
+      console.log("Pinata Mined Metadata:", data); // Ellenőrizd az adatokat a konzolban
+      setpinataMetadataMined(data); // Itt állítjuk be az állapotot a lekért adat alapján
     } catch (error) {
       console.error('Error fetching Pinata metadata:', error);
     }
   };
-
+  
   const fetchPinataMetadataForSelected = async (hash) => {
     try {
       const cleanedHash = cleanHash(hash);
@@ -62,7 +67,6 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
         const selectedGemEvents = await gemstoneSelectingContract.queryFilter(gemstoneSelectingContract.filters.allEvents(), 0, "latest");
         const filteredSelectedGems = selectedGemEvents.filter(event => parseInt(event.args.id) === parseInt(gemId));
         setFilteredSelectedGemEvents(filteredSelectedGems);
-
         // Bányászott gem események lekérése
         const minedGemEvents = await gemstoneExtractionContract.queryFilter(gemstoneExtractionContract.filters.allEvents(), 0, "latest");
         const filteredMinedGems = minedGemEvents.filter(event => parseInt(event.args.id) === parseInt(gemId));
@@ -76,6 +80,8 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
         if (minedGem && minedGem.metadataHash) {
           await fetchPinataMetadataMined(minedGem.metadataHash);
         }
+
+        
 
         // Tranzakciók blokkjainak dátumainak és gázadatainak lekérése
         const allEvents = [...filteredSelectedGems, ...filteredMinedGems];
@@ -135,6 +141,7 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
           </div>
         )}
         <p><strong>Price:</strong> {ethers.utils.formatEther(gemSelected.price.toString())} Eth</p>
+
         <p><strong>replaced:</strong> {gemSelected.replaced.toString()}</p>
         <p><strong>Gem cutter:</strong> {gemSelected.gemCutter}</p>
         <p><strong>Owner:</strong> {gemSelected.owner}</p>
@@ -144,10 +151,13 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     );
   };
 
+  
   const renderMinedGemDetails = () => {
     if (!minedGem) {
       return <p>No mined gem details found.</p>;
     }
+
+    console.log("MinedGem Metadata Hash:", minedGem.metadataHash);
 
     return (
       <div className="card">
@@ -167,7 +177,9 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
             <p><strong>Mining Year:</strong> {pinataMetadataMined.miningYear}</p>
           </div>
         )}
-        <p><strong>Price:</strong> {ethers.utils.formatEther(minedGem.price.toString())} Eth</p>
+
+        <p><strong>Price in Wei:</strong> {minedGem.price.toString()*1} Wei</p>
+        <p><strong>Price in Ether:</strong> {minedGem.price.toString()/1000000000000000000} Ether</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
         <h3>Transaction Details</h3>
@@ -230,7 +242,7 @@ function GemDetails({ selectedGems, minedGems, gemstoneSelectingContract, gemsto
     <div className="details-details-container card-background pt-5">
       <h1>Gem Details</h1>
       <div className="card-container pt-5">
-        {renderSelectedGemDetails()}
+       {/*} {renderSelectedGemDetails()} */}
       </div>
       <div className="card-container pt-5">
         {renderMinedGemDetails()}

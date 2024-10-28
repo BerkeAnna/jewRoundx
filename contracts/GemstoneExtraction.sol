@@ -133,7 +133,6 @@ contract GemstoneExtraction {
         MinedGem storage _minedGem = minedGems[_id];
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
         require(_minedGem.purchased == false, "Gem already purchased");
-        require(msg.value >= _minedGem.price, "Insufficient funds");
 
         _minedGem.owner = msg.sender; 
         _minedGem.purchased = true;

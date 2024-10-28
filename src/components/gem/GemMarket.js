@@ -54,7 +54,7 @@ function GemMarket({ selectedGems, transferGemOwnership }) {
         )}
         <div className="card-body">
           <h5 className="card-title">{gem.gemType}</h5>
-          <p className="card-text">Price: {ethers.utils.formatEther(gem.price.toString())} Eth</p> {/* `ethers.js` konverzió */}
+          {/*<p className="card-text">Price: {ethers.utils.formatEther(gem.price.toString())} Eth</p> {/* `ethers.js` konverzió */}
           <p className="card-text">Owner: {gem.owner}</p>
           <button className="btn" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
             Buy
