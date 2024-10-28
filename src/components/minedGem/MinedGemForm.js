@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/Forms.css';
+import { ethers } from 'ethers';
 
 function MinedGemForm(props) {
   const navigate = useNavigate();
@@ -9,50 +10,51 @@ function MinedGemForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const formData = new FormData(event.target);
     const file = fileInputRef.current.files[0];
-
+  
     let fileUrl = "";
     if (file) {
       try {
         const fileData = new FormData();
         fileData.append("file", file);
-
+  
         const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', fileData, {
           headers: {
             'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
             'pinata_secret_api_key': process.env.REACT_APP_PINATA_PRIVATE_KEY,
           },
         });
-
+  
         fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
       } catch (err) {
         console.error("Error uploading file: ", err);
         return;
       }
     }
-
+  
     const gemType = formData.get('gemType').toString();
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');
+    const price = ethers.utils.parseEther(formData.get('price')); // Ether átváltás ethers.js-sel
     const weight = formData.get('weight').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width}`; 
     const details = `Carat: ${weight} ct, Size: ${size} mm`; 
-
+  
     const miningLocation = formData.get('miningLocation').toString();
     const miningYear = formData.get('miningYear').toString();
-
+  
     try {
       await props.gemMining(gemType, details, price, miningLocation, miningYear, fileUrl, false);
     } catch (error) {
       console.error("Error in gemMining: ", error);
     }
-
+  
     navigate('/loggedIn');
   };
+  
 
   return ( 
   <div className="card-container card-background">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
   const navigate = useNavigate();
@@ -50,10 +51,10 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
-          <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(minedGem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{minedGem.owner}</td>
           <td>
-          <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price.toString())} className="btn">
+          <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price)} className="btn">
             Process
           </button>
           </td>
@@ -68,7 +69,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
-          <td>{window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(minedGem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{minedGem.owner}</td>
           <td className="button-container">
             <button onClick={() => handleMarkAsSelected(minedGem.id)} className="btn">
@@ -86,7 +87,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
           <td>{selectedGem.colorGemType}</td>
-          <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
+          <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(selectedGem.price).toString()))} Eth</td> {/* BigNumber konverzió */}
           <td>{selectedGem.owner}</td>
           <td className="button-container">
          
@@ -138,7 +139,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       <tr key={key}>
         <th scope="row">{jewelry.id.toString()}</th>
         <td>{jewelry.name}</td>
-        <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(jewelry.price).toString()))} Eth</td> {/* BigNumber konverzió */}
         <td>{jewelry.owner}</td>
         <td className="button-container">
           <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
@@ -199,7 +200,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       <tr key={key}>
         <th scope="row">{jewelry.id.toString()}</th>
         <td>{jewelry.name}</td>
-        <td>{window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</td>
+        <td>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(jewelry.price).toString()))} Eth</td> {/* BigNumber konverzió */}
         <td>{jewelry.owner}</td>
         <td className="button-container">
           <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">

@@ -517,4 +517,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         18:24
                 etherjs priceok javítása. Most betölt,de a form már elakad
 
+        19:06
+                a romweiket kiirtani. etherjs-re cserélni
                 

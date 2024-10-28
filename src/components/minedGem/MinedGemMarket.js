@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Market.css';
+import { ethers } from 'ethers';
 
 function MinedGemMarket({ minedGems, account, markNewOwner, }) {
   const navigate = useNavigate();
@@ -50,7 +51,8 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
       <div key={key} className="card market-card">
          <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} />
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price: </strong>{ethers.utils.formatEther(ethers.BigNumber.from(Math.floor(minedGem.price).toString()))} Eth</p> {/* BigNumber konverzió */}
+         
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
         <button className="btn" onClick={() => handleMarkAsSelected(minedGem.id, minedGem.price)}>
