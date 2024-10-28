@@ -513,3 +513,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         14:20
                 a gemhez kell aaz a maradék ptt értékek? változók?
                 
+
+
+                
