@@ -197,6 +197,9 @@ class App extends Component {
     try {
         this.setState({ loading: true });
         const account = this.state.account; 
+        console.log("Signer:", this.signer);
+console.log("Provider:", this.provider);
+
 
         // GemstoneExtractionService-től hívjuk a gemMining fv-t
         await GemstoneExtractionService.gemMining(gemType, price, metadataUrl, purchased, account, fileUrl);

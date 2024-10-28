@@ -628,3 +628,11 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 npx hardhat node
                 npx hardhat run --network development scripts/deploy.js
                 npm run start
+        
+2024.10.28
+        14:46
+                Ha újraindítom resetelni kell a metamaskot. legegyszerűbb: törölni és újra hozzáadni metamaskhoz a hálózatot. És újraindítani mindent (mindhárom felső parancs)
+                1 óra 22 percbe telt rájönni.....
+                https://medium.com/@thelasthash/solved-nonce-too-high-error-with-metamask-and-hardhat-adc66f092cd
+                https://ethereum.stackexchange.com/questions/109625/received-invalid-block-tag-87-latest-block-number-is-0
+                

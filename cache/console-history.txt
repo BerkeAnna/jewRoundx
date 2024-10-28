@@ -1,9 +1,0 @@
-console.log(countt.toString());
-const countt = await gemstoneExtractionInstance.minedGemCount()
-const gemstoneExtractionInstance = await ethers.getContractAt("GemstoneExtraction", "0x5FbDB2315678afecb367f032d93F642f64180aa3");
-const countt = await gemstoneExtractionInstance.minedGemCount()
-const count2 = await gemstoneExtractionInstance.minedGemCount();
-const count = await gemstoneExtractionInstance.minedGemCount();
-const gemstoneExtractionInstance = await ethers.getContractAt("GemstoneExtraction", "0x5FbDB2315678afecb367f032d93F642f64180aa3");
-const count = await gemstoneExtraction.minedGemCount();
-const gemstoneExtraction = await ethers.getContractAt("GemstoneExtraction", "0x5FbDB2315678afecb367f032d93F642f64180aa3");
