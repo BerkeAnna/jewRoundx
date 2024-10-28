@@ -41,5 +41,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.22.15"
+  }
 }

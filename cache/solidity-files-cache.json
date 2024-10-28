@@ -1,0 +1,182 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\berke\\jewRoundx\\contracts\\Migrations.sol": {
+      "lastModificationDate": 1730135069199,
+      "contentHash": "69a6754fa35f6cf8bdf632c289b1d20b",
+      "sourceName": "contracts/Migrations.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\GemstoneExtraction.sol": {
+      "lastModificationDate": 1730135069198,
+      "contentHash": "f28e0d13c44bf5ef339d9f5b8c651988",
+      "sourceName": "contracts/GemstoneExtraction.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "GemstoneExtraction"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\GemstoneSelecting.sol": {
+      "lastModificationDate": 1730135069198,
+      "contentHash": "5922e17eebfdc948b9888cae9fe03fc1",
+      "sourceName": "contracts/GemstoneSelecting.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "GemstoneSelecting",
+        "IGemstoneExtraction"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\Jewelry.sol": {
+      "lastModificationDate": 1730135069199,
+      "contentHash": "56f0c08a3525de08bfe09e7bbdbb37d2",
+      "sourceName": "contracts/Jewelry.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "IGemstoneSelecting",
+        "Jewelry"
+      ]
+    },
+    "C:\\Users\\berke\\jewRoundx\\contracts\\UserRegistry.sol": {
+      "lastModificationDate": 1730135069199,
+      "contentHash": "632df5ecb389477874b79b5ce71545ce",
+      "sourceName": "contracts/UserRegistry.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.21 <0.6.0"
+      ],
+      "artifacts": [
+        "UserRegistry"
+      ]
+    }
+  }
+}

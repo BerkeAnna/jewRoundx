@@ -513,6 +513,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         14:20
                 a gemhez kell aaz a maradék ptt értékek? változók?
                 
-
+2024.10.28
+        18:24
+                etherjs priceok javítása. Most betölt,de a form már elakad
 
                 
