@@ -53,11 +53,13 @@ class GemstoneExtractionService {
     return this.contract.processingGem(id, { value: priceInEther });
   }
   
-  async markNewOwner(id, price) {
+  async markNewOwner(id, price, account) {
     if (!this.contract) await this.loadContract();
-    const priceInEther = ethers.utils.parseUnits(price.toString(), "ether"); // Konverzió Ether formátumba
-    return this.contract.markNewOwner(id, { value: priceInEther });
-  }
+    const priceInEther = ethers.utils.parseUnits(price.toString(), "ether");
+    const tx = await this.contract.markNewOwner(id, { value: priceInEther, from: account });
+    return await tx.wait(); // Várakozás a tranzakció befejezésére
+}
+
   
 
   async markGemAsSelected(id) {

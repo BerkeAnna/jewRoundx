@@ -1,39 +1,46 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
 import GemSelecting from '../abis/GemstoneSelecting.json';
 
 class GemSelectingService {
   constructor() {
-    this.web3 = new Web3(window.ethereum);
+    if (window.ethereum) {
+      this.provider = new ethers.providers.Web3Provider(window.ethereum);
+      this.signer = this.provider.getSigner();
+    } else {
+      console.error("Ethereum provider not found. Please install MetaMask.");
+    }
     this.contract = null;
   }
 
   // Szerződés betöltése
   async loadContract() {
-    const networkId = await this.web3.eth.net.getId();
-    const networkData = GemSelecting.networks[networkId];
-    if (networkData) {
-      this.contract = new this.web3.eth.Contract(GemSelecting.abi, networkData.address);
+    const contractAddress = process.env.REACT_APP_GEMSTONE_SELECTING_ADDRESS;
+    if (contractAddress) {
+      console.log("GemSelecting Contract Address:", contractAddress); // Szerződés címének ellenőrzése
+      this.contract = new ethers.Contract(contractAddress, GemSelecting.abi, this.signer);
     } else {
       throw new Error('Gemstone selecting contract not deployed.');
     }
   }
 
-  async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account) {
-    if (!this.contract) {
-      await this.loadContract(); // Betöltjük a szerződést
-    }
-
-    const gemDetails = {
-      size,
-      carat,
-      gemType: colorGemType.split(',')[0].split(': ')[1],  // GemType
-      color: colorGemType.split(',')[1].split(': ')[1]      // Color
-    };
-
-    return this.contract.methods.gemSelecting(minedGemId, gemDetails, fileUrl, price).send({ from: account });
+// Drágakő kiválasztása (gemSelecting)
+async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, account) {
+  if (!this.contract) {
+    await this.loadContract();
   }
 
+  // Az Etherben megadott `price` átkonvertálása Wei-be
+  const priceInWei = ethers.utils.parseUnits(price.toString(), 'ether'); // Ether konverzió Wei-re
+  
+  const gemDetails = {
+    size,
+    carat,
+    gemType: colorGemType.split(',')[0].split(': ')[1],  // GemType
+    color: colorGemType.split(',')[1].split(': ')[1]      // Color
+  };
 
+  return this.contract.gemSelecting(minedGemId, gemDetails, fileUrl, priceInWei, { from: account });
+}
 
 
   // Drágakő polírozása (polishGem)
@@ -42,9 +49,8 @@ class GemSelectingService {
       await this.loadContract(); // betöltjük a szerződést
     }
 
-    return this.contract.methods.polishGem(id).send({
-      from: account
-    });
+    const tx = await this.contract.polishGem(id, { from: account });
+    return await tx.wait(); // Várakozás a tranzakció befejezésére
   }
 
   // Drágakő felhasználásának megjelölése (markGemAsUsed)
@@ -53,41 +59,33 @@ class GemSelectingService {
       await this.loadContract(); // betöltjük a szerződést
     }
 
-    return this.contract.methods.markGemAsUsed(id).send({
-      from: account
-    });
+    const tx = await this.contract.markGemAsUsed(id, { from: account });
+    return await tx.wait(); // Várakozás a tranzakció befejezésére
   }
 
+  // Drágakő cseréjének megjelölése (markGemAsReplaced)
   async markGemAsReplaced(id, account) {
     if (!this.contract) {
-      await this.loadContract(); 
+      await this.loadContract();
     }
-    return this.contract.methods.markGemAsReplaced(id).send({
-      from: account
-    });
+    const tx = await this.contract.markGemAsReplaced(id, { from: account });
+    return await tx.wait(); // Várakozás a tranzakció befejezésére
   }
 
   // Drágakő tulajdonjogának átruházása (transferGemOwnership) - Ether értékkel
   async transferGemOwnership(id, price, account) {
     if (!this.contract) {
-      await this.loadContract(); // betöltjük a szerződést
+      await this.loadContract();
     }
-
+  
     if (!account) {
       throw new Error("No valid account address provided.");
     }
-
-    // Gas limit és gas price hozzáadása a tranzakcióhoz
-    const gasLimit = 300000;  
-    const gasPrice = await this.web3.eth.getGasPrice(); 
-
-    // Drágakő tulajdonjogának átruházása a megadott Ether értékkel
-    return this.contract.methods.transferGemOwnership(id).send({ 
-      from: account, 
-      value: price, 
-      gas: gasLimit, 
-      gasPrice: gasPrice 
-    });
+  
+    const priceInWei = ethers.utils.parseEther(price.toString()); // Konvertálás Wei-be
+  
+    const tx = await this.contract.transferGemOwnership(id, { from: account, value: priceInWei });
+    return await tx.wait(); // Várakozás a tranzakció befejezésére
   }
 }
 

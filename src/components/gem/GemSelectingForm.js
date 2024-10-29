@@ -46,7 +46,7 @@ function GemSelectingForm(props, markGemAsSelected) {
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
     const size = `${depth}x${height}x${width} mm`;  // Méret
-    const price = window.web3.utils.toWei(formData.get('price'), 'Ether');  // Ár konvertálása Ether formátumba
+    const price = formData.get('price'); 
 
     const colorGemType = `Type: ${gemType}, Color: ${color}`;
 

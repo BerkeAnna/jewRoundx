@@ -35,7 +35,7 @@ function MinedGemForm(props) {
     }
   
     const gemType = formData.get('gemType').toString();
-    const price = ethers.utils.parseEther(formData.get('price')); // Ether átváltás ethers.js-sel
+    const price = formData.get('price'); 
     const weight = formData.get('weight').toString();
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();

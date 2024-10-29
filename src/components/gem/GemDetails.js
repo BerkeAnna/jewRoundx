@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/Details.css';
+import { ethers } from 'ethers';
 
 function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams(); 
@@ -91,7 +92,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price: </strong>{ethers.utils.formatEther(gem.price.toString())} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
 
@@ -118,7 +119,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price: </strong>{gem.price} Eth</p>
         <p><strong>Miner:</strong> {gem.miner}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
 

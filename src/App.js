@@ -182,6 +182,7 @@ class App extends Component {
     this.replaceGem = this.replaceGem.bind(this);
     this.addForRepair = this.addForRepair.bind(this);
     this.returnToOwner = this.returnToOwner.bind(this);
+    this.markNewOwner = this.markNewOwner.bind(this);
   }
 
 
