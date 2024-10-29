@@ -520,3 +520,10 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         19:06
                 a romweiket kiirtani. etherjs-re cserélni
                 
+
+2023.10.29
+        12:47
+                Tranzakciókat nem írja ki
+                a korábbi vagy hozzátartozó gem adatokat se a sleected, se a jewelrynél nem írja ki
+                repair - changegem odlalokon nem jelnik meg semmi
+                az add gem működik elvileg, de a jewdetails nem ír ki semmit

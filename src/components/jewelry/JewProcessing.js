@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Details.css';
+import { ethers } from 'ethers';
 
 function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
   const { id } = useParams();
@@ -22,7 +23,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
             <td>{gem.details.size.toString()}</td>
             <td>{gem.details.carat.toString()} ct</td>
             <td>{gem.details.color.toString()}</td>
-            <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+            <td>{ethers.utils.formatEther(gem.price)} Eth</td> {/* Convert to ETH */}
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
                 Select

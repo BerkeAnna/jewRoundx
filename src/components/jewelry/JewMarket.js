@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function JewMarket({ jewelry, account, buyJewelry }) {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function JewMarket({ jewelry, account, buyJewelry }) {
           )}
           <div className="card-body">
             <h5 className="card-title">{jewelryItem.name}</h5>
-            <p className="card-text">Price: {window.web3.utils.fromWei(jewelryItem.price.toString(), 'Ether')} Eth</p>
+            <p className="card-text"><strong>Price: </strong>{jewelryItem.price.toString()} Eth</p>
             <p className="card-text">Owner: {jewelryItem.owner}</p>
             <button className="btn btn-primary" onClick={() => navigateToJewDetails(jewelryItem.id)}>
               Details

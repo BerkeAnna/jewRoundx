@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function GemMarket({  selectedGems, transferGemOwnership }) {
   const navigate = useNavigate();
@@ -49,9 +50,10 @@ function GemMarket({  selectedGems, transferGemOwnership }) {
         <img src={gem.fileURL} className="card-img-top card-img-top-market"  />
         <div className="card-body">
           <h5 className="card-title">{gem.gemType}</h5>
-          <p className="card-text">Price: {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-          <p className="card-text">Owner: {gem.owner}</p>
-          <button className="btn" onClick={() => handleMarkAsSelected(gem.id, gem.price)}>
+          <p className="card-text"><strong>Price: </strong>{ethers.utils.formatEther(gem.price)} Eth</p>
+
+          <p className="card-text"><strong>Owner: </strong>{gem.owner}</p>
+          <button className="btn" onClick={() => handleMarkAsSelected(gem.id, ethers.utils.formatEther(gem.price))}>
             Buy
           </button>
           <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>

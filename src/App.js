@@ -183,6 +183,9 @@ class App extends Component {
     this.addForRepair = this.addForRepair.bind(this);
     this.returnToOwner = this.returnToOwner.bind(this);
     this.markNewOwner = this.markNewOwner.bind(this);
+    this.transferGemOwnership = this.transferGemOwnership.bind(this);
+    this.buyJewelry = this.buyJewelry.bind(this);
+
   }
 
 
@@ -403,14 +406,9 @@ async buyJewelry(id, price) {
   try {
     this.setState({ loading: true });
     const account = this.state.account;
-
-    // JewelryService-től hívjuk a buyJewelry fv-t
     await JewelryService.buyJewelry(id, price, account);
-
-    // tranzakció után frissítjük a blokklánc adatokat
-    await this.loadBlockchainData3(); 
+    await this.loadBlockchainData3();
     this.setState({ loading: false });
-
   } catch (error) {
     console.error("Error in buyJewelry:", error);
     this.setState({ loading: false });
@@ -454,22 +452,23 @@ async markNewOwner(id, price) {
 }
 
 
-async transferGemOwnership(id, price) {
+transferGemOwnership = async (id, price) => {
   try {
     this.setState({ loading: true });
     const account = this.state.account;
 
-    // GemSelectingService-től hívjuk a transferGemOwnership fv-t
-    await GemSelectingService.transferGemOwnership(id,  price , account);
+    // Call the method from GemSelectingService
+    await GemSelectingService.transferGemOwnership(id, price, account);
 
-    // tranzakció után frissítjük a blokklánc adatokat
+    // Update blockchain data after the transaction
     await this.loadBlockchainData(); 
     this.setState({ loading: false }); 
   } catch (error) {
     console.error("Error in transferGemOwnership:", error);
     this.setState({ loading: false }); 
   }
-}
+};
+
 
 async addForRepair(id) {
   try {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
@@ -244,7 +245,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
+        <p><strong>Price: </strong>{jewelry.price.toString()} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
 

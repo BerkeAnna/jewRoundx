@@ -51,25 +51,25 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
-          <td>{minedGem.price} Eth</td> {/* BigNumber konverzió */}
+          <td>{minedGem.price} Eth</td> {/* Convert to ETH */}
           <td>{minedGem.owner}</td>
           <td>
-          <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price)} className="btn">
-            Process
-          </button>
+            <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price)} className="btn">
+              Process
+            </button>
           </td>
         </tr>
       )
     ));
   };
-
+  
   const renderSelectedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === true && minedGem.selected === false && (
         <tr key={key}>
           <th scope="row">{minedGem.id.toString()}</th>
           <td>{minedGem.gemType}</td>
-          <td>{minedGem.price} Eth</td> {/* BigNumber konverzió */}
+          <td>{minedGem.price} Eth</td> {/* Convert to ETH */}
           <td>{minedGem.owner}</td>
           <td className="button-container">
             <button onClick={() => handleMarkAsSelected(minedGem.id)} className="btn">
@@ -80,18 +80,17 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       )
     ));
   };
-
+  
   const renderProcessingGems = () => {
     return ownedSelectedGems.map((selectedGem, key) => (
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
           <td>{selectedGem.colorGemType}</td>
-          <td>{ethers.utils.formatEther(selectedGem.price)} Eth</td>
-
+          <td>{ethers.utils.formatEther(selectedGem.price)} Eth</td> {/* Convert to ETH */}
           <td>{selectedGem.owner}</td>
           <td className="button-container">
-         
+            {/* Render buttons based on conditions */}
             {!selectedGem.forSale && !selectedGem.used ? (
               <>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
@@ -102,125 +101,97 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
                     Make jewelry
                   </button>
                 )}
-                <button
-                id={selectedGem.id}
-                value={selectedGem.price}
-                onClick={() => polishGem(selectedGem.id)}
-                className="btn"
-              >
-                ForSale
-              </button>
+                <button onClick={() => polishGem(selectedGem.id)} className="btn">
+                  ForSale
+                </button>
               </>
             ) : (
-              <div>
+              <>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
-                Details
+                  Details
                 </button>
-                <button
-                  id={selectedGem.id}
-                  value={selectedGem.price}
-                  onClick={() => polishGem(selectedGem.id)}
-                  className="btn"
-                >
+                <button onClick={() => polishGem(selectedGem.id)} className="btn">
                   Remove from market
                 </button>
-              </div>
+              </>
             )}
           </td>
         </tr>
       )
     ));
   };
-
+  
   const renderJewelry = () => {
     return ownedJewelry.map((jewelry, key) => (
-      
-      !jewelry.processing ? (
-        <>
-      <tr key={key}>
-        <th scope="row">{jewelry.id.toString()}</th>
-        <td>{jewelry.name}</td>
-        <td>{jewelry.price} Eth</td> {/* BigNumber konverzió */}
-        <td>{jewelry.owner}</td>
-        <td className="button-container">
-          <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
-            Details
-          </button>
-          {role === 'Jewelry Owner' ? (
-            //todo : owner módosítás jewelerre
-            <button onClick={() => handleAddRepair(jewelry.id)} className="btn">
-              Add to repair
+      !jewelry.processing && (
+        <tr key={key}>
+          <th scope="row">{jewelry.id.toString()}</th>
+          <td>{jewelry.name}</td>
+          <td>{jewelry.price.toString()} Eth</td> {/* Convert to ETH */}
+          <td>{jewelry.owner}</td>
+          <td className="button-container">
+            <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
+              Details
             </button>
-          ) : (
-            !jewelry.sale && (
-              <>
-              <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
-                Repair
+            {role === 'Jewelry Owner' ? (
+              <button onClick={() => handleAddRepair(jewelry.id)} className="btn">
+                Add to repair
               </button>
-              {jewelry.jewOwner!==jewelry.owner ? (
-              <button onClick={() => handleReturnToOwner(jewelry.id)} className="btn">
-                Return To Owner
+            ) : (
+              !jewelry.sale && (
+                <>
+                  <button onClick={() => navigate(`/repair/${jewelry.id}`)} className="btn">
+                    Repair
+                  </button>
+                  {jewelry.jewOwner !== jewelry.owner && (
+                    <button onClick={() => handleReturnToOwner(jewelry.id)} className="btn">
+                      Return To Owner
+                    </button>
+                  )}
+                </>
+              )
+            )}
+            {jewelry.sale ? (
+              <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
+                Remove from market
               </button>
-              ):(
-                <>
-                </>
-              )}
-              </>
-            )
-          )}
-          {jewelry.sale ? (
-          <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
-            Remove from market
-          </button>
-          ):(
-            <>
-              {jewelry.jewOwner===jewelry.owner ? (
-            <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
-              Sale
-            </button>
-              ):(
-                <>
-                </>
-              )}
-            </>
-          )}
-        </td>
-         
-      </tr>
-      </>
-    ):
-    <></>
+            ) : (
+              jewelry.jewOwner === jewelry.owner && (
+                <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
+                  Sale
+                </button>
+              )
+            )}
+          </td>
+        </tr>
+      )
     ));
   };
-
+  
   const renderProcessingJewelry = () => {
     return ownedJewelry.map((jewelry, key) => (
-      
-      jewelry.processing ? (
-        <>
-      <tr key={key}>
-        <th scope="row">{jewelry.id.toString()}</th>
-        <td>{jewelry.name}</td>
-        <td>{jewelry.price} Eth</td> {/* BigNumber konverzió */}
-        <td>{jewelry.owner}</td>
-        <td className="button-container">
-          <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
-            Details
-          </button>
-          <button onClick={() => navigate(`/jewelry-processing/${jewelry.id}`)} className="btn">
-            Add gem
-          </button>
-          <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn">
-            Finish
-          </button>
-        </td>
-         
-      </tr>
-      </>
-    ):
-    <></>
+      jewelry.processing && (
+        <tr key={key}>
+          <th scope="row">{jewelry.id.toString()}</th>
+          <td>{jewelry.name}</td>
+          <td>{jewelry.price.toString()} Eth</td> {/* Convert to ETH */}
+          <td>{jewelry.owner}</td>
+          <td className="button-container">
+            <button onClick={() => navigate(`/jewelry-details/${jewelry.id}`)} className="btn">
+              Details
+            </button>
+            <button onClick={() => navigate(`/jewelry-processing/${jewelry.id}`)} className="btn">
+              Add gem
+            </button>
+            <button onClick={() => handleMarkedAsFinished(jewelry.id)} className="btn">
+              Finish
+            </button>
+          </td>
+        </tr>
+      )
     ));
   };
+  
 
   return (
     <div id="tables" className="pt-5">

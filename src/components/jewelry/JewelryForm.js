@@ -51,7 +51,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
     const width = formData.get('width').toString();
     const size = `Depth: ${depth} mm - Height: ${height} mm - Width: ${width} mm`; 
     const physicalDetails = `Metal: ${metal} - ${size}`; 
-    const price = window.web3.utils.toWei(formData.get('price').toString(), 'Ether');
+    const price = formData.get('price'); 
     const sale = false;
 
     if (!name) {
