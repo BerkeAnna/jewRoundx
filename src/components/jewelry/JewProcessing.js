@@ -23,7 +23,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
             <td>{gem.details.size.toString()}</td>
             <td>{gem.details.carat.toString()} ct</td>
             <td>{gem.details.color.toString()}</td>
-            <td>{ethers.utils.formatEther(gem.price)} Eth</td> {/* Convert to ETH */}
+            <td>{gem.price.toString()} Eth</td> {/* Convert to ETH */}
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
                 Select

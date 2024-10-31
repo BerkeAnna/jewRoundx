@@ -530,4 +530,8 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024-10-31-     
         10.24
-                selected gem price - weiben számol. a jewdetailsnél nem írtam át. de itt a formnál lesz gond
+                Csak a jew tranzakciókat írja ki
+                a details a transon kívűl jó
+                add-gem műkszik
+                repair is műkszik
+                

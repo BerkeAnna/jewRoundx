@@ -151,6 +151,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
+        <div>
+  <h2>Last Previous Gem ID</h2>
+  <p>{prevGemsArray.length > 0 ? `Gem ID: ${prevGemsArray[prevGemsArray.length - 1]}` : "No Previous Gem IDs Found"}</p>
+</div>
+
         <p><strong>Price:</strong> {jewelry.price.toString()} Eth</p>
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
@@ -228,6 +233,16 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     ));
   };
 
+  const handlePrevGem = () => {
+    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
+    setCurrentGemIndex(prev => (prev === 0 ? maxIndex : prev - 1));
+  };
+
+  const handleNextGem = () => {
+    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
+    setCurrentGemIndex(prev => (prev === maxIndex ? 0 : prev + 1));
+  };
+
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
@@ -235,24 +250,24 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         {renderJewelry()}
       </div>
       <div className="details-row pt-5">
-        <span className="arrow" onClick={() => setCurrentGemIndex(currentGemIndex === 0 ? minedGems.length - 1 : currentGemIndex - 1)}>
+      <span className="arrow" onClick={handlePrevGem}>
           ←
         </span>
         <div className="card-container">
           {renderMinedGems()[currentGemIndex]}
         </div>
-        <span className="arrow" onClick={() => setCurrentGemIndex((currentGemIndex + 1) % minedGems.length)}>
+        <span className="arrow" onClick={handleNextGem}>
           →
         </span>
       </div>
       <div className="details-row">
-        <span className="arrow" onClick={() => setCurrentGemIndex(currentGemIndex === 0 ? selectedGems.length - 1 : currentGemIndex - 1)}>
-          ←
+      <span className="arrow" onClick={handlePrevGem}>
+           ←
         </span>
         <div className="card-container pt-5">
           {renderSelectedGems()[currentGemIndex]}
         </div>
-        <span className="arrow" onClick={() => setCurrentGemIndex((currentGemIndex + 1) % selectedGems.length)}>
+        <span className="arrow" onClick={handleNextGem}>
           →
         </span>
       </div>

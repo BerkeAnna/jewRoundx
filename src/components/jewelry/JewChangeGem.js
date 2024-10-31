@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced }) {
+function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced, updateGem }) {
   const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
@@ -11,8 +11,13 @@ function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, 
     
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsUsed(newGemId);
+    console.log( 'markGemAsUsed New Gem ID:', newGemId);
     replaceGem(id, oldGemId, newGemId);
+    console.log('replaceGem Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsReplaced(oldGemId);
+    console.log('markGemAsReplaced', 'Old Gem ID:', oldGemId);
+    updateGem(id, newGemId);
+    console.log('updategem', 'Old Gem ID:', newGemId);
     navigate(`/jewelry-details/${id}`);
 
 };
@@ -39,12 +44,13 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
-        <td>size</td>
-        <td>carat</td>
-        <td>color and type</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+        <td>{gem.details.size}</td>
+        <td>{gem.details.carat.toString()}</td>
+        <td>{gem.details.color.toString()}</td>
+        <td>{gem.details.gemType.toString()}</td>
+        <td>{gem.price.toString()} Eth</td>
         <td>
-          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+          <button onClick={() => handleRepair(gem.id)} className="btn btn-primary">
             Select
           </button>
           <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
@@ -66,7 +72,8 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
             <th>ID</th>
             <th>Size</th>
             <th>Carat</th>
-            <th>Color and type</th>
+            <th>Color</th>
+            <th>Type</th>
             <th>Price</th>
             <th>Action</th>
           </tr>

@@ -209,6 +209,7 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
               account={state.account} 
               replaceGem={replaceGem} 
               markGemAsReplaced={markGemAsReplaced}
+              updateGem={updateGem}
             />
           </ProtectedRoute>
         } 

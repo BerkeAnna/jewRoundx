@@ -22,7 +22,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
-        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const details = await jewelryContract.getJewelryDetails(id);
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
         setPrevGemsArray(gemIdsAsInt);
 
@@ -44,7 +44,6 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <td>{gem.size.toString()}</td>
         <td>{gem.carat.toString()} ct</td>
         <td>{gem.colorGemType}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
           <button onClick={() => handleRepair(gem.id)} className="btn">
             Select
@@ -75,7 +74,6 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <p><strong>Color and gem type:</strong> color and type</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
         <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
