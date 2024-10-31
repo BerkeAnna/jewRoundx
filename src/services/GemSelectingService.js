@@ -30,7 +30,7 @@ async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, accoun
   }
 
   // Az Etherben megadott `price` átkonvertálása Wei-be
-  const priceInWei = ethers.utils.parseUnits(price.toString(), 'ether'); // Ether konverzió Wei-re
+  //const priceInWei = ethers.utils.parseUnits(price.toString(), 'ether'); // Ether konverzió Wei-re
   
   const gemDetails = {
     size,
@@ -39,7 +39,7 @@ async gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price, accoun
     color: colorGemType.split(',')[1].split(': ')[1]      // Color
   };
 
-  return this.contract.gemSelecting(minedGemId, gemDetails, fileUrl, priceInWei, { from: account });
+  return this.contract.gemSelecting(minedGemId, gemDetails, fileUrl, price, { from: account });
 }
 
 

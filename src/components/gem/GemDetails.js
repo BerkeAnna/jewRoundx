@@ -92,7 +92,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price: </strong>{ethers.utils.formatEther(gem.price.toString())} Eth</p>
+        <p><strong>Price: </strong>{gem.price.toString()} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
 

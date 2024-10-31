@@ -48,6 +48,8 @@ function GemSelectingForm(props, markGemAsSelected) {
     const size = `${depth}x${height}x${width} mm`;  // Méret
     const price = formData.get('price'); 
 
+    console.log("price: " ,  price)
+
     const colorGemType = `Type: ${gemType}, Color: ${color}`;
 
     const minedGemId = parseInt(id, 10);

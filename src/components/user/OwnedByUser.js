@@ -87,7 +87,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
           <td>{selectedGem.colorGemType}</td>
-          <td>{ethers.utils.formatEther(selectedGem.price)} Eth</td> {/* Convert to ETH */}
+          <td>{selectedGem.price.toString()} Eth</td> {/* Convert to ETH */}
           <td>{selectedGem.owner}</td>
           <td className="button-container">
             {/* Render buttons based on conditions */}
