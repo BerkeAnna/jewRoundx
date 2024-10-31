@@ -79,7 +79,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         const selectedGemEvents = await gemstoneSelectingContract.queryFilter("allEvents", 0, "latest");
         const filteredSelectedGems = selectedGemEvents.filter(event => gemIdsAsInt.includes(parseInt(event.args.id)));
         setFilteredSelectedGemEvents(filteredSelectedGems);
-
+        
         const minedGemEvents = await gemstoneExtractionContract.queryFilter("allEvents", 0, "latest");
         const filteredMinedGems = minedGemEvents.filter(event => gemIdsAsInt.includes(parseInt(event.args.id)));
         setFilteredMinedGemEvents(filteredMinedGems);
@@ -124,13 +124,13 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
                 </>
               )}
               <strong>Involved Users:</strong>
-              <ul>
+              <p>
                 {event.args.owner && <li><strong>Owner:</strong> {event.args.owner}</li>}
                 {event.args.jeweler && <li><strong>Jeweler:</strong> {event.args.jeweler}</li>}
                 {event.args.jewOwner && <li><strong>Jew Owner:</strong> {event.args.jewOwner}</li>}
                 {event.args.miner && <li><strong>Miner:</strong> {event.args.miner}</li>}
                 {event.args.gemCutter && <li><strong>Gem cutter:</strong> {event.args.gemCutter}</li>}
-              </ul>
+              </p>
             </li>
           );
         })}
