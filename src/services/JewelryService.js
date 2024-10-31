@@ -93,6 +93,15 @@ class JewelryService {
     const tx = await this.contract.returnToJewOwner(id, { from: account });
     return await tx.wait();
   }
+
+
+  async getJewelryDetails(id) {
+    if (!this.contract) {
+      await this.loadContract();
+    }
+    return await this.contract.getJewelryDetails(id);
+  }
+  
 }
 
 export default new JewelryService();

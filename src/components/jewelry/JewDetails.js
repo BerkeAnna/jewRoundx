@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ethers } from 'ethers';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
+function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, getJewelryDetails }) {
   const { id } = useParams();
   const gemId = id;
 
@@ -45,8 +44,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     const fetchJewelryDetails = async () => {
       try {
         // Jewelry részletek lekérése
-        const details = await jewelryContract.methods.getJewelryDetails(id).call();
+        const details = await jewelryContract.getJewelryDetails(id);
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId.toString(), 10));
+        
+        // Kiíratjuk a konzolra a previousGemIds értékeit
+        console.log("Previous Gem IDs:", gemIdsAsInt);
+
         setPrevGemsArray(gemIdsAsInt);
 
         // Fetch events
@@ -167,11 +170,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
         <p><strong>Type:</strong> {gem.gemType}</p>
+        <p><strong>Price:</strong> {gem.price.toString()} Eth</p>
         <p><strong>Details:</strong> {gem.details.toString()}</p>
         <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
         <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
         <p><strong>Selected:</strong> {gem.selected.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {gem.owner}</p>
 
         <hr />
@@ -201,13 +204,13 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
          <p><strong>ID:</strong> {gem.id.toString()}</p>
          <p> {gem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong> }</p>
+         <p><strong>Price:</strong> {gem.price.toString()} Eth</p>
         <p><strong>Size:</strong> {gem.details.size.toString()}</p>
         <p><strong>Carat:</strong> {gem.details.carat.toString()}</p>
         <p><strong>Type:</strong> {gem.details.gemType.toString()}</p>
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
         <p><strong>Previous gem ID:</strong> {gem.previousGemId.toString()}</p>
@@ -242,10 +245,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         )}
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
+        <p><strong>Price:</strong> {jewelry.price.toString()} Eth</p>
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
-        <p><strong>Price: </strong>{jewelry.price.toString()} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
 

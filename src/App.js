@@ -185,6 +185,7 @@ class App extends Component {
     this.markNewOwner = this.markNewOwner.bind(this);
     this.transferGemOwnership = this.transferGemOwnership.bind(this);
     this.buyJewelry = this.buyJewelry.bind(this);
+    this.getJewelryDetails = this.getJewelryDetails.bind(this);
 
   }
 
@@ -504,6 +505,20 @@ async returnToOwner(id) {
   }
 }
 
+// In App.js
+
+async getJewelryDetails(id) {
+  try {
+    this.setState({ loading: true });
+    const jewelryDetails = await JewelryService.getJewelryDetails(id);
+    this.setState({ selectedJewelryDetails: jewelryDetails, loading: false });
+  } catch (error) {
+    console.error("Error fetching jewelry details:", error);
+    this.setState({ loading: false });
+  }
+}
+
+
 
   refreshPage = () => {
     window.location.reload();
@@ -535,6 +550,7 @@ async returnToOwner(id) {
             addForRepair = {this.addForRepair}
             returnToOwner = {this.returnToOwner}
             markGemAsReplaced = {this.markGemAsReplaced}
+            getJewelryDetails = {this.getJewelryDetails}
           />
         </Router>
       </div>

@@ -523,7 +523,11 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2023.10.29
         12:47
-                Tranzakciókat nem írja ki
-                a korábbi vagy hozzátartozó gem adatokat se a sleected, se a jewelrynél nem írja ki
+                Tranzakciókat nem írja ki - mindeggem details, gem detailsnál sincs, jewnél se
+                a korábbi vagy hozzátartozó gem adatokat a jewelrynél nem írja ki. a gem-detailsnál igen ha van
                 repair - changegem odlalokon nem jelnik meg semmi
                 az add gem működik elvileg, de a jewdetails nem ír ki semmit
+
+2024-10-31-     
+        10.24
+                selected gem price - weiben számol. a jewdetailsnél nem írtam át. de itt a formnál lesz gond
