@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate  } from 'react-router-dom';
 import { ethers } from 'ethers';
 
-function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, getJewelryDetails }) {
+function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, getJewelryDetails }) {
   const { id } = useParams();
   const gemId = id;
+  const navigate = useNavigate();
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
   const [prevGemsArray, setPrevGemsArray] = useState([]);
@@ -52,7 +53,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         const jewelryAddRepairEvents = await jewelryContract.queryFilter("JewelryAddRepair", 0, "latest");
         const returnToJewOwnerEvents = await jewelryContract.queryFilter("ReturnToJewOwner", 0, "latest");
 
-        // Filter events for this jewelry item by ID
         const filteredJewelryMaking = jewelryEvents.filter(event => parseInt(event.args.id) === parseInt(id));
         const filteredJewelryBought = jewelryBoughtEvents.filter(event => parseInt(event.args.id) === parseInt(id));
         const filteredGemUpdated = gemUpdatedEvents.filter(event => parseInt(event.args.jewelryId || event.args.id) === parseInt(id));
@@ -75,14 +75,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
         setFilteredJewelryEvents(allEvents);
         await fetchGasAndDateDetails(allEvents);
-
-        const selectedGemEvents = await gemstoneSelectingContract.queryFilter("allEvents", 0, "latest");
-        const filteredSelectedGems = selectedGemEvents.filter(event => gemIdsAsInt.includes(parseInt(event.args.id)));
-        setFilteredSelectedGemEvents(filteredSelectedGems);
-        
-        const minedGemEvents = await gemstoneExtractionContract.queryFilter("allEvents", 0, "latest");
-        const filteredMinedGems = minedGemEvents.filter(event => gemIdsAsInt.includes(parseInt(event.args.id)));
-        setFilteredMinedGemEvents(filteredMinedGems);
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -167,37 +159,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     ));
   };
 
-  const renderMinedGems = () => {
-    const filteredMinedGems = minedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
-    if (filteredMinedGems.length === 0) {
-      return <p>No Mined Gems Available</p>;
-    }
-
-    return filteredMinedGems.map((gem, key) => (
-      <div key={key} className="card">
-        <h2>Mined Gem Details</h2>
-        {gem.fileURL && (
-          <div>
-            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" className="details-image" />
-            </a>
-          </div>
-        )}
-        <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Type:</strong> {gem.gemType}</p>
-        <p><strong>Price:</strong> {gem.price.toString()} Eth</p>
-        <p><strong>Details:</strong> {gem.details.toString()}</p>
-        <p><strong>Mining Location:</strong> {gem.miningLocation}</p>
-        <p><strong>Mining Year:</strong> {gem.miningYear.toString()}</p>
-        <p><strong>Selected:</strong> {gem.selected.toString()}</p>
-        <p><strong>Miner:</strong> {gem.owner}</p>
-        <hr />
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredMinedGemEvents)}
-      </div>
-    ));
-  };
-
   const renderSelectedGems = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10))).reverse();
     if (filteredSelectedGems.length === 0) {
@@ -227,19 +188,18 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Owner:</strong> {gem.owner}</p>
         <p><strong>Previous gem ID:</strong> {gem.previousGemId.toString()}</p>
         <hr />
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredSelectedGemEvents)}
+        <button onClick={() => navigate(`/gem-details/${gem.id}`)}>Go to gem details</button>
       </div>
     ));
   };
 
   const handlePrevGem = () => {
-    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
+    const maxIndex = Math.min( renderSelectedGems().length) - 1;
     setCurrentGemIndex(prev => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const handleNextGem = () => {
-    const maxIndex = Math.min(renderMinedGems().length, renderSelectedGems().length) - 1;
+    const maxIndex = Math.min(renderSelectedGems().length) - 1;
     setCurrentGemIndex(prev => (prev === maxIndex ? 0 : prev + 1));
   };
 
@@ -249,17 +209,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
       <div className="card-container pt-5">
         {renderJewelry()}
       </div>
-      <div className="details-row pt-5">
-      <span className="arrow" onClick={handlePrevGem}>
-          ←
-        </span>
-        <div className="card-container">
-          {renderMinedGems()[currentGemIndex]}
-        </div>
-        <span className="arrow" onClick={handleNextGem}>
-          →
-        </span>
-      </div>
+      
       <div className="details-row">
       <span className="arrow" onClick={handlePrevGem}>
            ←

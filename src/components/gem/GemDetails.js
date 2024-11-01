@@ -15,26 +15,27 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
   const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
 
-  const getTransactionDate = async (web3, blockNumber) => {
-    const block = await web3.eth.getBlock(blockNumber);
-    return new Date(block.timestamp * 1000); 
-  };
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const fetchGasDetails = async (events) => {
-    const gasDetailsPromises = events.map(async (event) => {
-      const receipt = await window.web3.eth.getTransactionReceipt(event.transactionHash);
-      const transaction = await window.web3.eth.getTransaction(event.transactionHash);
-      const gasUsed = receipt.gasUsed;
-      const gasPrice = transaction.gasPrice;
-      const gasCost = window.web3.utils.fromWei((gasUsed * gasPrice).toString(), 'ether');
-      return { transactionHash: event.transactionHash, gasUsed, gasPrice, gasCost };
-    });
-    const gasDetailsResults = await Promise.all(gasDetailsPromises);
     const gasDetailsMap = {};
-    gasDetailsResults.forEach(({ transactionHash, gasUsed, gasPrice, gasCost }) => {
-      gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
-    });
+    const blockDatesMap = {};
+
+    for (let event of events) {
+      const receipt = await provider.getTransactionReceipt(event.transactionHash);
+      const transaction = await provider.getTransaction(event.transactionHash);
+
+      gasDetailsMap[event.transactionHash] = {
+        gasUsed: receipt.gasUsed.toString(),
+        gasPrice: ethers.utils.formatEther(transaction.gasPrice),
+      };
+
+      const block = await provider.getBlock(event.blockNumber);
+      blockDatesMap[event.blockNumber] = new Date(block.timestamp * 1000);
+    }
+
     setTransactionGasDetails(gasDetailsMap);
+    setBlockDates(blockDatesMap);
   };
 
   useEffect(() => {
@@ -42,10 +43,9 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
       console.error("Contracts are not initialized.");
       return;
     }
-  
+
     const fetchJewelryDetails = async () => {
       try {
-        // Fetch events from GemstoneExtraction contract (Mined Gems)
         const gemMiningEvents = await gemstoneExtractionContract.queryFilter("GemMining", 0, "latest");
         const gemPurchasedEvents = await gemstoneExtractionContract.queryFilter("GemPurchased", 0, "latest");
         const gemProcessingEvents = await gemstoneExtractionContract.queryFilter("GemProcessing", 0, "latest");
@@ -53,8 +53,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         const markNewOwnerEvents = await gemstoneExtractionContract.queryFilter("MarkNewOwner", 0, "latest");
         const markGemAsSelectedEvents = await gemstoneExtractionContract.queryFilter("MarkGemAsSelected", 0, "latest");
         const transferGemOwnershipEventsExtraction = await gemstoneExtractionContract.queryFilter("TransferGemOwnership", 0, "latest");
-    
-        // Combine mined gem events
+
         const minedGemEvents = [
           ...gemMiningEvents,
           ...gemPurchasedEvents,
@@ -65,14 +64,12 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           ...transferGemOwnershipEventsExtraction
         ];
         setFilteredMinedGemEvents(minedGemEvents);
-    
-        // Fetch events from GemstoneSelecting contract (Selected Gems)
+
         const gemSelectingEvents = await gemstoneSelectingContract.queryFilter("GemSelecting", 0, "latest");
         const polishGemEvents = await gemstoneSelectingContract.queryFilter("PolishGem", 0, "latest");
         const markGemAsUsedEvents = await gemstoneSelectingContract.queryFilter("MarkGemAsUsed", 0, "latest");
         const transferGemOwnershipEventsSelecting = await gemstoneSelectingContract.queryFilter("TransferGemOwnership", 0, "latest");
-    
-        // Combine selected gem events
+
         const selectedGemEvents = [
           ...gemSelectingEvents,
           ...polishGemEvents,
@@ -80,19 +77,19 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           ...transferGemOwnershipEventsSelecting,
         ];
         setFilteredSelectedGemEvents(selectedGemEvents);
-    
+
+        await fetchGasDetails([...minedGemEvents, ...selectedGemEvents]);
+
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
-    
 
-  
     fetchJewelryDetails();
   }, [gemstoneExtractionContract, gemstoneSelectingContract]);
-  
 
-  
+
+
   const renderMinedGems = () => {
     return minedGem.map((gem, key) => (
       <div key={key} className="card">
@@ -113,13 +110,13 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Price: </strong>{gem.price} Eth</p>
         <p><strong>Miner:</strong> {gem.miner}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-  
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredMinedGemEvents, gem.id, "mined")}
       </div>
     ));
   };
-  
+
   const renderSelectedGems = () => {
     return gemSelected.map((gem, key) => (
       <div key={key} className="card">
@@ -141,13 +138,12 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Price: </strong>{gem.price.toString()} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-  
+
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredSelectedGemEvents, gem.id, "selected")}
       </div>
     ));
   };
-  
   const renderTransactionDetails = (events, gemId, type) => {
     const filteredEvents = events.filter(event => {
       if (!event.args) return false;
@@ -158,11 +154,11 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
       }
       return false;
     });
-  
+
     if (filteredEvents.length === 0) {
       return <p>No transaction events found for this item.</p>;
     }
-  
+
     return (
       <ul className="details-list">
         {filteredEvents.map((event, index) => {
@@ -170,7 +166,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           const transactionDate = blockDates[event.blockNumber]
             ? blockDates[event.blockNumber].toLocaleString()
             : 'Loading...';
-  
+
           return (
             <li key={index} className="details-list-item">
               <strong>Event:</strong> {event.event}
@@ -208,8 +204,8 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Gem Details</h1>
-      <div className="card-container pt-5">{renderMinedGems()}</div>
       <div className=" card-container pt-5">{renderSelectedGems()}</div>
+      <div className="card-container pt-5">{renderMinedGems()}</div>
     </div>
   );
 }
