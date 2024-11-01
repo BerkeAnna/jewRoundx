@@ -155,7 +155,6 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
       <Route 
         path="/gem-details/:id" 
         element={
-          <ProtectedRoute>
             <GemDetails 
               selectedGems={state.selectedGems} 
               minedGems={state.minedGems} 
@@ -164,7 +163,6 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
               gemstoneSelectingContract={state.gemstroneSelecting} 
               gemstoneExtractionContract={state.gemstroneExtraction} 
             />
-          </ProtectedRoute>
         } 
       />
       <Route 
