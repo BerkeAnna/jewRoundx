@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract }) {
   const { id } = useParams();
   const gemId = id;
+  const navigate = useNavigate();
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
   const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
-  const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [blockDates, setBlockDates] = useState({});
   const [pinataMetadataJewelry, setPinataMetadataJewelry] = useState(null); 
-  const [pinataMetadataMined, setPinataMetadataMined] = useState({}); 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); 
   const [transactionGasDetails, setTransactionGasDetails] = useState({});
   const [currentSelectedGemIndex, setCurrentSelectedGemIndex] = useState(0);
-  const [currentMinedGemIndex, setCurrentMinedGemIndex] = useState(0);
 
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
@@ -55,21 +53,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       gasDetailsMap[transactionHash] = { gasUsed, gasPrice, gasCost };
     });
     setTransactionGasDetails(gasDetailsMap);
-  };
-
-  const fetchPinataMetadataMined = async (hash, gemId) => {
-    try {
-      const cleanedHash = cleanHash(hash);
-      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setPinataMetadataMined(prevState => ({
-        ...prevState,
-        [gemId]: data
-      }));
-    } catch (error) {
-      console.error('Error fetching Pinata metadata:', error);
-    }
   };
 
   const fetchPinataMetadataForSelected = async (hash, gemId) => {
@@ -128,25 +111,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           gemIdsAsInt.includes(parseInt(event.returnValues.id))
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
-
-        const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-        const filteredMinedGems = minedGemEvents.filter(event =>
-          gemIdsAsInt.includes(parseInt(event.returnValues.id))
-        );
-        setFilteredMinedGemEvents(filteredMinedGems);
-
+      
         for (const gemId of gemIdsAsInt) {
           const selectedGem = selectedGems.find(gem => gem.id == gemId);
           if (selectedGem && selectedGem.metadataHash) {
             await fetchPinataMetadataForSelected(selectedGem.metadataHash, gemId);
-          }
-
-          const minedGem = minedGems.find(gem => gem.id == gemId);
-          if (minedGem && minedGem.metadataHash) {
-            await fetchPinataMetadataMined(minedGem.metadataHash, gemId);
           }
         }
 
@@ -154,8 +123,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           await fetchPinataMetadataJewelry(details.metadataHash);
         }
 
-        await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
-        await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems, ...filteredMinedGems]);
+        await fetchAllTransactionDates(window.web3, [...filteredJewelry, ...filteredSelectedGems]);
+        await fetchGasDetails([...filteredJewelry, ...filteredSelectedGems]);
 
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -163,7 +132,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     };
 
     fetchJewelryDetails();
-  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems, minedGems]);
+  }, [id, jewelryContract, gemstoneSelectingContract, gemstoneExtractionContract, selectedGems]);
 
   const renderJewelrySelectedGems = () => {
     const gemId = prevGemsArray[currentSelectedGemIndex];
@@ -200,47 +169,10 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
 
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredSelectedGemEvents, selectedGem.id)}
+        <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)}>Go to gem details</button>
       </div>
     );
   };
-
-  const renderJewelryMinedGems = () => {
-    const gemId = prevGemsArray[currentMinedGemIndex];
-    const minedGem = minedGems.find(gem => gem.id == gemId);
-    const metadata = pinataMetadataMined[gemId];
-
-    if (!minedGem) return null;
-
-    return (
-      <div className="card">
-        <h2>Mined Gem Details</h2>
-        {metadata && metadata.fileUrl && (
-          <a href={metadata.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
-          </a>
-        )}
-        <p><strong>ID:</strong> {minedGem.id.toString()}</p>
-        {metadata && (
-          <div>
-            <p><strong>Gem Type:</strong> {metadata.gemType}</p>
-            <p><strong>Weight:</strong> {metadata.weight}</p>
-            <p><strong>Size:</strong> {metadata.size}</p>
-            <p><strong>Mining Location:</strong> {metadata.miningLocation}</p>
-            <p><strong>Mining Year:</strong> {metadata.miningYear}</p>
-          </div>
-        )}
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Miner:</strong> {minedGem.miner}</p>
-
-        <h3>Transaction Details</h3>
-        {renderTransactionDetails(filteredMinedGemEvents, minedGem.id)}
-      </div>
-    );
-  };
- 
-  
 
   const renderTransactionDetails = (events, gemId) => {
     const gemEvents = events.filter(event => {
@@ -336,16 +268,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     setCurrentSelectedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
   };
 
-  const handlePrevMinedGem = () => {
-    setCurrentMinedGemIndex(prevIndex => (prevIndex === 0 ? prevGemsArray.length - 1 : prevIndex - 1));
-  };
-
-  const handleNextMinedGem = () => {
-    setCurrentMinedGemIndex(prevIndex => (prevIndex === prevGemsArray.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  
-
   return (
     <div className="details-details-container card-background pt-5">
       <h1>Jewelry Details</h1>
@@ -356,11 +278,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <button className="arrow left" onClick={handlePrevSelectedGem}>←</button>
         {renderJewelrySelectedGems()}
         <button className="arrow right" onClick={handleNextSelectedGem}>→</button>
-      </div>
-      <div className="card-container pt-5">
-        <button className="arrow left" onClick={handlePrevMinedGem}>←</button>
-        {renderJewelryMinedGems()}
-        <button className="arrow right" onClick={handleNextMinedGem}>→</button>
       </div>
     </div>
   );
