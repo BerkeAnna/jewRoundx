@@ -37,7 +37,7 @@ class App extends Component {
     this.setState({ account });
 
     const gemstoneExtractionAddress = process.env.REACT_APP_GEMSTONE_EXTRACTION_ADDRESS;
-    console.log("Gemstone Extraction Contract Address:", gemstoneExtractionAddress); // Ellenőrzés
+    console.log("Gemstone Extraction Contract Address:", gemstoneExtractionAddress);
 
     if (!gemstoneExtractionAddress) {
         window.alert("Gemstone Extraction contract address not found in environment.");
@@ -51,18 +51,18 @@ class App extends Component {
             signer
         );
 
-        // Lekérjük a bányászott gemek számát
-        const minedGemCount = await gemstoneExtraction.minedGemCount();
-        this.setState({ gemstoneExtraction, minedGemCount: minedGemCount.toNumber(), loading: false });
+        this.setState({ gemstoneExtraction }); // Ezzel ellenőrizheted a betöltést
 
-        // Frissítjük a `minedGems` tömböt
+        const minedGemCount = await gemstoneExtraction.minedGemCount();
+        this.setState({ minedGemCount: minedGemCount.toNumber(), loading: false });
+
         let minedGems = [];
         for (let i = 1; i <= minedGemCount; i++) {
             const gem = await gemstoneExtraction.minedGems(i);
             const formattedGem = {
                 ...gem,
-                price: ethers.utils.formatEther(gem.price), // átalakítás ETH stringre
-                id: gem.id.toNumber() // átalakítás sima számra, ha szükséges
+                price: ethers.utils.formatEther(gem.price),
+                id: gem.id.toNumber()
             };
             minedGems.push(formattedGem);
         }
@@ -71,10 +71,11 @@ class App extends Component {
         console.log("Mined Gems:", this.state.minedGems);
 
     } catch (error) {
-        console.error("Error in loadBlockchainData:", error); // Logold a hibát
+        console.error("Error in loadBlockchainData:", error);
         window.alert(`Error loading blockchain data: ${error.message}`);
     }
 }
+
 
 
   

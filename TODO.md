@@ -534,4 +534,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 a details a transon kívűl jó
                 add-gem műkszik
                 repair is műkszik
+                teszteket megírni npx hardhat test
                 
+
+2024.11.01. 
+        8:29
+                a gemdetailsben bővíteni, az összes eventet kérje le.
