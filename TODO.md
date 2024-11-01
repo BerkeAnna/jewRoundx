@@ -540,3 +540,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.11.01. 
         8:29
                 a gemdetailsben bővíteni, az összes eventet kérje le.
+
+2024.11.01.
+        18:01
+                sleecting teszt és jewelry teszt folytatása

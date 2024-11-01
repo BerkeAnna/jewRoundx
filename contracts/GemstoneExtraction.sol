@@ -167,6 +167,8 @@ contract GemstoneExtraction {
         emit GemPurchased(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, false, _minedGem.miner, msg.sender, _minedGem.fileURL, _minedGem.purchased);
     }
 
+//őt nem is használom??
+/*
     function processingGem(uint _id) public {
         MinedGem storage _minedGem = minedGems[_id];
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
@@ -177,7 +179,7 @@ contract GemstoneExtraction {
 
         emit GemProcessing(_id, _minedGem.gemType,  _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
     }
-
+*/
     function markNewOwner(uint _id) public payable {
         MinedGem storage _minedGem = minedGems[_id];
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
@@ -189,7 +191,7 @@ contract GemstoneExtraction {
 
         _minedGem.owner = msg.sender;
 
-        emit MarkNewOwner(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+        emit MarkNewOwner(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, false, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
     }
 
      function markGemAsSelected(uint _id) public payable {

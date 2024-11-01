@@ -47,12 +47,12 @@ class GemstoneExtractionService {
     return this.contract.purchaseGem(id, { from: account });
  }
 
-  async processingGem(id, price) {
+  /*async processingGem(id, price) {
     if (!this.contract) await this.loadContract();
     const priceInEther = ethers.utils.parseUnits(price.toString(), "ether"); // Konverzió Ether formátumba
     return this.contract.processingGem(id, { value: priceInEther });
   }
-  
+  */
   async markNewOwner(id, price, account) {
     if (!this.contract) await this.loadContract();
     const priceInEther = ethers.utils.parseUnits(price.toString(), "ether");

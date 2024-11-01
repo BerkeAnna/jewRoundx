@@ -170,7 +170,7 @@ class App extends Component {
 
     this.gemMining = this.gemMining.bind(this);
     this.purchaseGem = this.purchaseGem.bind(this);
-    this.processingGem = this.processingGem.bind(this);
+   /* this.processingGem = this.processingGem.bind(this);*/
     this.markGemAsSelected = this.markGemAsSelected.bind(this);
     this.gemSelecting = this.gemSelecting.bind(this);
     this.polishGem = this.polishGem.bind(this);
@@ -226,7 +226,7 @@ async purchaseGem(id) {
 }
 
 
-  async processingGem(id, price) {
+  /*async processingGem(id, price) {
     try {
       this.setState({ loading: true });
       const account = this.state.account;
@@ -241,7 +241,7 @@ async purchaseGem(id) {
       console.error("Error in processingGem:", error);
       this.setState({ loading: false });
     }
-}
+}*/
 
 async markGemAsSelected(id) {
   try {
@@ -537,7 +537,7 @@ async getJewelryDetails(id) {
             purchaseGem={this.purchaseGem}
             markNewOwner={this.markNewOwner}
             markGemAsSelected={this.markGemAsSelected}
-            processingGem = {this.processingGem}
+           /* processingGem = {this.processingGem}*/
             markGemAsUsed = {this.markGemAsUsed}
             polishGem = {this.polishGem}
             jewelryMaking = {this.jewelryMaking}
