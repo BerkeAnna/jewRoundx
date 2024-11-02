@@ -548,3 +548,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.11.02.
         16:06
                 jewelry test folytatása, javítani az updategemet
+
+        19:40
+                full test emits, neg test..
+                jewelry.test.js javítás
