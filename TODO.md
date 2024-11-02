@@ -544,3 +544,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.11.01.
         18:01
                 sleecting teszt és jewelry teszt folytatása
+
+2024.11.02.
+        16:06
+                jewelry test folytatása, javítani az updategemet

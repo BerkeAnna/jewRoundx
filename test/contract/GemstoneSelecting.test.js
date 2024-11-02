@@ -1,24 +1,22 @@
 const { expect } = require("chai");
 
 describe("GemstoneSelecting Contract", function () {
-    let GemstoneExtraction, gemstoneExtraction, GemstoneSelecting, gemstoneSelecting, miner, cutter;
+    let GemstoneExtraction, gemstoneExtraction, GemstoneSelecting, gemstoneSelecting, miner, cutter, buyer;
     
     beforeEach(async function () {
-        [miner, cutter] = await ethers.getSigners();
+        [miner, cutter, buyer] = await ethers.getSigners();
        
         GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
         gemstoneExtraction = await GemstoneExtraction.deploy();
         await gemstoneExtraction.deployed();
 
-        // GemstoneSelecting deployálása a GemstoneExtraction címével
         GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
         gemstoneSelecting = await GemstoneSelecting.deploy(gemstoneExtraction.address);
         await gemstoneSelecting.deployed();
       
-        // Mined Gem létrehozása
         const gemType = "Ruby";
         const details = "High quality red ruby";
-        const price = ethers.utils.parseEther("1"); // ár Etherben
+        const price = ethers.utils.parseEther("1"); 
         const miningLocation = "Africa";
         const miningYear = 2024;
         const fileURL = "https://example.com/gem.jpg";
@@ -36,23 +34,27 @@ describe("GemstoneSelecting Contract", function () {
     });
 
     it("Should select a new gem", async function () { 
-        const gemId = 1; // első gem ID-je
+        const gemId = 1;
         const gemPrice = ethers.utils.parseEther("1");
-
-        await gemstoneExtraction.connect(miner).purchaseGem(gemId, { value: 1 });
-        gemstoneExtraction.connect(cutter).markNewOwner(gemId, { value: gemPrice })
-        gemstoneExtraction.connect(cutter).markGemAsSelected(gemId, { value: gemPrice })
-
+    
+        // Miner purchases the gem
+        await gemstoneExtraction.connect(miner).purchaseGem(gemId, { value: gemPrice });
+    
+        // Cutter calls markNewOwner with sufficient value for msg.value
+        await gemstoneExtraction.connect(cutter).markNewOwner(gemId, { value: gemPrice });
+    
+        await gemstoneExtraction.connect(cutter).markGemAsSelected(gemId);
+    
         const gemDetails = {
             size: "2x2x2",
             carat: ethers.BigNumber.from(2),
             gemType: "Ruby",
             color: "red"
         };
-
+    
         await expect(
             gemstoneSelecting.connect(cutter).gemSelecting(
-                1,
+                gemId,
                 gemDetails,
                 "fileUrl",
                 gemPrice
@@ -60,23 +62,24 @@ describe("GemstoneSelecting Contract", function () {
         )
             .to.emit(gemstoneSelecting, "GemSelecting")
             .withArgs(
-                1,
-                1,
+                gemId,
+                gemId,
                 gemDetails,
-                false,
+                false,           // forSale
                 "fileUrl",
                 gemPrice,
-                false,
-                false,
-                cutter.address,
-                cutter.address,
-
-            )        
-        const selectedGem = await gemstoneSelecting.getSelectedGem(1);
-        expect(selectedGem.id).to.equal(1);
-        expect(selectedGem.minedGemId).to.equal(1);
+                false,           // used
+                false,           // replaced
+                cutter.address,  // owner
+                cutter.address   // gemCutter
+            );
+        
+    
+        const selectedGem = await gemstoneSelecting.getSelectedGem(gemId);
+        expect(selectedGem.id).to.equal(gemId);
+        expect(selectedGem.minedGemId).to.equal(gemId);
         expect(selectedGem.details.size).to.equal("2x2x2");
-        expect(selectedGem.details.carat).to.equal( ethers.BigNumber.from(2));
+        expect(selectedGem.details.carat).to.equal(ethers.BigNumber.from(2));
         expect(selectedGem.details.gemType).to.equal("Ruby");
         expect(selectedGem.details.color).to.equal("red");
         expect(selectedGem.forSale).to.equal(false);
@@ -86,6 +89,83 @@ describe("GemstoneSelecting Contract", function () {
         expect(selectedGem.replaced).to.equal(false);
         expect(selectedGem.owner).to.equal(cutter.address);
         expect(selectedGem.gemCutter).to.equal(cutter.address);
+    });
+    
 
+    it("Should toggle the 'forSale' status when polishGem is called", async function () {
+        await gemstoneSelecting.connect(cutter).gemSelecting(
+            1,
+            { size: "2x2x2", carat: ethers.BigNumber.from(2), gemType: "Ruby", color: "red" },
+            "fileUrl",
+            ethers.utils.parseEther("1")
+        );
+
+        await gemstoneSelecting.connect(cutter).polishGem(1);
+
+        let selectedGem = await gemstoneSelecting.getSelectedGem(1);
+        expect(selectedGem.forSale).to.be.true;
+
+        await gemstoneSelecting.connect(cutter).polishGem(1);
+
+        selectedGem = await gemstoneSelecting.getSelectedGem(1);
+        expect(selectedGem.forSale).to.be.false;
+    });
+
+    it("Should mark a gem as used when markGemAsUsed is called", async function () {
+        await gemstoneSelecting.connect(cutter).gemSelecting(
+            1,
+            { size: "2x2x2", carat: ethers.BigNumber.from(2), gemType: "Ruby", color: "red" },
+            "fileUrl",
+            ethers.utils.parseEther("1")
+        );
+        
+        await gemstoneSelecting.connect(cutter).markGemAsUsed(1);
+
+        const selectedGem = await gemstoneSelecting.getSelectedGem(1);
+        expect(selectedGem.used).to.be.true;
+    });
+
+    it("Should mark a gem as replaced when markGemAsReplaced is called", async function () {
+        await gemstoneSelecting.connect(cutter).gemSelecting(
+            1,
+            { size: "2x2x2", carat: ethers.BigNumber.from(2), gemType: "Ruby", color: "red" },
+            "fileUrl",
+            ethers.utils.parseEther("1")
+        );
+
+        await gemstoneSelecting.connect(cutter).markGemAsReplaced(1);
+
+        const selectedGem = await gemstoneSelecting.getSelectedGem(1);
+        expect(selectedGem.replaced).to.be.true;
+    });
+
+    it("Should transfer ownership of a gem when transferGemOwnership is called", async function () {
+        const gemPrice = ethers.utils.parseEther("1");
+        await gemstoneSelecting.connect(cutter).gemSelecting(
+            1,
+            { size: "2x2x2", carat: ethers.BigNumber.from(2), gemType: "Ruby", color: "red" },
+            "fileUrl",
+            gemPrice
+        );
+
+        await gemstoneSelecting.connect(cutter).polishGem(1); // Set gem for sale
+
+        await gemstoneSelecting.connect(buyer).transferGemOwnership(1, { value: gemPrice });
+
+        const selectedGem = await gemstoneSelecting.getSelectedGem(1);
+        expect(selectedGem.owner).to.equal(buyer.address);
+        expect(selectedGem.forSale).to.be.false;
+    });
+
+    it("Should return the correct selected gems count by owner", async function () {
+        await gemstoneSelecting.connect(cutter).gemSelecting(
+            1,
+            { size: "2x2x2", carat: ethers.BigNumber.from(2), gemType: "Ruby", color: "red" },
+            "fileUrl",
+            ethers.utils.parseEther("1")
+        );
+
+        const count = await gemstoneSelecting.getSelectedGemsCountByOwner(cutter.address);
+        expect(count).to.equal(1);
     });
 });

@@ -61,6 +61,8 @@ function GemSelectingForm(props, markGemAsSelected) {
 
     try {
       // GemSelectingService hívása megfelelő paraméterekkel
+      console.log("carat:", carat)
+      console.log("size (dhw):", size)
       await props.gemSelecting(minedGemId, size, carat, colorGemType, fileUrl, price);
       navigate('/loggedIn');
     } catch (error) {
