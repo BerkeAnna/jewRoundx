@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-describe.only("Full Test", function () {
+describe("Full Test", function () {
     let Jewelry, jewelry, GemstoneSelecting, gemstoneSelecting, GemstoneExtraction, gemstoneExtraction;
     let miner, cutter, jeweler, jewOwner;
     

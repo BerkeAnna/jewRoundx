@@ -552,3 +552,4 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
         19:40
                 full test emits, neg test..
                 jewelry.test.js javítás
+                ne kommitold fel a jewelry.test.js-t, futtasd, még nem jó az egyik teszt --- 22:28 - megoldottam

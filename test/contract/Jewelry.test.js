@@ -1,35 +1,50 @@
 const { expect } = require("chai");
 
-describe("Jewelry Contract", function () {
+describe.only("Jewelry Contract", function () {
     let Jewelry, jewelry, GemstoneSelecting, gemstoneSelecting, GemstoneExtraction, gemstoneExtraction;
-    let owner, jeweler, buyer;
+    let owner, jeweler, buyer, cutter;
 
     before(async function () {
-        [owner, jeweler, buyer] = await ethers.getSigners();
-
-        // Deploy contracts
+        [owner, jeweler, buyer, cutter] = await ethers.getSigners();
+    
         GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
         gemstoneExtraction = await GemstoneExtraction.deploy();
         await gemstoneExtraction.deployed();
-
+    
         GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
         gemstoneSelecting = await GemstoneSelecting.deploy(gemstoneExtraction.address);
         await gemstoneSelecting.deployed();
-
+    
         Jewelry = await ethers.getContractFactory("Jewelry");
         jewelry = await Jewelry.deploy(gemstoneSelecting.address);
         await jewelry.deployed();
-
-        const minedGemId = 1;
-        const gemDetails = { size: "2x2x2", carat: 2, gemType: "Ruby", color: "Red" };
+    
+        // Mine the initial gem here to set up for tests
+        const gemType = "Ruby";
+        const details = "red ruby";
         const price = ethers.utils.parseEther("1");
+        const miningLocation = "Africa";
+        const miningYear = 2024;
         const fileURL = "https://example.com/gem.jpg";
-
-        await gemstoneSelecting.connect(owner).gemSelecting(minedGemId, gemDetails, fileURL, price);
+        const purchased = false;
+    
+        await gemstoneExtraction.gemMining(
+            gemType,
+            details,
+            price,
+            miningLocation,
+            miningYear,
+            fileURL,
+            purchased
+        );
+    
+        const minedGem = await gemstoneExtraction.minedGems(1); // assuming gem ID 1 is created
+        console.log("Mined Gem ID:", minedGem.id);
     });
+    
 
     it("Should create a new jewelry item", async function () {
-        const gemId = 1;
+        const gemId = 2;
         const name = "Ruby Ring";
         const physicalDetails = "sampleMetadataHash";
         const price = ethers.utils.parseEther("1");
@@ -84,24 +99,61 @@ describe("Jewelry Contract", function () {
 
     it("Should add a gem in the jewelry item", async function () {
         const jewelryId = 1;
-        const newGemId = 2;
-    
-        // Új gem létrehozása és hozzárendelése az ownerhez
-        const gemDetails = { size: "2x2x2", carat: 2, gemType: "Emerald", color: "Green" };
+        const gemId = 2;
+        const gemType = "Ruby";
+        const details = "red ruby";
         const price = ethers.utils.parseEther("1");
-        const fileURL = "https://example.com/gem2.jpg";
+        const miningLocation = "Africa";
+        const miningYear = 2024;
+        const fileURL = "https://example.com/gem.jpg";
+        const purchased = false;
+        const gemPrice = ethers.utils.parseEther("1");
     
-        // Gem kiválasztása az owner számára (tulajdonjog automatikusan beáll az ownerre)
-        await gemstoneSelecting.connect(owner).gemSelecting(newGemId, gemDetails, fileURL, price);
+        // Mine the gem
+        await gemstoneExtraction.gemMining(
+            gemType,
+            details,
+            price,
+            miningLocation,
+            miningYear,
+            fileURL,
+            purchased
+        );
     
-        // Győződj meg róla, hogy a gem az `owner` címéről kerül hozzáadásra
-        await expect(jewelry.connect(owner).updateGem(jewelryId, newGemId))
-            .to.emit(jewelry, "GemUpdated")
-            .withArgs(jewelryId, newGemId);
+        // Purchase the gem by the initial owner
+        await gemstoneExtraction.connect(owner).purchaseGem(gemId, { value: gemPrice });
+    
+        // Transfer ownership of the gem to cutter
+        await gemstoneExtraction.connect(owner).markNewOwner(gemId, { value: gemPrice });
+    
+        const gemDetails = {
+            size: "2x2x2",
+            carat: ethers.BigNumber.from(2),
+            gemType: "Ruby",
+            color: "red"
+        };
+    
+        // Select and polish the gem
+        await gemstoneSelecting.connect(cutter).gemSelecting(gemId, gemDetails, "fileUrl", gemPrice);
+        await gemstoneSelecting.connect(cutter).polishGem(gemId);
+    
+        // Ellenőrzés a tulajdonosváltás előtt
+        const selectedGemBefore = await gemstoneSelecting.getSelectedGem(gemId);
+            // Transfer gem ownership to jeweler only if jeweler is not already the owner
+        await gemstoneSelecting.connect(buyer).transferGemOwnership(gemId, { value: gemPrice });
         
-        // Ellenőrizd, hogy a gem valóban hozzá lett adva
-        const jewelryWithNewGem = await jewelry.getJewelryDetails(jewelryId);
-        expect(jewelryWithNewGem.previousGemIds.map(id => id.toNumber())).to.include(newGemId);
+    
+        const selectedGemAfter = await gemstoneSelecting.getSelectedGem(gemId);
+        
+    
+    
+        // Now jeweler should be able to update the gem in the jewelry
+        await expect(jewelry.connect(buyer).updateGem(jewelryId, gemId))
+            .to.emit(jewelry, "GemUpdated")
+            .withArgs(jewelryId, gemId);
+    
+        const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
+        expect(jewelryDetails.previousGemIds.map(id => id.toNumber())).to.include(gemId);
     });
     
 
