@@ -553,3 +553,9 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
                 full test emits, neg test..
                 jewelry.test.js javítás - nem jók a tulajdonos nevek
                 ne kommitold fel a jewelry.test.js-t, futtasd, még nem jó az egyik teszt --- 22:28 - megoldottam
+
+2024.11.03.
+        12:10
+                az ownedminedgems oldal nevét módosítani profil-ra 
+                és a táblázatok nemjól jelzik ki az adatokat. - üres táblák
+                a gem details odlalon abc sorrentben adja aeventeket - idősor kellenee

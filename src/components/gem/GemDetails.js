@@ -146,60 +146,63 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   };
   const renderTransactionDetails = (events, gemId, type) => {
     const filteredEvents = events.filter(event => {
-      if (!event.args) return false;
-      if (type === "mined") {
-        return event.args.id && event.args.id.toString() === gemId.toString();
-      } else if (type === "selected") {
-        return event.args.minedGemId && event.args.minedGemId.toString() === gemId.toString();
-      }
-      return false;
+        if (!event.args) return false;
+        if (type === "mined") {
+            return event.args.id && event.args.id.toString() === gemId.toString();
+        } else if (type === "selected") {
+            return event.args.minedGemId && event.args.minedGemId.toString() === gemId.toString();
+        }
+        return false;
     });
 
-    if (filteredEvents.length === 0) {
-      return <p>No transaction events found for this item.</p>;
+    // Rendezés időrendbe
+    const sortedEvents = filteredEvents.sort((a, b) => a.blockNumber - b.blockNumber);
+
+    if (sortedEvents.length === 0) {
+        return <p>No transaction events found for this item.</p>;
     }
 
     return (
-      <ul className="details-list">
-        {filteredEvents.map((event, index) => {
-          const gasDetails = transactionGasDetails[event.transactionHash];
-          const transactionDate = blockDates[event.blockNumber]
-            ? blockDates[event.blockNumber].toLocaleString()
-            : 'Loading...';
+        <ul className="details-list">
+            {sortedEvents.map((event, index) => {
+                const gasDetails = transactionGasDetails[event.transactionHash];
+                const transactionDate = blockDates[event.blockNumber]
+                    ? blockDates[event.blockNumber].toLocaleString()
+                    : 'Loading...';
 
-          return (
-            <li key={index} className="details-list-item">
-              <strong>Event:</strong> {event.event}
-              <br />
-              <strong>Transaction Hash:</strong> {event.transactionHash}
-              <br />
-              <strong>Block Number:</strong> {event.blockNumber}
-              <br />
-              <strong>Transaction Date:</strong> {transactionDate}
-              <br />
-              {gasDetails && (
-                <>
-                  <strong>Gas Used:</strong> {gasDetails.gasUsed}
-                  <br />
-                  <strong>Gas Price:</strong> {gasDetails.gasPrice} Ether
-                  <br />
-                </>
-              )}
-              <strong>Involved Users:</strong>
-              <p>
-                {event.args.owner && <li><strong>Owner:</strong> {event.args.owner}</li>}
-                {event.args.jeweler && <li><strong>Jeweler:</strong> {event.args.jeweler}</li>}
-                {event.args.jewOwner && <li><strong>Jew Owner:</strong> {event.args.jewOwner}</li>}
-                {event.args.miner && <li><strong>Miner:</strong> {event.args.miner}</li>}
-                {event.args.gemCutter && <li><strong>Gem cutter:</strong> {event.args.gemCutter}</li>}
-              </p>
-            </li>
-          );
-        })}
-      </ul>
+                return (
+                    <li key={index} className="details-list-item">
+                        <strong>Event:</strong> {event.event}
+                        <br />
+                        <strong>Transaction Hash:</strong> {event.transactionHash}
+                        <br />
+                        <strong>Block Number:</strong> {event.blockNumber}
+                        <br />
+                        <strong>Transaction Date:</strong> {transactionDate}
+                        <br />
+                        {gasDetails && (
+                            <>
+                                <strong>Gas Used:</strong> {gasDetails.gasUsed}
+                                <br />
+                                <strong>Gas Price:</strong> {gasDetails.gasPrice} Ether
+                                <br />
+                            </>
+                        )}
+                        <strong>Involved Users:</strong>
+                        <p>
+                            {event.args.owner && <li><strong>Owner:</strong> {event.args.owner}</li>}
+                            {event.args.jeweler && <li><strong>Jeweler:</strong> {event.args.jeweler}</li>}
+                            {event.args.jewOwner && <li><strong>Jew Owner:</strong> {event.args.jewOwner}</li>}
+                            {event.args.miner && <li><strong>Miner:</strong> {event.args.miner}</li>}
+                            {event.args.gemCutter && <li><strong>Gem cutter:</strong> {event.args.gemCutter}</li>}
+                        </p>
+                    </li>
+                );
+            })}
+        </ul>
     );
-  };
-  
+};
+
   
   return (
     <div className="details-details-container card-background pt-5">

@@ -89,9 +89,12 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
       return <p>No transaction events found for this item.</p>;
     }
 
+    // Rendezés időrendben
+    const sortedEvents = events.sort((a, b) => a.blockNumber - b.blockNumber);
+
     return (
       <ul className="details-list">
-        {events.map((event, index) => {
+        {sortedEvents.map((event, index) => {
           const gasDetails = transactionGasDetails[event.transactionHash];
           const transactionDate = blockDates[event.blockNumber]
             ? blockDates[event.blockNumber].toLocaleString()
@@ -128,7 +131,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         })}
       </ul>
     );
-  };
+};
+
 
   const renderJewelry = () => {
     return jewelryDetails.map((jewelry, key) => (
