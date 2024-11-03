@@ -38,9 +38,9 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
-        <td>size</td>
-        <td>carat</td>
-        <td>color and type</td>
+        <td>{gem.size}</td>
+        <td>{gem.carat.toString()} ct</td>
+        <td>{gem.colorGemType}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
           <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">

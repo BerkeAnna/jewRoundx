@@ -552,3 +552,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.10.13. 
         17:10
                 túl sok a gem az add gemnél ++
+
+2024.11.03.
+        15:58   
+                nem írja ki a gemUpdated event adatait...
