@@ -9,6 +9,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account, jewelr
   const navigate = useNavigate();
   const [metadata, setMetadata] = useState({}); // Metaadatok a kiválasztott kövekhez
   const [prevGemsArray, setPrevGemsArray] = useState([]);
+  const [firestoreMetadata, setFirestoreMetadata] = useState({}); // State for metadata
 
   const handleRepair = (gemId) => {
     markGemAsUsed(gemId);
@@ -34,7 +35,6 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account, jewelr
   };
 
   const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
-
   useEffect(() => {
     const fetchJewelryDetails = async () => {
       try {
@@ -46,29 +46,47 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account, jewelr
       }
     };
 
+    const fetchFirestoreMetadata = async () => {
+      const metadata = {};
+      const promises = ownedSelectedGems.map(async (gem) => {
+        if (gem.metadataHash) {
+          const docRef = doc(firestore, 'gems', gem.metadataHash);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            metadata[gem.id] = docSnap.data(); // Store the entire metadata object for each gem by ID
+          }
+        }
+      });
+      await Promise.all(promises);
+      setFirestoreMetadata(metadata);
+    };
+
+    fetchFirestoreMetadata();
     fetchJewelryDetails();
-  }, [id, jewelryContract]);
+  }, [id, jewelryContract, ownedSelectedGems]);
 
   const renderSelectedGems = () => {
-    return ownedSelectedGems.map((gem, key) => (
-      gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>size</td>
-        <td>carat</td>
-        <td>color and type</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
-            Select
-          </button>
-          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
-            Details
-          </button>
-        </td>
-      </tr>
-      )
-    ));
+    return ownedSelectedGems.map((gem, key) => {
+      const gemMetadata = firestoreMetadata[gem.id] || {}; // Access metadata for this gem
+
+      return gem.used === false && (
+        <tr key={key}>
+          <td>{gem.id.toString()}</td>
+          <td>{gemMetadata.size || 'N/A'}</td>
+          <td>{gemMetadata.carat || 'N/A'}</td>
+          <td>{`${gemMetadata.color || 'N/A'} ${gemMetadata.gemType || 'N/A'}`}</td>
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>
+            <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+              Select
+            </button>
+            <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+              Details
+            </button>
+          </td>
+        </tr>
+      );
+    });
   };
 
   return (

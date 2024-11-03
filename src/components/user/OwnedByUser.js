@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { firestore } from '../../firebase'; // Firebase Firestore import
+import { doc, getDoc } from 'firebase/firestore'; // Firestore lekérdezéshez
 
 function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [jewelryId, setJewelryId] = useState('');
+  const [firestoreMetadata, setFirestoreMetadata] = useState({});
   
   // Load user data from localStorage
   const username = localStorage.getItem('username') || '';
@@ -23,28 +26,50 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
   const handleMarkedAsFinished = (gemId) => {
     markedAsFinished(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleMarkedAsSale = (gemId) => {
     markedAsSale(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleAddRepair = (gemId) => {
     addForRepair(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleReturnToOwner = (gemId) => {
     returnToOwner(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const ownedMinedGems = minedGems.filter((minedGem) => minedGem.owner === account);
   const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
   const ownedJewelry = jewelry.filter((jewelry) => jewelry.owner === account);
 
+  useEffect(() => {
+    const fetchFirestoreMetadata = async () => {
+      const metadata = {};
+      const promises = [...minedGems, ...selectedGems].map(async (gem) => {
+        if (gem.metadataHash) {
+          const docRef = doc(firestore, 'gems', gem.metadataHash);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            metadata[gem.id] = docSnap.data().gemType;
+          }
+        }
+      });
+      
+      await Promise.all(promises); // Wait for all data to be fetched
+      setFirestoreMetadata(metadata); 
+    };
+    
+    fetchFirestoreMetadata();
+  }, [minedGems, selectedGems]);
+  
+
+  
   const renderMinedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === false && minedGem.selected === false && (
@@ -86,34 +111,33 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.colorGemType}</td>
+          <td>{firestoreMetadata[selectedGem.id]} </td>
           <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
           <td>{selectedGem.owner}</td>
           <td className="button-container">
-         
             {!selectedGem.forSale && !selectedGem.used ? (
               <>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                   Details
                 </button>
                 {role === 'Jeweler' && (
-                <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
-                  Make jewelry
-                </button>
+                  <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
+                    Make jewelry
+                  </button>
                 )}
                 <button
-                id={selectedGem.id}
-                value={selectedGem.price}
-                onClick={() => polishGem(selectedGem.id)}
-                className="btn"
-              >
-                ForSale
-              </button>
+                  id={selectedGem.id}
+                  value={selectedGem.price}
+                  onClick={() => polishGem(selectedGem.id)}
+                  className="btn"
+                >
+                  ForSale
+                </button>
               </>
             ) : (
               <div>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
-                Details
+                  Details
                 </button>
                 <button
                   id={selectedGem.id}
@@ -130,6 +154,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       )
     ));
   };
+  
 
   const renderJewelry = () => {
     return ownedJewelry.map((jewelry, key) => (
