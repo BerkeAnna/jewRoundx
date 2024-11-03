@@ -7,13 +7,11 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   const navigate = useNavigate();
 
   const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
-  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
   const jewelryDetails = jewelry.filter(item => item.id == gemId);
 
   const [prevGemsArray, setPrevGemsArray] = useState([]);
   const [filteredJewelryEvents, setFilteredJewelryEvents] = useState([]);
   const [filteredSelectedGemEvents, setFilteredSelectedGemEvents] = useState([]);
-  const [filteredMinedGemEvents, setFilteredMinedGemEvents] = useState([]);
   const [allTransactions, setAllTransactions] = useState([]);
   const [blockDates, setBlockDates] = useState({});
   const [transactionGasDetails, setTransactionGasDetails] = useState({});
@@ -66,16 +64,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         );
         setFilteredSelectedGemEvents(filteredSelectedGems);
 
-        const minedGemEvents = await gemstoneExtractionContract.getPastEvents('allEvents', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-        const filteredMinedGems = minedGemEvents.filter(event =>
-          gemIdsAsInt.includes(parseInt(event.returnValues.id))
-        );
-        setFilteredMinedGemEvents(filteredMinedGems);
-
-        const allEvents = [...jewelryEvents, ...selectedGemEvents, ...minedGemEvents];
+        const allEvents = [...jewelryEvents, ...selectedGemEvents];
 
         // Fetch block dates and gas details
         const blockNumbers = allEvents.map(event => event.blockNumber);
@@ -147,7 +136,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
     );
   };
 
-
   const renderSelectedGems = () => {
     const filteredSelectedGems = selectedGems
       .filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)))
@@ -185,6 +173,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
 
   const handlePrevGem = () => {
     const maxIndex = Math.min(renderSelectedGems().length) - 1;
+
     setCurrentGemIndex(prev => (prev === 0 ? maxIndex : prev - 1));
   };
 
