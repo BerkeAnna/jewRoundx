@@ -1,25 +1,24 @@
 const { expect } = require("chai");
 
-describe.only("Jewelry Contract", function () {
+describe("Jewelry Contract", function () {
     let Jewelry, jewelry, GemstoneSelecting, gemstoneSelecting, GemstoneExtraction, gemstoneExtraction;
     let owner, jeweler, buyer, cutter;
 
     before(async function () {
         [owner, jeweler, buyer, cutter] = await ethers.getSigners();
-    
+
         GemstoneExtraction = await ethers.getContractFactory("GemstoneExtraction");
         gemstoneExtraction = await GemstoneExtraction.deploy();
         await gemstoneExtraction.deployed();
-    
+
         GemstoneSelecting = await ethers.getContractFactory("GemstoneSelecting");
         gemstoneSelecting = await GemstoneSelecting.deploy(gemstoneExtraction.address);
         await gemstoneSelecting.deployed();
-    
+
         Jewelry = await ethers.getContractFactory("Jewelry");
         jewelry = await Jewelry.deploy(gemstoneSelecting.address);
         await jewelry.deployed();
-    
-        // Mine the initial gem here to set up for tests
+
         const gemType = "Ruby";
         const details = "red ruby";
         const price = ethers.utils.parseEther("1");
@@ -27,7 +26,7 @@ describe.only("Jewelry Contract", function () {
         const miningYear = 2024;
         const fileURL = "https://example.com/gem.jpg";
         const purchased = false;
-    
+
         await gemstoneExtraction.gemMining(
             gemType,
             details,
@@ -37,11 +36,11 @@ describe.only("Jewelry Contract", function () {
             fileURL,
             purchased
         );
-    
-        const minedGem = await gemstoneExtraction.minedGems(1); // assuming gem ID 1 is created
+
+        const minedGem = await gemstoneExtraction.minedGems(1); 
         console.log("Mined Gem ID:", minedGem.id);
     });
-    
+
 
     it("Should create a new jewelry item", async function () {
         const gemId = 2;
@@ -50,8 +49,20 @@ describe.only("Jewelry Contract", function () {
         const price = ethers.utils.parseEther("1");
         const fileURL = "https://example.com/jewelry1";
 
-        await jewelry.connect(owner).jewelryMaking(name, gemId, physicalDetails, false, price, fileURL);
-
+        await expect(jewelry.connect(owner).jewelryMaking(name, gemId, physicalDetails, false, price, fileURL))
+            .to.emit(jewelry, "JewelryMaking")
+            .withArgs(
+                1,
+                name,
+                physicalDetails,
+                false,
+                true,
+                price,
+                fileURL,
+                owner.address,
+                owner.address,
+                owner.address
+            );
         const jewelryDetails = await jewelry.getJewelryDetails(1);
         expect(jewelryDetails.name).to.equal(name);
         expect(jewelryDetails.physicalDetails).to.equal(physicalDetails);
@@ -60,19 +71,66 @@ describe.only("Jewelry Contract", function () {
         expect(jewelryDetails.jewOwner).to.equal(owner.address);
     });
 
+    it("Should mark the jewelry as finished", async function () {
+        const jewelryId = 1;
+        console.log("buyer:", buyer.address)
+        console.log("owner:", owner.address)
+        await expect(jewelry.connect(owner).markedAsFinished(jewelryId))
+            .to.emit(jewelry, "JewelryFinished")
+            .withArgs(
+                jewelryId,
+                owner.address
+            );
+
+        const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
+        expect(jewelryDetails.processing).to.equal(false);
+    });
+
+    it("Should toggle jewelry sale state", async function () {
+        const jewelryId = 1;
+
+        await expect(jewelry.connect(owner).markedAsSale(jewelryId))
+            .to.emit(jewelry, "JewelrySale")
+            .withArgs(
+                jewelryId,
+                owner.address
+            );
+
+        const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
+        expect(jewelryDetails.sale).to.equal(true);
+
+        await expect(jewelry.connect(owner).markedAsSale(jewelryId))
+            .to.emit(jewelry, "JewelrySale")
+            .withArgs(
+                jewelryId,
+                owner.address
+            );
+        const jewelryDetailsRemove = await jewelry.getJewelryDetails(jewelryId);
+        expect(jewelryDetailsRemove.sale).to.equal(false);
+    });
+
     it("Should allow the purchase of a jewelry item", async function () {
         const jewelryId = 1;
         const price = ethers.utils.parseEther("1");
 
-        // Explicitly set the jewelry item for sale
-        await jewelry.connect(owner).markedAsSale(jewelryId);
+        await expect(
+            jewelry.connect(owner).markedAsSale(jewelryId))
+            .to.emit(jewelry, "JewelrySale")
+            .withArgs(
+                jewelryId,
+                owner.address
+            );
 
-        // Ensure the jewelry item is now marked for sale
+            
         const jewelryDetailsBeforePurchase = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetailsBeforePurchase.sale).to.equal(true);
 
-        // Proceed with purchase
-        await jewelry.connect(buyer).buyJewelry(jewelryId, { value: price });
+        await expect(jewelry.connect(buyer).buyJewelry(jewelryId, { value: price }))
+            .to.emit(jewelry, "JewelryBought")
+            .withArgs(
+                jewelryId,
+                buyer.address
+            );
 
         const jewelryDetailsAfterPurchase = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetailsAfterPurchase.owner).to.equal(buyer.address);
@@ -84,14 +142,18 @@ describe.only("Jewelry Contract", function () {
         const oldGemId = 1;
         const newGemId = 2;
 
-        // Ensure new gem is created in `selectedGems`
         const gemDetails = { size: "2x2x2", carat: 2, gemType: "Emerald", color: "Green" };
         const price = ethers.utils.parseEther("1");
         const fileURL = "https://example.com/gem2.jpg";
 
         await gemstoneSelecting.connect(owner).gemSelecting(newGemId, gemDetails, fileURL, price);
 
-        await jewelry.connect(owner).replaceGem(jewelryId, oldGemId, newGemId);
+        await expect(jewelry.connect(owner).replaceGem(jewelryId, oldGemId, newGemId))
+            .to.emit(jewelry, "GemReplaced")
+            .withArgs(
+                jewelryId,
+                newGemId
+            );
 
         const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetails.previousGemIds.map(id => id.toNumber())).to.include(newGemId);
@@ -108,8 +170,7 @@ describe.only("Jewelry Contract", function () {
         const fileURL = "https://example.com/gem.jpg";
         const purchased = false;
         const gemPrice = ethers.utils.parseEther("1");
-    
-        // Mine the gem
+
         await gemstoneExtraction.gemMining(
             gemType,
             details,
@@ -119,66 +180,50 @@ describe.only("Jewelry Contract", function () {
             fileURL,
             purchased
         );
-    
-        // Purchase the gem by the initial owner
         await gemstoneExtraction.connect(owner).purchaseGem(gemId, { value: gemPrice });
-    
-        // Transfer ownership of the gem to cutter
+
         await gemstoneExtraction.connect(owner).markNewOwner(gemId, { value: gemPrice });
-    
+
         const gemDetails = {
             size: "2x2x2",
             carat: ethers.BigNumber.from(2),
             gemType: "Ruby",
             color: "red"
         };
-    
-        // Select and polish the gem
+
         await gemstoneSelecting.connect(cutter).gemSelecting(gemId, gemDetails, "fileUrl", gemPrice);
         await gemstoneSelecting.connect(cutter).polishGem(gemId);
-    
-        // Ellenőrzés a tulajdonosváltás előtt
+
+        // Ell a tulajdonosváltás előtt
         const selectedGemBefore = await gemstoneSelecting.getSelectedGem(gemId);
-            // Transfer gem ownership to jeweler only if jeweler is not already the owner
         await gemstoneSelecting.connect(buyer).transferGemOwnership(gemId, { value: gemPrice });
-        
-    
+
+
         const selectedGemAfter = await gemstoneSelecting.getSelectedGem(gemId);
-        
-    
-    
-        // Now jeweler should be able to update the gem in the jewelry
+
+
+
         await expect(jewelry.connect(buyer).updateGem(jewelryId, gemId))
             .to.emit(jewelry, "GemUpdated")
             .withArgs(jewelryId, gemId);
-    
+
         const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetails.previousGemIds.map(id => id.toNumber())).to.include(gemId);
     });
-    
 
-    it("Should mark the jewelry as finished", async function () {
-        const jewelryId = 1;
 
-        await jewelry.connect(owner).markedAsFinished(jewelryId);
 
-        const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
-        expect(jewelryDetails.processing).to.equal(false);
-    });
-
-    it("Should toggle jewelry sale state", async function () {
-        const jewelryId = 1;
-
-        await jewelry.connect(owner).markedAsSale(jewelryId);
-
-        const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
-        expect(jewelryDetails.sale).to.equal(true);
-    });
 
     it("Should add jewelry for repair", async function () {
         const jewelryId = 1;
 
-        await jewelry.connect(owner).addForRepair(jewelryId);
+        await expect(jewelry.connect(buyer).addForRepair(jewelryId))
+            .to.emit(jewelry, "JewelryAddRepair")
+            .withArgs(
+                jewelryId,
+                buyer.address,
+                owner.address
+            );
 
         const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetails.owner).to.equal(jewelryDetails.jeweler);
@@ -187,7 +232,13 @@ describe.only("Jewelry Contract", function () {
     it("Should return jewelry to the original owner", async function () {
         const jewelryId = 1;
 
-        await jewelry.connect(owner).returnToJewOwner(jewelryId);
+        await expect(jewelry.connect(owner).returnToJewOwner(jewelryId))
+            .to.emit(jewelry, "ReturnToJewOwner")
+            .withArgs(
+                jewelryId,
+                buyer.address,
+                owner.address
+            );
 
         const jewelryDetails = await jewelry.getJewelryDetails(jewelryId);
         expect(jewelryDetails.owner).to.equal(jewelryDetails.jewOwner);
@@ -198,7 +249,12 @@ describe.only("Jewelry Contract", function () {
         const price = ethers.utils.parseEther("1");
 
         await jewelry.connect(owner).markedAsSale(jewelryId);
-        await jewelry.connect(buyer).buyJewelry(jewelryId, { value: price });
+        await expect(jewelry.connect(buyer).buyJewelry(jewelryId, { value: price }))
+            .to.emit(jewelry, "JewelryBought")
+            .withArgs(
+                jewelryId,
+                buyer.address
+            );
 
         const jewelryCount = await jewelry.getJewelryCountByOwner(buyer.address);
         expect(jewelryCount).to.equal(1);
@@ -209,12 +265,11 @@ describe.only("Jewelry Contract", function () {
         expect(jewelryCount).to.equal(1);
     });
 
-    // Negative Test: Insufficient funds
+    // Negative Test
     it("Should fail to buy jewelry if insufficient funds are sent", async function () {
         const jewelryId = 1;
         const insufficientFunds = ethers.utils.parseEther("0.5");
 
-        // Ensure jewelry item is for sale
         await jewelry.connect(owner).markedAsSale(jewelryId);
 
         await expect(
