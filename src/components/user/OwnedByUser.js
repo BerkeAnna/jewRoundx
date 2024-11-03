@@ -96,9 +96,11 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
                   Details
                 </button>
+                {role === 'Jeweler' && (
                 <button onClick={() => handleJewMaking(selectedGem.id)} className="btn">
                   Make jewelry
                 </button>
+                )}
                 <button
                 id={selectedGem.id}
                 value={selectedGem.price}
