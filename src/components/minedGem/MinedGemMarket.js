@@ -55,6 +55,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
         )}
           
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
+        <p><strong> {minedGem.gemType}</strong></p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(minedGem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Miner:</strong> {minedGem.miner}</p>
         <p><strong>Owner:</strong> {minedGem.owner}</p>
