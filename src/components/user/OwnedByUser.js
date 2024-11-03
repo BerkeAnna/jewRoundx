@@ -85,7 +85,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.colorGemType}</td>
+          <td>{selectedGem.details.gemType}</td>
           <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
           <td>{selectedGem.owner}</td>
           <td className="button-container">
