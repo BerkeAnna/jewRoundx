@@ -51,6 +51,7 @@ function MinedGemMarket({ minedGems, account, markNewOwner, }) {
       <div key={key} className="card market-card">
          <img src={minedGem.fileURL} className="card-img-top" alt={`${minedGem.gemType}`} />
         <p><strong>ID:</strong> {minedGem.id.toString()}</p>
+        <p><strong>{minedGem.gemType}</strong></p>
         <p><strong>Price: </strong>{minedGem.price} Eth</p> {/* BigNumber konverzió */}
          
         <p><strong>Miner:</strong> {minedGem.miner}</p>

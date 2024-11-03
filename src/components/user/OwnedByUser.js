@@ -23,22 +23,22 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
   const handleMarkedAsFinished = (gemId) => {
     markedAsFinished(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleMarkedAsSale = (gemId) => {
     markedAsSale(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleAddRepair = (gemId) => {
     addForRepair(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const handleReturnToOwner = (gemId) => {
     returnToOwner(gemId);
-    navigate(`/ownMinedGems`);
+    navigate(`/ownGems`);
   };
 
   const ownedMinedGems = minedGems.filter((minedGem) => minedGem.owner === account);
@@ -86,7 +86,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.colorGemType}</td>
+          <td>{selectedGem.details.gemType}</td>
           <td>{selectedGem.price.toString()} Eth</td> {/* Convert to ETH */}
           <td>{selectedGem.owner}</td>
           <td className="button-container">

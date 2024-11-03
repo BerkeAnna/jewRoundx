@@ -556,6 +556,6 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 
 2024.11.03.
         12:10
-                az ownedminedgems oldal nevét módosítani profil-ra 
+                az ownedminedgems oldal nevét módosítani profil-ra ++
                 és a táblázatok nemjól jelzik ki az adatokat. - üres táblák
-                a gem details odlalon abc sorrentben adja aeventeket - idősor kellenee
+                a gem details odlalon abc sorrentben adja aeventeket - idősor kellenee ++

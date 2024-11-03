@@ -148,8 +148,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
         <div>
-  <h2>Last Previous Gem ID</h2>
-  <p>{prevGemsArray.length > 0 ? `Gem ID: ${prevGemsArray[prevGemsArray.length - 1]}` : "No Previous Gem IDs Found"}</p>
+        <p><strong>Last Gem ID: </strong> {prevGemsArray.length > 0 ? `${prevGemsArray[prevGemsArray.length - 1]}` : "No Previous Gem IDs Found"}</p>
 </div>
 
         <p><strong>Price:</strong> {jewelry.price.toString()} Eth</p>
