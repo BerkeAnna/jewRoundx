@@ -4,16 +4,40 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, polishGem, markedAsFinished, markedAsSale, addForRepair, returnToOwner }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [jewelryId, setJewelryId] = useState('');
-  
+  const [selectedGemMetadata, setSelectedGemMetadata] = useState({}); // Metaadatok tárolása
+
   // Load user data from localStorage
   const username = localStorage.getItem('username') || '';
   const role = localStorage.getItem('role') || '';
 
-  console.log(role)
+  console.log(role);
 
   const handleMarkAsSelected = (gemId) => {
     navigate(`/gem-select/${gemId}`);
+  };
+
+  // Metaadatok lekérése a Pinatából
+  const fetchPinataMetadataForSelected = async (hash, gemId) => {
+    try {
+      const cleanedHash = cleanHash(hash);
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setSelectedGemMetadata(prevState => ({
+        ...prevState,
+        [gemId]: data, // Hozzáadás a megfelelő gemId-hoz
+      }));
+    } catch (error) {
+      console.error('Error fetching Pinata metadata for selected gems:', error);
+    }
+  };
+
+  // Hash tisztítás
+  const cleanHash = (hash) => {
+    if (hash.startsWith('https://gateway.pinata.cloud/ipfs/')) {
+      return hash.replace('https://gateway.pinata.cloud/ipfs/', '');
+    }
+    return hash;
   };
 
   const handleJewMaking = (gemId) => {
@@ -44,6 +68,13 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
   const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
   const ownedJewelry = jewelry.filter((jewelry) => jewelry.owner === account);
 
+  useEffect(() => {
+    ownedSelectedGems.forEach(gem => {
+      if (gem.metadataHash && !selectedGemMetadata[gem.id]) {
+        fetchPinataMetadataForSelected(gem.metadataHash, gem.id);
+      }
+    });
+  }, [ownedSelectedGems, selectedGemMetadata]);
   const renderMinedGems = () => {
     return ownedMinedGems.map((minedGem, key) => (
       minedGem.purchased === false && minedGem.selected === false && (
@@ -79,17 +110,19 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       )
     ));
   };
-
   const renderProcessingGems = () => {
     return ownedSelectedGems.map((selectedGem, key) => (
       selectedGem.used === false && (
         <tr key={key}>
           <th scope="row">{selectedGem.id.toString()}</th>
-          <td>{selectedGem.colorGemType}</td>
+          <td>
+            {selectedGemMetadata[selectedGem.id] && selectedGemMetadata[selectedGem.id].gemType 
+              ? selectedGemMetadata[selectedGem.id].gemType 
+              : 'Loading...'}
+          </td> {/* Correctly rendered gemType */}
           <td>{window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</td>
           <td>{selectedGem.owner}</td>
           <td className="button-container">
-         
             {!selectedGem.forSale && !selectedGem.used ? (
               <>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
@@ -100,26 +133,16 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
                     Make jewelry
                   </button>
                 )}
-                <button
-                id={selectedGem.id}
-                value={selectedGem.price}
-                onClick={() => polishGem(selectedGem.id)}
-                className="btn"
-              >
-                ForSale
-              </button>
+                <button onClick={() => polishGem(selectedGem.id)} className="btn">
+                  ForSale
+                </button>
               </>
             ) : (
               <div>
                 <button onClick={() => navigate(`/gem-details/${selectedGem.id}`)} className="btn">
-                Details
+                  Details
                 </button>
-                <button
-                  id={selectedGem.id}
-                  value={selectedGem.price}
-                  onClick={() => polishGem(selectedGem.id)}
-                  className="btn"
-                >
+                <button onClick={() => polishGem(selectedGem.id)} className="btn">
                   Remove from market
                 </button>
               </div>
@@ -129,7 +152,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       )
     ));
   };
-
+  
   const renderJewelry = () => {
     return ownedJewelry.map((jewelry, key) => (
       
@@ -260,21 +283,21 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
       )}
 
       {(role === 'Gem Cutter' || role === 'Jeweler') && (
-      <div>
-        <h2>List of processing gems</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Details</th>
-              <th scope="col">Price</th>
-              <th scope="col">Owner</th>
-              <th scope="col">*</th>
-            </tr>
-          </thead>
-          <tbody>{renderProcessingGems()}</tbody>
-        </table>
-      </div>
+        <div>
+          <h2>List of processing gems</h2>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Gem Type</th>
+                <th scope="col">Price</th>
+                <th scope="col">Owner</th>
+                <th scope="col">*</th>
+              </tr>
+            </thead>
+            <tbody>{renderProcessingGems()}</tbody>
+          </table>
+        </div>
       )}
 
       { role === 'Jeweler' &&(
