@@ -111,7 +111,7 @@ const AppRoutes = ({ state, gemMining, gemSelecting, purchaseGem, markNewOwner, 
         } 
       />
       <Route 
-        path="/jewMarket" 
+        path="/jewelryMarket" 
         element={
           <ProtectedRoute>
             <JewMarket 
