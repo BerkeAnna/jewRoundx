@@ -73,7 +73,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account, jewelr
         <tr key={key}>
           <td>{gem.id.toString()}</td>
           <td>{gemMetadata.size || 'N/A'}</td>
-          <td>{gemMetadata.carat || 'N/A'}</td>
+          <td>{gemMetadata.carat || 'N/A'} ct</td>
           <td>{`${gemMetadata.color || 'N/A'} ${gemMetadata.gemType || 'N/A'}`}</td>
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>
