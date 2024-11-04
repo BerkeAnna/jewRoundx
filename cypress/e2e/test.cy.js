@@ -82,14 +82,14 @@ describe('DApp testing', () => {
           cy.wait(5000);
           cy.get('button[name="myProducts"]').click();
           cy.wait(8000);
-          cy.url().should('include', '/ownMinedGems');
+          cy.url().should('include', '/ownGems');
         });
 
         it('mine a gem', () => {
           cy.wait(5000);
           cy.get('button[name="gemMining"]').click();
           cy.wait(8000);
-          cy.url().should('include', '/addMinedGem');
+          cy.url().should('include', '/ownGems');
           cy.get('input[name="gemType"]').should('be.visible').type('Ruby');
           cy.get('input[name="gemType"]').should('have.value', 'Ruby');
           cy.get('input[name="price"]').should('be.visible').type('1');

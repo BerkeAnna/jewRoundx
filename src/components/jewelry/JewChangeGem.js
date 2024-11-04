@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function JewChangeGem({ selectedGems, markGemAsUsed,  jewelryContract, account, replaceGem,markGemAsReplaced }) {
+function JewChangeGem({ selectedGems, markGemAsUsed, jewelryContract, account, replaceGem, markGemAsReplaced }) {
   const { id, oldGemId } = useParams();
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-  
-  
+  const [gemMetadata, setGemMetadata] = useState({}); // State to store metadata for each gem
+
   const handleRepair = (newGemId) => {
-    
     console.log('Jewelry ID:', id, 'Old Gem ID:', oldGemId, 'New Gem ID:', newGemId);
     markGemAsUsed(newGemId);
     replaceGem(id, oldGemId, newGemId);
     markGemAsReplaced(oldGemId);
-   // updateGem(oldGemId, newGemId);
     navigate(`/jewelry-details/${id}`);
+  };
 
-};
-  
-
-const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
+  const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner === account);
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -35,21 +31,47 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
     fetchJewelryDetails();
   }, [id, jewelryContract]);
 
+  // Function to fetch metadata from IPFS using Pinata
+  const fetchPinataMetadata = async (hash, gemId) => {
+    try {
+      const cleanedHash = hash.startsWith('https://gateway.pinata.cloud/ipfs/') ? hash.replace('https://gateway.pinata.cloud/ipfs/', '') : hash;
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGemMetadata(prevState => ({
+        ...prevState,
+        [gemId]: data, // Store metadata under the gem's ID
+      }));
+    } catch (error) {
+      console.error('Error fetching metadata from Pinata:', error);
+    }
+  };
+
+  // Fetch metadata for each owned selected gem if not already fetched
+  useEffect(() => {
+    ownedSelectedGems.forEach(gem => {
+      if (gem.metadataHash && !gemMetadata[gem.id]) {
+        fetchPinataMetadata(gem.metadataHash, gem.id);
+      }
+    });
+  }, [ownedSelectedGems, gemMetadata]);
+
   const renderSelectedGems = () => {
     return ownedSelectedGems.map((gem, key) => (
       gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
-            Select
-          </button>
-          <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
-            Details
-          </button>
-        </td>
-      </tr>
+        <tr key={key}>
+          <td>{gem.id.toString()}</td>
+          <td>{gemMetadata[gem.id] && gemMetadata[gem.id].gemType ? gemMetadata[gem.id].gemType : 'Loading...'}</td> {/* Display gemType from metadata */}
+          <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
+          <td>
+            <button onClick={() => handleRepair(parseInt(gem.id.toString()))} className="btn btn-primary">
+              Select
+            </button>
+            <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
+              Details
+            </button>
+          </td>
+        </tr>
       )
     ));
   };
@@ -62,13 +84,12 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
         <thead>
           <tr>
             <th>ID</th>
+            <th>Gem Type</th> {/* Add Gem Type column */}
             <th>Price</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-          {renderSelectedGems()}
-        </tbody>
+        <tbody>{renderSelectedGems()}</tbody>
       </table>
     </div>
   );

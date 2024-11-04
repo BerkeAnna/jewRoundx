@@ -16,7 +16,7 @@ class Navbar extends Component {
         </ul>
         <ul className="navbar-nav px-3">
           <li className="nav-item ml-2">
-            <a href="/ownMinedGems" className="text-acc">
+            <a href="/ownGems" className="text-acc">
               <span id="account">{account}</span><br />
               <span>{username}</span>
             </a>
