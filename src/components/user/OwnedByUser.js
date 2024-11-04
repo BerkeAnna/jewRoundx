@@ -216,7 +216,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
       {role === 'Gem Cutter' && (
       <div>
-        <h2>List of selected gems</h2>
+        <h2>List of gems waiting to be processed</h2>
         <table className="table">
           <thead>
             <tr>
@@ -234,7 +234,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
       {(role === 'Gem Cutter' || role === 'Jeweler') && (
       <div>
-        <h2>List of processing gems</h2>
+        <h2>List of processed gems</h2>
         <table className="table">
           <thead>
             <tr>
@@ -252,7 +252,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
 
       { role === 'Jeweler' &&(
       <div>
-        <h2>List of processing jewelry</h2>
+        <h2>List of jewels in progress</h2>
         <table className="table">
           <thead>
             <tr>
