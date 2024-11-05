@@ -155,6 +155,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
+        <p><strong>Jeweler owner:</strong> {jewelry.jewOwner}</p>
         <hr />
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredJewelryEvents)}
@@ -181,8 +182,8 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>ID:</strong> {gem.id.toString()}</p>
         <p>{gem.replaced ? <strong className="changed">Changed earlier</strong> : <strong>Currently in jewelry</strong>}</p>
         <p><strong>Price:</strong> {gem.price.toString()} Eth</p>
-        <p><strong>Size:</strong> {gem.details.size.toString()}</p>
-        <p><strong>Carat:</strong> {gem.details.carat.toString()}</p>
+        <p><strong>Size:</strong> {gem.details.size.toString()} mm</p>
+        <p><strong>Carat:</strong> {gem.details.carat.toString()} ct</p>
         <p><strong>Type:</strong> {gem.details.gemType.toString()}</p>
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>

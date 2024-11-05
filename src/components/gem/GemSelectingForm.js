@@ -45,7 +45,7 @@ function GemSelectingForm(props, markGemAsSelected) {
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width} mm`;  // Méret
+    const size = `${depth}x${height}x${width}`;  // Méret
     const price = formData.get('price'); 
 
     console.log("price: " ,  price)

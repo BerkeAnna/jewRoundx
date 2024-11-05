@@ -20,7 +20,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
           <tr key={key}>
             <td>{gem.id.toString()}</td>
             <td>{gem.details.gemType}</td>
-            <td>{gem.details.size.toString()}</td>
+            <td>{gem.details.size.toString()} mm</td>
             <td>{gem.details.carat.toString()} ct</td>
             <td>{gem.details.color.toString()}</td>
             <td>{gem.price.toString()} Eth</td> {/* Convert to ETH */}

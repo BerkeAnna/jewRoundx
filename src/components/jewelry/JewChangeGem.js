@@ -44,8 +44,8 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
-        <td>{gem.details.size}</td>
-        <td>{gem.details.carat.toString()}</td>
+        <td>{gem.details.size} mm</td>
+        <td>{gem.details.carat.toString()} ct</td>
         <td>{gem.details.color.toString()}</td>
         <td>{gem.details.gemType.toString()}</td>
         <td>{gem.price.toString()} Eth</td>

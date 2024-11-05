@@ -69,8 +69,8 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
           </div>
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> {gem.details.size.toString()}</p>
-        <p><strong>Carat:</strong> {gem.details.carat.toString()}</p>
+        <p><strong>Size:</strong> {gem.details.size.toString()} mm</p>
+        <p><strong>Carat:</strong> {gem.details.carat.toString()} ct</p>
         <p><strong>Gem type:</strong> {gem.details.gemType.toString()}</p>
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
