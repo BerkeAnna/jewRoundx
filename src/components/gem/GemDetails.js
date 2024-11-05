@@ -85,7 +85,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
           </div>
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> {gem.size.toString()}</p>
+        <p><strong>Size:</strong> {gem.size.toString()} mm</p>
         <p><strong>Carat:</strong> {gem.carat.toString()}</p>
         <p><strong>Details:</strong> {gem.colorGemType}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>

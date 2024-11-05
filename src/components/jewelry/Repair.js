@@ -68,9 +68,9 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
           </div>
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> size mm</p>
-        <p><strong>Carat:</strong> carat ct</p>
-        <p><strong>Color and gem type:</strong> color and type</p>
+        <p><strong>Size:</strong>  {gem.size.toString()} mm</p>
+        <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
+        <p><strong>Color and gem type:</strong> {gem.colorGemType.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>

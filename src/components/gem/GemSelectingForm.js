@@ -46,7 +46,7 @@ function GemSelectingForm(props, markGemAsSelected) {
     const depth = formData.get('depth').toString();
     const height = formData.get('height').toString();
     const width = formData.get('width').toString();
-    const size = `${depth}x${height}x${width} mm`;
+    const size = `${depth}x${height}x${width}`;
     const carat = formData.get('carat').toString();
 
     if (!size) {
