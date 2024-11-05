@@ -62,17 +62,20 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
       gem.replaced === false && ( 
       <div key={key} className="card">
         <h2>Selected Gem Details</h2>
-        {gem.fileURL && (
+        {gem.fileURL ? (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" className='details-image' />
+              <img src={gem.fileURL} alt="Picture" className="details-image" />
             </a>
           </div>
+        ) : (
+          <p>No image available</p>
         )}
         <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> size mm</p>
-        <p><strong>Carat:</strong> carat ct</p>
-        <p><strong>Color and gem type:</strong> color and type</p>
+        <p><strong>Size:</strong> {gem.details.size.toString()}</p>
+        <p><strong>Carat:</strong> {gem.details.carat.toString()} ct</p>
+        <p><strong>Gem type:</strong> {gem.details.gemType.toString()}</p>
+        <p><strong>Color:</strong> {gem.details.color.toString()}</p>
         <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
