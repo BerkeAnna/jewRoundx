@@ -79,7 +79,9 @@ useEffect(() => {
   };
 
   const renderSelectedOwnedGem = () => {
-    const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
+    const filteredSelectedGems = selectedGems.filter(
+      gem => prevGemsArray.includes(parseInt(gem.id, 10)) && gem.replaced === false
+    );
   
     return filteredSelectedGems.map((gem, key) => {
       const gemMetadata = firestoreMetadata[gem.id] || {}; // Hozzáférés a gem metaadataihoz
