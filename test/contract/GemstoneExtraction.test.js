@@ -12,9 +12,11 @@ contract('GemstoneExtraction', (accounts) => {
   it('should mine a new gem', async () => {
     const result = await contractInstance.gemMining('Ruby', web3.utils.toWei('1', 'Ether'), 'Hash', false, { from: accounts[0] });
     assert(result, 'Gem mining transaction failed');
-
     // ell gem helyesen tárolódott
     const gem = await contractInstance.minedGems(1);
+    console.log("miner:", gem.miner)
+    console.log("owner:", gem.owner)
+    console.log(" accounts[0]:",  accounts[0])
     assert.equal(gem.gemType, 'Ruby', 'Gem type is incorrect');
     assert.equal(gem.price, web3.utils.toWei('1', 'Ether'), 'Gem price is incorrect');
     assert.equal(gem.miner, accounts[0], 'Gem miner address is incorrect');

@@ -618,3 +618,7 @@ MŰKÖDIK A BUYJEWELRY FÜGGVÉNY! HA MEGVESZI AKKOR JÓÓÓÓÓÓÓÓÓÓÓ!!!!
 2024.10.23. 
         18:27
                 Ahhoz h as gem marketetken ki tudjam a képeket iratni, ahhoz a metaadatos izéből szedjük ki a file url-t és külön töltse fel azt ius. mint a jewmarketnél, mert ott működik.
+
+2024.11.05.
+        8:25
+                npx truffle test
