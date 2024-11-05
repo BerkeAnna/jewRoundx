@@ -34,29 +34,32 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     fetchJewelryDetails();
   }, [id, jewelryContract]);
 
-  // Fetch Firestore metadata for each gem
-  useEffect(() => {
-    const fetchFirestoreMetadata = async () => {
-      const metadata = {};
-      const promises = selectedGems.map(async (gem) => {
-        if (gem.metadataHash) {
-          const docRef = doc(firestore, 'gems', gem.metadataHash);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            metadata[gem.id] = docSnap.data(); // Store the metadata for each gem by ID
-          }
+// Firestore metadata lekérése minden gemhez
+useEffect(() => {
+  const fetchFirestoreMetadata = async () => {
+    const metadata = {};
+    const promises = selectedGems.map(async (gem) => {
+      if (gem.metadataHash) {
+        const docRef = doc(firestore, 'gems', gem.metadataHash);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          metadata[gem.id] = {
+            ...docSnap.data(),
+            fileURL: docSnap.data().fileUrl || '' // fileURL is elérhető legyen
+          };
         }
-      });
-      await Promise.all(promises);
-      setFirestoreMetadata(metadata);
-    };
+      }
+    });
+    await Promise.all(promises);
+    setFirestoreMetadata(metadata);
+  };
 
-    fetchFirestoreMetadata();
-  }, [selectedGems]);
+  fetchFirestoreMetadata();
+}, [selectedGems]);
 
   const renderSelectedGems = () => {
     return selectedGems.map((gem, key) => {
-      const gemMetadata = firestoreMetadata[gem.id] || {}; // Access metadata for this gem
+      const gemMetadata = firestoreMetadata[gem.id] || {}; // Hozzáférés a gem metaadataihoz
 
       return gem.used === false && (
         <tr key={key}>
@@ -77,17 +80,17 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
 
   const renderSelectedOwnedGem = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
-
+  
     return filteredSelectedGems.map((gem, key) => {
-      const gemMetadata = firestoreMetadata[gem.id] || {}; // Access metadata for this gem
-
+      const gemMetadata = firestoreMetadata[gem.id] || {}; // Hozzáférés a gem metaadataihoz
+  
       return (
         <div key={key} className="card">
           <h2>Selected Gem Details</h2>
-          {gem.fileURL && (
+          {gemMetadata.fileURL && (
             <div>
-              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-                <img src={gem.fileURL} alt="Picture" className="details-image" />
+              <a href={gemMetadata.fileURL} target="_blank" rel="noopener noreferrer">
+                <img src={gemMetadata.fileURL} alt="Picture" className="details-image" />
               </a>
             </div>
           )}
@@ -105,6 +108,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
       );
     });
   };
+  
 
   return (
     <div className="details-details-container pt-5">
