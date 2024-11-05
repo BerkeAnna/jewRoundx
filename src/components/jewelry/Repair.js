@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/Details.css';
 
-function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract,replaceGem  }) {
+function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, jewelryContract, account, selectingContract, replaceGem }) {
   const { id } = useParams();
   const gemId = id;
   const navigate = useNavigate();
   const [prevGemsArray, setPrevGemsArray] = useState([]);
-  const gemSelected = selectedGems.filter(gem => gem.owner && gem.id == gemId);
-  const minedGem = minedGems.filter(gem => gem.owner && gem.id == gemId);
-  const jewelryDetails = jewelry.filter(item => item.id == gemId);
+  const [pinataMetadata, setPinataMetadata] = useState(null); 
 
-  const handleRepair = (newGemId) => {
-    const oldGemId = parseInt(id);
-    markGemAsUsed(newGemId);
-    replaceGem(oldGemId, newGemId);
-    navigate(`/jewelry-details/${id}`);
-};
-
+  const fetchPinataMetadata = async (hash) => {
+    try {
+      const cleanedHash = hash.startsWith('https://gateway.pinata.cloud/ipfs/')
+        ? hash.replace('https://gateway.pinata.cloud/ipfs/', '')
+        : hash;
+      const url = `https://gateway.pinata.cloud/ipfs/${cleanedHash}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setPinataMetadata(data);
+    } catch (error) {
+      console.error('Error fetching Pinata metadata:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchJewelryDetails = async () => {
@@ -25,72 +29,65 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         const details = await jewelryContract.methods.getJewelryDetails(id).call();
         const gemIdsAsInt = details.previousGemIds.map(gemId => parseInt(gemId, 10));
         setPrevGemsArray(gemIdsAsInt);
-
-        console.log("Prev gems id (int): ", gemIdsAsInt);
       } catch (error) {
-        console.error("Error fetching jewelry details: ", error);
+        console.error("Error fetching jewelry details:", error);
       }
     };
 
     fetchJewelryDetails();
-  }, [id, jewelryContract]);
 
+    if (selectedGems.length > 0) {
+      selectedGems.forEach((gem) => {
+        if (gem.metadataHash) {
+          fetchPinataMetadata(gem.metadataHash);
+        }
+      });
+    }
+  }, [id, jewelryContract, selectedGems]);
 
-  const renderSelectedGems = () => {
-    return selectedGems.map((gem, key) => (
-      gem.used === false && (
-      <tr key={key}>
-        <td>{gem.id.toString()}</td>
-        <td>{gem.size.toString()}</td>
-        <td>{gem.carat.toString()} ct</td>
-        <td>{gem.colorGemType}</td>
-        <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
-        <td>
-          <button onClick={() => handleRepair(gem.id)} className="btn">
-            Select
-          </button>
-        </td>
-      </tr>
-      )
-    ));
-  };
   const renderSelectedOwnedGem = () => {
     const filteredSelectedGems = selectedGems.filter(gem => prevGemsArray.includes(parseInt(gem.id, 10)));
 
     return filteredSelectedGems.map((gem, key) => (
-      gem.replaced === false ?(
-      <div key={key} className="card">
-        <h2>Selected Gem Details</h2>
-        {gem.fileURL && (
-          <div>
-            <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={gem.fileURL} alt="Picture" className='details-image' />
-            </a>
-          </div>
-        )}
-        <p><strong>ID:</strong> {gem.id.toString()}</p>
-        <p><strong>Size:</strong> size mm</p>
-        <p><strong>Carat:</strong> carat ct</p>
-        <p><strong>Color and gem type:</strong> color and type</p>
-        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
-        <p><strong>Used:</strong> {gem.used.toString()}</p>
-        <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
-        <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
-        <p><strong>Owner:</strong> {gem.owner}</p>
-        <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
-      </div>
-    ):(
-      <div></div>
-    )
-    ));
-};
+      gem.replaced === false && (
+        <div key={key} className="card">
+          <h2>Selected Gem Details</h2>
+          {gem.fileURL && (
+            <div>
+              <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
+                <img src={gem.fileURL} alt="Picture" className="details-image" />
+              </a>
+            </div>
+          )}
+          <p><strong>ID:</strong> {gem.id.toString()}</p>
+          
+          {pinataMetadata && (
+            <div>
+              <p><strong>Gem Type:</strong> {pinataMetadata.gemType}</p>
+              <p><strong>Size:</strong> {pinataMetadata.size}</p>
+              <p><strong>Carat:</strong> {pinataMetadata.carat} ct</p>
+              <p><strong>Color:</strong> {pinataMetadata.color}</p>
+              <p><strong>Polishing:</strong> {pinataMetadata.polishing}</p>
+              <p><strong>Transparency:</strong> {pinataMetadata.transparency}</p>
+              <p><strong>Treatments:</strong> {pinataMetadata.treatments}</p>
+            </div>
+          )}
 
+          <p><strong>For Sale:</strong> {gem.forSale.toString()}</p>
+          <p><strong>Used:</strong> {gem.used.toString()}</p>
+          <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
+          <p><strong>Gem Cutter:</strong> {gem.gemCutter}</p>
+          <p><strong>Owner:</strong> {gem.owner}</p>
+        <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
+        </div>
+      )
+    ));
+  };
 
   return (
     <div className="details-details-container pt-5">
       <h1>Processing Jewelry</h1>
       <h3>Choose the next gem</h3>
-      
       <div>{renderSelectedOwnedGem()}</div>
     </div>
   );
