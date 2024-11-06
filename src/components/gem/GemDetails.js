@@ -124,9 +124,9 @@ useEffect(() => {
     return (
       <div className="card">
         <h2>Selected Gem Details</h2>
-        {pinataMetadataSelected && pinataMetadataSelected.fileUrl && (
-          <a href={pinataMetadataSelected.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={pinataMetadataSelected.fileUrl} alt="Gem image" className="details-image" />
+        {gemSelected.fileURL && (
+          <a href={gemSelected.fileURL} target="_blank" rel="noopener noreferrer">
+            <img src={gemSelected.fileURL} alt="Gem image" className="details-image" />
           </a>
         )}
         <p><strong>ID:</strong> {gemSelected.id.toString()}</p>

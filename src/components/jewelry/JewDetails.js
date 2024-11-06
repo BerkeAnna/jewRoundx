@@ -144,9 +144,9 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     return (
       <div className="card">
         <h2>Selected Gem Details</h2>
-        {metadata && metadata.fileUrl && (
-          <a href={metadata.fileUrl} target="_blank" rel="noopener noreferrer">
-            <img src={metadata.fileUrl} alt="Gem image" className="details-image" />
+        {selectedGem.fileURL && (
+          <a href={selectedGem.fileURL} target="_blank" rel="noopener noreferrer">
+            <img src={selectedGem.fileURL} alt="Gem image" className="details-image" />
           </a>
         )}
 
