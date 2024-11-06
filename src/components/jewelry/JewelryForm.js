@@ -66,8 +66,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
       gemId,
       metal,
       size,
-      additionalData,
-      fileUrl 
+      additionalData
     };
 
     let metadataUrl = "";

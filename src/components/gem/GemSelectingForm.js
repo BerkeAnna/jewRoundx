@@ -65,8 +65,7 @@ function GemSelectingForm(props) {
       transparency,
       treatments,
       size,
-      carat,
-      fileUrl
+      carat
     };
 
     // Metaadatok feltöltése IPFS-re

@@ -53,8 +53,7 @@ function MinedGemForm(props) {
       weight,
       size,
       miningLocation: formData.get('miningLocation').toString(),
-      miningYear: formData.get('miningYear').toString(),
-      fileUrl,
+      miningYear: formData.get('miningYear').toString()
     };
 
     // *** IPFS metadata feltöltés időmérése ***
