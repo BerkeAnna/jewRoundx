@@ -54,13 +54,10 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
     }
 
     const metadata = {
-      name,
-      type,  // A select mező értéke itt kerül hozzáadásra
-      gemId,
+      type,
       metal,
       size,
-      additionalData,
-      fileUrl // A feltöltött fájl URL-je
+      additionalData
     };
 
     // Metaadatok feltöltése Firestore-ba
