@@ -60,7 +60,7 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
     return filteredSelectedGems.map((gem, key) => (
       gem.replaced === false && ( 
       <div key={key} className="card">
-        <h2>Selected Gem Details</h2>
+        <h2>Details of the processed gemstone</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
@@ -73,11 +73,11 @@ function Repair({ selectedGems, updateGem, markGemAsUsed, minedGems, jewelry, je
         <p><strong>Carat:</strong> {gem.details.carat.toString()} ct</p>
         <p><strong>Gem type:</strong> {gem.details.gemType.toString()}</p>
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
-        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
+        <p><strong>Sale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
         <p><strong>Owner:</strong> {gem.owner}</p>
-        <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Change</button>
+        <button onClick={() => navigate(`/repair/${id}/change-gem/${gem.id}`)}>Gem exchange</button>
       </div>
       )
     ));

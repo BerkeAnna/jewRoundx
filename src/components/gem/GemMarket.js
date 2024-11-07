@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 
 function GemMarket({  selectedGems, transferGemOwnership }) {
   const navigate = useNavigate();
-  const gemsForSale = selectedGems.filter(gem => gem.forSale);
+  const gemsSale = selectedGems.filter(gem => gem.forSale);
 
   const [pinataMetadataSelected, setPinataMetadataSelected] = useState({}); // Metaadatok a kiválasztott kövekhez
   
@@ -33,19 +33,19 @@ function GemMarket({  selectedGems, transferGemOwnership }) {
   };
 
   useEffect(() => {
-    gemsForSale.forEach((gem) => {
+    gemsSale.forEach((gem) => {
       if (gem.metadataHash) {
         fetchPinataMetadataForSelected(gem.metadataHash, gem.id);
       }
     });
-  }, [gemsForSale]);
+  }, [gemsSale]);
 
   const handleMarkAsSelected = (gemId, price) => {
     transferGemOwnership(gemId, price);
   };
 
-  const renderGemsForSale = () => {
-    return gemsForSale.map((gem, key) => (
+  const renderGemsSale = () => {
+    return gemsSale.map((gem, key) => (
       <div key={key} className="card market-card">
         <img src={gem.fileURL} className="card-img-top card-img-top-market"  />
         <div className="card-body">
@@ -69,7 +69,7 @@ function GemMarket({  selectedGems, transferGemOwnership }) {
       <p>&nbsp;</p>
       <h2>Gem market</h2>
       <div className="gem-cards">
-        {renderGemsForSale()}
+        {renderGemsSale()}
       </div>
       <div className='homeButton'>
         <button onClick={() => navigate(`/loggedIn`)}>HOME PAGE</button>

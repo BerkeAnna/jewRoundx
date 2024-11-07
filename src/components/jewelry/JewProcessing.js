@@ -26,7 +26,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
             <td>{gem.price.toString()} Eth</td> {/* Convert to ETH */}
             <td>
               <button onClick={() => handleRepair(gem.id)} className="btn">
-                Select
+                Add gem
               </button>
             </td>
           </tr>

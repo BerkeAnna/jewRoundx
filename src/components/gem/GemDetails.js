@@ -120,7 +120,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
   const renderSelectedGems = () => {
     return gemSelected.map((gem, key) => (
       <div key={key} className="card">
-        <h2>Selected Gem Details</h2>
+        <h2>Details of the processed gemstone</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
@@ -133,7 +133,7 @@ function GemDetails({ selectedGems, minedGems, account, gemstoneSelectingContrac
         <p><strong>Carat:</strong> {gem.details.carat.toString()} ct</p>
         <p><strong>Type:</strong> {gem.details.gemType.toString()}</p>
         <p><strong>Color:</strong> {gem.details.color.toString()}</p>
-        <p><strong>forSale:</strong> {gem.forSale.toString()}</p>
+        <p><strong>Sale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price: </strong>{gem.price.toString()} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
