@@ -170,7 +170,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           </div>
         )}
         <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
-        <p><strong>Sale:</strong> {selectedGem.forSale.toString()}</p>
+        <p><strong>For Sale:</strong> {selectedGem.forSale.toString()}</p>
         <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
 
@@ -259,7 +259,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
         <p><strong>Owner:</strong> {jewelry.owner}</p>
         <p><strong>Jewelry Owner:</strong> {jewelry.jewOwner}</p>
-        <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
+        <p><strong>For Sale:</strong> {jewelry.sale.toString()}</p>
         <h3>Transaction Details</h3>
         {renderTransactionDetails(filteredJewelryEvents, jewelry.id)}
       </div>

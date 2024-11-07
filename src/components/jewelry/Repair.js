@@ -100,7 +100,7 @@ useEffect(() => {
           <p><strong>Size:</strong> {gemMetadata.size || 'N/A'} mm</p>
           <p><strong>Carat:</strong> {gemMetadata.carat || 'N/A'} ct</p>
           <p><strong>Color and gem type:</strong> {`${gemMetadata.color || 'N/A'} ${gemMetadata.gemType || 'N/A'}`}</p>
-          <p><strong>Sale:</strong> {gem.forSale.toString()}</p>
+          <p><strong>For Sale:</strong> {gem.forSale.toString()}</p>
           <p><strong>Used:</strong> {gem.used.toString()}</p>
           <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
           <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
