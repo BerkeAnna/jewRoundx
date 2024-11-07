@@ -158,7 +158,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Size:</strong> {gem.size.toString()} mm</p>
         <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
         <p><strong>Details:</strong> {gem.colorGemType}</p>
-        <p><strong>Sale:</strong> {gem.forSale.toString()}</p>
+        <p><strong>For Sale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
@@ -196,7 +196,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>ID:</strong> {jewelry.id.toString()}</p>
         <p><strong>Name:</strong> {jewelry.name}</p>
         <p><strong>Details:</strong> {jewelry.physicalDetails.toString()}</p>
-        <p><strong>Sale:</strong> {jewelry.sale.toString()}</p>
+        <p><strong>For Sale:</strong> {jewelry.sale.toString()}</p>
         <p><strong>Processing:</strong> {jewelry.processing.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(jewelry.price.toString(), 'Ether')} Eth</p>
         <p><strong>Jeweler:</strong> {jewelry.jeweler}</p>
