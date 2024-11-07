@@ -55,7 +55,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
           <td>{minedGem.owner}</td>
           <td>
             <button onClick={() => purchaseGem(minedGem.id.toString(), minedGem.price)} className="btn">
-              Sale
+              For Sale
             </button>
           </td>
         </tr>
@@ -102,7 +102,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
                   </button>
                 )}
                 <button onClick={() => polishGem(selectedGem.id)} className="btn">
-                  Sale
+                  For Sale
                 </button>
               </>
             ) : (
@@ -158,7 +158,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
             ) : (
               jewelry.jewOwner === jewelry.owner && (
                 <button onClick={() => handleMarkedAsSale(jewelry.id)} className="btn">
-                  Sale
+                  For Sale
                 </button>
               )
             )}
