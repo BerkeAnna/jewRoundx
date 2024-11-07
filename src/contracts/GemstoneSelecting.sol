@@ -14,8 +14,8 @@ contract GemstoneSelecting {
     struct GemDetails {
         string size;
         uint carat;
-        string gemType; // Gem type separated from color
-        string color;   // Color of the gem
+        string gemType; 
+        string color;  
     }
 
     struct SelectedGem {
