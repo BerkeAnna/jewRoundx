@@ -121,7 +121,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
           </div>
-          <button type="submit" className="button">Make Jewelry</button>
+          <button type="submit" className="button">Make jewelry</button>
         </form>
       </div>
     </div>
