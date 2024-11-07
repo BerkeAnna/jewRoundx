@@ -56,7 +56,7 @@ function GemSelectingForm(props) {
       treatments,
       size,
       carat,
-      fileUrl // A feltöltött fájl URL-je
+      fileUrl
     };
 
     // Metaadatok feltöltése Firestore-ba
