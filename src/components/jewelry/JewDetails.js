@@ -143,7 +143,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
 
     return (
       <div className="card">
-        <h2>Selected Gem Details</h2>
+        <h2>Details of the processed gemstone</h2>
         {selectedGem.fileURL && (
           <a href={selectedGem.fileURL} target="_blank" rel="noopener noreferrer">
             <img src={selectedGem.fileURL} alt="Gem image" className="details-image" />
@@ -165,7 +165,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
           </div>
         )}
             <p><strong>Previous gem ID:</strong> {selectedGem.previousGemId.toString()}</p>
-        <p><strong>forSale:</strong> {selectedGem.forSale.toString()}</p>
+        <p><strong>Sale:</strong> {selectedGem.forSale.toString()}</p>
         <p><strong>replaced:</strong> {selectedGem.replaced.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(selectedGem.price.toString(), 'Ether')} Eth</p>
 

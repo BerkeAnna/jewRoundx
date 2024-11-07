@@ -64,7 +64,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>
             <button onClick={() => handleRepair(gem.id)} className="btn">
-              Select
+              Add gem
             </button>
             <button className="btn" onClick={() => navigate(`/gem-details/${gem.id}`)}>
               Details
