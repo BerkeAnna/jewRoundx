@@ -240,7 +240,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
   
         {pinataMetadataJewelry && (
           <div>
-            <p><strong>Name:</strong> {pinataMetadataJewelry.name}</p>
+            <p><strong>Name:</strong> {jewelry.name}</p>
             <p><strong>Type:</strong> {pinataMetadataJewelry.type}</p>
             <p><strong>Metal:</strong> {pinataMetadataJewelry.metal}</p>
             <p><strong>Size:</strong> {pinataMetadataJewelry.size}</p>

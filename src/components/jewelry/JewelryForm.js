@@ -61,7 +61,6 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
     }
 
     const metadata = {
-      name,
       type,
       gemId,
       metal,
