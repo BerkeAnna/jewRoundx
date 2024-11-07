@@ -13,7 +13,7 @@ contract GemstoneSelecting {
     struct GemDetails {
         string size;
         uint carat;
-        string colorGemType; // Combined color and gem type
+        string colorGemType; 
     }
 
     struct SelectedGem {
@@ -34,7 +34,7 @@ contract GemstoneSelecting {
         uint minedGemId,
         string size,
         uint carat,
-        string colorGemType, // Combined color and gem type
+        string colorGemType,
         bool forSale,
         string fileURL,
         uint price,
