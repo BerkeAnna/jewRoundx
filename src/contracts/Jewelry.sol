@@ -30,14 +30,14 @@ contract Jewelry {
         uint id;
         string name;
         uint[] previousGemIds;
-        string metadataHash; // Off-chain tárolt fizikai részletek hash-e (pl. IPFS hash)
+        string metadataHash; 
         bool sale;
         bool processing;
         uint price;
         string fileURL;
         address payable jeweler;
         address payable owner;
-        address payable jewOwner;  // Új mező hozzáadva
+        address payable jewOwner;
     }
 
     event JewelryMaking(
