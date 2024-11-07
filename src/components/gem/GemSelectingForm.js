@@ -93,7 +93,7 @@ function GemSelectingForm(props, markGemAsSelected) {
           <div className="form-group">
             <input type="file" ref={fileInputRef} className="form-control" />
           </div>
-          <button type="submit" className="button">Select Gem</button>
+          <button type="submit" className="button">Gem processing</button>
         </form>
       </div>
     </div>

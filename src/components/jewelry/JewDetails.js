@@ -146,7 +146,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
   
     return filteredSelectedGems.map((gem, key) => (
       <div key={key} className="card">
-        <h2>Selected Gem Details</h2>
+        <h2>Details of the processed gemstone</h2>
         {gem.fileURL && (
           <div>
             <a href={gem.fileURL} target="_blank" rel="noopener noreferrer">
@@ -158,7 +158,7 @@ function JewDetails({ selectedGems, minedGems, jewelry, account, jewelryContract
         <p><strong>Size:</strong> {gem.size.toString()} mm</p>
         <p><strong>Carat:</strong> {gem.carat.toString()} ct</p>
         <p><strong>Details:</strong> {gem.colorGemType}</p>
-        <p><strong>For Sale:</strong> {gem.forSale.toString()}</p>
+        <p><strong>Sale:</strong> {gem.forSale.toString()}</p>
         <p><strong>Used:</strong> {gem.used.toString()}</p>
         <p><strong>Price:</strong> {window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</p>
         <p><strong>Gem cutter:</strong> {gem.gemCutter}</p>
