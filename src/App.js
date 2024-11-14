@@ -11,6 +11,9 @@ import AppRoutes from './routes/Routes';
 import GemstoneExtractionService from './services/GemstoneExtractionService';
 import GemSelectingService from './services/GemSelectingService';
 import JewelryService from './services/JewelryService';
+import { auth, firestore } from './firebase';
+
+
 
 
 class App extends Component {
@@ -19,8 +22,23 @@ class App extends Component {
     await this.loadBlockchainData();
     await this.loadBlockchainData2();
     await this.loadBlockchainData3();
+    await this.getFirebaseToken();
     //await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
   }
+  async getFirebaseToken() {
+    if (auth.currentUser) {
+      try {
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ true);
+        this.setState({ firebaseToken: idToken }); // A tokent a state-ben tároljuk
+        console.log("Firebase ID Token:", idToken);
+      } catch (error) {
+        console.error("Hiba történt a Firebase token lekérésekor:", error);
+      }
+    } else {
+      console.error("Felhasználó nincs bejelentkezve a Firebase-be.");
+    }
+  }
+  
 
   async loadWeb3() {
     if (window.ethereum) {
