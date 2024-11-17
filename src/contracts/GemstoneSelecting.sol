@@ -71,6 +71,19 @@ contract GemstoneSelecting {
         address payable gemCutter
     );
 
+    event MarkGemAsReplaced(
+        uint id,
+        uint minedGemId,
+        GemDetails details,
+        bool forSale,
+        string fileURL,
+        uint price,
+        bool used,
+        bool replaced,
+        address payable owner,
+        address payable gemCutter
+    );
+
     event TransferGemOwnership(
         uint id,
         uint minedGemId,
@@ -171,7 +184,7 @@ contract GemstoneSelecting {
         require(_selectedGem.replaced == false, "Gem already replaced");
         _selectedGem.replaced = true;
 
-        emit MarkGemAsUsed(
+        emit MarkGemAsReplaced(
             _id,
             _selectedGem.minedGemId,
             _selectedGem.details,

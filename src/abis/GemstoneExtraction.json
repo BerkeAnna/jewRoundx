@@ -18989,12 +18989,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x27DA11C79a67a17F2133B6cFCf195e3b26058c89",
-      "transactionHash": "0x87d3e83ea1952b6341088dd7a7ea4ba55c7410a68f6e93689ff4ecd4e85c8d86"
+      "address": "0x1bd8738E39a5EC66c5B703d7733DfAd64412E3b9",
+      "transactionHash": "0x78255976ee17b32d8d1b9caf39e9ad2b87b6561b6c67aab87920dc055dec8548"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-11-04T17:02:51.149Z",
+  "updatedAt": "2024-11-17T12:59:35.771Z",
   "devdoc": {
     "methods": {}
   },

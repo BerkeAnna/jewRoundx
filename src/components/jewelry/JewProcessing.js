@@ -45,7 +45,7 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, account }) {
             <th>Type</th>
             <th>Size</th>
             <th>Carat</th>
-            <th>Color and type</th>
+            <th>Color</th>
             <th>Price</th>
             <th>Action</th>
           </tr>

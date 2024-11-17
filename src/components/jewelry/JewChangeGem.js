@@ -39,9 +39,9 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
       gem.used === false && (
       <tr key={key}>
         <td>{gem.id.toString()}</td>
+        <td>{gem.details.gemType.toString()}</td>
         <td>{gem.details.size.toString()}</td>
         <td>{gem.details.carat.toString()} ct</td>
-        <td>{gem.details.gemType.toString()}</td>
         <td>{gem.details.color.toString()}</td>
         <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
         <td>
@@ -65,9 +65,9 @@ const ownedSelectedGems = selectedGems.filter((selectedGem) => selectedGem.owner
         <thead>
           <tr>
             <th>ID</th>
+            <th>Type</th>
             <th>Size</th>
             <th>Carat</th>
-            <th>Type</th>
             <th>Color</th>
             <th>Price</th>
             <th>Action</th>

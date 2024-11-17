@@ -17293,12 +17293,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xd41102BC37f59bCfF01Bdea8D5cC9eE6d2bd8Da7",
-      "transactionHash": "0x2712114da1430cf3754334c8c4b3d137e3c0fd542acd0259f7fd96c7366ac834"
+      "address": "0x058829f53476C9bf6768152Bc0ceC2036B065Bf9",
+      "transactionHash": "0x5316f579b35a17c121a3a0a75750bb38c125a079d61aa5b52f4fc5e7b302fa43"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-11-04T17:02:51.145Z",
+  "updatedAt": "2024-11-17T12:59:35.767Z",
   "devdoc": {
     "methods": {}
   },

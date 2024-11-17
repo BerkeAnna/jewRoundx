@@ -266,7 +266,7 @@ function OwnedByUser({ minedGems, selectedGems, jewelry, account, purchaseGem, p
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Details</th>
+              <th scope="col">Type</th>
               <th scope="col">Price</th>
               <th scope="col">Owner</th>
               <th scope="col">*</th>
