@@ -61,6 +61,9 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
         <tr key={key}>
           <td>{gem.id.toString()}</td>
           <td>{gemMetadata[gem.id] && gemMetadata[gem.id].gemType ? gemMetadata[gem.id].gemType : 'Loading...'}</td> {/* Display gemType from metadata */}
+          <td>{gemMetadata[gem.id] && gemMetadata[gem.id].carat ? gemMetadata[gem.id].carat : 'Loading...'} ct</td> {/* Display gemType from metadata */}
+          <td>{gemMetadata[gem.id] && gemMetadata[gem.id].size ? gemMetadata[gem.id].size : 'Loading...'}</td> {/* Display gemType from metadata */}
+          <td>{gemMetadata[gem.id] && gemMetadata[gem.id].color ? gemMetadata[gem.id].color : 'Loading...'}</td> {/* Display gemType from metadata */}
           <td>{window.web3.utils.fromWei(gem.price.toString(), 'Ether')} Eth</td>
           <td>
             <button onClick={() => handleRepair(gem.id)} className="btn">
@@ -83,6 +86,9 @@ function JewProcessing({ selectedGems, updateGem, markGemAsUsed, jewelryContract
           <tr>
             <th>ID</th>
             <th>Gem Type</th> {/* Add Gem Type column */}
+            <th>Carat</th>
+            <th>Size</th>
+            <th>Color</th>
             <th>Price</th>
             <th>Action</th>
           </tr>

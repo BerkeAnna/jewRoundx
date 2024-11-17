@@ -219,7 +219,7 @@ useEffect(() => {
                   <br />
                   <strong>Gas Price:</strong> {window.web3.utils.fromWei(gasDetails.gasPrice, 'ether')} Ether {/*A felhasznált gáz egységenkénti ára ether*/}
                   <br />
-                  <strong>Total Gas Cost/ used gas*gas price:</strong> {gasDetails.gasCost} Ether {/*teljes költség a t végrehajtásához etherben */}
+                  <strong>Total Gas Cost:</strong> {gasDetails.gasCost} Ether {/*teljes költség a t végrehajtásához etherben */}
                 </>
               )}
               <br />
