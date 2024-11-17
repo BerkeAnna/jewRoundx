@@ -5,7 +5,8 @@ module.exports = {
     development: {
       host: "127.0.0.1",
       port: 7545,
-      network_id: "*"
+      network_id: "*",
+       from: "0x7C8476745912154a98a4aD354d3792b88dE1CF19"
     },
     loc_development_development: {
       network_id: "*",
