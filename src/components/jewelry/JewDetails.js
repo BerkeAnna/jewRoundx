@@ -118,7 +118,6 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
                   <br />
                 </>
               )}
-              <strong>Involved Users:</strong>
               <p>
                 {event.args.owner && <li><strong>Owner:</strong> {event.args.owner}</li>}
                 {event.args.jeweler && <li><strong>Jeweler:</strong> {event.args.jeweler}</li>}
