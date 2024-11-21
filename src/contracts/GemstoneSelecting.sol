@@ -39,54 +39,26 @@ contract GemstoneSelecting {
 
     event GemToMarket(
         uint id,
-        uint minedGemId,
-        string metadataHash, 
-        bool forSale,
-        uint price,
-        bool used,
-        bool replaced, 
         address payable owner,
-        address payable gemCutter,
-        string fileURL
+        address payable gemCutter
     );
 
     event MarkGemAsUsed(
         uint id,
-        uint minedGemId,
-        string metadataHash, 
-        bool forSale,
-        uint price,
-        bool used,
-        bool replaced, 
         address payable owner,
-        address payable gemCutter,
-        string fileURL
+        address payable gemCutter
     );
 
      event MarkGemAsReplaced(
         uint id,
-        uint minedGemId,
-        string metadataHash, 
-        bool forSale,
-        uint price,
-        bool used,
-        bool replaced, 
         address payable owner,
-        address payable gemCutter,
-        string fileURL
+        address payable gemCutter
     );
 
     event TransferGemOwnership(
         uint id,
-        uint minedGemId,
-        string metadataHash, 
-        bool forSale,
-        uint price,
-        bool used,
-        bool replaced, 
         address payable owner,
-        address payable gemCutter,
-        string fileURL
+        address payable gemCutter
     );
 
     constructor(address _gemstoneExtractionAddress) public {
@@ -143,15 +115,8 @@ contract GemstoneSelecting {
 
         emit GemToMarket(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.metadataHash, 
-            _selectedGem.forSale,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter,
-            _selectedGem.fileURL
+            _selectedGem.gemCutter
         );
     }
 
@@ -163,15 +128,8 @@ contract GemstoneSelecting {
 
         emit MarkGemAsUsed(
             _id,
-            _selectedGem.minedGemId,
-            _selectedGem.metadataHash, 
-            _selectedGem.forSale,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter,
-            _selectedGem.fileURL
+            _selectedGem.gemCutter
         );
     }
 
@@ -197,15 +155,8 @@ contract GemstoneSelecting {
 
         emit TransferGemOwnership(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.metadataHash,
-            _selectedGem.forSale,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter,
-            _selectedGem.fileURL
+            _selectedGem.gemCutter
         );
     }
 
@@ -263,15 +214,8 @@ contract GemstoneSelecting {
 
         emit MarkGemAsReplaced(
             _id,
-            _selectedGem.minedGemId,
-            _selectedGem.metadataHash, 
-            _selectedGem.forSale,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced, 
             _selectedGem.owner,
-            _selectedGem.gemCutter,
-            _selectedGem.fileURL
+            _selectedGem.gemCutter
         );
     }
 }
