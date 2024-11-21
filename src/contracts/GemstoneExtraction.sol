@@ -38,85 +38,37 @@ contract GemstoneExtraction {
 
     event GemProcessing(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
 
     event GemPurchased(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
 
     event GemSelected(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
 
      event MarkNewOwner(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
      event MarkGemAsSelected(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
 
     event TransferGemOwnership(
         uint id,
-        string gemType,
-        string details,
-        uint price,
-        string miningLocation,
-        uint miningYear,
-        bool selected,
         address payable miner,
-        address payable owner,
-        string fileURL,
-        bool purchased
+        address payable owner
     );
 
     constructor() public {
@@ -164,7 +116,7 @@ contract GemstoneExtraction {
         _minedGem.owner = msg.sender; // Az új tulajdonos beállítása
         _minedGem.purchased = true;
 
-        emit GemPurchased(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, false, _minedGem.miner, msg.sender, _minedGem.fileURL, _minedGem.purchased);
+        emit GemPurchased(_id, _minedGem.miner, msg.sender);
     }
 
     function processingGem(uint _id) public {
@@ -175,7 +127,7 @@ contract GemstoneExtraction {
 
         _minedGem.selected = true;
 
-        emit GemProcessing(_id, _minedGem.gemType,  _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+        emit GemProcessing(_id, _minedGem.miner, _minedGem.owner);
     }
 
     function markNewOwner(uint _id) public payable {
@@ -189,7 +141,7 @@ contract GemstoneExtraction {
 
         _minedGem.owner = msg.sender;
 
-        emit MarkNewOwner(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+        emit MarkNewOwner(_id, _minedGem.miner, _minedGem.owner);
     }
 
      function markGemAsSelected(uint _id) public payable {
@@ -202,7 +154,7 @@ contract GemstoneExtraction {
         _minedGem.selected = true;
 
 
-        emit MarkGemAsSelected(_id, _minedGem.gemType, _minedGem.details, _minedGem.price, _minedGem.miningLocation, _minedGem.miningYear, true, _minedGem.miner, _minedGem.owner, _minedGem.fileURL, _minedGem.purchased);
+        emit MarkGemAsSelected(_id, _minedGem.miner, _minedGem.owner);
     }
 
     function getGemstoneCountByOrder(address _owner) public view returns (uint) {

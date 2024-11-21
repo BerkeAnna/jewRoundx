@@ -47,52 +47,24 @@ contract GemstoneSelecting {
 
     event PolishGem(
         uint id,
-        uint minedGemId,
-        GemDetails details,
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
-        bool replaced,
         address payable owner,
         address payable gemCutter
     );
 
     event MarkGemAsUsed(
         uint id,
-        uint minedGemId,
-        GemDetails details,
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
-        bool replaced,
         address payable owner,
         address payable gemCutter
     );
 
     event MarkGemAsReplaced(
         uint id,
-        uint minedGemId,
-        GemDetails details,
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
-        bool replaced,
         address payable owner,
         address payable gemCutter
     );
 
     event TransferGemOwnership(
         uint id,
-        uint minedGemId,
-        GemDetails details,
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
-        bool replaced,
         address payable owner,
         address payable gemCutter
     );
@@ -146,13 +118,6 @@ contract GemstoneSelecting {
 
         emit PolishGem(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.details,
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -166,13 +131,6 @@ contract GemstoneSelecting {
 
         emit MarkGemAsUsed(
             _id,
-            _selectedGem.minedGemId,
-            _selectedGem.details,
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -186,13 +144,6 @@ contract GemstoneSelecting {
 
         emit MarkGemAsReplaced(
             _id,
-            _selectedGem.minedGemId,
-            _selectedGem.details,
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -220,13 +171,6 @@ contract GemstoneSelecting {
 
         emit TransferGemOwnership(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.details,
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
-            _selectedGem.replaced,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
