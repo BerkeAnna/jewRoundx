@@ -18742,12 +18742,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x5271D20E28EB59a2C1d639C897340Ee5e5793025",
-      "transactionHash": "0x8a230dc412cd09e4fb93555cb87e5a8cd84a4a6f2e7264107acfbee40f3a675a"
+      "address": "0x3EC0995e8fEF35ACA55B23d728c8D649191fF535",
+      "transactionHash": "0xb47aa6c4bc8ca2c4f00fecea37db8a540067dd9cbb2c9e36cf141dedf1f56229"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2024-11-17T14:50:20.251Z",
+  "updatedAt": "2024-11-21T19:52:33.147Z",
   "devdoc": {
     "methods": {}
   },

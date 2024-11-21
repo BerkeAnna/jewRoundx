@@ -31,62 +31,38 @@ contract GemstoneExtraction {
 
     event GemProcessing(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     event GemPurchased(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     event GemSelected(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     event MarkNewOwner(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     event MarkGemAsSelected(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     event TransferGemOwnership(
         uint id,
-        string gemType,
-        uint price,
         address payable miner,
-        address payable owner,
-        string metadataHash,
-        bool purchased
+        address payable owner
     );
 
     constructor() public {
@@ -126,7 +102,7 @@ contract GemstoneExtraction {
         _minedGem.owner = msg.sender; 
         _minedGem.purchased = true;
 
-        emit GemPurchased(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, msg.sender, _minedGem.metadataHash, _minedGem.purchased);
+        emit GemPurchased(_id, _minedGem.miner, msg.sender);
     }
 
     function processingGem(uint _id) public {
@@ -134,7 +110,7 @@ contract GemstoneExtraction {
         require(_minedGem.id > 0 && _minedGem.id <= minedGemCount, "Invalid gem ID");
         require(_minedGem.purchased == true, "Gem must be purchased before processing");
 
-        emit GemProcessing(_id, _minedGem.gemType, _minedGem.price, _minedGem.miner, _minedGem.owner, _minedGem.metadataHash, _minedGem.purchased);
+        emit GemProcessing(_id, _minedGem.miner, _minedGem.owner);
     }
 
     function markNewOwner(uint _id) public payable {
@@ -151,12 +127,8 @@ contract GemstoneExtraction {
 
         emit MarkNewOwner(
             _id, 
-            _minedGem.gemType, 
-            _minedGem.price, 
             _minedGem.miner, 
-            _minedGem.owner, 
-            _minedGem.metadataHash, 
-            _minedGem.purchased
+            _minedGem.owner
         );
     }
 
@@ -171,12 +143,8 @@ contract GemstoneExtraction {
 
         emit MarkGemAsSelected(
             _id, 
-            _minedGem.gemType, 
-            _minedGem.price, 
             _minedGem.miner, 
-            _minedGem.owner, 
-            _minedGem.metadataHash, 
-            _minedGem.purchased
+            _minedGem.owner
         );
     }
 

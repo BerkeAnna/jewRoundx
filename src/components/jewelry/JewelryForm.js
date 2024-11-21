@@ -98,16 +98,16 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
             </select>
           </div>
           <div className="form-group">
-            <input id="price" name="price" type="text" className="form-control" placeholder="Price in Ether" required />
+            <input id="price" name="price" type="text" className="form-control" placeholder="Price" required />
           </div>
           <div className="form-group">
-            <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth in mm" required />
+            <input id="depth" name="depth" type="text" className="form-control" placeholder="Depth" required />
           </div>
           <div className="form-group">
-            <input id="height" name="height" type="text" className="form-control" placeholder="Height in mm" required />
+            <input id="height" name="height" type="text" className="form-control" placeholder="Height" required />
           </div>
           <div className="form-group">
-            <input id="width" name="width" type="text" className="form-control" placeholder="Width in mm" required />
+            <input id="width" name="width" type="text" className="form-control" placeholder="Width" required />
           </div>
           <div className="form-group">
             <input id="metal" name="metal" type="text" className="form-control" placeholder="Metal" required />
