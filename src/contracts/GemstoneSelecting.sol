@@ -45,40 +45,16 @@ contract GemstoneSelecting {
 
     event PolishGem(
         uint id,
-        uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
         address payable owner,
         address payable gemCutter
     );
     event MarkGemAsUsed(
         uint id,
-        uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
         address payable owner,
         address payable gemCutter
     );
     event TransferGemOwnership(
         uint id,
-        uint minedGemId,
-        string size,
-        uint carat,
-        string colorGemType, // Combined color and gem type
-        bool forSale,
-        string fileURL,
-        uint price,
-        bool used,
         address payable owner,
         address payable gemCutter
     );
@@ -137,14 +113,6 @@ contract GemstoneSelecting {
 
         emit PolishGem(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, // Combined color and gem type
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -158,14 +126,6 @@ contract GemstoneSelecting {
 
         emit MarkGemAsUsed(
             _id,
-            _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, // Combined color and gem type
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
@@ -194,14 +154,6 @@ contract GemstoneSelecting {
 
         emit TransferGemOwnership(
             _selectedGem.id,
-            _selectedGem.minedGemId,
-            _selectedGem.details.size,
-            _selectedGem.details.carat,
-            _selectedGem.details.colorGemType, 
-            _selectedGem.forSale,
-            _selectedGem.fileURL,
-            _selectedGem.price,
-            _selectedGem.used,
             _selectedGem.owner,
             _selectedGem.gemCutter
         );
