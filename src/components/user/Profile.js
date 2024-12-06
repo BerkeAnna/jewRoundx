@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
-import UserRegistryABI from '../../abis/UserRegistry.json';
 import '../../styles/Details.css';
 
 const Profile = ({ userInfo, ownedJewelryCount, cuttedGemCount, ownedMinedGemCount, ownedMadeJewelryCount }) => {
