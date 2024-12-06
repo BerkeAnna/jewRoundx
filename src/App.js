@@ -360,13 +360,13 @@ async markGemAsReplaced(id) {
   }
 }
 
-async jewelryMaking(name, gemId, metadataHash, sale, price, fileURL) {  
+async jewelryMaking(name, gemId, metadataHash, sale, price) {  
   try {
     this.setState({ loading: true });
     const account = this.state.account;
 
     // JewelryService-től hívjuk a jewelryMaking fv-t
-    JewelryService.jewelryMaking(name, gemId, metadataHash, sale, price, fileURL, account)
+    JewelryService.jewelryMaking(name, gemId, metadataHash, sale, price, account)
     
     // tranzakció után frissítjük a blokklánc adatokat
     await this.loadBlockchainData(); 

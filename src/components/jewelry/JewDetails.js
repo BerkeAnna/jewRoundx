@@ -235,22 +235,22 @@ function JewDetails({ selectedGems, minedGems, jewelry, jewelryContract, gemston
     return jewelryDetails.map((jewelry, key) => (
       <div key={key} className="card">
         <h2>Jewelry Details</h2>
-        {jewelry.fileURL && (
-          <div>
-            <a href={jewelry.fileURL} target="_blank" rel="noopener noreferrer">
-              <img src={jewelry.fileURL} alt="Jewelry" className='details-image' />
-            </a>
-          </div>
-        )}
-        <p><strong>ID:</strong> {jewelry.id.toString()}</p>
-
         {firestoreMetadataJewelry && (
           <div>
-            <p><strong>Name:</strong> {firestoreMetadataJewelry.name}</p>
+          <div>
+            <a href={firestoreMetadataJewelry.fileUrl} target="_blank" rel="noopener noreferrer">
+              <img src={firestoreMetadataJewelry.fileUrl} alt="Jewelry" className='details-image' />
+            </a>
+          </div>
+        <p><strong>ID:</strong> {jewelry.id.toString()}</p>
+
+          <div>
+            <p><strong>Name:</strong> {jewelry.name}</p>
             <p><strong>Type:</strong> {firestoreMetadataJewelry.type}</p>
             <p><strong>Metal:</strong> {firestoreMetadataJewelry.metal}</p>
             <p><strong>Size:</strong> {firestoreMetadataJewelry.size}</p>
             <p><strong>Additional data:</strong> {firestoreMetadataJewelry.additionalData}</p>
+          </div> 
           </div>
         )}
 

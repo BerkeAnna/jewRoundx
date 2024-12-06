@@ -16,11 +16,11 @@ class JewelryService {
     }
   }
 
-  async jewelryMaking(name, gemId, metadataHash, sale, price, fileURL, account) {  
+  async jewelryMaking(name, gemId, metadataHash, sale, price, account) {  
     if (!this.contract) {
       await this.loadContract(); // betöltjük a szerződést
     }
-    return this.contract.methods.jewelryMaking(name, gemId, metadataHash, sale, price, fileURL).send({ from: account })
+    return this.contract.methods.jewelryMaking(name, gemId, metadataHash, sale, price).send({ from: account })
      
   }
 

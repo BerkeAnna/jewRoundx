@@ -34,7 +34,6 @@ contract Jewelry {
         bool sale;
         bool processing;
         uint price;
-        string fileURL;
         address payable jeweler;
         address payable owner;
         address payable jewOwner;  
@@ -47,7 +46,6 @@ contract Jewelry {
         bool sale,
         bool processing,
         uint price,
-        string fileURL,
         address payable jeweler,
         address payable owner,
         address payable jewOwner
@@ -70,8 +68,7 @@ contract Jewelry {
         uint _gemId,
         string memory _metadataHash, // Off-chain tárolt fizikai részletek hash-e
         bool _sale,
-        uint _price,
-        string memory _fileURL
+        uint _price
     ) public {
         jewelryCount++;
 
@@ -83,7 +80,6 @@ contract Jewelry {
             _sale,
             true,
             _price,
-            _fileURL,
             msg.sender,
             msg.sender,
             msg.sender   // Új jewOwner mező beállítva
@@ -97,7 +93,6 @@ contract Jewelry {
             _sale,
             true,
             _price,
-            _fileURL,
             msg.sender,
             msg.sender,
             msg.sender  // Új jewOwner mező beállítva
@@ -121,7 +116,6 @@ contract Jewelry {
         bool processing,
         bool sale,
         uint price,
-        string memory fileURL,
         address jeweler,
         address owner,
         address jewOwner   // Új mező hozzáadva
@@ -135,7 +129,6 @@ contract Jewelry {
             jew.processing,
             jew.sale,
             jew.price,
-            jew.fileURL,
             jew.jeweler,
             jew.owner,
             jew.jewOwner   // Új mező hozzáadva

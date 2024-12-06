@@ -57,7 +57,8 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
       type,
       metal,
       size,
-      additionalData
+      additionalData,
+      fileUrl
     };
 
     // Metaadatok feltöltése Firestore-ba
@@ -72,7 +73,7 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {
 
     try {
       console.log("Submitting jewelry creation...");
-      await jewelryMaking(name, gemId, docRef.id, sale, price, fileUrl);  // Helyes függvényhívás
+      await jewelryMaking(name, gemId, docRef.id, sale, price);  // Helyes függvényhívás
       console.log("Jewelry created successfully.");
       navigate('/loggedIn');
     } catch (error) {
