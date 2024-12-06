@@ -43,7 +43,7 @@ contract GemstoneSelecting {
         address payable gemCutter
     );
 
-    event PolishGem(
+    event GemSale(
         uint id,
         address payable owner,
         address payable gemCutter
@@ -111,7 +111,7 @@ contract GemstoneSelecting {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
 
-        emit PolishGem(
+        emit GemSale(
             _selectedGem.id,
             _selectedGem.owner,
             _selectedGem.gemCutter

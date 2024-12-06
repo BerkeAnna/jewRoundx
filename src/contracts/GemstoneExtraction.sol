@@ -42,7 +42,7 @@ contract GemstoneExtraction {
         address payable owner
     );
 
-    event GemPurchased(
+    event GemSale(
         uint id,
         address payable miner,
         address payable owner
@@ -116,7 +116,7 @@ contract GemstoneExtraction {
         _minedGem.owner = msg.sender; // Az új tulajdonos beállítása
         _minedGem.purchased = true;
 
-        emit GemPurchased(_id, _minedGem.miner, msg.sender);
+        emit GemSale(_id, _minedGem.miner, msg.sender);
     }
 
     function processingGem(uint _id) public {
