@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GemstoneExtraction from './abis/GemstoneExtraction.json';
 import GemSelecting from './abis/GemstoneSelecting.json';
 import Jewelry from './abis/Jewelry.json';
-import UserRegistryABI from './abis/UserRegistry.json'; 
 import Navbar from './components/common/Navbar';
 import AppRoutes from './routes/Routes';
 import GemstoneExtractionService from './services/GemstoneExtractionService';
@@ -19,7 +18,6 @@ class App extends Component {
     await this.loadBlockchainData();
     await this.loadBlockchainData2();
     await this.loadBlockchainData3();
-    //await this.loadBlockchainData4(); // Hívjuk meg a loadBlockchainData4 függvényt is
   }
 
   async loadWeb3() {
@@ -139,40 +137,6 @@ class App extends Component {
     }
   }
   
-
-  async loadBlockchainData4() {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-  
-    const networkId = await web3.eth.net.getId();
-    const networkData = UserRegistryABI.networks[networkId];
-    if (networkData) {
-      const userRegistry = new web3.eth.Contract(UserRegistryABI.abi, networkData.address);
-      this.setState({ userRegistry });
-  
-      // Ell. a felhasználó regisztrálva van-e
-      const isRegistered = await userRegistry.methods.isUserRegistered(accounts[0]).call();
-      if (!isRegistered) {
-        console.error('User is not registered');
-        window.alert('User is not registered in the system');
-        return;
-      }
-  
-      // Ha regisztrálva van, felhasználói adatokat lekérjük
-      const userInfo = await userRegistry.methods.getUserInfo(accounts[0]).call();
-      this.setState({
-        userInfo: {
-          address: userInfo[0],
-          username: userInfo[1],
-          role: userInfo[2]
-        }
-      });
-      this.setState({ loading: false });
-    } else {
-      window.alert('UserRegistry contract not deployed to detected network.');
-    }
-  }
   
   constructor(props) {
     super(props);
@@ -192,8 +156,7 @@ class App extends Component {
       userInfo: null,
       gemstroneExtraction: null, 
       gemstroneSelecting: null, 
-      makeJew: null, 
-      userRegistry: null
+      makeJew: null
     };
   
     this.gemMining = this.gemMining.bind(this);
