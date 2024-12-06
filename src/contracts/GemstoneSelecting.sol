@@ -37,7 +37,7 @@ contract GemstoneSelecting {
         string fileURL
     );
 
-    event GemToMarket(
+    event GemSale(
         uint id,
         address payable owner,
         address payable gemCutter
@@ -113,7 +113,7 @@ contract GemstoneSelecting {
         SelectedGem storage _selectedGem = selectedGems[_id];
         _selectedGem.forSale = !_selectedGem.forSale;
 
-        emit GemToMarket(
+        emit GemSale(
             _selectedGem.id,
             _selectedGem.owner,
             _selectedGem.gemCutter
