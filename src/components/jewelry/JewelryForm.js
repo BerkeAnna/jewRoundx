@@ -7,7 +7,6 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
   const navigate = useNavigate();
   const fileInputRef = useRef(null); 
   const { id } = useParams();
-  const [type, setType] = useState("Ring");
 
   const handleMarkAsUsed = (gemId) => {
     markGemAsUsed(gemId);  // Nincs többé szükség a props-ra
@@ -70,14 +69,6 @@ function JewelryForm({ jewelryMaking, markGemAsUsed }) {  // Közvetlenül elér
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input id="name" name="name" type="text" className="form-control" placeholder="name" required />
-          </div>
-          <div className="form-group">
-            <select name="type" value={type} onChange={(e) => setType(e.target.value)} required>
-              <option value="Ring">Ring</option>
-              <option value="Bracelet">Bracelet</option>
-              <option value="Earrings">Earrings</option>
-              <option value="Necklace">Necklace</option>
-            </select>
           </div>
           <div className="form-group">
             <input id="depth" name="depth" type="text" className="form-control" placeholder="depth" required />
