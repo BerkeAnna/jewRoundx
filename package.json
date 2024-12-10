@@ -1,8 +1,8 @@
 {
-  "name": "eth-marketplace",
+  "name": "jewrx",
   "version": "0.1.0",
-  "description": "An Ethereum Marketplace",
-  "author": "gregory@dappuniversity.com",
+  "description": "jewRx",
+  "author": "berke.anna.v@gmail.com",
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
     "axios": "^1.7.2",
