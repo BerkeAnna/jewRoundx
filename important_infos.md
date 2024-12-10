@@ -1,1 +1,0 @@
-Drágakövek tömege: A karát a drágakövek, mint például a gyémántok, rubintok, szafírok és más hasonló kövek tömegének mérésére használt mértékegység. Egy karát 200 milligrammot, vagyis 0,2 grammot jelent. Tehát, ha egy rubint vagy bármely más drágakő súlya karátban van megadva, az közvetlenül a kövek tömegére vonatkozik.
