@@ -42,7 +42,7 @@ contract Jewelry {
     event JewelryMaking(
         uint id,
         string name,
-        string metadataHash, // Off-chain tárolt fizikai részletek hash-e
+        string metadataHash,
         bool sale,
         bool processing,
         uint price,
